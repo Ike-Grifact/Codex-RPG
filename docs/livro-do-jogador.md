@@ -804,7 +804,7 @@ Esses valores são limites possíveis, não dificuldades recomendadas nem garant
 
 Você começa com 15 XP compartilhados. Compre pelo menos um Atributo no Grau 1 ou superior e um Conhecimento ou uma Prática no Grau 1 ou superior. Se a origem já concedeu um Atributo G1, esse requisito está atendido. Com os custos normais, o mínimo custa 3 XP e deixa 12 XP livres. Distribua o restante como preferir, respeitando os requisitos.
 
-[Abra a ficha imprimível A4](../ficha-imprimivel.html) ou o [criador digital](../prototipo-ficha/).
+[Abra a ficha imprimível A4](../ficha-imprimivel.html), veja a [ficha preenchida de Maela](../ficha-exemplo.html) ou o [criador digital](../prototipo-ficha/).
 
 ### 1. Identidade
 
@@ -831,7 +831,7 @@ Vida máxima = 4 + Vigor + piso(Força/2) = 6. Distribua os pontos extras altern
 
 ### 4. Equipamentos, peso e carga
 
-Maela escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Maela escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Maela começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria.
 

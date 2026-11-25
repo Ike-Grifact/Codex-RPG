@@ -4228,7 +4228,7 @@ function renderVitals(){
  $("de-caption").textContent="Base "+deNatural()+(protection?" · armadura "+(armorDodgeBonus()-armorDePenalty()>=0?"+":"")+(armorDodgeBonus()-armorDePenalty()):"")+(masteredShield()?" · Maestria em Escudos +1 DE":"");
  $("load-text").textContent=pad(loadUsed())+" / "+capacity();
  const loadCaption=$("balance-caption"),blocks=$("load-blocks");
- if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":pad(loadPercent())+(state.race==="runa_espinhos"?"Peso natural":equippedArmor()?"Armadura equipada":"Peso sem armadura pendente");
+ if(loadCaption)loadCaption.textContent=NPC_MODE?"Cálculo pendente":(state.race==="runa_espinhos"?"Peso natural":equippedArmor()?"Armadura equipada":"Peso sem armadura pendente");
  if(blocks){blocks.hidden=NPC_MODE;blocks.innerHTML=NPC_MODE?"":loadBlocksMarkup();blocks.setAttribute("aria-label","Carga física: "+pad(loadPercent())+"% ocupados, "+loadStatus(loadPercent()));}
  $("move-text").textContent=movement()+" m";
  $("move-caption").textContent=!NPC_MODE&&loadPercent()>=100?"Sobrecarga · metade do deslocamento":"Por deslocamento";
