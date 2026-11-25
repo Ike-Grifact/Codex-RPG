@@ -1,5 +1,7 @@
 # Codex RPG — Livro do Mestre
 
+> **Atualização prioritária — SRD v0.150 (25/11/2026), DEFINIDO:** DE natural humanoide = min(8; 2 + piso((Agilidade + Vigor)/2)); Destreza não entra. Leve 0, Média −1, Pesada −2, Muito Pesada −3; Muito Leve retirada do catálogo de armaduras. Maestria em Escudos: 1 XP, Vigor 2 + Destreza 2 + Força 1 + Proteção 1; +1 DE passiva e +1 Integridade material com escudo físico equipado; teto final 9. Runa Espinhos pode usar escudo físico normalmente, mantendo proibição de armadura física. Prevalece sobre descrições anteriores abaixo.
+
 > **Atualização vigente — [SRD v0.149](srd-continuidade-v0.149.md):** DE natural humanoide = min(11; 2 + piso((Agilidade + Destreza + Vigor)/2)); armaduras 0/−1/−2/−3/−4, Maestria em Escudos +1 com escudo equipado, DE final 0–12. Sem teto geral de Êxitos por Perícia ou ação. Monstros não humanoides mantêm a fórmula própria.
 
 > **Norma vigente (18/11/2026):** [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). **15 XP iniciais fixos**, não 18; o teto adicional derivado até 260 XP é **245**, não 242. Maestrias de recuperação ficam adiadas. Druídica **não depende mais de Domar ou Influência**; requer Foco + Terra e não tem fichas animais. Transformação Elemental: 1 XP, Foco + uma Perícia Elemental. Referências antigas abaixo ficam subordinadas à norma de Playtest.
