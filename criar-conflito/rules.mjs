@@ -234,7 +234,7 @@ export function normalize(raw){
    weight,qty:Math.floor(clamp(i.qty,1,99)),kind,category,
    grade:Math.floor(clamp(i.grade??1,1,4)),
    integrityMax:max,integrity:Math.floor(clamp(i.integrity??i.hp??max,0,max)),
-   equipped:!!i.equipped,position:i.equipped&&["weapon","shield"].includes(kind)?"hands":i.position==="quick"?"quick":"bag",hands:[1,2].includes(Number(i.hands))?Number(i.hands):kind==="shield"?1:0,die:Number(i.die)||0,range:Number(i.range)||0,properties:Array.isArray(i.properties)?i.properties:[]};
+   equipped:!!i.equipped,position:i.equipped&&["weapon","shield"].includes(kind)?"hands":i.position==="quick"?"quick":"bag",hands:kind==="shield"?1:[1,2].includes(Number(i.hands))?Number(i.hands):kind==="weapon"?(/(?:duas|2) mãos|^arco (?:curto|longo)|^besta pesada/i.test(i.name||"")?2:/(?:uma|1) mão/i.test(i.name||"")?1:category==="pesado"?2:1):0,die:Number(i.die)||0,range:Number(i.range)||0,properties:Array.isArray(i.properties)?i.properties:[]};
  }):[];
  t.id=String(raw.id||uid()).slice(0,110);
  const st=stats(t);t.pavorLocal=Math.min(t.pavorLocal,st.limitLocal);

@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0151";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0151";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0152";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0152";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:0,medio:-1,pesado:-2,"muito-pesado":-3});
@@ -14,9 +14,10 @@ export function categoryOf(it={}){
 export function weaponHands(it){
  if(it?.kind==="shield")return 1;
  if([1,2].includes(Number(it?.hands)))return Number(it.hands);
- if(/(?:duas|2) mãos|^arco longo/i.test(it?.name||""))return 2;
+ if(!["weapon","firearm"].includes(it?.kind))return 0;
+ if(/(?:duas|2) mãos|^arco (?:curto|longo)|^besta pesada/i.test(it?.name||""))return 2;
  if(/(?:uma|1) mão/i.test(it?.name||""))return 1;
- return 0;
+ return ["pesado","alto","extremo","muito-pesado"].includes(it.category)?2:1;
 }
 export function projectileFamily(weapon){
  if(!weapon)return "";
@@ -88,7 +89,7 @@ export function normalizeEquipment(original={}){
  const itemWeight=typeof raw.weight==="number"?Math.max(0,raw.weight):ammoRole?ammoLoad+(ammoRole==="container"?(weightNumbers[category]||.125):0):(weightNumbers[category]||0);
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
   kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,
-  qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind}),position:equipmentPosition({...raw,kind}),
+  qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind,category}),position:equipmentPosition({...raw,kind}),
   die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,ammoLotWeight:Number(raw.ammoLotWeight)||0,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
 }
 export function normalizeCombatant(raw={},side="jogadores",source="navegador"){
