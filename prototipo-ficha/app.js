@@ -5228,10 +5228,10 @@ function handLayout(items){
 function handPanelMarkup(items=state.items){
  const {slots,quick,free}=handLayout(items);
  const action=(it,pos,label)=>'<button type="button" class="fp-secondary" data-action="inventory-position" data-id="'+esc(it.id)+'" data-position="'+pos+'">'+label+'</button>';
- const slot=(entry,index)=>'<div class="fp-hand-slot'+(entry?' is-occupied':'')+'"><small>MÃO '+(index+1)+'</small>'+(entry?'<strong>'+esc(entry.item.name)+'</strong><span>'+(itemHands(entry.item)===2?'Empunhadura de duas mãos':'Uma mão')+'</span>'+(entry.continuation?'':action(entry.item,"bag","Guardar")+(entry.item.type==="arma"?action(entry.item,"quick","No corpo"):"")):'<strong>Mão livre</strong><span>Pronta para empunhar</span>')+'</div>';
- const quickSlot=(it,index)=>'<div class="fp-hand-slot'+(it?' is-occupied':'')+'"><small>ESPAÇO '+(index+1)+'</small>'+(it?'<strong>'+esc(it.name)+'</strong>'+(it.type==="arma"?action(it,"hands","Puxar para as mãos"):"<span>Porta-munições</span>")+action(it,"bag","Mochila"):'<strong>Livre</strong>')+'</div>';
- const available=items.filter(it=>handItem(it)&&!it.equipped&&!it.shieldGrounded&&itemPosition(it)==="bag");
- return '<section class="fp-hand-panel" aria-label="Mãos e acesso rápido"><div class="fp-inventory-section-heading"><h4>Mãos e equipamentos no corpo</h4><small>'+free+'/2 mãos livres · '+quick.length+'/3 espaços de acesso rápido ocupados.</small></div><div class="fp-hand-grid">'+[0,1].map(i=>slot(slots[i],i)).join("")+'</div>'+(slots.length>2?'<p class="fp-caption">Ficha antiga com mãos excedidas: reorganize os itens.</p>':"")+'<h5>Acesso rápido no corpo</h5><div class="fp-quick-grid">'+[0,1,2].map(i=>quickSlot(quick[i],i)).join("")+'</div>'+(quick.length>3?'<p class="fp-caption">Há espaços excedidos; reorganize pelo inventário completo.</p>':"")+(available.length?'<h5>Na mochila</h5><div class="fp-hand-available">'+available.map(it=>'<div><strong>'+esc(it.name)+'</strong>'+action(it,"hands","Empunhar")+(it.type==="arma"?action(it,"quick","No corpo"):"")+'</div>').join("")+'</div>':"")+'<p class="fp-caption">Organização de equipamento. Em combate, aplique as regras de saque da posição anterior; mover um item aqui não concede saque gratuito.</p></section>';
+ const chip=(it,label,actions="",continuation=false)=>it?'<details class="fp-hand-slot is-occupied"><summary title="'+esc(label+" · "+it.name)+'" aria-label="'+esc(label+" · "+it.name)+'">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+(continuation?'<small class="fp-hand-link">2ª mão</small>':'')+'</summary><div class="fp-hand-actions">'+actions+'</div></details>':'<div class="fp-hand-slot is-free" aria-label="'+esc(label+" livre")+'"><span>Livre</span></div>';
+ const held=(entry,i)=>chip(entry?.item,"Mão "+(i+1),entry?action(entry.item,"bag","Guardar na mochila")+(entry.item.type==="arma"?action(entry.item,"quick","Guardar no corpo"):""):"",!!entry?.continuation);
+ const ready=(it,i)=>chip(it,"Espaço "+(i+1),it?(it.type==="arma"?action(it,"hands","Puxar para as mãos"):"")+action(it,"bag","Guardar na mochila"):"");
+ return '<section class="fp-hand-panel" aria-label="Mãos e acesso rápido"><div class="fp-hand-row"><div class="fp-hand-label"><strong>Mãos</strong><small>'+free+'/2 livres</small></div><div class="fp-hand-grid">'+[0,1].map(i=>held(slots[i],i)).join("")+'</div></div><div class="fp-hand-row"><div class="fp-hand-label"><strong>Acesso rápido</strong><small>'+quick.length+'/3 ocupados</small></div><div class="fp-quick-grid">'+[0,1,2].map(i=>ready(quick[i],i)).join("")+'</div></div>'+(slots.length>2||quick.length>3?'<p class="fp-caption">Espaços excedidos; reorganize pelo inventário completo.</p>':"")+'<p class="fp-hand-note">Clique no item para mover. Em combate, respeite as penalidades de saque.</p></section>';
 }
 function renderInventory(){
  const focusSelector=$("focus-test-model");
@@ -5271,9 +5271,10 @@ function renderInventory(){
  $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+quickSlots()+'/3 espaços · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Alto · Corpo '+pad(bodyLoad())+'/'+bodyCapacity()+' Alto · Mochila '+pad(backpackLoad())+'/0,5 Alto · Mãos '+state.items.filter(it=>handItem(it)&&it.equipped).reduce((n,it)=>n+itemHands(it),0)+'/2.</p>');
  const handPanel=$("inventory-hands");if(handPanel)handPanel.innerHTML=handPanelMarkup();
  const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
- const positionOrder={hands:0,quick:1,bag:2};
+ const displayPosition=it=>it.equipped?"equipped":itemPosition(it);
+ const positionOrder={equipped:0,quick:1,bag:2};
  const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
-  .sort((a,b)=>positionOrder[itemPosition(a)]-positionOrder[itemPosition(b)]||EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
+  .sort((a,b)=>positionOrder[displayPosition(a)]-positionOrder[displayPosition(b)]||EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
     EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||
     EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(a))-
     EQUIPMENT_WEIGHT_OPTIONS.findIndex(x=>x[0]===equipmentWeight(b))||a.name.localeCompare(b.name,"pt-BR"));
@@ -5315,13 +5316,13 @@ function renderInventory(){
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
-  const group=({hands:"Mãos",quick:"Acesso rápido",bag:"Mochila"}[itemPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const group=({equipped:"Equipados",quick:"Acesso rápido",bag:"Mochila"}[displayPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
   '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
-  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':(handItem(it)||it.ammoRole==="container")?({hands:"Nas mãos",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
+  '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':(handItem(it)||it.ammoRole==="container")?({hands:"Equipado",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
   inventorySelect("type",it.type,types,it.id)+
