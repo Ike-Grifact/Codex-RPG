@@ -1,7 +1,7 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs?v=20261124-v0125c";
+ from "./codex-rules.mjs?v=20261125-v0147";
 import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261124-colossal-v0114";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
@@ -107,7 +107,7 @@ export const enemyHumanoidFreeKeep=grade=>Number(grade)>=2?3:2;
 // Equivalência autoral conhecida: G2 ameaça ≈ nível 5 de jogador. Outros Graus pendentes.
 export const threatPlayerEquivalentLevel=grade=>Number(grade)===2?5:null;
 export const WEIGHT={leve:.125,medio:.5,pesado:1,"muito-leve":.0125,"muito-pesado":2};
-export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
+export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:-1,medio:-2,pesado:-3,"muito-pesado":-4});
 const ARMOR_NAMES=Object.freeze({"Roupas Simples":"muito-leve","Armadura Leve":"leve","Armadura Média":"medio","Armadura Pesada":"pesado"});
 export function itemCategory(it={}){
  const raw=String(it.category|| (typeof it.weight==="string"?it.weight:"")||"").toLowerCase().replaceAll("_","-");
@@ -172,7 +172,7 @@ export function ledger(t){
 export function dice(t,key){return sourceDice("attribute",key,toSystem(t));}
 export function stats(t){
  const s=toSystem(t),monster=t.kind==="monstro",human=isHumanoidKind(t.kind),grade=clamp(t.threatGrade,1,6);
- const life=lifeMax(s),baseDE=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):naturalDE(s);
+ const life=lifeMax(s),baseDE=monster?Math.min(9,Number(s.attributes.agilidade||0)+Math.floor(Number(s.attributes.destreza||0)/2)):human?naturalDE(s):Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
  const armorDE=human?armorDeModifier(t):0;
  const shieldDE=human&&t.skills?.includes("maestria-escudos")&&t.items?.some(it=>it.kind==="shield"&&it.equipped)?1:0;
  const defense=human?Math.min(12,Math.max(0,baseDE+armorDE+shieldDE)):baseDE;
