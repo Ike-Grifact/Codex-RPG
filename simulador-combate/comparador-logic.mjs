@@ -1,9 +1,9 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0149";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0149";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0150";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0150";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
-export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:-1,medio:-2,pesado:-3,"muito-pesado":-4});
+export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:0,medio:-1,pesado:-2,"muito-pesado":-3});
 const alias={muito_leve:"muito-leve",muito_pesado:"muito-pesado",alto:"pesado",extremo:"muito-pesado"};
 const kinds={armadura:"armor",escudo:"shield",arma:"weapon"};
 const weightNumbers={"muito-leve":0.125,leve:0.125,medio:0.5,pesado:1,"muito-pesado":2};
@@ -78,7 +78,7 @@ export function disarmTransfer(attacker,target,weaponId,destination,newId){
 export function normalizeEquipment(original={}){
  const raw=migrateArmorIntegrity(original);
  const kind=raw.ammoRole==="container"?"container":raw.ammoRole==="supply"?"ammunition":["armor","shield","weapon","firearm","focus"].includes(raw.kind)?raw.kind:(kinds[raw.type]||raw.kind||"other");
- const category=categoryOf(raw),sourceIntegrity=raw.integrity;
+ const category=kind==="armor"&&categoryOf(raw)==="muito-leve"?"leve":categoryOf(raw),sourceIntegrity=raw.integrity;
  const max=int(raw.integrityMax??raw.max??(typeof sourceIntegrity==="object"?sourceIntegrity.max:undefined)??0);
  const hp=int((typeof sourceIntegrity==="object"?sourceIntegrity.value:sourceIntegrity)??raw.hp??max,0,max);
  const ammoRole=["container","supply"].includes(raw.ammoRole)?raw.ammoRole:"";
@@ -503,7 +503,7 @@ export function markCondition(c,id,value){
 }
 
 export function armorOf(c){
- return (c?.items||[]).find(it=>it.kind==="armor"&&it.equipped)||null;
+ return c?.race==="runa_espinhos"?null:(c?.items||[]).find(it=>it.kind==="armor"&&it.equipped)||null;
 }
 export function armorDefense(c){
  const a=armorOf(c);
@@ -513,8 +513,8 @@ export function defense(c){
  if(!c)return 0;
  const attrs=c.attributes||{};
  const basic=c.kind==="monstro"?Math.min(9,Number(attrs.agilidade||0)+Math.floor(Number(attrs.destreza||0)/2)):c.kind==="criatura"?Math.min(9,Number(c.attributes?.agilidade||0)+Math.floor((Number(c.attributes?.vigor||0)+Number(c.attributes?.destreza||0))/2)+Math.floor(Number(c.practices?.atletismo||0)/3)):naturalDE(c);
- const sh=(c.skills||[]).includes("maestria-escudos")&&(c.items||[]).some(it=>it.kind==="shield"&&it.equipped)?1:0;
- return Math.min(12,Math.max(0,basic+(c.kind==="monstro"?0:armorDefense(c))+(c.kind==="monstro"?0:sh)));
+ const sh=(c.skills||[]).includes("maestria-escudos")&&Number(attrs.destreza||0)>=2&&Number(attrs.vigor||0)>=2&&Number(attrs.forca||0)>=1&&Number(c.knowledges?.protecao||0)>=1&&(c.items||[]).some(it=>it.kind==="shield"&&it.equipped)?1:0;
+ return Math.min(9,Math.max(0,basic+(c.kind==="monstro"?0:armorDefense(c))+(c.kind==="monstro"?0:sh)));
 }
 export function weightUsed(c){return (c.items||[]).reduce((v,it)=>v+Number(it.weight||0)*Number(it.qty||1),0);}
 export function equippedWeapons(c,catalog=[],includeCarried=false){

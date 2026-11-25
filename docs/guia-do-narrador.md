@@ -1,5 +1,7 @@
 # Codex RPG — Guia do Narrador
 
+> **Atualização prioritária — SRD v0.150 (25/11/2026), DEFINIDO:** DE natural humanoide = min(8; 2 + piso((Agilidade + Vigor)/2)); Destreza não entra. Leve 0, Média −1, Pesada −2, Muito Pesada −3; Muito Leve retirada do catálogo de armaduras. Maestria em Escudos: 1 XP, Vigor 2 + Destreza 2 + Força 1 + Proteção 1; +1 DE passiva e +1 Integridade material com escudo físico equipado; teto final 9. Runa Espinhos pode usar escudo físico normalmente, mantendo proibição de armadura física. Prevalece sobre descrições anteriores abaixo.
+
 **Edição editorial: 11 de novembro de 2026.** Este documento acompanha a página [Guia do Narrador](../narrador.html). É distinto do [Livro do Jogador](livro-do-jogador.md). Regras normativas e precedência: [SRD de Continuidade v0.38](srd-continuidade-v0.38.md).
 
 ## 1. O papel do Narrador
@@ -51,7 +53,7 @@ Para exemplos de condução e a separação entre DEFINIDO/PENDENTE, consulte o 
 
 ## 4. DE, ameaças e ações conjuntas [DEFINIDO / EXPERIMENTAL]
 
-**DE natural humanoide = min(11, 2 + ⌊(Agilidade + Destreza + Vigor)/2⌋)** (SRD v0.149). **Tipo de armadura não depende de Grau:** Muito Leve 0, Leve −1 DE, Média −2 DE, Pesada −3 DE, Muito Pesada −4 DE em todas as defesas. **Muito Pesada** requer **Vigor 6 e Atletismo 6** e tem imunidade física natural **em qualquer Grau**. No G2 recebe resistência elemental; no G4 pode acrescentar imunidade elemental **sem perder a resistência**. Graus 2/3/4 exigem níveis 5/10/20. **Psíquico é neutro, não físico:** Integridade primeiro e depois Vida, não ignorando proteção automaticamente. Modificadores de DE são aplicados após o teto natural; Maestria em Escudos com escudo equipado concede +1 uma vez, com DE final entre 0 e 12. Monstros não humanoides preservam a fórmula própria.
+**DE natural humanoide = min(8, 2 + ⌊(Agilidade + Vigor)/2⌋)** (SRD v0.149). **Tipo de armadura não depende de Grau:** Muito Leve 0, Leve −1 DE, Média −2 DE, Pesada −3 DE, Muito Pesada −4 DE em todas as defesas. **Muito Pesada** requer **Vigor 6 e Atletismo 6** e tem imunidade física natural **em qualquer Grau**. No G2 recebe resistência elemental; no G4 pode acrescentar imunidade elemental **sem perder a resistência**. Graus 2/3/4 exigem níveis 5/10/20. **Psíquico é neutro, não físico:** Integridade primeiro e depois Vida, não ignorando proteção automaticamente. Modificadores de DE são aplicados após o teto natural; Maestria em Escudos com escudo equipado concede +1 uma vez, com DE final entre 0 e 12. Monstros não humanoides preservam a fórmula própria.
 
 A **DE conjunta** mantém **teto 30**, com coordenação e demais regras específicas. Até **três participantes** podem atuar em ataques conjuntos. Ataque em área que efetivamente atinge três criaturas separadas pode atingir três fichas; uma criatura composta de **uma ficha** não sofre dano multiplicado por suas partes abstratas.
 
