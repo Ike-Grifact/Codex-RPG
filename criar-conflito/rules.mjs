@@ -193,7 +193,7 @@ export function migrateArmorIntegrity(it){
  if(!it||typeof it!=="object")return it;
  const kind=it.kind||({armadura:"armor"})[it.type];
  if(kind!=="armor"||Number(it.grade??1)!==1)return it;
- const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[3,[5,7,10]],"Armadura Média":[7,[8,12,15]],"Armadura Pesada":[12,[17,20]]};
+ const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[4,[3,5,7,10]],"Armadura Média":[8,[7,12,15]],"Armadura Pesada":[12,[17,20]]};
  const spec=newValues[it.catalogId||it.name]||newValues[it.name];
  if(!spec)return it;
  const oldMax=Number(it.integrityMax??it.max??(typeof it.integrity==="object"?it.integrity.max:undefined)??0);

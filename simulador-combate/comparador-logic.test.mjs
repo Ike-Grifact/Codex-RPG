@@ -228,9 +228,9 @@ test("Ficha explicita quando Disciplina Avançada não existe ou não cumpre Gra
 });
 
 
-test("Nerf G1: Integridade G1 3/7/12 (legado 2) com conservação de dano, idempotência e escudos preservados",()=>{
- const expected=[["Roupas Simples",3,2],["Armadura Leve",7,3],["Armadura Leve",5,3],
-  ["Armadura Média",12,7],["Armadura Média",8,7],["Armadura Pesada",17,12]];
+test("Nerf G1: Integridade G1 4/8/12 (legado 2) com conservação de dano, idempotência e escudos preservados",()=>{
+ const expected=[["Roupas Simples",3,2],["Armadura Leve",7,4],["Armadura Leve",5,4],["Armadura Leve",3,4],
+  ["Armadura Média",12,8],["Armadura Média",7,8],["Armadura Pesada",17,12]];
  for(const [name,oldMax,nextMax] of expected){
   const old=normalizeEquipment({name,kind:"armor",grade:1,
    integrityMax:oldMax,integrity:oldMax-1,equipped:true});

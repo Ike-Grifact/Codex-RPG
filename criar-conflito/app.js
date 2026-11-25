@@ -485,7 +485,7 @@ function inventory(t,x){
     ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
-  '<p class="cf-note">Integridades G1 vigentes: Leve 3, Média 7, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
+  '<p class="cf-note">Integridades G1 vigentes: Leve 4, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
 }
 
 
