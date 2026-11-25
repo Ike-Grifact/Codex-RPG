@@ -5440,6 +5440,7 @@ function buyElementalStone(element=$("stone-element")?.value,preferred=$("shop-p
 function renderPurchaseLoadPreview(){
  const preview=$("trade-purchase-load");if(!preview)return;
  const item=CATALOG.find(x=>x.name===$("shop-items")?.value);
+ const equipButton=document.querySelector('[data-action="trade-buy-equip"]');if(equipButton)equipButton.disabled=!item||!["weapon","firearm","shield"].includes(item.kind);
  if(!item||item.kind==="focus"||item.category==="pendente"||item.status==="PENDENTE"||!(Number(item.priceVT)>0)){
   preview.innerHTML='<small>Escolha um equipamento para visualizar a carga após a compra.</small>';return;
  }
@@ -5448,6 +5449,7 @@ function renderPurchaseLoadPreview(){
 function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-preferred")?.value,equipAfter=false){
  const item=CATALOG.find(x=>x.name===catalogName);
  if(!item||item.kind==="focus"||item.legacy)return;
+ if(equipAfter&&!["weapon","firearm","shield"].includes(item.kind)){toast("Comprar e empunhar é exclusivo de armas e escudos.");return;}
  if(item.category==="pendente"||item.status==="PENDENTE"){toast("Equipamento com campos de combate pendentes; compra indisponível.");return;}
  if(item.priceVT==null||!Number.isFinite(Number(item.priceVT))||Number(item.priceVT)<=0){toast("Preço pendente: este item não está disponível para compra.");return;}
  const rows=catalogPurchaseRows(item);if(!rows.length){toast("Kit incompleto no catálogo.");return;}
