@@ -62,8 +62,8 @@ Os dados do Codex têm formas e quantidades de faces diferentes. A letra d signi
 
 Uma face pode mostrar uma ou várias runas. Uma face com dois Êxitos contém 2E, e não apenas um. Leia cada símbolo que aparece na face.
 
-- **ᛋ Êxito (E):** realiza sua intenção. Cada E conta para alcançar a dificuldade e pode contribuir para o dano em um ataque.
-- **ᚨ Antecipar (A):** adapta o resultado. Gaste 1A para anular 1T, 2A para criar 1E ou use A para passar a oportunidade a um aliado conforme o protagonismo. Cada A só pode ser gasto uma vez.
+- **ᛋ Êxito (E):** realiza sua intenção. Cada ᛋ E conta para alcançar a dificuldade e pode contribuir para o dano em um ataque.
+- **ᚨ Antecipar (A):** adapta o resultado. Gaste ᚨ 1A para anular ᚦ 1T, ᚨ 2A para criar ᛋ 1E ou use ᚨ A para passar a oportunidade a um aliado conforme o protagonismo. Cada ᚨ A só pode ser gasto uma vez.
 - **ᚦ Temor (T):** também conta para alcançar a dificuldade, mas representa o risco diante do desconhecido e pode dar à oposição oportunidade de intervenção. Acertar com Temor não é um acerto limpo.
 - **○ Face vazia:** não acrescenta símbolos; — indica face inexistente.
 
