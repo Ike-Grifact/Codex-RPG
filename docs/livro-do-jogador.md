@@ -420,34 +420,90 @@ Comece pelo nome, conceito e identidade de seu Aprendiz. Pense no que pretende f
 
 ## Crie seu Aprendiz
 
-### Conheça as linhagens
+Comece pelo nome, conceito e identidade do seu Aprendiz. Pense no que deseja fazer durante a aventura; sua profissão surgirá de suas escolhas. Depois, escolha uma linhagem, distribua seu XP, confira os valores da ficha e escolha equipamentos.
 
-**Humanos.** Descendentes dos sobreviventes das Arcas, adaptam-se a culturas e tecnologias muito diferentes. Seus nomes podem seguir as tradições da Arca de origem ou da família. A Perseverança Humana e o domínio inicial de armas de fogo representam benefícios de origem, não uma profissão obrigatória.
+### Escolha sua linhagem
 
-**Luckers Puros.** Herdeiros de antigas tradições mágicas, são longevos e preservam as sensações e emoções. Podem usar nomes como Astel, Luel'et ou Etelion; a partícula el é associada aos Puros rebatizados.
+A origem do seu Aprendiz ajuda a definir sua história e suas aptidões iniciais. Escolha a linhagem que mais combina com o personagem que deseja interpretar, não uma classe pronta. Todos podem construir profissões híbridas. Os benefícios iniciais são concessões de origem; as diferenças de XP alteram o custo de desenvolver capacidades, não impõem penalidades fixas às rolagens.
 
-**Luckers de Sangue.** Os personagens jogáveis são párias de sua sociedade após o Infortúnio. Não experimentam sensações e emoções como os demais povos, mas preservam a capacidade de aprender e decidir. Nomes como Ketreaver, Eterion ou Reaveretion podem expressar sua história e propósito.
+#### Humanos
 
-**Runa Espinhos.** Gigantes de pedra e espinhos, ligados à natureza e às tradições dos Pastores. Seus nomes utilizam fragmentos sonoros de runas, como Ruhaan, Lothuso e Sofe. As tradições xamânicas não obrigam o personagem a seguir determinada profissão.
+Há cerca de 1.400 anos, os humanos retornaram a um mundo que já não dominavam. Dos destroços das Arcas surgiram cidades com diferentes caminhos para sobreviver: da tecnomagia de Arcanum à engenharia de Arcrois e às tradições de Triarca. A capacidade de se adaptar a essas realidades é uma marca da humanidade.
 
-Para conhecer as tradições de nomes e o cenário, consulte Crônicas e histórias do mundo. As orientações narrativas detalhadas estão em Interpretando seu personagem. A origem não concede efeitos adicionais além dos benefícios descritos abaixo.
+**Tradição de nomes.** Escolha um nome pessoal e, se desejar, um sobrenome, título ou referência à sua origem. A história da família e da Arca pode inspirar essa escolha. *Elisa, Helena, Caio ou Davi (sugestões livres).* [Guia de nomes — Humanos](#nomes-humanos).
 
-### Linhagens e benefícios na criação [DEFINIDO / opções PENDENTES]
+**Benefícios de origem**
 
-| Linhagem | Graus de Atributo de origem (G1, 0 XP) | Perícias de origem e restrições |
-|---|---|---|
-| **Humano** | Nenhum | Perseverança Humana (uma rerrolagem por descanso longo) e Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas gratuitas |
-| **Lucker de Sangue** | Vigor e Agilidade | Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas; Transfusão Sanguinária é exclusiva da linhagem |
-| **Lucker Puro** | Inteligência e Destreza | **Criar Item de Foco e Magia por 0 XP, somente após Disciplina 1 + Inteligência 1 + Artesão 1**, e **uma Perícia elemental inicial gratuita à escolha entre Fogo, Água, Ar, Terra ou Sagrado**. Sangue, Trevas e Veneno não são opções gratuitas de origem |
-| **Runa Espinhos** | Vigor e Força | Pugilismo, Criar Item de Foco e Magia, **um elemento gratuito** (Ar, Água, Terra ou Fogo) e Escudo Rúnico. O Escudo Rúnico **substitui** a antiga segunda escolha elemental; não pode equipar armaduras físicas |
+- Perseverança Humana: pode rolar novamente um teste uma vez por descanso longo.
+- Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas concedidas gratuitamente na criação.
 
-**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.94):** escolhe **exatamente uma** Perícia elemental inicial gratuita entre **Fogo, Água, Ar, Terra e Sagrado**. A escolha não concede os cinco elementos de uma vez. **Sangue, Trevas e Veneno não são opções iniciais gratuitas**. Esses elementos especiais continuam sujeitos às próprias regras de aquisição posterior por XP e requisitos; Transfusão Sanguinária permanece exclusiva do Lucker de Sangue. Fichas antigas preservam o registro da escolha de origem revogada sem continuar concedendo sua Perícia gratuitamente, e compras explícitas de Perícias por XP são preservadas. O jogador pode regularizar uma escolha revogada, sem custo, uma única vez, inclusive em ficha já concluída.
+**Vantagens no desenvolvimento:** Todas as Aptidões usam seus custos normais de XP.
 
-**Lucker Puro — DEFINIDO (23/11/2026, SRD v0.95):** Criar Item de Foco e Magia tem **custo de aquisição 0 XP**, sem concessão automática. É obrigatório comprar Disciplina 1, Inteligência 1 e Artesão 1 pelos custos de fontes vigentes antes de confirmar a Perícia gratuitamente. A escolha elemental racial é separada, não dispensa requisitos e não habilita efeitos Psíquicos por si só.
+**Limitações e desvantagens:** Não recebe Graus 1 automáticos de origem nem descontos raciais. Também não possui faixas raciais de XP aumentado.
 
-**Runa Espinhos:** o elemento gratuito pode ser somente **um** entre Ar, Água, Terra e Fogo. Os demais precisam ser adquiridos normalmente. Escudo Rúnico é a concessão racial de Escudo Arcano, com uma ativação base gratuita por dia; aplicações posteriores têm custo normal e a barreira ganha resistência a um elemento habilitado por utilização, não imunidade irrestrita. A segunda opção elemental de fichas antigas é apenas histórica, sem segundo benefício gratuito.
+#### Luckers Puros
 
-**Custos raciais vigentes:** Lucker de Sangue favorece Vigor e Agilidade, com Influência/Apresentação elevados; Lucker Puro favorece Inteligência e Destreza, com Força/Atletismo elevados; Runa Espinhos favorece Vigor e Força, com Agilidade/Destreza elevados. As faixas usam os preços raciais existentes, sem criar multiplicadores novos.
+Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a capacidade de sentir e experimentar emoções. Não morrem naturalmente pelo envelhecimento, mas podem morrer se forem abatidos. Restam cerca de 300. Aprenderam a magia com os Runa Espinhos e a transmitiram à humanidade; em Arcanum, convivem com os outros povos.
+
+**Tradição de nomes.** O fragmento el é especialmente associado aos Puros rebatizados. Nomes antigos também podem conservar et, presente antes do Infortúnio. As partículas podem se combinar, inclusive com apóstrofos. *Astel, Luel'et, Luet'el, Ikel'et.* [Guia de nomes — Luckers Puros](#nomes-luckers-puros).
+
+**Benefícios de origem**
+
+- Inteligência 1 e Destreza 1 automáticas, sem custo de XP.
+- Uma Perícia elemental gratuita à escolha: Fogo, Água, Ar, Terra ou Sagrado.
+- Criar Item de Foco e Magia custa 0 XP, mas precisa ser adquirida após cumprir Disciplina 1, Inteligência 1 e Artesão 1. A Inteligência racial já satisfaz o segundo requisito.
+
+**Vantagens no desenvolvimento:** Inteligência e Destreza têm custos reduzidos de XP para seu desenvolvimento.
+
+**Limitações e desvantagens:** Força e Atletismo têm custos elevados de XP. Sangue, Trevas e Veneno não são opções gratuitas de origem; podem ser adquiridos posteriormente quando os requisitos próprios permitirem. Psíquico não é uma opção elemental racial adicional.
+
+#### Luckers de Sangue
+
+O Infortúnio privou os Luckers de Sangue das sensações físicas e emocionais, mas não da capacidade de aprender, compreender e decidir. Sua imortalidade é literal: não conseguem alcançar a morte definitiva. Os aventureiros desta linhagem são párias de sua sociedade, e alguns encontraram acolhimento em Arcanum. Diários e formas próprias de linguagem podem ajudá-los a preservar sua identidade.
+
+**Tradição de nomes.** Et remete à tradição anterior ao Infortúnio. Ion aparece associado às antigas lideranças e à força psicológica. Reaver é usado sobretudo por quem procura se lembrar de algo. Essas associações não determinam personalidade nem posição social. *Or'et, Eterion, Ketreaver, Ikreaver.* [Guia de nomes — Luckers de Sangue](#nomes-luckers-sangue).
+
+**Benefícios de origem**
+
+- Vigor 1 e Agilidade 1 automáticos, sem custo de XP.
+- Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas desde a criação. Transfusão Sanguinária é exclusiva da linhagem.
+
+**Vantagens no desenvolvimento:** Vigor e Agilidade têm custos reduzidos de XP para seu desenvolvimento.
+
+**Limitações e desvantagens:** Influência e Apresentação têm custos elevados de XP. A imortalidade e a ausência de sensações não concedem imunidade mecânica a ferimentos, captura ou outras consequências. A concessão de Transfusão Sanguinária não elimina seus custos de utilização; a relação com a Perícia Transfusão prévia permanece pendente.
+
+#### Runa Espinhos
+
+Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa Espinhos também são conhecidos como Pastores por sua dedicação à natureza. Habitam florestas, encostas e montanhas e preservam tradições xamânicas. Ensinaram a magia aos Luckers Puros. Os Runalmas são uma facção extremista distinta dos Pastores, não o caminho obrigatório de um personagem dessa linhagem.
+
+**Tradição de nomes.** Seus nomes são formados a partir de fragmentos sonoros associados às runas. Combine sílabas como Ru, Na, Ha, So, Thu e Saz para criar uma sonoridade própria. *Ruhaan, Lothuso, Ruthufe, Sofe.* [Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
+
+**Benefícios de origem**
+
+- Vigor 1 e Força 1 automáticos, sem custo de XP.
+- Pugilismo, Criar Item de Foco e Magia e Escudo Rúnico gratuitos, além de uma Perícia elemental à escolha entre Ar, Água, Terra e Fogo.
+- Escudo Rúnico: uma ativação de custo-base zero por dia; as demais têm custo-base de 1 Coragem. A barreira concede resistência a um elemento habilitado por utilização, não imunidade; a rolagem e eventuais custos adicionais permanecem.
+
+**Vantagens no desenvolvimento:** Vigor e Força têm custos reduzidos de XP para seu desenvolvimento.
+
+**Limitações e desvantagens:** Agilidade e Destreza têm custos elevados de XP. Não pode equipar armaduras físicas, embora possa carregá-las ou negociá-las. Recebe somente um elemento gratuito; Escudo Rúnico substitui a antiga segunda escolha.
+
+### Compare as quatro linhagens
+
+Use este resumo para comparar as origens depois de conhecer cada povo. As colunas de XP indicam custos de evolução, e não modificadores de dados.
+
+| Linhagem | Grau 1 gratuito | XP reduzido | XP elevado | Identidade mecânica |
+|---|---|---|---|---|
+| Humanos | — | — | — | Perseverança e armas de fogo; custos neutros. |
+| Luckers Puros | Inteligência, Destreza | Inteligência, Destreza | Força, Atletismo | Afinidade mágica; um elemento e Foco a 0 XP mediante requisitos. |
+| Luckers de Sangue | Vigor, Agilidade | Vigor, Agilidade | Influência, Apresentação | Hemomancia; Sangue e Transfusão Sanguinária. |
+| Runa Espinhos | Vigor, Força | Vigor, Força | Agilidade, Destreza | Pugilismo, Foco, elemento e Escudo Rúnico; sem armadura física. |
+
+Os Graus 1 automáticos indicados acima custam 0 XP. Uma Perícia de origem gratuita não concede outros graus ou Perícias automaticamente e não dispensa os custos de ativação ou as condições de utilização, salvo exceções expressamente descritas. As demais Aptidões seguem os custos normais.
+
+Conheça mais sobre o cenário em Crônicas e histórias do mundo e veja como interpretar os Luckers em Interpretando seu personagem.
+
+**Compatibilidade de fichas antigas:** Fichas antigas de Lucker Puro com uma escolha elemental revogada preservam seu histórico e as compras efetivamente realizadas com XP; podem regularizar a escolha uma única vez, gratuitamente. Runa Espinhos conserva a segunda escolha antiga apenas como histórico, sem segundo elemento gratuito.
 
 Todos têm seis Atributos: **Força, Agilidade, Destreza, Inteligência, Influência e Vigor**.
 
@@ -1697,11 +1753,53 @@ As cidades humanas nasceram dos destroços das antigas Arcas. A humanidade retor
 
 ### Nomes e tradições
 
-Os nomes dos Luckers carregam marcas de suas histórias. A terminação ou partícula **el** aparece entre Puros rebatizados; **et** era recorrente antes do Infortúnio; **ion** está associada a antigas lideranças e indivíduos de forte disposição; **reaver** aparece sobretudo entre os que procuram recordar algo. São tradições culturais, não critérios infalíveis de linhagem. Títulos e combinações de nomes podem ocupar o lugar de sobrenomes.
+Cada povo possui referências próprias para a escolha de nomes. Use os exemplos como inspiração e combine as sonoridades à história do personagem. Os nomes não impõem requisitos de criação nem efeitos mecânicos.
 
-Exemplos de nomes Lucker: Etel, Etelion, Treaver, Breaver, Or'et, Orion, Eterion, Del' Etreaver, Lucarion, Luel'et, Luet'el, Lueaver, Leterion, Astel, Astet, Ketreaver, Ikel'et, Ikelet, Ikarion, Ikelion, Iketerion e Ikreaver. Co'el Etreaver, Elcoet, Eaveret e Reaveretion ilustram combinações e variações.
+<a id="nomes-humanos"></a>
 
-Os Runa Espinhos e Runalmas compartilham uma tradição de nomes construída a partir de fragmentos sonoros associados às runas: Ru, Na, Ha, An, So, Wi, Lo, Thu, Ri, Saz, Fe e Hu. Exemplos: Ruhaan, Lothuso, Ruthufe, Sazfe, Sofe, Risaz, Nauha, Berhu e Karilo. Um nome não determina se seu portador segue os Pastores ou os Runalmas.
+#### Nomes humanos
+
+Não há uma regra linguística única definida para os nomes humanos. As Arcas desenvolveram culturas diferentes, e um nome pode refletir a família, a comunidade ou o caminho que o personagem escolheu. Você pode conservar um nome familiar ao nosso mundo ou criar um nome que combine com o cenário.
+
+Como exercício, escolha primeiro o nome pessoal. Depois decida se deseja acrescentar um sobrenome de família, um apelido de ofício ou uma referência à Arca. Por exemplo: Elisa, Caio, Helena, Davi; Elisa de Arcanum ou Caio de Arcrois são sugestões de criação, não nomes de personagens oficiais nem costumes obrigatórios de uma cidade.
+
+[Voltar à criação](#crie-seu-aprendiz).
+
+<a id="nomes-luckers-puros"></a>
+
+#### Nomes dos Luckers Puros
+
+Entre os Luckers, nomes podem ser preservados de épocas anteriores ao Infortúnio ou adotados novamente em outro momento da existência. El é a partícula associada aos Puros rebatizados. Et era o elemento mais recorrente antes do Infortúnio. Ast também pertence ao repertório de nomes, sem significado obrigatório definido.
+
+Para criar um nome, escolha uma sonoridade e combine as partículas. Astel, Luel'et, Luet'el, Ikel'et, Ikelet e Elcoet são exemplos de combinações. Etel e Etelion também ilustram a tradição mais antiga. O apóstrofo pode separar partes do nome, mas não é obrigatório.
+
+Os Luckers não costumam ter sobrenomes fixos no modelo humano. Um segundo nome ou título pode registrar parte de sua identidade. Co'el Etreaver e Del' Etreaver exemplificam essa composição. As partículas não são marcadores infalíveis de linhagem: um nome preservado pode trazer elementos antigos.
+
+[Voltar à criação](#crie-seu-aprendiz).
+
+<a id="nomes-luckers-sangue"></a>
+
+#### Nomes dos Luckers de Sangue
+
+Et remete aos nomes anteriores ao Infortúnio. Ion era associado aos Luckers de forte disposição psicológica e às principais lideranças. Reaver aparece sobretudo entre aqueles que procuram recordar algo. Esses elementos podem expressar a história de um personagem, sem transformar a partícula em um título de autoridade ou garantir qualquer capacidade.
+
+Experimente combinar um início sonoro com et, ion ou reaver: Or'et, Orion, Eterion, Lucarion, Leterion, Ikarion, Ikelion, Iketerion, Treaver, Breaver, Lueaver, Ketreaver, Ikreaver, Eaveret e Reaveretion. Astet é outra combinação do repertório comum. Bel'et e Etreaver também são exemplos dessa tradição.
+
+Um personagem pode manter um nome de sua existência anterior, adotar uma nova combinação ou utilizar um segundo nome como título. Ao escolher reaver, pense no que ele deseja recordar: uma promessa, uma pessoa ou parte de sua própria história. Esse exercício é narrativo; nenhum sufixo concede uma habilidade.
+
+[Voltar à criação](#crie-seu-aprendiz).
+
+<a id="nomes-runa-espinhos"></a>
+
+#### Nomes dos Runa Espinhos
+
+Os Runa Espinhos e os Runalmas compartilham a tradição de construir nomes com fragmentos sonoros associados às runas. Entre os fragmentos conhecidos estão Ru, Na, Ha, An, So, Wi, Lo, Thu, Ri, Saz, Fe e Hu. Eles servem como matéria-prima para a sonoridade, não como um dicionário de significados obrigatórios.
+
+Escolha dois ou três fragmentos e experimente uni-los: Ru + Ha + An inspira Ruhaan; Lo + Thu + So forma Lothuso; Ru + Thu + Fe forma Ruthufe; Saz + Fe forma Sazfe; So + Fe forma Sofe; Ri + Saz forma Risaz. Ajustes de junção são possíveis, como em Nauha, Berhu e Karilo.
+
+Pastores e Runalmas compartilham essa tradição de nomes. O nome não revela necessariamente a facção, a personalidade, a afinidade elemental ou os poderes de um indivíduo.
+
+[Voltar à criação](#crie-seu-aprendiz).
 
 ### O que espera um Aprendiz
 
