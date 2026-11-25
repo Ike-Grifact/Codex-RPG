@@ -230,6 +230,51 @@ const { chromium } = require('playwright');
     if (mobileErrors.length) throw new Error('Erro JS móvel: '+mobileErrors.join(' | '));
     console.log('PASS Layout móvel de mapa, inspector e VT');
     await mobile.close();
+
+    // Inventário por ícones: hover e drag no PC; toque e comandos no celular.
+    for(const touch of [false,true]){
+      const inventory=await browser.newPage({viewport:touch?{width:390,height:844}:{width:1280,height:900},isMobile:touch,hasTouch:touch});
+      const errors=[];inventory.on('pageerror',e=>errors.push(e.message));
+      await inventory.goto('http://127.0.0.1:8000/prototipo-ficha/',{waitUntil:'domcontentloaded'});
+      await inventory.locator('#demo-load').click();
+      await inventory.locator('#sheet-navigation [data-sheet-page="inventory"]').click();
+      const hands=inventory.locator('#inventory-hands [data-inventory-drop="hands"]');
+      const quick=inventory.locator('#inventory-hands [data-inventory-drop="quick"]');
+      const tip=inventory.locator('#fp-hand-tooltip');
+      const sword=hands.locator('[data-hand-item]').first();
+      await sword.waitFor();
+      if(await inventory.locator('#inventory-hands .fp-hand-slot').count()!==5)throw new Error('Inventário não apresenta cinco espaços');
+      if(await sword.innerText())throw new Error('Nome do equipamento voltou a ocupar o espaço do ícone');
+      if(touch){
+        await sword.tap();
+        await tip.waitFor({state:'visible'});
+        const rect=await tip.boundingBox();
+        if(!rect||rect.x<0||rect.x+rect.width>391||rect.y<0||rect.y+rect.height>845)throw new Error('Tooltip cortado no celular');
+        await tip.locator('[data-position="quick"]').tap();
+      }else{
+        await sword.hover();await tip.waitFor({state:'visible'});
+        if(!(await tip.innerText()).includes('Espada de treinamento')||await tip.locator('[data-action="inventory-position"]').count())throw new Error('Tooltip de hover incompleto ou com botões');
+        await sword.dragTo(quick.locator('.fp-hand-slot.is-free').first());
+      }
+      const ready=quick.locator('[data-hand-item]').first();await ready.waitFor();
+      if(await hands.locator('[data-hand-item]').count())throw new Error('Arma não saiu das mãos');
+      if(touch){
+        await ready.tap();await tip.locator('[data-position="bag"]').tap();
+      }else{
+        await ready.dragTo(inventory.locator('#inventory-hands [data-inventory-drop="bag"]'));
+      }
+      await quick.locator('[data-hand-item]').waitFor({state:'hidden'});
+      const bagItem=inventory.locator('#inventory-list summary[data-inventory-drag]').filter({hasText:'Espada de treinamento'});
+      await bagItem.waitFor();
+      if(!(await bagItem.innerText()).includes('Guardado'))throw new Error('Arma não foi guardada na mochila');
+      if(!touch){
+        await bagItem.dragTo(hands.locator('.fp-hand-slot.is-free').first());
+        await hands.locator('[data-hand-item]').waitFor();
+      }
+      if(errors.length)throw new Error('Erros JS no inventário: '+errors.join(' | '));
+      console.log('PASS Inventário '+(touch?'toque e comandos':'hover e drag and drop'));
+      await inventory.close();
+    }
   } finally {
     await browser.close();
   }
