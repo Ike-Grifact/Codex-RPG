@@ -669,6 +669,87 @@ Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor +
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
 
+### Do Atributo à ficha — recursos e capacidades
+
+Agora que você conhece os seis Atributos, veja como seus Graus influenciam os valores que acompanhará na aventura. Algumas fórmulas também usam Atletismo, apresentado entre as Práticas logo adiante.
+
+#### Vida e Saúde
+
+A Vida representa quanto desgaste físico o Aprendiz ainda consegue suportar. Todo Aprendiz parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
+
+Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem se encontra. Incapacitado corresponde a 2 pontos restantes, Inconsciente a 1, e 0 significa morte.
+
+| Estado | Efeito nas ações |
+|---|---|
+| Saudável | Sem penalidade de Saúde |
+| Ferido | −1A |
+| Incapacitado | −1E, +1T; 1 Coragem para agir |
+| Inconsciente | −2E, +2T; 2 Coragens para agir |
+
+Exemplo: Força 2 e Vigor 1 resultam em 6 pontos de Vida, distribuídos em 2 Saudável, 2 Ferido, 1 Incapacitado e 1 Inconsciente.
+
+#### Coragem
+
+No nível 1, a reserva tem teto 10. Coragem permite elevar temporariamente uma fonte dentro da progressão comum, manter um dado adicional ou pagar ativações e condições previstas. O Vigor determina quanto se recupera em um descanso longo, caso o jogador escolha recuperar Coragem: Grau de Vigor + 1.
+
+#### Defesa e movimento
+
+A DE natural começa em zero. Some 1 por Grau de Agilidade, 1 a cada 2 Graus completos somados de Destreza e Vigor e 1 a cada 3 Graus completos de Atletismo. O teto natural é 9; após modificadores de equipamento, a DE final fica entre 0 e 12.
+
+O deslocamento padrão começa em 8 metros, mais 1 metro por Grau de Agilidade e 1 a cada 3 Graus completos de Atletismo. Atletismo é uma Prática que você conhecerá a seguir.
+
+#### Peso, capacidade de carga e sobrecarga
+
+O peso do personagem indica sua categoria para as afinidades dos ataques. Ele é determinado pela armadura equipada, não pela quantidade de objetos carregados. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação permanece pendente.
+
+A capacidade de carga é outra coisa: indica quanto o Aprendiz consegue transportar. O corpo suporta 1 Alto inicial, mais 1 Alto a cada 3 Graus completos somados de Força, Vigor e Atletismo. A mochila oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
+
+Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre sobrecarga: −2E nos testes afetados e metade do deslocamento padrão. A abrangência de −2E e a confirmação do limiar permanecem pendentes. Exceder um compartimento exige reorganização; a sobrecarga não muda o peso do personagem nem sua DE.
+
+#### Equipamentos, Integridade e dano
+
+A armadura equipada modifica a DE e possui Integridade própria. A DE indica a dificuldade de acertar; a Integridade indica quanto desgaste a peça suporta. Uma armadura mais pesada pode reduzir a DE, mas suportar mais dano. Os valores abaixo são as referências do catálogo de Grau 1.
+
+| Armadura | Modificador de DE | Integridade G1 |
+|---|---|---|
+| Muito Leve | +2 | 2 |
+| Leve | +1 | 5 |
+| Média | 0 | 8 |
+| Pesada | −1 | 12 |
+| Muito Pesada | −2 | Pendente |
+
+Armaduras Muito Pesadas exigem Vigor 6 e Atletismo 6 e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é E válidos + 1 por par completo de T não anulados, salvo efeitos específicos. Sem armadura equipada, um acerto com 5 ou mais E + T válidos causa 2 Vida na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. Ataques que falham não desgastam a armadura.
+
+#### Descanso curto e descanso longo
+
+O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
+
+| Recurso | Descanso curto · 1h | Descanso longo · 8h |
+|---|---|---|
+| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
+| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
+| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
+| Perseverança Humana | Não renova. | Renova a utilização. |
+| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
+
+Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
+
+Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
+
+Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
+
+Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
+
+##### Reparando a armadura
+
+O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
+
+**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
+
+[SRD v0.134](srd-continuidade-v0.134.md).
+
+
+
 ### ⚔ Práticas — treinamento para agir
 
 Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
@@ -827,46 +908,15 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Maela desenvolve as
 
 ### 3. Vida, Coragem, defesa e movimento
 
-Vida máxima = 4 + Vigor + piso(Força/2) = 6. Distribua os pontos extras alternadamente entre Saudável e Ferido: 2/2/1/1. Coragem inicial 10/10; nível 1 permite manter 2 dados, ou 3 com 1 Coragem, dentro do teto geral de 9 rolados. DE natural = Agilidade 2 + piso((Vigor 1 + Destreza 1)/2) + piso(Atletismo 1/3) = 3. Movimento = 8 + Agilidade 2 + piso(Atletismo 1/3) = 10 m.
+Aplicando as regras apresentadas após os Atributos: Maela tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
 
 ### 4. Equipamentos, peso e carga
 
 Maela escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Maela começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
-O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria.
-
 ### 5. Dano e Integridade
 
-DE e Integridade são diferentes: a DE decide se o ataque acerta; a Integridade é a proteção que sofre desgaste. Em um acerto comum de 3E e 2T não anulados, o dano básico à Integridade é 3 + piso(2/2) = 4. A armadura de Maela passa de 5/5 para 1/5. Sem armadura equipada, um ataque acertado com 5 ou mais E + T válidos causa 2 Vida no playtest; não converta automaticamente o dano de Integridade em Vida. Excedentes e resultados menores ainda estão em estudo. Consulte Dano, armadura e Vida para propriedades e exceções.
-
-### Descanso curto e descanso longo
-
-O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
-
-| Recurso | Descanso curto · 1h | Descanso longo · 8h |
-|---|---|---|
-| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
-| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
-| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
-| Perseverança Humana | Não renova. | Renova a utilização. |
-| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
-
-Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
-
-Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
-
-Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
-
-Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
-
-#### Reparando a armadura
-
-O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
-
-**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
-
-[SRD v0.134](srd-continuidade-v0.134.md).
-
+Em um acerto comum de 3E e 2T não anulados, Maela sofre 4 de dano à Integridade. Registre a armadura de 5/5 para 1/5; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 5/5 em vez de recuperar Coragem.
 
 ## Perícias, ramos e especializações
 
