@@ -616,7 +616,7 @@ Cada Grau de Força aumenta a capacidade corporal em **1 Alto**, além do **1 Al
 
 Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
 
-Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Cada Grau de Agilidade acrescenta **1 metro ao deslocamento padrão** e **+1 à DE defensiva natural**, respeitando os limites da defesa.
+Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Cada Grau de Agilidade acrescenta **1 metro ao deslocamento padrão**. A cada dois Graus somados de Agilidade, Destreza e Vigor, a DE natural aumenta em 1.
 
 **Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
 
@@ -624,7 +624,7 @@ Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Ca
 
 Reúne percepção, mira e precisão: notar detalhes do ambiente, acompanhar movimentos, identificar sinais de perigo e coordenar mãos e ferramentas. É a diferença entre executar uma tarefa com cuidado e realizá-la de modo grosseiro. Perceber uma marca não significa entender sua origem; para interpretar aquilo que viu, pode ser necessário outro Conhecimento.
 
-A precisão dos movimentos também ajuda a reagir às ameaças. A cada **2 Graus somados de Destreza e Vigor**, sua DE defensiva natural aumenta em **1**, respeitando os limites de defesa.
+A precisão dos movimentos também ajuda a reagir às ameaças. A cada **2 Graus somados de Agilidade, Destreza e Vigor**, sua DE defensiva natural aumenta em **1**, respeitando os limites de defesa.
 
 **Possibilidades em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para localizar e retirar um material frágil.
 
@@ -658,13 +658,13 @@ Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigo
 
 A cada **2 Graus completos de Vigor**, sua capacidade corporal aumenta em **1 Alto**.
 
-A cada **2 Graus somados de Vigor e Destreza**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
+A cada **2 Graus somados de Agilidade, Destreza e Vigor**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
 
 Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor + 1, caso escolha recuperá-la.
 
 **Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
 
-**Como calcular sua defesa:** comece com 2, some os Graus de Agilidade e +1 por par completo de Graus de Destreza e Vigor. Teto natural 11. **Sua Vida:** começa com 4 pontos, ganha +1 por Grau de Vigor e +1 a cada 2 Graus de Força.
+**Como calcular sua defesa:** comece com 2, some +1 por par completo de Graus de Agilidade, Destreza e Vigor. Teto natural 11. **Sua Vida:** começa com 4 pontos, ganha +1 por Grau de Vigor e +1 a cada 2 Graus de Força.
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
@@ -686,7 +686,7 @@ Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre s
 
 #### Defesa e movimento
 
-A DE natural começa em 2. Some 1 por Grau de Agilidade e 1 a cada 2 Graus completos somados de Destreza e Vigor, até o teto natural 11. Atletismo não aumenta valores derivados da ficha; é utilizado em testes e requisitos. Sem armadura ou com armadura Muito Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 12. A DE final nunca é negativa: o mínimo é 0.
+A DE natural começa em 2. Some 1 a cada 2 Graus completos somados de Agilidade, Destreza e Vigor, até o teto natural 11. Atletismo não aumenta valores derivados da ficha; é utilizado em testes e requisitos. Sem armadura ou com armadura Muito Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 12. A DE final nunca é negativa: o mínimo é 0.
 
 O deslocamento padrão é 8 metros + Grau de Agilidade + metade do Grau de Destreza arredondada para baixo.
 
@@ -953,11 +953,11 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve a
 
 ### 3. Vida, Coragem, defesa e movimento
 
-Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 5 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
+Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 4 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 3.
 
 ### 4. Equipamentos, peso e carga
 
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (−1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (−1 DE, Integridade 5). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
@@ -1100,11 +1100,10 @@ A DE defensiva natural representa a capacidade de um personagem humanoide de evi
 
 | Aptidão | Contribuição para sua defesa | Exemplo |
 |---|---|---|
-| ◇ Agilidade | +1 DE por Grau | 2 Graus = +2 DE |
-| ◇ Destreza e ◇ Vigor | +1 DE a cada 2 Graus somados | 3 + 2 Graus = +2 DE |
+| ◇ Agilidade, ◇ Destreza e ◇ Vigor | +1 DE a cada 2 Graus somados | 2 + 3 + 2 Graus = +3 DE |
 | Base natural | 2 DE | Todos os Atributos G0 = 2 |
 
-Some a base 2, Agilidade e os pares completos de Graus de Destreza + Vigor: **DE natural = mínimo(11; 2 + Agilidade + piso((Destreza + Vigor)/2))**.
+Some a base 2 e os pares completos de Graus de Agilidade + Destreza + Vigor: **DE natural = mínimo(11; 2 + piso((Agilidade + Destreza + Vigor)/2))**.
 
 **DE natural de 2 a 11 [DEFINIDO].** Atletismo não entra no cálculo. Aplique a armadura depois; mínimo final 0.
 
@@ -1120,7 +1119,7 @@ Aplique os modificadores da única armadura equipada depois de calcular a defesa
 | Pesada | −3 |
 | Muito Pesada (quando permitida) | −4 |
 
-**Exemplo:** Eldric tem Agilidade 2, Destreza 1 e Vigor 1: DE natural 5. Com Leve, fica 4; com Média, 3; com Pesada, 2.
+**Exemplo:** Eldric tem Agilidade 2, Destreza 1 e Vigor 1: DE natural 4. Com Leve, fica 3; com Média, 2; com Pesada, 1.
 
 ### Integridade das armaduras
 
@@ -1185,7 +1184,7 @@ O peso do personagem é definido pelo tipo da armadura equipada, independentemen
 
 **Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
 
-**DEFINIDO:** uma Perícia pertinente pode conceder no máximo +1E, respeitando o teto de **+2E de Perícias por ação**. Esse Êxito vale para a DE e para dano, salvo efeito explicitamente exclusivo de dano.
+**DEFINIDO — SRD v0.149:** não há teto geral de Êxitos por Perícia nem por ação. Aplique os efeitos, requisitos e custos específicos de cada Perícia; Êxitos valem para DE e dano, salvo efeito explicitamente exclusivo de dano. Golpe Colossal mantém +1E por Coragem e o teto de 5 Coragens por turno.
 
 Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
 

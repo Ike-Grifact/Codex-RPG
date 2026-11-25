@@ -52,7 +52,7 @@ export function canSpendXP(system,delta){
 export function defenseDE(actor){
  const s=actor.system,a=s.attributes||{};
  if(s.monsterRules)return Math.min(9,Math.max(0,Number(a.agilidade||0)+Math.floor(Number(a.destreza||0)/2)));
- const natural=Math.min(11,2+Number(a.agilidade||0)+Math.floor((Number(a.vigor||0)+Number(a.destreza||0))/2));
+ const natural=Math.min(11,2+Math.floor((Number(a.agilidade||0)+Number(a.vigor||0)+Number(a.destreza||0))/2));
  let modifier=0;
  for(const armor of (actor.items||[]).filter(i=>i.type==="equipment"&&i.system.kind==="armor"&&i.system.equipped)){
   const cat=String(armor.system.category||"").toLowerCase().replace(/[_ ]/g,"-");

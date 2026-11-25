@@ -2108,11 +2108,11 @@ const WIZARD_CATEGORIES=[
 // Exemplos didáticos de uso, sem criar efeitos ou bônus de regras.
 const WIZARD_ATTRIBUTE_GUIDE={
  forca:["Potência física","Empurrar, erguer, carregar e aplicar força em ações pertinentes.","Para quem deseja enfrentar desafios de esforço e potência corporal."],
- agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui integralmente à DE defensiva, além do deslocamento."],
+ agilidade:["Movimento e reação","Mover-se, reagir, reposicionar-se e evitar ameaças.","Contribui à DE defensiva em conjunto com Destreza e Vigor, além do deslocamento."],
  destreza:["Precisão e coordenação","Manipular objetos, executar movimentos finos e agir com precisão.","Contribui para a DE defensiva e ações que dependem de coordenação."],
  inteligencia:["Raciocínio e compreensão","Analisar situações, interpretar pistas e resolver problemas lógicos.","Pode combinar com estudos pertinentes, sem habilitar efeitos automaticamente."],
  influencia:["Presença e interação","Comunicar, convencer, negociar e liderar em situações sociais.","Para caminhos sociais, expressivos e de liderança."],
- vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Destreza e então divide por 2 (SRD v0.89). Contribui para a Vida."]
+ vigor:["Resistência física","Suportar cansaço, esforço prolongado e condições adversas.","Na DE base, soma com Agilidade e Destreza e então divide por 2. Contribui para a Vida."]
 };
 const WIZARD_TRAINING_GUIDE={
  "know:protecao":["Estudo das defesas","Compreender proteção, armaduras e formas de reduzir riscos.","Não concede defesa automática."],
@@ -2835,7 +2835,7 @@ function renderXP(){
 }
 function deNatural(s=state){
  const a=s.attributes||{};
- return Math.min(11,2+(a.agilidade||0)+Math.floor(((a.vigor||0)+(a.destreza||0))/2));
+ return Math.min(11,2+Math.floor(((a.agilidade||0)+(a.vigor||0)+(a.destreza||0))/2));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -4258,7 +4258,7 @@ function vitalHelpDetails(kind){
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
  defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 11 e total com modificadores limitado a 12.",
- "DE base: min(11, 2 + AGI "+(a.agilidade||0)+" + ⌊(VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
+ "DE base: min(11, 2 + ⌊(AGI "+(a.agilidade||0)+" + VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",

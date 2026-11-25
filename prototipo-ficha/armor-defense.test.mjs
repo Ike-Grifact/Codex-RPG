@@ -10,7 +10,7 @@ const {deNatural,canEquipArmor,equippedArmor,armorDePenalty,armorDodgeBonus,deDe
  src.slice(start,end)+";return {deNatural,canEquipArmor,equippedArmor,armorDePenalty,armorDodgeBonus,deDefense,deDodge,defensePresentation};"
 )((id,s)=>!!s?.skills?.includes(id));
 const character=(weight="leve",equipped=true,more={})=>({
- level:1,attributes:{agilidade:1,destreza:0,vigor:0},practices:{atletismo:0},
+ level:1,attributes:{agilidade:2,destreza:0,vigor:0},practices:{atletismo:0},
  items:[{name:"Armadura de teste",type:"armadura",weight,grade:1,equipped,max:7,hp:7}],...more
 });
 
@@ -47,8 +47,8 @@ test("v0.66: Muito Leve 0, Média -2, Pesada -3, Muito Pesada -4",()=>{
  assert.equal(deDefense(denied),3,"armadura não permitida não concede modificador");
  const allowed=character("extremo",true,{attributes:{agilidade:1,destreza:0,vigor:6},practices:{atletismo:6}});
  assert.equal(canEquipArmor(allowed,allowed.items[0]),true);
- assert.equal(deNatural(allowed),6);
- assert.equal(deDefense(allowed),2);
+ assert.equal(deNatural(allowed),5);
+ assert.equal(deDefense(allowed),1);
 });
 
 test("v0.66: teto natural 11 e teto defensivo total 12 no código",()=>{
@@ -72,13 +72,15 @@ test("v0.66: a UI, inventário e resumo usam DE geral já modificada",()=>{
 });
 
 
-test("v0.147: 2 + AGI + piso((VIG+DES)/2), sem Atletismo",()=>{
+test("v0.149: 2 + piso((AGI+VIG+DES)/2), sem Atletismo",()=>{
  const zero=character("medio",true,{attributes:{agilidade:0,destreza:0,vigor:0},practices:{atletismo:0}});
  assert.equal(deNatural(zero),2);
  const s=character("medio",true,{attributes:{agilidade:1,destreza:2,vigor:3},practices:{atletismo:3}});
- assert.equal(deNatural(s),5,"base 2 + AGI1 + piso((VIG3+DES2)/2)=2");
+ assert.equal(deNatural(s),5,"base 2 + piso((AGI1+VIG3+DES2)/2)=5");
  assert.equal(deDefense(s),3);
  assert.equal(deDefense(character("leve",true,{attributes:s.attributes,practices:s.practices})),4);
 });
 
 test("v0.147: Atletismo não altera DE e Maestria permite teto 12",()=>{const s=character("muito_leve",true,{attributes:{agilidade:6,destreza:6,vigor:6},practices:{atletismo:0},skills:["maestria-escudos"]});s.items.push({type:"escudo",equipped:true});assert.equal(deDefense(s),12);s.practices.atletismo=6;assert.equal(deDefense(s),12);});
+
+test("v0.149: simetria dos três Atributos e teto",()=>{for(let a=0;a<=6;a++)for(let d=0;d<=6;d++)for(let v=0;v<=6;v++){const s=character("muito_leve",true,{attributes:{agilidade:a,destreza:d,vigor:v}});assert.equal(deNatural(s),Math.min(11,2+Math.floor((a+d+v)/2)));}});
