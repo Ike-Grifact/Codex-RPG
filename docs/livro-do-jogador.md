@@ -742,15 +742,15 @@ Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida manté
 
 Maela tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones da esquerda para a direita, a partir de Saudável. A primeira faixa com Vida restante indica seu estado. ■ = ponto atual; □ = ponto perdido.
 
-| Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado |
-|---:|---|---|---|---|---|
-| 6/6 | ■■ | ■■ | ■ | ■ | Saudável |
-| 5/6 | □■ | ■■ | ■ | ■ | Saudável |
-| 4/6 | □□ | ■■ | ■ | ■ | Ferido |
-| 3/6 | □□ | □■ | ■ | ■ | Ferido |
-| 2/6 | □□ | □□ | ■ | ■ | Incapacitado |
-| 1/6 | □□ | □□ | □ | ■ | Inconsciente |
-| 0/6 | □□ | □□ | □ | □ | Morto |
+| Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado | Penalidades e custo para agir |
+|---:|---|---|---|---|---|---|
+| 6/6 | ■■ | ■■ | ■ | ■ | Saudável | Nenhuma |
+| 5/6 | □■ | ■■ | ■ | ■ | Saudável | Nenhuma |
+| 4/6 | □□ | ■■ | ■ | ■ | Ferido | −1A |
+| 3/6 | □□ | □■ | ■ | ■ | Ferido | −1A |
+| 2/6 | □□ | □□ | ■ | ■ | Incapacitado | −1E; +1T; 1 Coragem para agir |
+| 1/6 | □□ | □□ | □ | ■ | Inconsciente | −2E; +2T; 2 Coragens para agir |
+| 0/6 | □□ | □□ | □ | □ | Morto | Não pode agir |
 
 
 
