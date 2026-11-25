@@ -254,7 +254,7 @@ Os procedimentos específicos de criação de fichas coletivas são tratados na 
 
 ## Armaduras por tipo — orientação ao Mestre [DEFINIDO / PENDENTE]
 
-O **tipo é independente do Grau**. Muito Leve não tem Integridade e concede +2 DE apenas para esquiva; Leve tem Integridade baixa e +1 DE para esquiva; Média tem Integridade intermediária e DE neutra; Pesada tem a maior Integridade convencional e −1 DE; Muito Pesada tem −2 DE, exige **Vigor 6 e Atletismo 6 em qualquer Grau** e possui imunidade natural a todo dano físico comum.
+O **tipo é independente do Grau**. Muito Leve tem Integridade 2 no catálogo G1 e não altera a DE; Leve impõe −1 DE; Média −2 DE; Pesada −3 DE; Muito Pesada −4 DE, exige **Vigor 6 e Atletismo 6 em qualquer Grau** e possui imunidade natural a todo dano físico comum.
 
 **Progressão:** G2 só a partir do nível 5, G3 nível 10 e G4 nível 20. Muito Leve e Leve podem ter resistência elemental desde G3; Média desde G2; Pesada uma desde G2 e duas diferentes desde G3; Muito Pesada imune ao físico desde G1, resistência elemental desde G2 e **imunidade elemental adicional em G4 que se soma à resistência de G2**. A imunidade física não cancela condições de armas ou Pavor.
 

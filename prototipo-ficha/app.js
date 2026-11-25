@@ -2834,8 +2834,8 @@ function renderXP(){
  $("char-level").value=state.level;
 }
 function deNatural(s=state){
- const a=s.attributes||{},p=s.practices||{};
- return Math.min(9,(a.agilidade||0)+Math.floor(((a.vigor||0)+(a.destreza||0))/2)+Math.floor((p.atletismo||0)/3));
+ const a=s.attributes||{};
+ return Math.min(11,2+(a.agilidade||0)+Math.floor(((a.vigor||0)+(a.destreza||0))/2));
 }
 function canEquipArmor(s=state,it=null){
  if(!it||it.type!=="armadura")return true;
@@ -2910,14 +2910,13 @@ function prepareShieldBoomerang(id){
 function equippedArmor(s=state){return s.items.find(it=>it.type==="armadura"&&it.equipped&&canEquipArmor(s,it))||null;}
 function armorDePenalty(s=state){
  const it=equippedArmor(s);
- return it?.weight==="alto"?1:it?.weight==="extremo"?2:0;
+ return ({leve:1,medio:2,alto:3,extremo:4})[it?.weight]||0;
 }
 function armorDodgeBonus(s=state){
- const it=equippedArmor(s);
- return it?.weight==="muito_leve"?2:it?.weight==="leve"?1:0;
+ return 0; // Armaduras não concedem bônus de DE.
 }
 // Todo modificador da armadura equipada vale para a DE de QUALQUER defesa.
-// Teto da DE base: 9. Teto absoluto após modificadores: 12.
+// Teto da DE base: 11. Teto absoluto após modificadores: 12.
 function deDefense(s=state){
  return Math.min(12,Math.max(0,deNatural(s)+armorDodgeBonus(s)-armorDePenalty(s)+(masteredShield(s)?1:0)));
 }
@@ -2930,7 +2929,7 @@ function defensePresentation(s=state){
  const baseCaption=armor?
   "DE base "+natural+" "+(modifier>=0?"+ ":"− ")+Math.abs(modifier)+" (armadura "+type+")":
   "DE base "+natural;
- return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 9 / final 12"};
+ return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 11 / final 12"};
 }
 function capacity(){return 1.5+Math.floor(((state.attributes.forca||0)+(state.attributes.vigor||0)+(state.practices.atletismo||0))/3);}
 function bodyCapacity(){return capacity()-.5;}
@@ -4258,8 +4257,8 @@ function vitalHelpDetails(kind){
  courage:["Coragem","Reserva usada para preparar dados e ativar efeitos. Até 5 Coragens podem ser gastas numa única rolagem.",
  "Teto: 10 + "+levelBonus+" pelos níveis 5, 10 e 20 já alcançados = "+maxCourage()+". Críticos recuperam 1 ou 2; descanso longo recupera Vigor + 1, até o teto.",
  "SRD Playtest Nível 1 v1.0 · Seção 2."],
- defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 9 e total com modificadores limitado a 12.",
- "DE base: AGI "+(a.agilidade||0)+" + ⌊(VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋ + ⌊ATL "+(p.atletismo||0)+"/3⌋ = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve +2 em todas as defesas). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
+ defense:["DE Defensiva","Dificuldade que o atacante precisa alcançar em todas as defesas. Teto da DE base 11 e total com modificadores limitado a 12.",
+ "DE base: min(11, 2 + AGI "+(a.agilidade||0)+" + ⌊(VIG "+(a.vigor||0)+" + DES "+(a.destreza||0)+")/2⌋) = "+natural+". "+(armor?"Armadura "+armor.name+": "+(mod>=0?"+":"")+mod+" (Muito Leve 0; demais armaduras reduzem a DE). ":"Sem armadura. ")+"Total = "+deDefense()+". Esquiva não duplica bônus.",
  "Cálculo atual da ficha · Livro do Jogador, defesa e armaduras."],
  integrity:["Integridade",armor?"Resistência restante da armadura "+armor.name+". Registre perda no Inventário.":"Não há armadura equipada; equipe uma peça no Inventário.",
  armor?"Atual / máxima: "+(armor.hp??0)+" / "+(armor.max??0)+". O valor vem da própria peça equipada. Escudos possuem Integridade separada.":"Sem armadura, não se calcula Integridade adicional.",
@@ -5284,11 +5283,11 @@ function renderInventory(){
    '<small>Apenas quando o ataque acertou e Cravar foi ativada conforme a Perícia. -1 Integridade por Êxito. Não implica remoção automática das armas cravadas.</small></div>'
   );
   const armorFields=it.type!=="armadura"?"":(
-   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade e +2 DE em todas as defesas (valores corrigidos).</div>':"")+
+   (it.weight==="muito_leve"?'<div class="fp-item-hint"><strong>Muito Leve G1:</strong> 2 de Integridade; não altera a DE natural.</div>':"")+
    (it.weight==="leve"?'<div class="fp-item-hint"><strong>Leve:</strong> +1 DE em todas as defesas; resistência disponível desde Grau 3.</div>':"")+
    (it.weight==="medio"?'<div class="fp-item-hint"><strong>Média:</strong> 0 DE; resistência específica desde Grau 2.</div>':"")+
    (it.weight==="alto"?'<div class="fp-item-hint"><strong>Pesada:</strong> −1 DE; resistência no Grau 2, segunda resistência no Grau 3.</div>':"")+
-   (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −2 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
+   (it.weight==="extremo"?'<div class="fp-item-hint"><strong>Muito Pesada:</strong> −4 DE, exige Vigor 6/Atletismo 6 e tem imunidade física em QUALQUER Grau. G4 pode acumular imunidade elemental sobre a resistência de G2.</div>':"")+
    (canResist1?`<div class="fp-item-hint"><label>Resistência elemental da peça: <input type="text" data-item-field="elementalResistance" data-id="${esc(it.id)}" value="${esc(it.elementalResistance)}" maxlength="70" placeholder="Elemento autorizado"></label></div>`:"")+
    (canResist2?`<div class="fp-item-hint"><label>Segunda resistência (Pesada Grau 3+): <input type="text" data-item-field="secondResistance" data-id="${esc(it.id)}" value="${esc(it.secondResistance)}" maxlength="70" placeholder="Outro elemento da peça"></label></div>`:"")+
    (canImmunize?`<div class="fp-item-hint"><label>Imunidade elemental adicional (Muito Pesada G4): <input type="text" data-item-field="specificImmunity" data-id="${esc(it.id)}" value="${esc(it.specificImmunity)}" maxlength="70" placeholder="Elemento específico; soma à resistência"></label></div>`:"")+

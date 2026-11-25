@@ -31,15 +31,15 @@ test("Movimento ortogonal respeita paredes, casas ocupadas e limite por rodada",
 test("Armaduras alteram todas as defesas sem bônus duplicado na esquiva; teto absoluto 12",()=>{
  const veryLight={equipped:true,weight:"muito_leve",max:0,integrity:0};
  const light={equipped:true,weight:"leve",max:7,integrity:7};
- assert.equal(dodgeBonus(veryLight),2);
+ assert.equal(dodgeBonus(veryLight),0);
  assert.equal(defenseWithStance(0,veryLight,"normal"),2);
  assert.equal(defenseWithStance(0,veryLight,"esquiva"),2);
  assert.equal(defenseWithStance(0,light,"normal"),1);
  assert.equal(defenseWithStance(0,light,"esquiva"),1);
- assert.equal(defenseWithStance(30,veryLight,"normal"),11,"teto natural 9 antes da armadura");
+ assert.equal(defenseWithStance(30,veryLight,"normal"),11,"teto natural 11 antes da armadura");
  assert.ok(defenseWithStance(30,veryLight,"normal")<=12);
- assert.equal(armorPenalty({equipped:true,weight:"alto"}),1);
- assert.equal(defenseWithStance(5,{equipped:true,weight:"alto"},"normal"),4);
+ assert.equal(armorPenalty({equipped:true,weight:"alto"}),3);
+ assert.equal(defenseWithStance(5,{equipped:true,weight:"alto"},"normal"),2);
 });
 test("Cenário tem terreno importável, sem exigir combate automático",()=>{
  const s=initialScenario();assert.equal(s.version,1);assert.equal(s.tokens.length,0);

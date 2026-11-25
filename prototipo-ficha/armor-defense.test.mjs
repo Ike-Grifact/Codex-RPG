@@ -14,46 +14,46 @@ const character=(weight="leve",equipped=true,more={})=>({
  items:[{name:"Armadura de teste",type:"armadura",weight,grade:1,equipped,max:7,hp:7}],...more
 });
 
-test("v0.89: armadura Leve aumenta DE geral de 1 para 2, independente da esquiva",()=>{
+test("v0.147: armadura Leve reduz DE geral de 3 para 2, independente da esquiva",()=>{
  const s=character();
- assert.equal(deNatural(s),1);
- assert.equal(armorDodgeBonus(s),1);
+ assert.equal(deNatural(s),3);
+ assert.equal(armorDodgeBonus(s),0);
  assert.equal(deDefense(s),2);
  assert.equal(deDodge(s),2,"não duplicar bônus ao esquivar");
  const p=defensePresentation(s);
  assert.equal(p.value,2);
  assert.equal(p.label,"DE DEFENSIVA");
  assert.match(p.caption,/todas as defesas/i);
- assert.match(p.caption,/Teto base 9 \/ final 12/);
+ assert.match(p.caption,/Teto base 11 \/ final 12/);
 });
 
-test("v0.66: retirar armadura remove bônus e preserva Integridade",()=>{
+test("v0.66: retirar armadura remove penalidade e preserva Integridade",()=>{
  const s=character("leve",false);
  assert.equal(equippedArmor(s),null);
  assert.equal(armorDodgeBonus(s),0);
- assert.equal(defensePresentation(s).value,1);
+ assert.equal(defensePresentation(s).value,3);
  assert.equal(s.items[0].hp,7);
  s.items[0].equipped=true;
  assert.equal(defensePresentation(s).value,2);
 });
 
-test("v0.66: Muito Leve +2, Média 0, Pesada -1, Muito Pesada -2",()=>{
+test("v0.66: Muito Leve 0, Média -2, Pesada -3, Muito Pesada -4",()=>{
  assert.equal(deDefense(character("muito_leve")),3);
  assert.equal(deDodge(character("muito_leve")),3);
  assert.equal(deDefense(character("medio")),1);
  assert.equal(deDefense(character("alto")),0);
  const denied=character("extremo");
  assert.equal(canEquipArmor(denied,denied.items[0]),false,"Muito Pesada requer Vigor 6 e Atletismo 6");
- assert.equal(deDefense(denied),1,"armadura não permitida não concede modificador");
+ assert.equal(deDefense(denied),3,"armadura não permitida não concede modificador");
  const allowed=character("extremo",true,{attributes:{agilidade:1,destreza:0,vigor:6},practices:{atletismo:6}});
  assert.equal(canEquipArmor(allowed,allowed.items[0]),true);
  assert.equal(deNatural(allowed),6);
- assert.equal(deDefense(allowed),4);
+ assert.equal(deDefense(allowed),2);
 });
 
-test("v0.66: teto natural 9 e teto defensivo total 12 no código",()=>{
+test("v0.66: teto natural 11 e teto defensivo total 12 no código",()=>{
  const s=character("muito_leve",true,{attributes:{agilidade:6,destreza:6,vigor:6},practices:{atletismo:6}});
- assert.equal(deNatural(s),9);
+ assert.equal(deNatural(s),11);
  assert.equal(deDefense(s),11);
  assert.ok(deDefense(s)<=12);
  assert.match(src.slice(start,end),/Math\.min\(12,Math\.max\(0,deNatural/);
@@ -72,11 +72,13 @@ test("v0.66: a UI, inventário e resumo usam DE geral já modificada",()=>{
 });
 
 
-test("v0.89: AGI + piso((VIG+DES)/2) + piso(ATL/3), sem base 1",()=>{
+test("v0.147: 2 + AGI + piso((VIG+DES)/2), sem Atletismo",()=>{
  const zero=character("medio",true,{attributes:{agilidade:0,destreza:0,vigor:0},practices:{atletismo:0}});
- assert.equal(deNatural(zero),0);
+ assert.equal(deNatural(zero),2);
  const s=character("medio",true,{attributes:{agilidade:1,destreza:2,vigor:3},practices:{atletismo:3}});
- assert.equal(deNatural(s),4,"AGI1 + piso((VIG3+DES2)/2)=2 + ATL3/3=1");
- assert.equal(deDefense(s),4);
- assert.equal(deDefense(character("leve",true,{attributes:s.attributes,practices:s.practices})),5);
+ assert.equal(deNatural(s),5,"base 2 + AGI1 + piso((VIG3+DES2)/2)=2");
+ assert.equal(deDefense(s),3);
+ assert.equal(deDefense(character("leve",true,{attributes:s.attributes,practices:s.practices})),4);
 });
+
+test("v0.147: Atletismo não altera DE e Maestria permite teto 12",()=>{const s=character("muito_leve",true,{attributes:{agilidade:6,destreza:6,vigor:6},practices:{atletismo:0},skills:["maestria-escudos"]});s.items.push({type:"escudo",equipped:true});assert.equal(deDefense(s),12);s.practices.atletismo=6;assert.equal(deDefense(s),12);});

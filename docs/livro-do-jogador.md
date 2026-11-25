@@ -664,7 +664,7 @@ Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor +
 
 **Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
 
-**Como calcular sua defesa, sem decorar fórmulas:** comece com seus Graus de **Agilidade**; acrescente **+1 para cada 2 Graus somados de Destreza e Vigor**; acrescente **+1 para cada 3 Graus de Atletismo**. A DE natural não passa de **9** antes dos modificadores aplicáveis. **Sua Vida:** começa com **4 pontos**, ganha **+1 por Grau de Vigor** e **+1 a cada 2 Graus de Força**.
+**Como calcular sua defesa:** comece com 2, some os Graus de Agilidade e +1 por par completo de Graus de Destreza e Vigor. Teto natural 11. **Sua Vida:** começa com 4 pontos, ganha +1 por Grau de Vigor e +1 a cada 2 Graus de Força.
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
@@ -686,7 +686,7 @@ Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre s
 
 #### Defesa e movimento
 
-A DE natural começa em zero. Some 1 por Grau de Agilidade, 1 a cada 2 Graus completos somados de Destreza e Vigor e 1 a cada 3 Graus completos de Atletismo. A DE natural varia de 0 a 9. Uma armadura Muito Leve acrescenta no máximo +2 DE, chegando a 11. A Perícia Maestria em Escudos pode acrescentar mais +1 DE quando houver escudo físico equipado, chegando ao teto absoluto de 12. Se um modificador reduzir a DE abaixo de zero, registre 0: não existe DE negativa.
+A DE natural começa em 2. Some 1 por Grau de Agilidade e 1 a cada 2 Graus completos somados de Destreza e Vigor, até o teto natural 11. Atletismo não aumenta a DE: continua contribuindo para deslocamento e capacidade de carga. Sem armadura ou com armadura Muito Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 12. A DE final nunca é negativa: o mínimo é 0.
 
 O deslocamento padrão começa em 8 metros, mais 1 metro por Grau de Agilidade e 1 a cada 3 Graus completos de Atletismo. Atletismo é uma Prática que você conhecerá a seguir.
 
@@ -697,13 +697,13 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 | Armadura | Modificador de DE | Integridade G1 |
 |---|---|---|
-| Muito Leve | +2 | 2 |
-| Leve | +1 | 5 |
-| Média | 0 | 8 |
-| Pesada | −1 | 12 |
-| Muito Pesada | −2 | Pendente |
+| Muito Leve | 0 | 2 |
+| Leve | −1 | 5 |
+| Média | −2 | 8 |
+| Pesada | −3 | 12 |
+| Muito Pesada | −4 | Pendente |
 
-Exemplo: um Aprendiz com DE natural 0 e armadura Pesada (−1 DE) continua com DE 0. Com DE natural 9 e armadura Muito Leve (+2 DE), chega a 11; somente com o benefício adicional de Maestria em Escudos e escudo físico equipado chega a 12.
+Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Muito Leve, continua 2; com Leve, fica 1; com Média ou Pesada, fica 0. A armadura Muito Pesada também respeita o mínimo 0, quando seus requisitos forem atendidos.
 
 Armaduras Muito Pesadas exigem Vigor 6 e Atletismo 6 e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é E válidos + 1 por par completo de T não anulados, salvo efeitos específicos. Sem armadura equipada, um acerto com 5 ou mais E + T válidos causa 2 Vida na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. Ataques que falham não desgastam a armadura.
 
@@ -823,7 +823,7 @@ Treinamento para executar técnicas marciais e mágicas com controle, precisão 
 
 Treinamento do corpo para deslocar-se e superar obstáculos de maneira eficiente. Inclui corrida, salto, escalada, equilíbrio e esforço coordenado. Diferentemente de Força, que mede potência, Atletismo representa a técnica para utilizar o corpo. Um personagem atlético pode abrir rotas para o grupo, alcançar posições vantajosas ou atravessar terrenos difíceis.
 
-O treino aprimora seu deslocamento e sua capacidade de reagir aos perigos. A cada **3 Graus de Atletismo**, você recebe **+1 metro de deslocamento padrão** e **+1 à DE defensiva natural**, respeitando seus limites. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
+O treino aprimora seu deslocamento e sua capacidade de reagir aos perigos. A cada **3 Graus de Atletismo**, você recebe **+1 metro de deslocamento padrão**. Atletismo também contribui para a capacidade de carga junto com Força e Vigor.
 
 **Possibilidades em jogo:** Atletismo + Agilidade para cruzar plataformas; Atletismo + Força para escalar carregando equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
 
@@ -953,11 +953,11 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve a
 
 ### 3. Vida, Coragem, defesa e movimento
 
-Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
+Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 5 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 4.
 
 ### 4. Equipamentos, peso e carga
 
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (+1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (−1 DE, Integridade 5). Com a armadura equipada, a DE final é 4 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + piso((2 + 1 + 1)/3) = 2 Alto, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
@@ -1102,25 +1102,25 @@ A DE defensiva natural representa a capacidade de um personagem humanoide de evi
 |---|---|---|
 | ◇ Agilidade | +1 DE por Grau | 2 Graus = +2 DE |
 | ◇ Destreza e ◇ Vigor | +1 DE a cada 2 Graus somados | 3 + 2 Graus = +2 DE |
-| ⚔ Atletismo | +1 DE a cada 3 Graus completos | 6 Graus = +2 DE |
+| Base natural | 2 DE | Todos os Atributos G0 = 2 |
 
-Some as três contribuições. Conte somente grupos completos de dois Graus de Destreza e Vigor e de três Graus de Atletismo.
+Some a base 2, Agilidade e os pares completos de Graus de Destreza + Vigor: **DE natural = mínimo(11; 2 + Agilidade + piso((Destreza + Vigor)/2))**.
 
-**DE natural de 0 a 9 [DEFINIDO].** A defesa natural pode ser 0. Não há bônus fixo de +1 nem mínimo obrigatório de 1. Se a soma superar 9, use 9 como DE natural.
+**DE natural de 2 a 11 [DEFINIDO].** Atletismo não entra no cálculo. Aplique a armadura depois; mínimo final 0.
 
 ### Como a armadura modifica sua defesa
 
-Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. A armadura sozinha eleva a DE natural máxima de 9 para 11. O teto absoluto de 12 inclui o +1 da Maestria em Escudos com escudo físico equipado. O mínimo é 0, mesmo quando os modificadores resultariam em valor negativo.
+Aplique os modificadores da única armadura equipada depois de calcular a defesa natural, independentemente do Grau da armadura. Essas alterações valem também para a esquiva, sem repetir o bônus. Elas não reduzem o Grau de Agilidade nem o movimento. A Maestria em Escudos, com escudo físico equipado, acrescenta +1 DE uma única vez. O máximo natural é 11, sem armadura ou com Muito Leve. O teto absoluto de 12 inclui o +1 da Maestria em Escudos com escudo físico equipado. O mínimo final é 0, mesmo quando os modificadores resultariam em valor negativo.
 
 | Tipo de armadura equipada | Alteração na DE |
 |---|---:|
-| Muito Leve (incluindo Roupas Simples) | +2 |
-| Leve | +1 |
-| Média | 0 |
-| Pesada | −1 |
-| Muito Pesada (quando permitida) | −2 |
+| Muito Leve (incluindo Roupas Simples) | 0 |
+| Leve | −1 |
+| Média | −2 |
+| Pesada | −3 |
+| Muito Pesada (quando permitida) | −4 |
 
-**Exemplo:** Com Agilidade 2, Destreza 0, Vigor 6 e Atletismo 6, você recebe 2 DE pela Agilidade, 3 pela soma de Destreza e Vigor e 2 pelo Atletismo: DE natural 7. Com armadura Pesada, fica 6; com Muito Pesada, fica 5.
+**Exemplo:** Eldric tem Agilidade 2, Destreza 1 e Vigor 1: DE natural 5. Com Leve, fica 4; com Média, 3; com Pesada, 2.
 
 ### Integridade das armaduras
 
@@ -1128,11 +1128,11 @@ A DE indica o quanto é difícil acertar o personagem. A Integridade indica quan
 
 | Tipo de armadura | DE | Integridade G1 (playtest) |
 |---|---:|---:|
-| Muito Leve (incluindo Roupas Simples) | +2 | 2 |
-| Leve | +1 | 5 |
-| Média | 0 | 8 |
-| Pesada | −1 | 12 |
-| Muito Pesada (quando permitida) | −2 | Pendente |
+| Muito Leve (incluindo Roupas Simples) | 0 | 2 |
+| Leve | −1 | 5 |
+| Média | −2 | 8 |
+| Pesada | −3 | 12 |
+| Muito Pesada (quando permitida) | −4 | Pendente |
 
 A armadura Muito Pesada exige Vigor 6 e Atletismo 6 e possui imunidade natural ao dano físico comum; sua Integridade quantitativa ainda está pendente. A Integridade dos Graus superiores também não tem uma escala geral definida. O Grau permite propriedades adicionais conforme o tipo, sem alterar automaticamente o modificador de DE. A Vida e a Integridade são contabilizadas separadamente; consulte as regras de dano e proteção para resolver um ataque.
 
@@ -1204,17 +1204,17 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 | Tipo | Integridade | DE | Progressão elemental |
 |---|---|---|---|
-| **Muito Leve** | **G1: 2 de Integridade (playtest)** | **+2 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Leve** | **G1: 5 de Integridade (playtest)** | **+1 DE em todas as defesas** | **Grau 3+:** pode ter resistência elemental |
-| **Média** | **G1: 8 de Integridade (playtest)** | **0** | **Grau 2+:** pode receber resistências específicas |
-| **Pesada** | **G1: 12 de Integridade (playtest)** | **−1 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
-| **Muito Pesada** | Valor **PENDENTE** | **−2 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
+| **Muito Leve** | **G1: 2 de Integridade (playtest)** | **0 DE** | **Grau 3+:** pode ter resistência elemental |
+| **Leve** | **G1: 5 de Integridade (playtest)** | **−1 DE** | **Grau 3+:** pode ter resistência elemental |
+| **Média** | **G1: 8 de Integridade (playtest)** | **−2 DE** | **Grau 2+:** pode receber resistências específicas |
+| **Pesada** | **G1: 12 de Integridade (playtest)** | **−3 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
+| **Muito Pesada** | Valor **PENDENTE** | **−4 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
 
 **Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
 
-**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−2 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
+**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−4 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Modificadores gerais de armadura [DEFINIDO — decisão de 17/11/2026, SRD v0.66]:** +2 (Muito Leve), +1 (Leve), 0 (Média), −1 (Pesada) e −2 (Muito Pesada) se aplicam à **DE defensiva em todos os ataques e abordagens de defesa**, inclusive esquiva. Calcule primeiro a **DE base com teto 9**, depois aplique o modificador da **única armadura equipada válida**, limitando a **DE defensiva final entre 0 e 12**. **Esquivar não adiciona o bônus pela segunda vez**. Os pontos de Integridade continuam separados da DE. Não empilhar modificadores de várias armaduras sem procedimento aprovado.
+**Modificadores gerais de armadura [DEFINIDO — SRD v0.147]:** Muito Leve 0, Leve −1, Média −2, Pesada −3, Muito Pesada −4 em todas as defesas. Calcule a DE natural com teto 11, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 12. Não duplicar modificadores. Integridade é recurso separado.
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 

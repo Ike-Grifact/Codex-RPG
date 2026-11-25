@@ -64,7 +64,7 @@ export const healthByLife=(s,currentLife)=>{
  return {id:"saudavel",e:0,a:0,p:0,coragem:0};
 };
 // SRD v0.89: Agilidade integral, somar Vigor+Destreza antes de dividir; Atletismo/3.
-export const naturalDE=s=>Math.min(9,Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2)+Math.floor(Number(s.practices?.atletismo||0)/3));
+export const naturalDE=s=>Math.min(11,2+Number(s.attributes?.agilidade||0)+Math.floor((Number(s.attributes?.vigor||0)+Number(s.attributes?.destreza||0))/2));
 export const balance=s=>Number(s.attributes?.agilidade||0)>Number(s.attributes?.vigor||0)?"Leve":Number(s.attributes?.agilidade||0)<Number(s.attributes?.vigor||0)?"Pesado":"Médio";
 export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)+Number(level>=20));
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=2?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=10?3:2)+(extra?1:0));

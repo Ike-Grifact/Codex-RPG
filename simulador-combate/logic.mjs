@@ -50,16 +50,16 @@ export function plannedMove(unit,to,terrain,tokens){
 export function dodgeBonus(armor){
  if(!armor||!armor.equipped)return 0;
  const typ=String(armor.weight||armor.category||"").toLowerCase().replace(/[- ]/g,"_");
- return typ==="muito_leve"?2:typ==="leve"?1:0;
+ return 0;
 }
 export function armorPenalty(armor){
  if(!armor||!armor.equipped)return 0;
  const typ=String(armor.weight||armor.category||"").toLowerCase().replace(/[- ]/g,"_");
- return typ==="alto"||typ==="pesado"?1:typ==="extremo"||typ==="muito_pesado"?2:0;
+ return ({leve:1,medio:2,alto:3,pesado:3,extremo:4,muito_pesado:4})[typ]||0;
 }
 export function defenseWithStance(natural,armor,stance="normal"){
  // Armaduras afetam todas as defesas; esquiva não repete o bônus.
- return Math.min(12,Math.max(0,Math.min(9,Number(natural||0))-armorPenalty(armor)+dodgeBonus(armor)));
+ return Math.min(12,Math.max(0,Math.min(11,Math.max(2,Number(natural||0)))-armorPenalty(armor)+dodgeBonus(armor)));
 }
 export function equippedArmor(source){
  const items=source?.items||[];

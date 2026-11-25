@@ -12,26 +12,26 @@ function humanoid(){
  return t;
 }
 
-test("Armadura Muito Leve: migração de 3 para 2 de Integridade, +2 DE defensiva",()=>{
+test("Armadura Muito Leve: migração de 3 para 2 de Integridade, sem redução de DE",()=>{
  const t=humanoid(),base=stats(t).de;
  t.items=[{id:"a",name:"Roupas Simples",kind:"armor",category:"muito-leve",
   weight:.125,qty:1,grade:1,integrityMax:3,integrity:2,equipped:false}];
  assert.equal(stats(t).de,base,"guardada não concede bônus");
  t.items[0].equipped=true;
- assert.equal(armorDeModifier(t),2);
- assert.equal(stats(t).de,base+2);
+ assert.equal(armorDeModifier(t),0);
+ assert.equal(stats(t).de,base);
  assert.equal(equippedArmor(t)?.integrity,2,"dano já recebido é mantido");
  const saved=normalize(JSON.parse(JSON.stringify(t)));
  assert.equal(saved.items[0].integrity,1);
  assert.equal(saved.items[0].integrityMax,2);
  assert.equal(saved.items[0].equipped,true);
- assert.equal(stats(saved).de,base+2);
+ assert.equal(stats(saved).de,base);
  assert.equal(saved.life,t.life,"a Integridade não modifica Vida automaticamente");
 });
 
 test("Somente a categoria da única armadura equipada modifica a DE",()=>{
  const t=humanoid(),base=stats(t).de;
- for(const [category,modifier] of [["muito-leve",2],["leve",1],["medio",0],["pesado",-1]]){
+ for(const [category,modifier] of [["muito-leve",0],["leve",-1],["medio",-2],["pesado",-3]]){
   t.items=[{id:"a",name:"Peça",kind:"armor",category,grade:1,
    weight:.125,qty:1,integrityMax:12,integrity:6,equipped:true}];
   assert.equal(stats(t).de,Math.max(0,base+modifier),category);

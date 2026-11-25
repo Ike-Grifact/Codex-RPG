@@ -1,9 +1,9 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261124-v0125c";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261124-v0125c";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0147";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0147";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
-export const ARMOR_DE=Object.freeze({"muito-leve":2,leve:1,medio:0,pesado:-1,"muito-pesado":-2});
+export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:-1,medio:-2,pesado:-3,"muito-pesado":-4});
 const alias={muito_leve:"muito-leve",muito_pesado:"muito-pesado",alto:"pesado",extremo:"muito-pesado"};
 const kinds={armadura:"armor",escudo:"shield",arma:"weapon"};
 const weightNumbers={"muito-leve":0.125,leve:0.125,medio:0.5,pesado:1,"muito-pesado":2};
@@ -512,7 +512,7 @@ export function armorDefense(c){
 export function defense(c){
  if(!c)return 0;
  const attrs=c.attributes||{};
- const basic=c.kind==="monstro"?Math.min(9,Number(attrs.agilidade||0)+Math.floor(Number(attrs.destreza||0)/2)):naturalDE(c);
+ const basic=c.kind==="monstro"?Math.min(9,Number(attrs.agilidade||0)+Math.floor(Number(attrs.destreza||0)/2)):c.kind==="criatura"?Math.min(9,Number(c.attributes?.agilidade||0)+Math.floor((Number(c.attributes?.vigor||0)+Number(c.attributes?.destreza||0))/2)+Math.floor(Number(c.practices?.atletismo||0)/3)):naturalDE(c);
  const sh=(c.skills||[]).includes("maestria-escudos")&&(c.items||[]).some(it=>it.kind==="shield"&&it.equipped)?1:0;
  return Math.min(12,Math.max(0,basic+(c.kind==="monstro"?0:armorDefense(c))+(c.kind==="monstro"?0:sh)));
 }
