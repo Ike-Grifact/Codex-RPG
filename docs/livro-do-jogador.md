@@ -455,7 +455,7 @@ Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a
 
 **Vantagens no desenvolvimento:** Inteligência e Destreza têm custos reduzidos de XP para seu desenvolvimento.
 
-**Limitações e desvantagens:** Força e Atletismo têm custos elevados de XP. Sangue, Trevas e Veneno não são opções gratuitas de origem; podem ser adquiridos posteriormente quando os requisitos próprios permitirem. Psíquico não é uma opção elemental racial adicional.
+**Limitações e desvantagens:** Força e Atletismo têm custos elevados de XP.
 
 #### Luckers de Sangue
 
@@ -867,6 +867,66 @@ A referência **DEFINIDA PARA O PLAYTEST de 21/11/2026** é de **260 XP acumulad
 ### Materiais para públicos diferentes
 
 Este documento concentra regras necessárias **aos jogadores**. Para a ficha jogável unificada, use o [Criador de personagem e ficha](../prototipo-ficha/); o antigo endereço `criador.html` encaminha para essa ferramenta. Procedimentos exclusivos de inimigos, gerenciamento de reservas do Narrador, preparação de conflitos e análises de balanceamento estão no [Guia do Narrador](../narrador.html). Regras históricas ou em teste são distinguidas das **DEFINIDAS**.
+
+## Conheça sua ficha
+
+A ficha reúne as escolhas feitas durante a criação e os recursos que você acompanha durante a aventura. Você pode preencher a ficha manualmente ou utilizar o criador digital do Codex.
+
+### Identidade
+
+Nome, origem, conceito, nível, Marco, virtude e personalidade situam seu Aprendiz no mundo. A profissão emerge das escolhas de desenvolvimento.
+
+### Aptidões
+
+Registre o Grau de cada Atributo, Conhecimento e Prática, os dados que ele fornece e o XP investido. Esses dados formam as pilhas de ação; não são somados como valores numéricos de um dado comum.
+
+### Vida e Saúde
+
+Anote a Vida atual e máxima, distribua os pontos pelas quatro faixas de Saúde e acompanhe os ferimentos. O estado atual pode modificar suas ações.
+
+### Coragem e retenção
+
+Registre a reserva atual e seu teto, bem como os limites de dados rolados e mantidos. Coragem pode ser investida em ações e recuperada conforme as regras.
+
+### Defesa e movimento
+
+Anote a DE natural, a defesa com proteção equipada e o deslocamento. Atualize os valores quando equipamentos, carga ou condições mudarem.
+
+### Perícias, equipamentos e inventário
+
+Registre habilitações, custos, condições, armas, focos, armaduras, Integridade, cargas, alcance, peso e recursos transportados. A aquisição de uma Perícia não implica ativação gratuita.
+
+### Experiência
+
+Controle o XP total, o investido e o saldo livre. Ao começar, distribua os 15 XP iniciais segundo as regras da criação. Não há reserva de XP obrigatória para Perícias.
+
+### Monte seu personagem
+
+Depois de conhecer as linhagens, as Aptidões, os custos de XP e os equipamentos, escolha a forma de preencher sua ficha.
+
+- [Abrir criador digital](../prototipo-ficha/).
+- [Ficha imprimível A4 — duas páginas](../ficha-imprimivel.html). Use Imprimir / Salvar como PDF ou baixe o HTML para preenchimento manual.
+
+### Descanso curto e descanso longo
+
+Entre conflitos e expedições, os personagens podem interromper suas atividades para descansar. Descansar é uma oportunidade de recuperar recursos, cuidar de ferimentos e preparar a próxima etapa da aventura. A recuperação não é igual para todos os recursos.
+
+| Recurso | Descanso curto | Descanso longo |
+|---|---|---|
+| Coragem | Somente com Recobrar Coragem: +2 após a cena narrativa pertinente. | Vigor + 1, até o teto, com ou sem Recobrar Coragem. |
+| Perseverança Humana | Não renova. | Renova a utilização. |
+| Vida e Saúde | Sem cura automática geral definida. | Segue os procedimentos de recuperação e tratamento; não restaura toda a Vida automaticamente. |
+| Integridade e cargas de foco | Sem recuperação automática geral definida. | Sem recuperação automática geral definida. |
+
+O descanso longo recupera Coragem igual ao Grau de Vigor + 1. Um personagem com Vigor 2 e Coragem 5 de um máximo de 10, por exemplo, volta a 8. Se estivesse com 9, voltaria a 10, sem exceder o teto.
+
+Recobrar Coragem permite recuperar 2 Coragens em um descanso curto, acompanhado de uma cena narrativa que demonstre a recuperação. Não some automaticamente esses 2 pontos à recuperação do descanso longo; o acúmulo ainda está pendente.
+
+Símbolos guardados por Antecipação e os benefícios de Concentração Refinada expiram ao serem usados, ao realizar outra ação ou ao completar um descanso longo, o que ocorrer primeiro. A ativação gratuita diária de Escudo Rúnico segue sua própria frequência: uma por dia, não uma por descanso curto ou longo.
+
+Ainda estão pendentes a duração operacional dos dois descansos, as condições de interrupção, a frequência de recuperação por Recobrar Coragem e a revisão geral de recuperação de Vida nas quatro faixas de Saúde. Não trate descanso como cura completa, reparo de armadura ou recarga automática de foco. As regras específicas de tratamento e Perícias continuam aplicáveis.
+
+Referências: [SRD de Playtest Nível 1](srd-playtest-nivel-1-v1.0.md), [v0.55](srd-continuidade-v0.55.md) e [v0.84](srd-continuidade-v0.84.md).
 
 ## Parte III — Jogando Codex RPG
 
