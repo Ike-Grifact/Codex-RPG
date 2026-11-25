@@ -745,9 +745,9 @@ Maela tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague quadrados a
 | Vida atual | Saudável | Ferido | Incapacitado | Inconsciente | Estado |
 |---:|---|---|---|---|---|
 | 6/6 | ■■ | ■■ | ■ | ■ | Saudável |
-| 5/6 | □■ | ■■ | ■ | ■ | Saudável |
+| 5/6 | ■□ | ■■ | ■ | ■ | Saudável |
 | 4/6 | □□ | ■■ | ■ | ■ | Ferido |
-| 3/6 | □□ | □■ | ■ | ■ | Ferido |
+| 3/6 | □□ | ■□ | ■ | ■ | Ferido |
 | 2/6 | □□ | □□ | ■ | ■ | Incapacitado |
 | 1/6 | □□ | □□ | □ | ■ | Inconsciente |
 | 0/6 | □□ | □□ | □ | □ | Morto |
