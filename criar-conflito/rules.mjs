@@ -1,8 +1,8 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs?v=20261125-v0150";
-import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261125-v0150";
+ from "./codex-rules.mjs?v=20261125-v0151";
+import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261125-v0151";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
@@ -188,12 +188,12 @@ export function remainingKinds(t){
  const free=Math.max(0,stats(t).capacity-weightUsed(t));
  return {leve:Math.floor((free+1e-9)/WEIGHT.leve),medio:Math.floor((free+1e-9)/WEIGHT.medio),pesado:Math.floor((free+1e-9)/WEIGHT.pesado)};
 }
-/** Atualização de Integridade G1 de 22/11: preserva dano já sofrido e idempotência. */
+/** Atualização de Integridade G1 — SRD v0.151: preserva dano já sofrido e idempotência. */
 export function migrateArmorIntegrity(it){
  if(!it||typeof it!=="object")return it;
  const kind=it.kind||({armadura:"armor"})[it.type];
  if(kind!=="armor"||Number(it.grade??1)!==1)return it;
- const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[5,[7,10]],"Armadura Média":[8,[12,15]],"Armadura Pesada":[12,[17,20]]};
+ const newValues={"Roupas Simples":[2,[0,3]],"Armadura Leve":[4,[3,5,7,10]],"Armadura Média":[8,[7,12,15]],"Armadura Pesada":[12,[17,20]]};
  const spec=newValues[it.catalogId||it.name]||newValues[it.name];
  if(!spec)return it;
  const oldMax=Number(it.integrityMax??it.max??(typeof it.integrity==="object"?it.integrity.max:undefined)??0);

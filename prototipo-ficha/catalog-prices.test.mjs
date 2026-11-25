@@ -57,7 +57,7 @@ test("Playtest: Martelo de Guerra Médio d10, Azagaia, cajados e bastões revisa
  for(const [name,vt] of [["Cajado Médio",6],["Bastão Médio",4],["Cajado Pesado",6],["Bastão Pesado",7]])assert.equal(byName(name).priceVT,vt,name);
 });
 test("Integridade corrigida: armaduras e escudos físicos",()=>{
- for(const [name,max] of [["Roupas Simples",2],["Armadura Leve",5],["Armadura Média",8],["Armadura Pesada",12],
+ for(const [name,max] of [["Roupas Simples",2],["Armadura Leve",4],["Armadura Média",8],["Armadura Pesada",12],
   ["Escudo Leve",2],["Escudo Médio",3],["Escudo Pesado",4]]){
   assert.equal(byName(name).integrity.max,max,name);
   assert.equal(byName(name).integrity.value,max,name);

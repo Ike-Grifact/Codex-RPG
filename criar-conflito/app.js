@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
  PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261125-v0150";
+ from "./rules.mjs?v=20261125-v0151";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,isCriticalFace,SITUATIONS}
- from "./roll-engine.mjs?v=20261125-v0150";
-import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261125-v0150";
+ from "./roll-engine.mjs?v=20261125-v0151";
+import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261125-v0151";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -485,7 +485,7 @@ function inventory(t,x){
     ' aria-label="'+(it.equipped?"Guardar ":"Equipar ")+esc(it.name)+'">'+(it.equipped?"Guardar":"Equipar")+'</button>':'')+
    '<button type="button" data-remove-item="'+esc(it.id)+'" aria-label="Remover '+esc(it.name)+'">Remover</button></div>').join(""):
    '<p class="cf-note">Nenhum item cadastrado.</p>')+
-  '<p class="cf-note">Integridades G1 vigentes: Leve 5, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
+  '<p class="cf-note">Integridades G1 vigentes: Leve 4, Média 8, Pesada 12. Dano e reparos são registrados manualmente; os Graus superiores sem valor documentado permanecem PENDENTES.</p></div></section>';
 }
 
 
