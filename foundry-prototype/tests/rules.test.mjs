@@ -19,7 +19,7 @@ test("catálogo principal não oferece Combat, Armas 1 nem Aprendiz de Conjurado
 });
 test("faces simbólicas mantêm a identidade do Codex",()=>{
  for(const n of [4,6,10,12,20])assert.equal(FACES[n].length,n);
- assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[1,0,0],[0,1,0],[0,0,1],[0,0,0]]);
+ assert.deepEqual([1,2,3,4].map(n=>faceSymbols(4,n)),[[0,0,0],[0,1,0],[0,0,1],[1,0,0]]);
  assert.deepEqual(faceSymbols(10,10),[2,0,1]); // distribuição comum do d12
  assert.deepEqual(faceSymbols(12,11),[0,0,3]);
  assert.deepEqual(faceSymbols(20,11),[0,0,3]);
@@ -115,7 +115,7 @@ test("estado Inconsciente permite alcançar DE por +2P sem Êxito, sob custo de 
  const s=human();const hp=healthByLife(s,1);
  assert.equal(hp.coragem,2);
  const rolled=[
-  {id:"a",group:"attribute",key:"vigor",sides:4,face:4},
+  {id:"a",group:"attribute",key:"vigor",sides:4,face:1},
   {id:"t",group:"practice",key:"atletismo",sides:6,face:1}
  ];
  const base=resolveRoll(rolled,["a","t"],{de:2,level:1});
