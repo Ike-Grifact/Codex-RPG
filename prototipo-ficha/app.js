@@ -5288,7 +5288,7 @@ function bindInventorySlots(){
  document.addEventListener("pointerout",event=>{
   if(event.pointerType!=="mouse"||handTooltipPinned)return;
   const trigger=event.target.closest?.("[data-hand-item]");
-  if(trigger===handTooltipTrigger&&!trigger.contains(event.relatedTarget))closeHandTooltip();
+  if(trigger&&trigger===handTooltipTrigger&&!trigger.contains(event.relatedTarget))closeHandTooltip();
  });
  document.addEventListener("click",event=>{
   const trigger=event.target.closest?.("[data-hand-item]");
