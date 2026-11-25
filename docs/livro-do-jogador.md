@@ -757,38 +757,43 @@ Eldric tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones
 
 #### Coragem
 
-No nível 1, a reserva tem teto 10. Coragem permite elevar temporariamente uma fonte dentro da progressão comum, manter um dado adicional ou pagar ativações e condições previstas. O Vigor determina quanto se recupera em um descanso longo, caso o jogador escolha recuperar Coragem: Grau de Vigor + 1.
+Coragem é o recurso que você investe para melhorar suas chances de agir ou ativar Perícias. No nível 1, seu limite é de **10 Coragens**.
 
+Antes de rolar, você pode gastar 1 Coragem para elevar temporariamente uma Aptidão em um Grau (até G6 pela regra comum) ou manter um dado adicional, respeitando os limites da rolagem. Algumas Perícias e condições de Saúde também exigem Coragem. Consulte [Coragem](#coragem) para os demais usos e limites.
 
 #### Descanso curto e descanso longo
 
-O descanso curto dura 1 hora. O descanso longo dura 8 horas, com pelo menos 6 horas de sono para ser considerado válido e recuperar Saúde.
+O **descanso curto** dura 1 hora. Não recupera Vida ou Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
 
-| Recurso | Descanso curto · 1h | Descanso longo · 8h |
-|---|---|---|
-| Coragem | Somente com Recobrar Coragem: +2 após cena narrativa pertinente. | Vigor + 1 até o teto, ou reparar a armadura. |
-| Saúde (Vida) | Não recupera por descanso curto. | 1 Vida por dia (2 com Recuperação Vigorosa) após descanso longo válido, até o máximo. |
-| Armadura | Sem reparo automático. | Reparo com kit em vez de recuperar Coragem. |
-| Perseverança Humana | Não renova. | Renova a utilização. |
-| Cargas de foco | Sem recuperação geral definida. | Sem recuperação geral definida. |
+O **descanso longo** dura 8 horas, com pelo menos 6 horas de sono. Ao concluí-lo, recupere 1 ponto de Vida por dia, sem ultrapassar a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1.
 
-Ao concluir um descanso longo, escolha recuperar Coragem igual ao Grau de Vigor + 1 ou reparar a armadura com um kit de reparo. Se escolher reparar, não recupera Coragem por esse descanso. A recuperação diária de Vida é independente da escolha, desde que cumpra as 6 horas mínimas de sono.
+Além da recuperação de Vida, escolha **uma** das duas opções:
 
-Exemplo: Vigor 2 e Coragem 5 de um teto 10. Se descansar para recuperar Coragem, chega a 8; se escolher reparar, permanece com 5. Nos dois casos recupera 1 Vida se estiver ferido, até seu máximo.
+- **Recuperar Coragem:** recupere uma quantidade igual ao seu Grau de Vigor + 1, até o limite da reserva.
+- **Reparar a armadura:** use um kit de reparo adequado à peça. Nesse descanso, você não recupera Coragem pela regra de Vigor.
 
-Recobrar Coragem recupera 2 Coragens após descanso curto e cena narrativa pertinente. O acúmulo com a recuperação do descanso longo continua pendente. Escudo Rúnico mantém sua ativação gratuita diária; símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, se ainda não tiverem expirado por uso ou ação subsequente.
-
-Com a Perícia Recuperação Vigorosa, você recupera 2 pontos de Vida por dia em vez de 1, após um descanso longo válido.
+Exemplo: Eldric tem Vigor 1, 5/10 Coragens, 4/6 de Vida e uma armadura Leve com 1/5 de Integridade. Após um descanso longo válido, fica com 5/6 de Vida. Se escolher recuperar Coragem, fica com 7/10 e mantém a Integridade 1/5. Se escolher reparar, fica com 5/10 Coragens e restaura a Integridade para 5/5.
 
 ##### Reparando a armadura
 
-O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça.
+Um **kit de reparo custa 3 VT**, valor correspondente ao material necessário para reparar a armadura. O material deve ser adequado à peça.
 
-**PENDENTE:** Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
+| Tipo de armadura | Integridade recuperada |
+|---|---|
+| Muito Leve ou Leve | Toda a Integridade perdida. |
+| Média, Pesada ou Muito Pesada | Metade da Integridade máxima, sem ultrapassar o máximo da peça. |
 
-[SRD v0.134](srd-continuidade-v0.134.md).
+Exemplo: uma armadura Média com 3/8 de Integridade recupera 4 pontos, chegando a 7/8.
 
+##### Outros efeitos do descanso
 
+O descanso longo renova a utilização de Perseverança Humana. Escudo Rúnico mantém sua ativação gratuita diária. Símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, caso ainda estejam ativos.
+
+Recobrar Coragem também possui aplicação em descanso longo conforme seu verbete, mas o acúmulo com a recuperação natural permanece pendente. Não há recuperação geral definida de cargas de foco por descanso.
+
+**PENDENTE:** consumo do kit, arredondamento de metade da Integridade para máximos ímpares, necessidade de teste de reparo, interrupções, tratamento de estados graves e recuperação de cargas de foco. O preço de 3 VT está definido; peso e inclusão no catálogo ainda precisam ser resolvidos.
+
+Consulte [Recobrar Coragem](../pericias/recobrar-coragem.html) e [SRD v0.134](srd-continuidade-v0.134.md).
 
 ### ⚔ Práticas — treinamento para agir
 
