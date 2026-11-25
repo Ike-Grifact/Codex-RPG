@@ -112,6 +112,10 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 **Ideia central:** provocar atrai o perigo; antecipar faz os turnos individuais fluírem; um Líder usa Pavor público para montar um golpe coordenado. Ao cair a liderança, o conflito pode virar disputa por adesão, fuga ou rendição — sem exigir extermínio.
 
+## Testes fora de conflitos
+
+Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Temor puderem interferir significativamente na narrativa. Se não houver incerteza relevante, narre o resultado sem exigir rolagem; se a ação for inviável, explicite a limitação e permita outra abordagem. Considere as Aptidões, condições e recursos disponíveis. Não transforme o potencial máximo de uma pilha em sucesso garantido. A escala de DE por nível, composição e cooperação do grupo ainda será revisada.
+
 ## 1. Provocação, liderança e objetivos da oposição
 
 ### Provocação simples e ataque com Provocação [DEFINIDO]
