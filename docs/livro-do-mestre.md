@@ -120,6 +120,56 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Temor puderem interferir significativamente na narrativa. Se não houver incerteza relevante, narre o resultado sem exigir rolagem; se a ação for inviável, explicite a limitação e permita outra abordagem. Considere as Aptidões, condições e recursos disponíveis. Não transforme o potencial máximo de uma pilha em sucesso garantido. A escala de DE por nível, composição e cooperação do grupo ainda será revisada.
 
+## Quedas e perigos ambientais
+
+### Peso dos dados
+
+Cada dado possui um peso numérico que permite medir a intensidade de um perigo. O peso do dado não é a carga física do equipamento nem a categoria de peso usada nas afinidades de combate.
+
+| Dado | Peso |
+|---|---:|
+| d4 | **1** |
+| d6 | **2** |
+| d10 | **3** |
+| d12 | **4** |
+| d20 | **5** |
+
+### Dano de queda
+
+Cada metro de altura equivale a **1 ponto de intensidade**. Para montar a rolagem de dano, utilize sempre o dado de maior peso que caiba no valor restante, repetindo até completar a intensidade. O **Narrador rola** os dados de dano; leia os símbolos de Êxito e Temor, não os números das faces.
+
+| Altura | Dados de dano |
+|---:|---|
+| 1 m | **1d4** |
+| 3 m | **1d10** |
+| 5 m | **1d20** |
+| 8 m | **1d20 + 1d10** |
+| 12 m | **2d20 + 1d6** |
+| 20 m | **4d20** |
+| 30 m | **6d20** |
+
+**Exemplo:** uma queda de 8 m equivale a 8 pontos. O d20 cobre 5, e o d10 cobre os 3 restantes. Role **1d20 + 1d10**. A leitura é uma rolagem de dano do ambiente, não um ataque convencional do personagem; os seis d20 de intensidade 30 não ampliam os limites de dados de suas ações.
+
+### Quando alguém provoca a queda
+
+Se um personagem for derrubado de uma altura por outra criatura ou personagem, sofre o **dano integral correspondente à altura**, sem o teste de redução de queda involuntária. Isso não significa dano fixo igual aos metros: o Narrador ainda rola os dados de dano.
+
+Quando um jogador empurra um inimigo e provoca a queda, os **Temores da rolagem de dano alimentam a reserva pública de Pavor do Narrador**, respeitando seu teto de 2 + número de jogadores. Não credite os mesmos símbolos também à reserva local do inimigo.
+
+### Queda involuntária
+
+Se um jogador perde o apoio, escorrega ou cai involuntariamente sem ter sido derrubado por outro personagem, o Narrador rola o dano correspondente à altura. Cada Temor dessa rolagem é convertido em **1 Coragem para o jogador que caiu**, respeitando seu teto.
+
+O jogador pode tentar reduzir o dano com **Destreza + Atletismo**. A **DE é igual à altura da queda em metros**. Com Atletismo Avançado (especialização de Atletismo), pode acrescentar uma terceira Aptidão pertinente, respeitando as regras gerais de combinação. Em uma queda de 8 m, a rolagem de dano é 1d20 + 1d10 e o teste de redução é DE 8.
+
+### Danos ambientais
+
+A mesma escala representa perigos ambientais, com intensidade (DE de referência) de **1 a 30**. O Narrador define a intensidade conforme a situação: um vulcão, terremoto, chuva de meteoros ou outra catástrofe pode alcançar a extremidade da escala. Intensidade 30 corresponde a **6d20**, pois cada d20 possui peso 5. Esse é o limite da escala de perigo ambiental, não uma nova DE defensiva dos personagens.
+
+### Resolução — pontos ainda pendentes
+
+A composição da rolagem, a DE do teste de redução e os destinos de Temor acima estão definidos. O dano depende dos Êxitos e Temores obtidos; **a fórmula exata de conversão em Integridade ou Vida, a quantidade reduzida pelo teste, o tratamento de Antecipar, crítico e proteções e o destino de Temor nas demais situações ainda precisam de decisão autoral**. A regra de dano convencional em ataques não é automaticamente substituída. Para o procedimento de dano ambiental, ler todos os dados da composição é a interpretação adotada para documentação; a aplicação de Roll and Keep, caso desejada, ainda precisa de confirmação específica. Não inventar dano direto à Vida, imunidades, arredondamento de alturas fracionárias ou teto de altura de queda. Não automatizar esses pontos antes da decisão.
+
 ## 1. Provocação, liderança e objetivos da oposição
 
 ### Provocação simples e ataque com Provocação [DEFINIDO]
