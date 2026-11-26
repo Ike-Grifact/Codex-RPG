@@ -20,7 +20,7 @@ test("Parede interrompe linha de visão; cobertura parcial só sinaliza Narrador
 });
 test("Movimento ortogonal respeita paredes, casas ocupadas e limite por rodada",()=>{
  const unit={id:"u",x:1,y:1,moved:0,attributes:{agilidade:2,destreza:2},practices:{atletismo:3}};
- assert.equal(movementAllowance(unit),11);
+ assert.equal(movementAllowance(unit),10);
  const terrain={[cellKey(2,1)]:"parede"};
  const route=shortestPath(unit,{x:4,y:1},terrain,[unit]);
  assert.equal(route.length-1,5);
@@ -45,4 +45,11 @@ test("Cenário tem terreno importável, sem exigir combate automático",()=>{
  const s=initialScenario();assert.equal(s.version,1);assert.equal(s.tokens.length,0);
  const sanitized=validateTerrain({"-2,2":"parede","2,2":"cobertura","4,4":"runa","25,5":"parede"});
  assert.deepEqual(sanitized,{"2,2":"cobertura"});
+});
+
+test("Movimento humanoide soma Agilidade e Destreza antes de dividir; criaturas preservam sua fórmula",()=>{
+ assert.equal(movementAllowance({attributes:{agilidade:2,destreza:1}}),9);
+ assert.equal(movementAllowance({attributes:{agilidade:1,destreza:2}}),9);
+ assert.equal(movementAllowance({attributes:{agilidade:6,destreza:6}}),14);
+ assert.equal(movementAllowance({kind:"monstro",attributes:{agilidade:2,destreza:6},practices:{atletismo:3}}),11);
 });

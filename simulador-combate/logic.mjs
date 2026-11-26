@@ -19,7 +19,7 @@ export function lineOfSight(a,b,terrain){
  }
  return {clear:true,cover,reason:cover?"Cobertura entre os combatentes: modificador decidido pelo Narrador.":"Linha de visão desobstruída."};
 }
-export const movementAllowance=u=>Math.max(0,8+Number(u.attributes?.agilidade||0)+Math.floor((u.kind==="monstro"||u.kind==="criatura")?Number(u.practices?.atletismo||0)/3:Number(u.attributes?.destreza||0)/2));
+export const movementAllowance=u=>Math.max(0,8+((u.kind==="monstro"||u.kind==="criatura")?Number(u.attributes?.agilidade||0)+Math.floor(Number(u.practices?.atletismo||0)/3):Math.floor((Number(u.attributes?.agilidade||0)+Number(u.attributes?.destreza||0))/2)));
 export function shortestPath(a,b,terrain,tokens=[]){
  if(!a||!b||!inBounds(a.x,a.y)||!inBounds(b.x,b.y))return null;
  const occupied=new Set(tokens.filter(t=>t.id!==a.id).map(t=>cellKey(t.x,t.y)));

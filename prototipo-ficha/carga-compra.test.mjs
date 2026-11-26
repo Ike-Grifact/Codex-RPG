@@ -84,13 +84,16 @@ test("Kit de arco curto: prévia soma arma, recipiente e lote, desconta VT uma v
 });
 
 
-test("Sobrecarga (limiar de playtest preservado): metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
+test("Sobrecarga: metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
  const code=app.slice(app.indexOf("function baseMovement("),app.indexOf("function renderXP("));
  const state=character(0,0,3,0,0,[]);state.attributes.agilidade=2;state.attributes.destreza=2;
  let percent=99.99;
  const ui=new Function("state","NPC_MODE","loadPercent",code+"return {movement,baseMovement};")(state,false,()=>percent);
- assert.equal(ui.baseMovement(),11);assert.equal(ui.movement(),11);percent=100;assert.equal(ui.movement(),5.5);percent=125;assert.equal(ui.movement(),5.5);percent=99;assert.equal(ui.movement(),11);
- const npc=new Function("state","NPC_MODE","loadPercent",code+"return movement;")(state,true,()=>100);assert.equal(npc(),11);
+ assert.equal(ui.baseMovement(),10);assert.equal(ui.movement(),10);percent=100;assert.equal(ui.movement(),5);percent=125;assert.equal(ui.movement(),5);percent=99;assert.equal(ui.movement(),10);
+ const npc=new Function("state","NPC_MODE","loadPercent",code+"return movement;")(state,true,()=>100);assert.equal(npc(),10);
+ state.attributes.agilidade=2;state.attributes.destreza=1;assert.equal(ui.baseMovement(),9);
+ state.attributes.agilidade=1;state.attributes.destreza=2;assert.equal(ui.baseMovement(),9);
+ state.attributes.agilidade=6;state.attributes.destreza=6;assert.equal(ui.baseMovement(),14);
 });
 
  test("peso por armadura ou linhagem independe da ocupação",()=>{
