@@ -58,6 +58,8 @@ Os dados do Codex têm formas e quantidades de faces diferentes. A letra d signi
 
 **Tipos de dados:** d4 (quatro faces), d6 (seis), d10 (dez), d12 (doze) e d20 (vinte).
 
+**Peso dos dados:** d4 = **1** · d6 = **2** · d10 = **3** · d12 = **4** · d20 = **5**. Não confunda esse valor com carga de equipamentos.
+
 ### Como ler as faces
 
 Uma face pode mostrar uma ou várias runas. Uma face com dois Êxitos contém 2E, e não apenas um. Leia cada símbolo que aparece na face.
@@ -754,6 +756,10 @@ Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade fí
 
 Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. **Ataques que falham não desgastam a armadura.**
 
+
+#### Quedas e perigos ambientais
+
+A altura da queda determina os dados de dano que o Narrador rola. Se cair involuntariamente, você pode tentar reduzir o dano com **Destreza + Atletismo**, contra uma **DE igual à altura em metros**. Com Atletismo Avançado, pode acrescentar uma terceira Aptidão pertinente. Se alguém derrubar você de uma altura, sofre a rolagem de dano integral, sem esse teste de redução. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Vida e Saúde
 
