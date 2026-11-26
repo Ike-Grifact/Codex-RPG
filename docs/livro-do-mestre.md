@@ -183,7 +183,7 @@ A mesma escala representa perigos ambientais, com intensidade (DE de referência
 
 Não existe imunidade universal a dano ambiental. O Narrador considera os tipos de dano presentes na cena (por exemplo, Terra e físico em um terremoto), as proteções e resistências pertinentes; catástrofes podem combinar vários tipos, tornando difícil ignorar todo o dano. Não se cria imunidade ou resistência automática por analogia.
 
-Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Os críticos seguem os benefícios da regra geral, sem gerar Coragem pela ocorrência do crítico. A rolagem integral precisa satisfazer o critério de faces críticas da regra geral; não se descarta dado para formar crítico. O crítico ambiental utiliza a mesma base de dois, três ou quatro dados (quatro dobram o dano), sem recuperação de Coragem pelo crítico. Não existe crítico com cinco ou mais dados. Uma pilha de cinco ou mais dados continua integralmente contabilizada para o dano, sem descarte para formar crítico.
+Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Para determinar o benefício crítico ambiental, conte os dados que caíram em suas faces críticas: dois concedem o benefício de dois, três concedem o de três, e quatro ou mais concedem o de quatro (dano calculado dobrado antes das proteções). Dados não críticos não invalidam o crítico ambiental e continuam contribuindo com seus símbolos. Não existe categoria adicional acima de quatro críticos: cinco ou seis faces críticas não aumentam os benefícios nem multiplicam novamente o dano. O crítico ambiental não recupera Coragem nem gera Pavor como recompensa de crítico; preserva-se o destino normal dos Temores da rolagem de dano. Esta é uma exceção ambiental à exigência convencional de que todos os dados mantidos estejam em faces críticas.
 
 ### Resolução do dano
 
@@ -191,7 +191,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 
 Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
-**PENDENTE:** alturas fracionárias, detalhamento de interações específicas de proteção ambiental, Aptidões e momento exato da resistência ao empurrão quando não especificados e consequências exatas de alcançar a DE na elevação por Ar. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.159](srd-continuidade-v0.159.md).
+**PENDENTE:** alturas fracionárias, detalhamento de interações específicas de proteção ambiental, Aptidões e momento exato da resistência ao empurrão quando não especificados e consequências exatas de alcançar a DE na elevação por Ar. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.160](srd-continuidade-v0.160.md).
 
 ## 1. Provocação, liderança e objetivos da oposição
 
