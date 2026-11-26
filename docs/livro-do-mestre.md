@@ -120,6 +120,18 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Temor puderem interferir significativamente na narrativa. Se não houver incerteza relevante, narre o resultado sem exigir rolagem; se a ação for inviável, explicite a limitação e permita outra abordagem. Considere as Aptidões, condições e recursos disponíveis. Não transforme o potencial máximo de uma pilha em sucesso garantido. A escala de DE por nível, composição e cooperação do grupo ainda será revisada.
 
+## Críticos de inimigos e monstros
+
+Inimigos recuperam Pavor no lugar da Coragem pela regra de proporção 1:1. Todos os dados mantidos devem estar em suas faces críticas, com mínimo de dois. O Pavor gerado preenche primeiro a reserva local; o excedente vai à reserva pública, respeitando os tetos, sem duplicação.
+
+| Dados críticos mantidos | Pavor recuperado | Outros benefícios |
+|---:|---:|---|
+| 2 | +1 | Converter até 1T em 1E, se houver |
+| 3 | +2 | Conversão anterior, +1E e +1A |
+| 4 | +2 | Benefícios de três e dano calculado ×2 |
+
+O crítico ambiental não concede Pavor ou Coragem como recompensa. O multiplicador de quatro críticos também vale para quatro d20, antes das proteções e sem ignorar as regras específicas de dano à Vida. Consulte [SRD v0.161](srd-continuidade-v0.161.md).
+
 ## Quedas e perigos ambientais
 
 ### Peso dos dados

@@ -46,11 +46,11 @@ test("Crítico de monstro retém Pavor local, depois público, sem duplicar",()=
  const rolled=creaturePool(t,"forca","vigor").pool.map(d=>({...d,face:d.sides===10?7:d.sides}));
  const p=previewCreatureRoll(t,rolled,rolled.map(d=>d.id),{de:1});
  assert.equal(p.ok,true);assert.equal(p.result.critical,2);
- assert.equal(p.criticalPavor,2);
+ assert.equal(p.criticalPavor,1);
  const out=settleCreatureRoll(t,2,3,p);
- assert.equal(out.unit.pavorLocal,2);
+ assert.equal(out.unit.pavorLocal,1);
  assert.equal(out.publicPavor,2);
- assert.equal(out.localGain+out.publicGain+out.overflow,2);
+ assert.equal(out.localGain+out.publicGain+out.overflow,1);
  assert.equal(t.pavorLocal,0);
 });
 test("Pavor público de golpe conjunto segue 1P por aliado de Líder",()=>{
@@ -95,7 +95,7 @@ test("NPC humanoide rola Prática ou Conhecimento + Atributo, sem receber Períc
  const confirmed=settleCreatureRoll(npc,2,4,got);
  assert.equal(confirmed.ok,true);
  assert.equal(confirmed.unit.pavorLocal,4); // já no teto
- assert.equal(confirmed.publicPavor,4); // excedente de crítico vai ao Pavor público
+ assert.equal(confirmed.publicPavor,3); // excedente de crítico vai ao Pavor público
 });
 
 test("Rolador não aceita Foco presumido no Lucker Puro; compra 0 XP valida conjuração",()=>{

@@ -189,6 +189,6 @@ export function resolveRoll(rolled,selectedIds,options={}){
  const rawDamage=e+Math.floor(p/2),damage=success?rawDamage*(crit&&kept.length===4?2:1):0;
  const critical=crit?kept.length:0,refund=crit?(kept.length>=3?2:1):0;
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
-  reached,de,success,outcome,damage,critical,drawSpent,drawPenalty,criticalRefundCourage:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
+  reached,de,success,outcome,damage,critical,drawSpent,drawPenalty,criticalRefundCourage:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?refund:0,
   freeCharacteristics:success&&crit?1:0,selected:kept};
 }
