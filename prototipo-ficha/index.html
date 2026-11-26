@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="../assets/styles.css?v=0.50-1">
   <link rel="stylesheet" href="../assets/theme.css?v=20261123-npc-hub-v1">
   <link rel="stylesheet" href="./styles.css?v=20261125-v0152-icons2">
-  <script src="./catalog.js?v=20261125-v0152" defer></script>
+  <script src="./catalog.js?v=20261126-v0154-carga" defer></script>
   <script src="./gene-graph.js?v=20261123-familia-contundente-v0102" defer></script>
   <link rel="stylesheet" href="../assets/skill-presentation.css?v=20261124-v0115">
   <script src="../assets/skill-presentation.js?v=20261124-v0117" defer></script>
-  <script src="./app.js?v=20261126-peso-label" defer></script>
+  <script src="./app.js?v=20261126-v0154-carga" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -396,11 +396,11 @@
 <div class="fp-inventory-stats" aria-label="Resumo do inventário">
           <div><small>ITENS</small><strong id="inventory-quick-items">0</strong></div>
           <div><small>EQUIPADOS</small><strong id="inventory-quick-equipped">0</strong></div>
-          <div><small>CARGA</small><strong id="inventory-quick-load">0 / 1 Alto</strong></div>
+          <div><small>CARGA</small><strong id="inventory-quick-load">0 / 8 Cargas</strong></div>
         </div>
         <div class="fp-inventory-load-summary">
           <div class="fp-load-bar"><span id="load-bar-fill"></span></div>
-        <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 1 Alto. Itens de foco contam na carga convencional.</p>
+        <p class="fp-muted fp-load-caption" id="load-caption">Carga física estimada: 0 de 8 Cargas. Itens de foco contam na carga convencional.</p>
         </div>
         <section class="fp-inventory-owned" aria-label="Itens e equipamentos possuídos">
           <div class="fp-inventory-section-heading"><h4>Minha mochila e equipamentos</h4><small>Clique em um item para abrir seus detalhes, equipar, editar ou ajustar Integridade.</small></div>
@@ -413,11 +413,11 @@
           <summary><span>Espaço transportado e cálculo da capacidade</span><small>Ver o mapa completo da carga e seus componentes</small></summary>
           <section class="fp-cargo-panel" id="inventory-cargo-panel" aria-label="Mapa visual de capacidade de carga">
           <div class="fp-cargo-heading">
-            <div><span class="fp-overline">MAPA DO INVENTÁRIO</span><h4>Espaço e peso transportado</h4><small id="inventory-cargo-total">0 / 1 Alto de capacidade</small></div>
+            <div><span class="fp-overline">MAPA DO INVENTÁRIO</span><h4>Espaço e peso transportado</h4><small id="inventory-cargo-total">0 / 8 Cargas de capacidade</small></div>
             <strong class="fp-cargo-balance" id="inventory-cargo-balance">Dentro da capacidade · 0%</strong>
           </div>
           <div class="fp-cargo-grid" id="inventory-load-grid" role="img" aria-label="Ilustração proporcional da carga do inventário"></div>
-          <p class="fp-cargo-grid-hint">Cada célula equivale a 0,05 Alto. As áreas coloridas representam o peso ocupado pelos itens; as vazias representam espaço disponível.</p>
+          <p class="fp-cargo-grid-hint">Cada célula equivale a 0,5 Carga. As áreas coloridas representam o peso ocupado pelos itens; as vazias representam espaço disponível.</p>
           <div class="fp-cargo-legend" aria-label="Legenda dos itens no mapa">
             <span class="fp-cargo-key fp-cargo-key-arma">Armas</span>
             <span class="fp-cargo-key fp-cargo-key-armadura">Armaduras</span>
@@ -427,7 +427,7 @@
             <span class="fp-cargo-key fp-cargo-key-recurso">Recursos</span>
           </div>
           <div class="fp-capacity-breakdown">
-            <div><strong>De onde vem a capacidade?</strong><small id="inventory-capacity-equation">1,5 + Força + ⌊Vigor / 2⌋ · inclui mochila inicial</small></div>
+            <div><strong>De onde vem a capacidade?</strong><small id="inventory-capacity-equation">8 + Força + ⌊Vigor / 2⌋ · inclui mochila inicial</small></div>
             <div class="fp-capacity-sources" id="inventory-capacity-sources"></div>
           </div>
           <p class="fp-cargo-overflow" id="inventory-cargo-overflow" hidden></p>
