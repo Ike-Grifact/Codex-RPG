@@ -444,6 +444,8 @@ O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir m
 
 Antes de construir seu personagem, conheça as Aptidões, os Graus, os recursos e as capacidades que fazem parte de sua ficha. Depois, você poderá escolher sua identidade, sua linhagem, seus equipamentos e como investir seu XP.
 
+<a id="graus-aptidoes"></a>
+
 **Aptidões, Graus e XP**
 
 ### O que é um Grau?
@@ -471,6 +473,8 @@ Os termos abaixo são referências de interpretação, não títulos, requisitos
 | 6 | Ápice da progressão comum | Domínio especializado | Referência no assunto |
 
 O Grau 6 é o limite da progressão comum. O Grau 7 e suas formas de acesso ao d20 ainda estão em estudo e não fazem parte das regras de criação ou elevação de Aptidões do playtest de nível 1.
+
+<a id="atributos-ficha"></a>
 
 ### ◇ Atributos — as capacidades do seu Aprendiz
 
@@ -748,6 +752,8 @@ Recobrar Coragem também possui aplicação em descanso longo conforme seu verbe
 
 Consulte [Recobrar Coragem](../pericias/recobrar-coragem.html) e [SRD v0.134](srd-continuidade-v0.134.md).
 
+<a id="praticas-ficha"></a>
+
 ### ⚔ Práticas — treinamento para agir
 
 Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
@@ -804,6 +810,8 @@ Treinamento para procurar, reconhecer, extrair e preservar recursos encontrados 
 
 **Possibilidades em jogo:** Coleta + Destreza para retirar um material delicado; Coleta + Força para desprender um recurso resistente; Coleta + Inteligência para organizar uma busca a partir de indícios.
 
+
+<a id="conhecimentos-ficha"></a>
 
 ### ✦ Conhecimentos — estudo que abre caminhos
 
