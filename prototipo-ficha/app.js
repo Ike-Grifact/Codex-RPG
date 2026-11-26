@@ -1782,7 +1782,10 @@ function renderWizardSkillCards(){
  if(container)container.innerHTML=wizardSkillCardsMarkup();
 }
 
-const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Pesado",1],extremo:["Extremo",2]};
+const WEIGHTS={muito_leve:["Muito leve",.5],leve:["Leve",1],medio:["Médio",2],alto:["Pesado",3],extremo:["Muito Pesado",4]};
+// A chave de peso continua categórica e compatível com fichas antigas; a carga é calculada separadamente.
+const LEGACY_WEIGHT={muito_leve:.0125,leve:.125,medio:.5,alto:1,extremo:2};
+const ammoLotLoad=it=>Number(it.ammoLotWeight)===.0125?.5:Number(it.ammoLotWeight)===.125?1:0;
 const CATALOG=(window.CODEX_G1_CATALOG||[]).filter(x=>x.grade===1);
 // Pictogramas apenas visuais: não fornecem dados, habilidades nem novos requisitos.
 const CODEX_SKILL_ICONS=Object.freeze({
@@ -1952,6 +1955,7 @@ function equipmentDetails(item){
  const weight=equipmentWeightName(equipmentWeight(item));
  const p=item.properties||[];
  const info=[weight];
+ if(item.kind)info.push("Carga "+pad(item.load??(({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-pesado":4})[item.category]||1)*(p.includes("Muito Leve")?.5:1)));
  if(item.die>0)info.push("d"+item.die+" com Perícia");
  if(kind==="armor"||kind==="armadura"){
   info.push("Integridade "+(item.integrity?.max??item.max??0));
@@ -2527,7 +2531,7 @@ function refillAmmo(id){
  let target=targets[0];
  if(targets.length>1){const v=prompt("Escolha o recipiente:\n"+targets.map((x,i)=>(i+1)+". "+x.name+" ("+ammoCount(x.ammoMix)+"/20)").join("\n"),"1");if(v===null)return;target=targets[Number(v)-1];if(!target){toast("Recipiente inválido.");return;}}
  const moved=moveAmmoMix(source.ammoMix,target.ammoMix,ammoTypesFor(source.ammoFamily));
- if(itemPosition(target)==="quick"&&bodyLoad()+Number(target.ammoLotWeight||0)*moved.moved/20>bodyCapacity()+1e-9){toast("Reposição excede a capacidade corporal; guarde o recipiente ou libere carga.");return;}
+ if(itemPosition(target)==="quick"&&bodyLoad()+ammoLotLoad(target)*moved.moved/20>bodyCapacity()+1e-9){toast("Reposição excede a capacidade corporal; guarde o recipiente ou libere carga.");return;}
  source.ammoMix=moved.from;target.ammoMix=moved.to;
  if(!ammoCount(source.ammoMix))state.items=state.items.filter(x=>x!==source);
  render();save();toast(moved.moved+" projéteis transferidos para "+target.name+".");
@@ -2932,15 +2936,15 @@ function defensePresentation(s=state){
   "DE base "+natural;
  return {label:"DE DEFENSIVA",value:total,caption:baseCaption+(shieldBonus?" + 1 (Maestria em Escudos)":"")+" = "+total+" · Todas as defesas · Teto base 8 / final 9"};
 }
-function capacity(){return 1.5+(state.attributes.forca||0)+Math.floor((state.attributes.vigor||0)/2);}
-function bodyCapacity(){return capacity()-.5;}
+function capacity(){return 8+(state.attributes.forca||0)+Math.floor((state.attributes.vigor||0)/2);}
+function bodyCapacity(){return capacity()-3;}
 function bodyLoad(items=state.items){return items.filter(it=>itemPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+itemLoad(it),0);}
 function quickSlots(items=state.items){return items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+it.qty,0);}
 function backpackLoad(){return loadUsed()-bodyLoad();}
 function validBodyChange(it,pos){const items=state.items.map(x=>x===it?{...x,position:pos,equipped:pos==="hands"||pos==="worn"}:x);if(quickSlots(items)>3){toast("Acesso rápido: máximo de 3 espaços.");return false;}if(bodyLoad(items)>bodyCapacity()+1e-9){toast("Capacidade corporal insuficiente; guarde equipamento ou aumente Força ou Vigor.");return false;}return true;}
 function itemLoad(it){
  if(it.type==="escudo"&&it.shieldGrounded)return 0; // Escudo caído não ocupa a carga do personagem.
- const regular=it.ammoRole==="supply"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1)+(it.ammoRole==="container"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:0);
+ const regular=it.ammoRole==="supply"?ammoLotLoad(it)*ammoCount(it.ammoMix)/20:WEIGHTS[it.weight][1]*it.qty*((it.properties||[]).includes("Muito Leve")?0.5:1)+(it.ammoRole==="container"?ammoLotLoad(it)*ammoCount(it.ammoMix)/20:0);
  // A arma presa soma peso real categórico enquanto o escudo permanecer carregado
  // (mesmo se abaixado). O item é retirado do inventário ao abandonar o escudo.
  const embedded=it.type==="escudo"&&it.embeddedWeapon?
@@ -2965,8 +2969,8 @@ function purchaseLoadMarkup(preview){
   
   "A compra permanece dentro da capacidade total.";
  return '<div class="fp-purchase-load fp-purchase-load-'+preview.status+'"><strong>Carga após compra: '+
-  pad(preview.after)+' / '+preview.max+' Alto ('+pad(preview.percent)+'%) · '+preview.balance+'</strong>'+
-  '<small>Agora: '+pad(preview.current)+' · Item: +'+pad(preview.added)+' · Recursos gastos: −'+pad(preview.released)+' Alto</small>'+
+  pad(preview.after)+' / '+preview.max+' Cargas ('+pad(preview.percent)+'%) · '+preview.balance+'</strong>'+
+  '<small>Agora: '+pad(preview.current)+' · Item: +'+pad(preview.added)+' · Recursos gastos: −'+pad(preview.released)+' Cargas</small>'+
   '<span>'+warning+'</span></div>';
 }
 function loadBlocksMarkup(){
@@ -2976,25 +2980,24 @@ function loadBlocksMarkup(){
   return '<span class="fp-load-block'+(over?' over':'')+'" style="--fp-fill:'+fill.toFixed(2)+'%" aria-hidden="true"></span>';
  }).join("");
 }
-// Mapa visual: cada célula equivale a 0,05 Alto (ilustrativo, sem novos limites por slots).
+// Mapa visual: cada célula equivale a 0,5 Carga (ilustrativo, sem novos limites por slots).
 // Capacidade e carga continuam sendo calculadas pelas funções oficiais acima.
-const CARGO_CELL_ALTO=0.05;
+const CARGO_CELL_LOAD=0.5;
 const CARGO_TYPES=new Set(["arma","armadura","escudo","foco"]);
 function cargoCapacitySources(){
  const sources=[
-  ["Corpo base",null,1],["Mochila",null,.5],["Força",state.attributes.forca||0,0],
-  ["Vigor",state.attributes.vigor||0,0],
-  ["Atletismo",state.practices.atletismo||0,0]
+  ["Corpo base",null,5],["Mochila",null,3],["Força",state.attributes.forca||0,state.attributes.forca||0],
+  ["Vigor",state.attributes.vigor||0,Math.floor((state.attributes.vigor||0)/2)]
  ];
- return sources.map(([name,grade,base])=>({name,grade,gain:grade===null?base:grade}));
+ return sources.map(([name,grade,base])=>({name,grade,gain:base}));
 }
 function cargoCapacitySourcesMarkup(){
  return cargoCapacitySources().map(src=>
-  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>'+(src.grade===null?'+'+src.gain+' Alto':src.gain+' graus')+'</strong></div>'
+  '<div class="fp-capacity-source"><small>'+esc(src.name)+(src.grade===null?'':' G'+src.grade)+'</small><strong>'+('+'+src.gain+' Carga')+'</strong></div>'
  ).join("");
 }
 function cargoGridMarkup(){
- const cellCount=capacity()*20;
+ const cellCount=capacity()*2;
  const items=state.items.map(it=>({
   name:it.name||"Item sem nome",amount:itemLoad(it),
   kind:CARGO_TYPES.has(it.type)?it.type:"outro"
@@ -3008,13 +3011,13 @@ function cargoGridMarkup(){
   return entry;
  });
  return Array.from({length:cellCount},(_,i)=>{
-  const start=i*CARGO_CELL_ALTO,end=start+CARGO_CELL_ALTO;
+  const start=i*CARGO_CELL_LOAD,end=start+CARGO_CELL_LOAD;
   const filled=intervals.map(it=>{
    const covered=Math.max(0,Math.min(it.end,end)-Math.max(it.start,start));
    if(covered<1e-9)return "";
-   const width=Math.min(100,covered/CARGO_CELL_ALTO*100).toFixed(4);
+   const width=Math.min(100,covered/CARGO_CELL_LOAD*100).toFixed(4);
    return '<span class="fp-cargo-part fp-cargo-part-'+it.kind+'" style="width:'+width+'%" title="'+
-     esc(it.name)+' · '+pad(it.amount)+' Alto"></span>';
+     esc(it.name)+' · '+pad(it.amount)+' Cargas"></span>';
   }).join("");
   return '<div class="fp-cargo-cell" aria-hidden="true">'+filled+'</div>';
  }).join("");
@@ -4096,7 +4099,7 @@ function wizardEquipment(){
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
  '<section class="fp-wiz-vt-section"><h4>Comprar itens G1</h4><p>Os preços e alcances do catálogo são <strong>PROPOSTOS</strong> para playtest; não há equipamento gratuito presumido.</p>'+
-  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(currentPercent)+'%) · '+loadStatus(loadPercent())+'</strong><small>Capacidade total = 1,5 + Força + ⌊Vigor / 2⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
+  '<div class="fp-purchase-load fp-purchase-load-'+currentLoadStatus+'"><strong>Carga atual: '+pad(loadUsed())+' / '+capacity()+' Cargas ('+pad(currentPercent)+'%) · '+loadStatus(loadPercent())+'</strong><small>Capacidade total = 8 + Força + ⌊Vigor / 2⌋. As prévias descontam os recursos gastos no escambo.</small></div>'+
  '<label class="fp-wiz-shop-preferred">Recurso usado primeiro na troca <select data-wizard-trade-preferred>'+
  RESOURCES.map(([k,name])=>'<option value="'+k+'"'+(wizardTradePreferred===k?' selected':'')+'>'+esc(name)+'</option>').join("")+'</select></label>'+
  '<div class="fp-shop-filters-wrap">'+filters+'<span class="fp-filter-count">'+visible.length+' opções</span></div><div class="fp-wiz-shop-catalog">'+(items||'<p>Nenhum item encontrado com esses filtros.</p>')+'</div></section>'+
@@ -4121,7 +4124,7 @@ function wizardReview(){
   '<p>Atributos: '+x.attributes+' XP · Formação: '+x.training+' XP · Perícias: '+x.skills+' XP · saldo: '+x.free+' XP. Ao menos um Atributo e um Conhecimento ou Prática precisam alcançar Grau 1.</p></div>'+
   '<div class="fp-wiz-reminder"><strong>Patrimônio inicial · '+walletValue()+' VT restantes</strong>'+
   '<p>20 VT experimentais para escambo. Itens adquiridos: '+(state.items.length?state.items.map(it=>esc(it.name)).join(", "):"nenhum")+'. É possível começar sem equipamentos comprados.</p></div>'+
-  '<div class="fp-purchase-load fp-purchase-load-'+(loadPercent()>=100?"over":"normal")+'"><strong>Revisão de carga: '+pad(loadUsed())+' / '+capacity()+' Alto ('+pad(loadPercent())+'%) · '+loadStatus(loadPercent())+'</strong><small>Confira o peso antes de concluir o personagem. Itens transportados e recursos de troca contam na carga.</small></div>';
+  '<div class="fp-purchase-load fp-purchase-load-'+(loadPercent()>=100?"over":"normal")+'"><strong>Revisão de carga: '+pad(loadUsed())+' / '+capacity()+' Cargas ('+pad(loadPercent())+'%) · '+loadStatus(loadPercent())+'</strong><small>Confira o peso antes de concluir o personagem. Itens transportados e recursos de troca contam na carga.</small></div>';
 }
 function wizardOverview(){
  const x=xpCosts();
@@ -4266,7 +4269,7 @@ function vitalHelpDetails(kind){
  "SRD Playtest Nível 1 v1.0 · Proteções; Inventário da ficha."],
  balance:["Peso do personagem",NPC_MODE?"Peso natural de criatura: regra pendente.":state.race==="runa_espinhos"?"Runa Espinhos são sempre Pesados.":"Peso determinado pela armadura equipada: "+balance()+".","Carga transportada é independente do peso; sobrecarga não muda sua categoria.","SRD v0.138."],
  load:["Carga","Peso total dos itens, recursos carregados e armas presas em escudos, quando presentes.",
- "Capacidade = 1,5 + Força "+(a.forca||0)+" + piso(Vigor "+(a.vigor||0)+"/2) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
+ "Capacidade = 8 + Força "+(a.forca||0)+" + piso(Vigor "+(a.vigor||0)+"/2) = "+capacity()+". Ocupação: "+used+" Cargas.",
  "Fórmula atual da ficha · Inventário (playtest)."],
  movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrecarga; outros efeitos seguem suas regras.",
  "8 m + ⌊(Agilidade ("+(a.agilidade||0)+") + Destreza ("+(a.destreza||0)+")) / 2⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
@@ -5249,7 +5252,7 @@ function closeHandTooltip(restoreFocus=false){
 function handTooltipMarkup(it,pinned){
  const pos=itemPosition(it),labels={hands:"Puxar para as mãos",quick:"Guardar no corpo",bag:"Guardar na mochila"};
  const integrity=it.type==="escudo"?shieldIntegrityDisplay(it):{hp:it.hp,max:it.max};
- const info=[equipmentDetails(it),"Grau "+it.grade+" · "+pad(itemLoad(it))+" Alto · Qtd. "+it.qty,({hands:"Equipado",quick:"Acesso rápido",bag:"Mochila"})[pos]];
+ const info=[equipmentDetails(it),"Grau "+it.grade+" · "+pad(itemLoad(it))+" Cargas · Qtd. "+it.qty,({hands:"Equipado",quick:"Acesso rápido",bag:"Mochila"})[pos]];
  if(handItem(it))info.push("Empunhadura: "+itemHands(it)+" mão(s)");
  if(integrity.max>0)info.push("Integridade: "+integrity.hp+" / "+integrity.max);
  if(it.type==="arma"&&it.range>0&&effectiveWeaponRange(it)!==it.range)info.push("Alcance efetivo: "+effectiveWeaponRange(it)+" m");
@@ -5347,22 +5350,22 @@ function renderInventory(){
  const count=$("inventory-quick-items"),equipped=$("inventory-quick-equipped"),quickLoad=$("inventory-quick-load");
  if(count)count.textContent=String(state.items.length);
  if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
- if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
+ if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Cargas";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · "+loadStatus(loadPercent())+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: −2E nos testes afetados e metade do deslocamento.":"");
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Cargas ("+pad(loadPercent())+"%) · "+loadStatus(loadPercent())+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: −2E nos testes afetados e metade do deslocamento.":"");
  const cargoPanel=$("inventory-cargo-panel");
  if(cargoPanel)cargoPanel.hidden=NPC_MODE;
  if(!NPC_MODE&&cargoPanel){
-  $("inventory-cargo-total").textContent=pad(load)+" / "+max+" Alto transportado";
+  $("inventory-cargo-total").textContent=pad(load)+" / "+max+" Cargas transportado";
   $("inventory-cargo-balance").textContent=loadStatus(loadPercent())+" · "+pad(loadPercent())+"%";
   const grid=$("inventory-load-grid");
   grid.innerHTML=cargoGridMarkup();
-  grid.setAttribute("aria-label",pad(load)+" de "+max+" Alto ocupados ("+pad(loadPercent())+"%). "+loadStatus(loadPercent())+". Cada célula representa 0,05 Alto; cores diferenciam os tipos de item.");
+  grid.setAttribute("aria-label",pad(load)+" de "+max+" Cargas ocupados ("+pad(loadPercent())+"%). "+loadStatus(loadPercent())+". Cada célula representa 0,5 Carga; cores diferenciam os tipos de item.");
   const parts=cargoCapacitySources();
   $("inventory-capacity-sources").innerHTML=cargoCapacitySourcesMarkup();
-  $("inventory-capacity-equation").textContent="1,5 + Força "+(state.attributes.forca||0)+" + ⌊Vigor "+(state.attributes.vigor||0)+" / 2⌋ = "+max+" Alto · inclui mochila inicial de 0,5";
+  $("inventory-capacity-equation").textContent="8 + Força "+(state.attributes.forca||0)+" + ⌊Vigor "+(state.attributes.vigor||0)+" / 2⌋ = "+max+" Cargas · inclui mochila inicial de 3";
   const overflow=$("inventory-cargo-overflow");
-  overflow.hidden=!(load>max||bodyLoad()>bodyCapacity()+1e-9||backpackLoad()>.5+1e-9||quickSlots()>3);
+  overflow.hidden=!(load>max||bodyLoad()>bodyCapacity()+1e-9||backpackLoad()>3+1e-9||quickSlots()>3);
   overflow.textContent=overflow.hidden?"":"Capacidade por compartimento excedida. Reorganize os itens; fichas antigas não perdem equipamentos automaticamente.";
  }
  const filterSelect=(opts,current,attribute)=>'<select '+attribute+'>'+opts.map(([id,label])=>
@@ -5371,11 +5374,11 @@ function renderInventory(){
   filterSelect(EQUIPMENT_FAMILIES,inventoryType,'data-inventory-type aria-label="Filtrar inventário por tipo"')+'</label>'+
   '<label>Peso '+filterSelect(EQUIPMENT_WEIGHT_OPTIONS,inventoryWeight,'data-inventory-weight aria-label="Filtrar inventário por peso"')+'</label>'+
   '<span class="fp-filter-count">'+state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight)).length+' de '+state.items.length+' itens</span></div>';
- $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+quickSlots()+'/3 espaços · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Alto · Corpo '+pad(bodyLoad())+'/'+bodyCapacity()+' Alto · Mochila '+pad(backpackLoad())+'/0,5 Alto · Mãos '+state.items.filter(it=>handItem(it)&&it.equipped).reduce((n,it)=>n+itemHands(it),0)+'/2.</p>');
+ $("inventory-filterbar").insertAdjacentHTML("beforeend",'<p class="fp-caption">Acesso rápido: '+quickSlots()+'/3 espaços · '+state.items.filter(it=>it.ammoRole==="container"&&itemPosition(it)==="quick").length+' porta-munições · '+pad(state.items.filter(it=>itemPosition(it)==="quick").reduce((n,it)=>n+itemLoad(it),0))+' Cargas · Corpo '+pad(bodyLoad())+'/'+bodyCapacity()+' Cargas · Mochila '+pad(backpackLoad())+'/3 Cargas · Mãos '+state.items.filter(it=>handItem(it)&&it.equipped).reduce((n,it)=>n+itemHands(it),0)+'/2.</p>');
  const handPanel=$("inventory-hands");if(handPanel)handPanel.innerHTML=handPanelMarkup();
  const openedItems=new Set([...document.querySelectorAll('#inventory-list details.fp-item[open]')].map(x=>x.dataset.itemId));
- const displayPosition=it=>it.equipped?"equipped":itemPosition(it);
- const positionOrder={equipped:0,quick:1,bag:2};
+ const displayPosition=it=>it.equipped?"equipped":itemPosition(it)==="bag"&&itemLoad(it)/Math.max(1,it.qty)<=.5?"small":itemPosition(it);
+ const positionOrder={equipped:0,quick:1,bag:2,small:3};
  const listedItems=state.items.filter(it=>equipmentMatches(it,inventoryType,inventoryWeight))
   .sort((a,b)=>positionOrder[displayPosition(a)]-positionOrder[displayPosition(b)]||EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(a))-
     EQUIPMENT_FAMILIES.findIndex(x=>x[0]===equipmentFamily(b))||
@@ -5394,7 +5397,7 @@ function renderInventory(){
    '</label></div>'+
    (it.embeddedWeapon?'<div class="fp-item-hint"><strong>Cravar ativo:</strong> −1E por arma cravada em Levantar Escudo (registro de múltiplas armas pendente); '+
     'carga adicional de '+pad(WEIGHTS[it.embeddedWeapon==="pesado"?"alto":"medio"][1])+
-    ' Alto enquanto o escudo permanecer carregado. <button type="button" class="fp-secondary" data-action="cravar-remove-prepare" data-id="'+esc(it.id)+'">Tentar retirar a arma (teste)</button>'+
+    ' Cargas enquanto o escudo permanecer carregado. <button type="button" class="fp-secondary" data-action="cravar-remove-prepare" data-id="'+esc(it.id)+'">Tentar retirar a arma (teste)</button>'+
     ' <small>O campo acima permite corrigir erros de cadastro; para retirar em jogo use o teste. Soltar escudo: retire o item da carga.</small></div>':"")
   );
   const cravarImpact=it.type!=="escudo"?"":(
@@ -5419,7 +5422,7 @@ function renderInventory(){
    (it.shieldGrounded?'<div class="fp-item-hint"><strong>Escudo no chão:</strong> '+(it.shieldFallCase==="caminho"?"Caiu no caminho. 1 Antecipar pode permitir correr e recuperar, conforme Narrador.":"Caiu próximo ao alvo; pode haver risco de atingir aliado próximo se alcançou a DE dele.")+' Distância calculada da queda: '+it.shieldFallMeters+' m. <button class="fp-secondary" type="button" data-action="shield-ground-recover" data-id="'+esc(it.id)+'">Confirmar recuperação (Narrador)</button></div>':"")+
    (ownsSkill("escudo-bumerangue")?'<div class="fp-item-hint"><strong>Escudo Bumerangue:</strong> '+(shieldBoomerangReady(it)?'Escudo equipado e habilitado: Disciplina + Atributo(s), até 8 m. Acerto retorna no mesmo turno; falha deixa no chão. <button class="fp-secondary" type="button" data-action="shield-throw-prepare" data-id="'+esc(it.id)+'">Preparar lançamento</button>':it.shieldGrounded?'Recupere o escudo caído antes de lançar novamente.':'Equipe este escudo para preparar a rolagem de lançamento.')+' 1 Coragem para lançar; dano físico normal no acerto e características existentes conforme habilitação. Recuperação condicionada ao resultado.</div>':"")
   );
-  const group=({equipped:"Equipados",quick:"Acesso rápido",bag:"Mochila"}[displayPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
+  const group=({equipped:"Equipados",quick:"Acesso rápido",bag:"Mochila",small:"Itens pequenos · mochila"}[displayPosition(it)])+" · "+equipmentGroupName(equipmentFamily(it))+" · "+equipmentWeightName(equipmentWeight(it));
   const groupTitle=previousGroup===group?"":'<h5 class="fp-shop-group-title">'+esc(group)+'</h5>';
   previousGroup=group;
   const stats=equipmentDetails(it);
@@ -5440,7 +5443,7 @@ function renderInventory(){
   '<label>Qtd. <input type="number" data-item-field="qty" data-id="'+esc(it.id)+'" min="1" max="99" value="'+it.qty+'" style="width:44px"></label> · '+
   '<label>Integridade máxima '+(it.type==="escudo"?'(base) ':'')+'<input type="number" data-item-field="max" data-id="'+esc(it.id)+'" min="0" max="999" value="'+it.max+'" style="width:50px" '+""+'> </label>'+
   ' · '+(it.equipped?"Equipado":"No inventário")+'</div>'+
-   '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Alto · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
+   '<div class="fp-item-hint">Ocupa '+pad(itemLoad(it))+' Cargas · '+pad(itemLoad(it)/Math.max(1,capacity())*100)+'% da capacidade de carga</div>'+
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (weaponMasteryId(it)&&ownsSkill(weaponMasteryId(it))?'<div class="fp-item-hint"><strong>Especialização por família de arma:</strong> '+(weaponMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas/manejo apropriada para este equipamento ou peso não definido.')+' Não concede Perícias de Armas, nem ativa efeitos automaticamente.</div>':"")+ 
@@ -5567,7 +5570,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
   const risk=preview.status==="over"?"\nATENÇÃO: após esta compra ficará em SOBRECARGA: −2E e metade do deslocamento.":
    "";
   if(!confirm("Comprar "+item.name+(item.kitContainer?" + "+item.kitContainer+" + 20 projéteis":"")+(mix?" ("+Object.entries(mix).map(([k,v])=>v+" "+k).join(", ")+")":"")+" por "+price+" VT em recursos de Grau 1?"+
-   "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Alto ("+pad(preview.percent)+"%) · "+preview.balance+
+   "\nCarga após compra: "+pad(preview.after)+" / "+preview.max+" Cargas ("+pad(preview.percent)+"%) · "+preview.balance+
    "\nInclui o peso do item e desconta o peso dos recursos gastos."+risk+"\nDeseja confirmar?"))return;
  const res={...state.trade.resources},order=[preferred,...RESOURCES.map(([key])=>key)].filter((x,i,a)=>a.indexOf(x)===i);
  let due=price;
@@ -5722,7 +5725,8 @@ function npcConflictItems(items=state.items){
  return (Array.isArray(items)?items:[]).slice(0,70).map(it=>({
   id:it.id,name:it.name,kind:it.ammoRole==="container"?"container":it.ammoRole==="supply"?"ammunition":kinds[it.type]||"other",
   category:categories[it.weight]||"",
-  weight:it.ammoRole?itemLoad(it):typeof it.weight==="number"?it.weight:(WEIGHTS[it.weight]?.[1]??0),
+  weight:it.ammoRole?(it.ammoRole==="supply"?it.ammoLotWeight*ammoCount(it.ammoMix)/20:(LEGACY_WEIGHT[it.weight]||0)+it.ammoLotWeight*ammoCount(it.ammoMix)/20):typeof it.weight==="number"?it.weight:(LEGACY_WEIGHT[it.weight]??0),
+  load:itemLoad(it)/Math.max(1,it.qty),
   qty:it.qty,grade:it.grade,
   integrityMax:it.max,integrity:it.hp,equipped:!!it.equipped,position:itemPosition(it),hands:itemHands(it),die:it.die,range:it.range,properties:it.properties,ammoRole:it.ammoRole,ammoFamily:it.ammoFamily,ammoMix:it.ammoMix,ammoLotWeight:it.ammoLotWeight,storageCapacity:it.storageCapacity
  }));
