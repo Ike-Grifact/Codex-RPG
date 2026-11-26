@@ -204,3 +204,13 @@ test("Faces críticas por tipo, sem confundir d10/10 com d10/7",()=>{
   assert.equal(isCriticalFace(4,1),false);
   assert.equal(isCriticalFace(4,4),true);
  });
+
+
+test("v0.162 — dado reduzido sem Perícia não muda categoria da arma",()=>{
+ for(const [category,skill,normal,reduced] of [["leve","armas-leves",6,4],["medio","armas-medias",10,6],["pesado","armas-pesadas",12,10]]){
+  const item={system:{kind:"weapon",category,equipped:true,die:normal,properties:[]}};
+  assert.equal(equippedDie({system:{skills:[skill]}},item,"armas"),normal);
+  assert.equal(equippedDie({system:{skills:[]}},item,"armas"),reduced);
+  assert.equal(item.system.category,category);
+ }
+});

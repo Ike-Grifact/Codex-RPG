@@ -128,7 +128,7 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
     key:"Grau "+magicGrade+" · dado "+(i+1),sides,baseSides:sides}));
   }
   if(equipmentDie&&mode!=="conjuracao"){
-   if(![6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
+   if(![4,6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");
    else pool.push({id:"equipment.0",group:"equipment",key:"equipment",sides:Number(equipmentDie)});
   }
  }

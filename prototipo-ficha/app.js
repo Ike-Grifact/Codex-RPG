@@ -2031,6 +2031,13 @@ function tradeDefault(){return {initial:STARTING_VT,resources:Object.fromEntries
  stonePrices:{common:null,rare:null},stones:[]};}
 function walletValue(s=state){return RESOURCES.reduce((n,[k])=>n+Number(s.trade?.resources?.[k]||0),0);}
 function resourceWeight(s=state){return walletValue(s)/10*WEIGHTS.leve[1];} // Lotes G1 pequenos: 10 unidades = 1 Leve (proposta).
+function weaponTrained(item){
+ if(!item||item.type!=="arma")return false;
+ const skills=allOwnedSkills(),cat=item.category||({leve:"leve",medio:"medio",alto:"pesado"}[item.weight]||"leve");
+ if(item.firearm)return skills.includes("armas-fogo");
+ if((item.properties||[]).includes("À Distância"))return skills.includes("armas-longo-alcance");
+ return skills.includes({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat]);
+}
 function combatItem(item,mode){
  // Foco pode estar somente no inventário para conjurar; armas ainda exigem estar equipadas.
  if(!item||!(item.equipped||(mode==="conjuracao"&&item.type==="foco"))||!["arma","foco"].includes(item.type))return [];
@@ -3937,7 +3944,7 @@ function wizardConfirmStarterPicks(){
 function wizardFinalize(){
  if(viewMode!=="builder"||state.pending||state.creationLocked)return;
  if(!state.name.trim()){toast("O personagem precisa de um nome.");wizardStep=0;renderWizard();return;}
- if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=2;renderWizard();return;}
+ if(!hasStarterSources()){toast("Desenvolva um Atributo e um Conhecimento ou Prática.");wizardStep=3;renderWizard();return;}
   if(!raceChoicesComplete()){toast("Escolha os elementos raciais iniciais para concluir.");wizardStep=0;renderWizard();return;}
  const xp=xpCosts();
  if(xp.free<0){toast("O investimento ultrapassa "+CREATE_BUDGET.total+" XP.");return;}
@@ -4488,7 +4495,7 @@ function buildPool(){
   const weapon=state.items.find(x=>x.id===draft.equipmentId);
   const weaponDice=weapon&&combatItem(weapon,"armas");
   if(!ownsSkill("golpe-furtivo")||skillReq("golpe-furtivo")||draft.mode!=="armas"||!usingDiscipline()||
-   !weapon||weapon.type!=="arma"||!weaponDice?.length||draft.shieldThrowId||draft.cravarRemovalShieldId||
+   !weapon||weapon.type!=="arma"||!weaponTrained(weapon)||!weaponDice?.length||draft.shieldThrowId||draft.cravarRemovalShieldId||
    draft.maosLeves||draft.shieldRaise)
    errors.push("Golpe Furtivo exige ataque furtivo com Disciplina e arma equipada/habilitada; não vale para foco, escudo ou magia.");
   else pool.push({id:"golpe-furtivo:"+weapon.id,group:"equipment",key:weapon.name+" · Golpe Furtivo",sides:weaponDice[0],baseSides:weaponDice[0],stealthBonus:true});
@@ -4498,7 +4505,7 @@ function buildPool(){
   const ranged=!!weapon&&(weapon.properties||[]).includes("À Distância")||
    /^(arco|besta|zarabatana)/i.test(weapon?.name||"");
   const valid=weapon?.type==="arma"&&weapon.equipped&&!weapon.firearm&&
-   !!combatItem(weapon,"armas").length&&draft.mode==="armas"&&usingDiscipline()&&
+   weaponTrained(weapon)&&!!combatItem(weapon,"armas").length&&draft.mode==="armas"&&usingDiscipline()&&
    (draft.fulminante==="golpe-fulminante"?!ranged&&!draft.attackThrown:
     draft.fulminante==="disparo-fulminante"&&(ranged||(draft.attackThrown&&ownsSkill("maestria-arremesso-armas"))));
   if(!ownsSkill(draft.fulminante)||!valid||skillReq(draft.fulminante))

@@ -1,5 +1,5 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0161-critico";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0162-armas";
 import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity,chargePerItem,itemLoadFor} from "../criar-conflito/rules.mjs?v=20261126-v0161-critico";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
@@ -528,8 +528,10 @@ export function equippedWeapons(c,catalog=[],includeCarried=false){
   const long=properties.includes("À Distância");
   const skill=kind==="firearm"?"armas-fogo":category==="medio"?"armas-medias":category==="pesado"?"armas-pesadas":"armas-leves";
   const eligible=projectileFamily(it)?(c.skills||[]).includes("armas-longo-alcance")&&Number(c.practices?.armas_conjuracao||0)>=1&&Number(c.attributes?.destreza||0)>=2:(c.skills||[]).includes(skill)||(long&&(c.skills||[]).includes("armas-longo-alcance"));
-  const die=Number(it.die||cat.die||0),range=Number(it.range||cat.range||0);
-  return {...it,kind,category,die,range,properties,skill,eligible:eligible&&[6,10,12].includes(die)};
+  const baseDie=kind==="firearm"?Number(it.die||cat.die||0):({leve:6,medio:10,pesado:12}[category]||0),range=Number(it.range||cat.range||0);
+  const trained=eligible&&[6,10,12].includes(baseDie);
+  const die=trained?baseDie:kind==="weapon"?({6:4,10:6,12:10}[baseDie]||0):0;
+  return {...it,kind,category,die,baseDie,range,properties,skill,trained,eligible:die>0};
  });
 }
 export function weightAffinity(weapon,target,attacker=null){
