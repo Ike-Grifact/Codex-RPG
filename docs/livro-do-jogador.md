@@ -1,7 +1,5 @@
 # Codex RPG — Livro do Jogador
 
-> **SRD v0.150 — DEFINIDO:** DE natural humanoide = min(8; 2 + piso((Agilidade + Vigor)/2)); Destreza não entra. Leve 0, Média −1, Pesada −2, Muito Pesada −3; Muito Leve retirada do catálogo de armaduras. Maestria em Escudos: 1 XP, Vigor 2 + Destreza 2 + Força 1 + Proteção 1; +1 DE passiva e +1 Integridade material com escudo físico equipado; teto final 9. Runa Espinhos pode usar escudo físico normalmente, mantendo proibição de armadura física.
-
 Descubra um mundo de fantasia sombria e tecnomagia, construa seu Aprendiz e aprenda a transformar as possibilidades dos dados em escolhas durante a aventura. Este livro apresenta o universo, as regras de jogo, a criação de personagens e as possibilidades de especialização.
 
 ## Parte I — Aprendendo a jogar
@@ -618,7 +616,7 @@ Cada Grau de Força aumenta a capacidade corporal em **1 Alto**, além do **1 Al
 
 Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
 
-Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Cada Grau de Agilidade acrescenta **1 metro ao deslocamento padrão**. A cada dois Graus somados de Agilidade e Vigor, a DE natural aumenta em 1.
+Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Agilidade e Destreza contribuem igualmente para o deslocamento: a cada dois Graus somados, ele aumenta em 1 metro. A cada dois Graus somados de Agilidade e Vigor, a DE natural aumenta em 1.
 
 **Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
 
@@ -673,25 +671,25 @@ Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo q
 
 ### Do Atributo à ficha — recursos e capacidades
 
-Agora que você conhece os seis Atributos, veja como seus Graus influenciam os valores que acompanhará na aventura. As capacidades básicas dependem exclusivamente dos Atributos.
+Os Graus dos Atributos determinam suas capacidades básicas. O equipamento e as Perícias podem modificar alguns desses valores.
 
 #### Capacidade de carga, peso e sobrecarga
 
-A capacidade de carga indica quanto o Aprendiz consegue transportar. O corpo suporta 1 Alto inicial, mais o Grau de Força e metade do Grau de Vigor arredondada para baixo. A mochila inicial oferece 0,5 Alto adicional. Mãos e três espaços de saque rápido fazem parte da capacidade corporal; não aumentam esse limite.
+O corpo suporta 1 Alto + o Grau de Força + metade do Grau de Vigor, arredondada para baixo. A mochila inicial oferece mais 0,5 Alto. As duas mãos e os três espaços de acesso rápido fazem parte da capacidade corporal.
 
-Exemplo: Força 2 e Vigor 1: 3 Altos no corpo e 0,5 na mochila, totalizando 3,5 Altos.
+**Exemplo:** Força 2 e Vigor 1: 3 Altos no corpo e 0,5 na mochila, totalizando 3,5 Altos.
 
-O peso do personagem indica sua categoria para as afinidades dos ataques. Ele é determinado pela armadura equipada, não pela quantidade de objetos carregados. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação permanece pendente.
+O peso do personagem é determinado pela armadura equipada, não pela carga transportada. Runa Espinhos são sempre Pesados.
 
-Na referência de playtest vigente, ao atingir 100% da capacidade total ocorre sobrecarga: −2E nos testes afetados e metade do deslocamento padrão. A abrangência de −2E e a confirmação do limiar permanecem pendentes. Exceder um compartimento exige reorganização; a sobrecarga não muda o peso do personagem nem sua DE.
-
+Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
 
 #### Defesa e movimento
 
-A DE natural começa em 2. Some 1 a cada 2 Graus completos somados de Agilidade e Vigor, até o teto natural 8. Atletismo não aumenta valores derivados da ficha; é utilizado em testes e requisitos. Sem armadura ou com armadura Leve, a DE natural é mantida; armaduras mais pesadas reduzem a DE. Maestria em Escudos acrescenta +1 com escudo físico equipado, até o teto final 9. A DE final nunca é negativa: o mínimo é 0.
+A DE natural começa em 2 e aumenta em 1 a cada dois Graus somados de Agilidade e Vigor, até 8. A armadura equipada modifica a DE. Maestria em Escudos acrescenta 1 DE com um escudo físico equipado. A DE final varia de 0 a 9.
 
-O deslocamento padrão é 8 metros + Grau de Agilidade + metade do Grau de Destreza arredondada para baixo.
+O deslocamento padrão é 8 metros + metade da soma dos Graus de Agilidade e Destreza, arredondada para baixo. Atletismo é utilizado em testes e requisitos, não no cálculo do movimento.
 
+**Movimento = 8 + piso((Agilidade + Destreza)/2) metros.** Exemplo: Agilidade 2 e Destreza 1 resultam em 9 m.
 
 #### Equipamentos, Integridade e dano
 
@@ -699,13 +697,12 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 | Armadura | Modificador de DE | Integridade G1 |
 |---|---|---|
-| Muito Leve | 0 | 2 |
-| Leve | 0 | 5 |
+| Leve | 0 | 4 |
 | Média | −1 | 8 |
 | Pesada | −2 | 12 |
-| Muito Pesada | −4 | Pendente |
+| Muito Pesada | −3 | — |
 
-Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Muito Leve, continua 2; com Leve, fica 1; com Média ou Pesada, fica 0. A armadura Muito Pesada também respeita o mínimo 0, quando seus requisitos forem atendidos.
+Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
 
 Armaduras Muito Pesadas exigem Vigor 6 e Atletismo 6 e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é E válidos + 1 por par completo de T não anulados, salvo efeitos específicos. Sem armadura equipada, um acerto com 5 ou mais E + T válidos causa 2 Vida na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. Ataques que falham não desgastam a armadura.
 
@@ -956,7 +953,7 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve a
 
 ### 3. Vida, Coragem, defesa e movimento
 
-Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 10 m. Anote esses valores na ficha; o equipamento altera sua DE para 3.
+Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 9 m. Anote esses valores na ficha; o equipamento altera sua DE para 3.
 
 ### 4. Equipamentos, peso e carga
 
@@ -974,9 +971,9 @@ Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas
 
 ### Peso e sobrecarga
 
-O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria.
+O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. A categoria de humanoides sem armadura não possui regra definida.
 
-Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem.
+Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
 
 **DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
@@ -1169,7 +1166,7 @@ Monstros extraordinários não humanoides seguem suas regras próprias de defesa
 
 **Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. Para humanoides sem armadura, a classificação ainda precisa de definição; não invente uma categoria. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem.
+O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. A categoria de humanoides sem armadura não possui regra definida. Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
 
 **Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
@@ -1214,13 +1211,13 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−3 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
 
-**Modificadores gerais de armadura [DEFINIDO — SRD v0.150]:** Leve 0, Média −1, Pesada −2, Muito Pesada −3 em todas as defesas. Calcule a DE natural com teto 8, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 9. Não duplicar modificadores. Integridade é recurso separado.
+**Modificadores gerais de armadura:** Leve 0, Média −1, Pesada −2, Muito Pesada −3 em todas as defesas. Calcule a DE natural com teto 8, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 9. Não duplicar modificadores. Integridade é recurso separado.
 
 **Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
 
 **Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto) [DEFINIDO — SRD v0.148]:** corpo = **1 + Força + piso(Vigor/2)**; mochila inicial = **0,5 Alto**; total = soma dos dois. Força integral e metade de Vigor arredondada para baixo; nenhuma Prática ou Conhecimento contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Sobrecarga: a referência vigente de playtest aplica −2 Êxitos nos testes afetados e reduz o deslocamento padrão à metade ao atingir 100% da capacidade total. A abrangência de −2E permanece pendente. Exceder um compartimento exige reorganização. A sobrecarga não altera a DE nem o peso do personagem. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Capacidade de carga (unidades Alto):** corpo = **1 + Força + piso(Vigor/2)**; mochila inicial = **0,5 Alto**; total = soma dos dois. Força integral e metade de Vigor arredondada para baixo; nenhuma Prática ou Conhecimento contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
 
 ## Combate Coordenado
 
