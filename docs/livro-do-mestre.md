@@ -150,25 +150,36 @@ Cada metro de altura equivale a **1 ponto de intensidade**. Para montar a rolage
 
 **Exemplo:** uma queda de 8 m equivale a 8 pontos. O d20 cobre 5, e o d10 cobre os 3 restantes. Role **1d20 + 1d10**. A leitura é uma rolagem de dano do ambiente, não um ataque convencional do personagem; os seis d20 de intensidade 30 não ampliam os limites de dados de suas ações.
 
-### Quando alguém provoca a queda
-
-Se um personagem for derrubado de uma altura por outra criatura ou personagem, sofre o **dano integral correspondente à altura**, sem o teste de redução de queda involuntária. Isso não significa dano fixo igual aos metros: o Narrador ainda rola os dados de dano.
-
-Quando um jogador empurra um inimigo e provoca a queda, os **Temores da rolagem de dano alimentam a reserva pública de Pavor do Narrador**, respeitando seu teto de 2 + número de jogadores. Não credite os mesmos símbolos também à reserva local do inimigo.
-
 ### Queda involuntária
 
-Se um jogador perde o apoio, escorrega ou cai involuntariamente sem ter sido derrubado por outro personagem, o Narrador rola o dano correspondente à altura. Cada Temor dessa rolagem é convertido em **1 Coragem para o jogador que caiu**, respeitando seu teto.
+O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. O jogador testa **Destreza + Atletismo**; com Atletismo Avançado, pode acrescentar uma terceira Aptidão pertinente.
 
-O jogador pode tentar reduzir o dano com **Destreza + Atletismo**. A **DE é igual à altura da queda em metros**. Com Atletismo Avançado (especialização de Atletismo), pode acrescentar uma terceira Aptidão pertinente, respeitando as regras gerais de combinação. Em uma queda de 8 m, a rolagem de dano é 1d20 + 1d10 e o teste de redução é DE 8.
+- Se alcançar a DE, evita a queda.
+- Se falhar, a queda acontece. O Narrador rola os dados correspondentes à altura original. O resultado do teste do jogador reduz o dano obtido, mesmo na falha.
+
+Cada Temor obtido na rolagem de dano de queda involuntária do jogador recupera **1 Coragem**, respeitando seu teto. Não confundir os Temores dessa rolagem com os do próprio teste de Aptidões, que seguem a regra geral.
+
+**Exemplo:** risco de cair 8 m, DE 8. O jogador não alcança a DE. O Narrador rola 1d20 + 1d10 e calcula o dano bruto. O resultado anterior do teste reduz esse dano, não a altura nem a composição de dados.
+
+### Queda provocada por um ataque
+
+Uma ação que lança um inimigo para cima não aplica imediatamente o dano da futura queda. A altura efetivamente alcançada é determinada pelo resultado válido do ataque que o eleva, dentro dos limites do efeito habilitado.
+
+**No turno do inimigo lançado**, ele pode realizar um teste de redução contra a **DE correspondente ao resultado do ataque do conjurador**. A queda é resolvida depois desse teste. O inimigo fica **Caído**, sem contra-atacar imediatamente. Os Temores gerados na resolução da queda provocada alimentam a **reserva pública de Pavor do Narrador**, respeitando seu teto, sem duplicação na reserva local.
+
+**Exemplo de rework — Ar:** uma magia G2 com referência de 16 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 16 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A referência de 16 m para G2 pertence ao exemplo autoral de rework, não altera por si só a tabela vigente de alcance do Ar (G2 8 m, G3 16 m).
 
 ### Danos ambientais
 
 A mesma escala representa perigos ambientais, com intensidade (DE de referência) de **1 a 30**. O Narrador define a intensidade conforme a situação: um vulcão, terremoto, chuva de meteoros ou outra catástrofe pode alcançar a extremidade da escala. Intensidade 30 corresponde a **6d20**, pois cada d20 possui peso 5. Esse é o limite da escala de perigo ambiental, não uma nova DE defensiva dos personagens.
 
-### Resolução — pontos ainda pendentes
+### Resolução do dano
 
-A composição da rolagem, a DE do teste de redução e os destinos de Temor acima estão definidos. O dano depende dos Êxitos e Temores obtidos; **a fórmula exata de conversão em Integridade ou Vida, a quantidade reduzida pelo teste, o tratamento de Antecipar, crítico e proteções e o destino de Temor nas demais situações ainda precisam de decisão autoral**. A regra de dano convencional em ataques não é automaticamente substituída. Para o procedimento de dano ambiental, ler todos os dados da composição é a interpretação adotada para documentação; a aplicação de Roll and Keep, caso desejada, ainda precisa de confirmação específica. Não inventar dano direto à Vida, imunidades, arredondamento de alturas fracionárias ou teto de altura de queda. Não automatizar esses pontos antes da decisão.
+**Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
+
+Na queda com teste de redução, subtraia o resultado do teste do dano bruto rolado pelo Narrador. **Interpretação documental:** usar o total válido que seria comparado à DE (E + T válidos após gastos e anulações), com dano restante nunca negativo. Exemplo ilustrativo: teste com 3 pontos válidos que falha contra DE 8; dano bruto de 5; restam 2 de dano. Não substituir a altura por 8 − 3 nem reduzir a pilha antes de rolar.
+
+**PENDENTE:** confirmação da composição exata da redução (E + T válidos ou apenas E), aplicação à Integridade/Vida, imunidades, críticos, seleção de mantidos da rolagem de dano, situações de queda provocada não cobertas pelo exemplo de elevação, tratamento de alturas fracionárias e Temor nos demais perigos ambientais. A leitura integral da pilha ambiental permanece interpretação documental da v0.155. A ausência de contra-ataque imediato após o teste não substitui a regra geral de levantar-se da condição Caído.
 
 ## 1. Provocação, liderança e objetivos da oposição
 
