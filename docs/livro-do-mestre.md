@@ -161,7 +161,7 @@ Na queda ou no dano ambiental sofrido por um jogador, cada Temor não anulado da
 
 **Exemplo:** risco de cair 8 m, DE 8. O jogador não alcança a DE. O Narrador rola 1d20 + 1d10 e calcula o dano bruto. O resultado anterior do teste reduz esse dano, não a altura nem a composição de dados.
 
-### Queda provocada por um ataque
+### Queda provocada por elevação de um ataque
 
 Uma ação que lança um inimigo para cima não aplica imediatamente o dano da futura queda. A altura efetivamente alcançada é determinada pelo resultado válido do ataque que o eleva, dentro dos limites do efeito habilitado.
 
@@ -171,7 +171,9 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 ### Empurrão de uma altura e superfície de impacto
 
-Para empurrar alguém de uma altura, o atacante realiza um teste contra a DE aplicável. Se acertar, derruba o alvo; o Narrador determina a altura real conforme a cena. A queda provocada admite teste para reduzir o dano, seguindo o procedimento da elevação por Ar, com as Aptidões do alvo. A referência de DE da redução é o resultado válido do ataque, por analogia com a elevação; a altura de queda não é determinada por esse resultado. O alvo fica Caído após a resolução.
+Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão: precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade absorve o dano e o excedente atinge a Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
+
+**Exemplo: alvo com DE 4, empurrão com resultado válido 6. Resistência 7 ou mais evita a queda; 6 ou menos provoca a queda. Se a altura for 15 m e a superfície for comum, o Narrador rola 3d20 de dano, sem descontar a resistência.**
 
 O Narrador considera a superfície de impacto: água, forragem ou inclinação favorável podem amortecer a queda; pedras pontiagudas, espinhos e outras superfícies perigosas podem agravá-la. Recomenda-se ajustar a intensidade de dano em −5 m ou +5 m equivalentes, conforme a cena, sem alterar a altura real ou a DE do teste. Não há intensidade negativa.
 
@@ -181,7 +183,7 @@ A mesma escala representa perigos ambientais, com intensidade (DE de referência
 
 Não existe imunidade universal a dano ambiental. O Narrador considera os tipos de dano presentes na cena (por exemplo, Terra e físico em um terremoto), as proteções e resistências pertinentes; catástrofes podem combinar vários tipos, tornando difícil ignorar todo o dano. Não se cria imunidade ou resistência automática por analogia.
 
-Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Os críticos seguem os benefícios da regra geral, sem gerar Coragem pela ocorrência do crítico. A rolagem integral precisa satisfazer o critério de faces críticas da regra geral; não se descarta dado para formar crítico. A regra existente detalha críticos de dois, três e quatro dados (quatro dobram o dano); o enquadramento de cinco ou mais dados críticos permanece pendente.
+Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Os críticos seguem os benefícios da regra geral, sem gerar Coragem pela ocorrência do crítico. A rolagem integral precisa satisfazer o critério de faces críticas da regra geral; não se descarta dado para formar crítico. O crítico ambiental utiliza a mesma base de dois, três ou quatro dados (quatro dobram o dano), sem recuperação de Coragem pelo crítico. Não existe crítico com cinco ou mais dados. Uma pilha de cinco ou mais dados continua integralmente contabilizada para o dano, sem descarte para formar crítico.
 
 ### Resolução do dano
 
@@ -189,7 +191,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 
 Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
-**PENDENTE:** alturas fracionárias, críticos com cinco ou mais dados, detalhamento de interações específicas de proteção ambiental, situações de empurrão não cobertas pelo procedimento e consequências exatas de alcançar a DE numa queda já provocada. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.158](srd-continuidade-v0.158.md).
+**PENDENTE:** alturas fracionárias, detalhamento de interações específicas de proteção ambiental, Aptidões e momento exato da resistência ao empurrão quando não especificados e consequências exatas de alcançar a DE na elevação por Ar. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.159](srd-continuidade-v0.159.md).
 
 ## 1. Provocação, liderança e objetivos da oposição
 
