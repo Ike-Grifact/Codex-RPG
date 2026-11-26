@@ -325,7 +325,7 @@ const SKILLS=[
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: até 4 m para empurrar, puxar, elevar ou autoempurrar; linha, círculo, cone, X. G2: até 8 m para esses deslocamentos; sufocar com dano à Vida ou armadura, empurrar + derrubar com dano. G3: até 12 m para esses deslocamentos; conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada. Elevação por ataque segue a altura efetiva do resultado válido e as regras de queda; trajetórias curvas somam seus trechos dentro do limite do Grau. Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
   1
  ],
  [
@@ -3285,7 +3285,7 @@ function magicComposerFields(){
  const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
  const time=magicPreparationTurns(grade,draft.magicCharges,!!focus,!!secondFocus);
  const tacticalHint=chosen==="vento"?
- "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 16 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
+ "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 12 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
  chosen==="fogo"&&ownsSkill("veneno")?
  (ownsSkill("mestre")?
  "Ácido: Fogo + Veneno, em acerto com Queimar aplica 1 acúmulo de Veneno por 2 rodadas (sem Sangramento), somente na mistura com Maestria Elemental e habilitações válidas. Misturar custa 1A e a elevação G3 segue a regra comum (+1 Coragem por elemento G3). Sem dano duplicado; registro manual.":
