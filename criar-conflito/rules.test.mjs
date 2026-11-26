@@ -41,9 +41,9 @@ test("Pavor público é independente do local, teto 2 + jogadores",()=>{
 });
 test("Carga informa quantidades alternativas leves, médias e pesadas",()=>{
  const h=blank("humanoide");
- assert.deepEqual(remainingKinds(h),{leve:12,medio:3,pesado:1});
+ assert.deepEqual(remainingKinds(h),{leve:8,medio:4,pesado:2});
  h.items.push({id:"x",name:"Espada",weight:WEIGHT.medio,qty:1});
- assert.deepEqual(remainingKinds(h),{leve:8,medio:2,pesado:1});
+ assert.deepEqual(remainingKinds(h),{leve:6,medio:3,pesado:2});
 });
 test("Importação saneia campos e impede grau/capacidade fora do limite",()=>{
  const t=normalize({kind:"monstro",name:"Dragão",threatGrade:99,
@@ -275,4 +275,10 @@ test("v0.149: humanoides usam 2 + piso((AGI+VIG)/2), sem Atletismo; monstros pre
  const m=blank("monstro");
  m.attributes.agilidade=1;m.attributes.destreza=2;m.attributes.vigor=3;
  assert.equal(stats(m).de,2);
+});
+
+test("Nova escala: categorias antigas são convertidas em Cargas sem mudar peso de combate",()=>{
+ const h=normalize({kind:"humanoide",attributes:{forca:2,vigor:1},items:[{name:"Pequenos",weight:.0125,qty:2},{name:"Espada",category:"medio",weight:.5,qty:1},{name:"Montante",category:"pesado",weight:1,qty:1}]});
+ assert.equal(stats(h).capacity,10);assert.equal(stats(h).used,6);
+ assert.equal(h.items[2].category,"pesado");assert.equal(normalize(h).items[2].load,3);
 });
