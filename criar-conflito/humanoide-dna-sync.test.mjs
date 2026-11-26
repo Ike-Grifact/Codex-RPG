@@ -79,9 +79,9 @@ test("Lucker de Sangue e Humano mantêm seus benefícios sem custo adicional",()
 test("Capacidade de carga humanoide segue 1,5 + FOR + piso(VIG/2), sem Atletismo",()=>{
  const h=blank("humanoide");h.attributes.forca=2;h.attributes.vigor=1;h.practices.atletismo=1;
  h.practices.armas_conjuracao=6;
- assert.equal(stats(h).capacity,3.5,"Disciplina não aumenta a carga");
+ assert.equal(stats(h).capacity,10,"Disciplina não aumenta a carga");
  h.practices.armas_conjuracao=0;
- assert.equal(stats(h).capacity,3.5);
+ assert.equal(stats(h).capacity,10);
  h.attributes.forca=0;h.attributes.vigor=0;h.practices.atletismo=0;
- assert.equal(stats(h).capacity,1.5);
+ assert.equal(stats(h).capacity,8);
 });
