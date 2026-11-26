@@ -13,12 +13,14 @@
 <option value="medio" {{#if equipment.categoryMedio}}selected{{/if}}>Média</option>
 <option value="pesado" {{#if equipment.categoryPesado}}selected{{/if}}>Pesada</option>
 <option value="muito-leve" {{#if equipment.categoryMuitoLeve}}selected{{/if}}>Muito Leve</option>
+<option value="muito-pesado" {{#if equipment.categoryMuitoPesado}}selected{{/if}}>Muito Pesado</option>
 </select></label>
 <label>Dado adicional (0/6/10/12)<input type="number" min="0" step="1" value="{{equipment.die}}" data-field="system.die"></label>
 <label>Alcance normal (m)<input type="number" min="0" value="{{equipment.range}}" data-field="system.range"></label>
 <label>Preço (VT)<input type="number" min="0" value="{{equipment.priceVT}}" data-field="system.priceVT"></label>
 <label>Grau<input type="number" min="0" max="7" step="1" value="{{equipment.grade}}" data-field="system.grade"></label>
-  <label>Peso (unidades Alto)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
+  <label>Carga por unidade (humanoides)<input type="number" value="{{equipment.charge}}" readonly></label>
+  <label>Peso legado (criaturas)<input type="number" min="0" step="0.125" value="{{equipment.weight}}" data-field="system.weight"></label>
   <label>Quantidade<input type="number" min="1" step="1" value="{{equipment.quantity}}" data-field="system.quantity"></label>
   <label class="codex-check"><input type="checkbox" data-field="system.equipped" {{#if equipment.equipped}}checked{{/if}}> Equipado</label>
   <label>Integridade atual<input type="number" min="0" step="1" value="{{equipment.integrity}}" data-field="system.integrity.value"></label>
