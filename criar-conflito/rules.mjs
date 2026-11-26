@@ -187,7 +187,7 @@ export const LOAD=Object.freeze({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-
 export function chargePerItem(it={}){
  if(it.load!=null&&Number.isFinite(Number(it.load)))return Math.max(0,Number(it.load));
  const cat=itemCategory(it)||({"0.0125":"muito-leve","0.0625":"leve","0.125":"leve","0.5":"medio","1":"pesado","2":"muito-pesado"})[String(it.weight)];
- const base=LOAD[cat]??Math.max(0,Number(it.weight)||0);
+ const base=LOAD[cat]??(it.ammoRole==="container"?1:Math.max(0,Number(it.weight)||0));
  const effective=it.properties?.includes("Muito Leve")||Number(it.weight)===.0625?base*.5:base;
  const ammo=(Number(it.ammoLotWeight)===.0125?.5:Number(it.ammoLotWeight)===.125?1:0)*Object.values(it.ammoMix||{}).reduce((a,b)=>a+(Number(b)||0),0)/20;
  return it.ammoRole==="supply"?ammo:effective+(it.ammoRole==="container"?ammo:0);
