@@ -1,6 +1,6 @@
 /* Comparador de combate sem tabuleiro. Regras aprovadas e deliberações pendentes são separadas. */
-import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0152";
-import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity} from "../criar-conflito/rules.mjs?v=20261125-v0152";
+import {naturalDE,maxCourage,monsterCap,healthByLife,sourceDice,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0154-carga";
+import {blank,isHumanoidKind,humanoidRacialGrants,humanoidHasFocus,stats,ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,KINDS,migrateArmorIntegrity,chargePerItem,itemLoadFor} from "../criar-conflito/rules.mjs?v=20261126-v0154-carga";
 
 const int=(v,min=0,max=999)=>Math.max(min,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):min)));
 export const ARMOR_DE=Object.freeze({"muito-leve":0,leve:0,medio:-1,pesado:-2,"muito-pesado":-3});
@@ -33,14 +33,15 @@ export function planShot(items,weapon,id,type){
  if(!projectileFamily(weapon))return {ok:true,items,shot:null};
  const choice=shotChoices(items,weapon).find(x=>x.id===id&&x.type===type);
  if(!choice)return {ok:false,error:"Sem projétil compatível selecionado em recipiente de acesso rápido."};
- const next=items.map(x=>x.id===id?{...x,weight:Math.max(0,Number(x.weight||0)-Number(x.ammoLotWeight||0)/20),ammoMix:{...x.ammoMix,[type]:Number(x.ammoMix[type])-1}}:x);
+ const next=items.map(x=>x.id===id?{...x,weight:Math.max(0,Number(x.weight||0)-Number(x.ammoLotWeight||0)/20),load:Math.max(0,chargePerItem(x)-(Number(x.ammoLotWeight)===.0125?.5:Number(x.ammoLotWeight)===.125?1:0)/20),ammoMix:{...x.ammoMix,[type]:Number(x.ammoMix[type])-1}}:x);
  return {ok:true,items:next,shot:{id,type,remaining:choice.n-1}};
 }
 export function isHandEquipment(it){return ["weapon","firearm","shield"].includes(it?.kind);}
 export function equipmentPosition(it){return it?.equipped&&isHandEquipment(it)?"hands":it?.position==="quick"?"quick":"bag";}
 export function hasQuickDraw(c){return !!c?.skills?.includes("saque-rapido")&&Number(c.attributes?.agilidade||0)>=2&&Number(c.attributes?.destreza||0)>=1&&Number(c.practices?.armas_conjuracao||0)>=2;}
-export function carryingCapacity(c){return c.kind==="monstro"||c.kind==="criatura"?1.5+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3):1.5+Number(c.attributes?.forca||0)+Math.floor(Number(c.attributes?.vigor||0)/2);}
-export function bodyUsage(items=[]){return items.filter(it=>equipmentPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+Number(it.weight||0)*Number(it.qty||1),0);}
+export function carryingCapacity(c){return c.kind==="monstro"||c.kind==="criatura"?1.5+Math.floor((Number(c.attributes?.forca||0)+Number(c.attributes?.vigor||0)+Number(c.practices?.atletismo||0))/3):8+Number(c.attributes?.forca||0)+Math.floor(Number(c.attributes?.vigor||0)/2);}
+export const backpackCapacity=c=>c.kind==="monstro"||c.kind==="criatura"?.5:3;
+export function bodyUsage(items=[],c={}){return items.filter(it=>equipmentPosition(it)!=="bag"||it.equipped).reduce((n,it)=>n+itemLoadFor(c,it)*Number(it.qty||1),0);}
 export function quickUsage(items=[]){return items.filter(it=>equipmentPosition(it)==="quick").reduce((n,it)=>n+Number(it.qty||1),0);}
 export function heldHands(items=[]){const held=items.filter(it=>isHandEquipment(it)&&it.equipped);return held.some(it=>!weaponHands(it)||it.qty!==1)?null:held.reduce((n,it)=>n+weaponHands(it),0);}
 export function drawModeFor(c,it){
@@ -60,7 +61,7 @@ export function planDraw(c,id,stow=[]){
  const items=c.items.map(x=>x.id===id?{...x,equipped:true,position:"hands"}:selected.has(x.id)?{...x,equipped:false,position:x.kind==="shield"?"bag":"quick"}:x);
  const used=heldHands(items);
  if(used===null||used>2)return {ok:false,error:"Libere mãos suficientes ou confirme a empunhadura dos itens já em mãos."};
- if(quickUsage(items)>3||bodyUsage(items)>carryingCapacity(c)-.5+1e-9)return {ok:false,error:"Saque excede os 3 espaços ou a capacidade corporal."};
+ if(quickUsage(items)>3||bodyUsage(items,c)>carryingCapacity(c)-backpackCapacity(c)+1e-9)return {ok:false,error:"Saque excede os 3 espaços ou a capacidade corporal."};
  return {ok:true,mode,items};
 }
 export function disarmTransfer(attacker,target,weaponId,destination,newId){
@@ -69,10 +70,10 @@ export function disarmTransfer(attacker,target,weaponId,destination,newId){
  if(!["bag","hands","ground"].includes(destination))return {ok:false,error:"Escolha o destino da arma."};
  if(destination==="bag"&&!hasQuickDraw(attacker))return {ok:false,error:"Guardar a arma desarmada exige Saque Rápido."};
  const captured={...it,id:newId||it.id,qty:1,equipped:destination==="hands",position:destination==="hands"?"hands":"bag"};
- if(destination!=="ground"&&weightUsed(attacker)+Number(it.weight||0)>carryingCapacity(attacker))return {ok:false,error:"Capacidade de carga insuficiente."};
+ if(destination!=="ground"&&weightUsed(attacker)+itemLoadFor(attacker,it)>carryingCapacity(attacker))return {ok:false,error:"Capacidade de carga insuficiente."};
  const items=destination==="ground"?attacker.items:[...attacker.items,captured];
- if(destination==="bag"&&weightUsed({...attacker,items})-bodyUsage(items)>.5+1e-9)return {ok:false,error:"Mochila sem capacidade livre."};
- if(destination==="hands"&&bodyUsage(items)>carryingCapacity(attacker)-.5+1e-9)return {ok:false,error:"Capacidade corporal insuficiente."};
+ if(destination==="bag"&&weightUsed({...attacker,items})-bodyUsage(items,attacker)>backpackCapacity(attacker)+1e-9)return {ok:false,error:"Mochila sem capacidade livre."};
+ if(destination==="hands"&&bodyUsage(items,attacker)>carryingCapacity(attacker)-backpackCapacity(attacker)+1e-9)return {ok:false,error:"Capacidade corporal insuficiente."};
  if(destination==="hands"&&(heldHands(items)===null||heldHands(items)>2))return {ok:false,error:"Não há mãos livres compatíveis."};
  return {ok:true,attacker:{...attacker,items},target:{...target,items:target.items.flatMap(x=>x.id!==weaponId?[x]:x.qty>1?[{...x,qty:x.qty-1,equipped:false,position:"bag"}]:[])},ground:destination==="ground"?captured:null,weapon:it.name};
 }
@@ -88,7 +89,7 @@ export function normalizeEquipment(original={}){
  const ammoLoad=(20-room)/20*([.0125,.125].includes(Number(raw.ammoLotWeight))?Number(raw.ammoLotWeight):0);
  const itemWeight=typeof raw.weight==="number"?Math.max(0,raw.weight):ammoRole?ammoLoad+(ammoRole==="container"?(weightNumbers[category]||.125):0):(weightNumbers[category]||0);
  return {id:String(raw.id||raw.name||"item").slice(0,110),name:String(raw.name||"Item").slice(0,100),
-  kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,
+  kind,category,grade:int(raw.grade||1,1,4),weight:itemWeight,load:chargePerItem({...raw,category}),
   qty:ammoRole?1:int(raw.qty||1,1,99),integrityMax:max,integrity:hp,equipped:!!raw.equipped,hands:weaponHands({...raw,kind,category}),position:equipmentPosition({...raw,kind}),
   die:Number(raw.die)||0,range:Number(raw.range)||0,properties:Array.isArray(raw.properties)?raw.properties:[],ammoRole,ammoFamily:raw.ammoFamily||"",ammoMix,ammoLotWeight:Number(raw.ammoLotWeight)||0,storageCapacity:ammoRole==="container"?20:Number(raw.storageCapacity)||0};
 }
@@ -517,7 +518,7 @@ export function defense(c){
  const sh=(c.skills||[]).includes("maestria-escudos")&&Number(attrs.destreza||0)>=2&&Number(attrs.vigor||0)>=2&&Number(attrs.forca||0)>=1&&Number(c.knowledges?.protecao||0)>=1&&(c.items||[]).some(it=>it.kind==="shield"&&it.equipped)?1:0;
  return Math.min(9,Math.max(0,basic+(c.kind==="monstro"?0:armorDefense(c))+(c.kind==="monstro"?0:sh)));
 }
-export function weightUsed(c){return (c.items||[]).reduce((v,it)=>v+Number(it.weight||0)*Number(it.qty||1),0);}
+export function weightUsed(c){return (c.items||[]).reduce((v,it)=>v+itemLoadFor(c,it)*Number(it.qty||1),0);}
 export function equippedWeapons(c,catalog=[],includeCarried=false){
  return (c?.items||[]).filter(it=>["weapon","firearm"].includes(it.kind)&&(it.equipped||includeCarried)).map(it=>{
   const cat=catalog.find(x=>x.name?.toLowerCase()===it.name.toLowerCase())||{};
