@@ -746,7 +746,7 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
 
-Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
+Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado da arma cai um nível sem a Perícia correspondente; características exigem habilitação. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
 
 > **Exemplo — Dano à Integridade**
 >
@@ -759,7 +759,7 @@ Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** n
 
 #### Quedas e perigos ambientais
 
-Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Um alvo elevado por Ar pode tentar reduzir o dano em seu turno; depois fica Caído. Para empurrar um alvo de um precipício, teste contra a DE defensiva dele. Se acertar, o alvo precisa superar o resultado válido do empurrão para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral, sem descontar o teste de resistência. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; conte as faces críticas sem descartar dados. Quatro ou mais faces críticas concedem o benefício máximo de quatro dados (dano dobrado), sem bônus adicional acima disso e sem recuperação de Coragem pelo crítico. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Arredonde a altura fracionária para baixo. Um ataque de Ar que eleva causa seu dano no acerto e, depois, dano adicional de queda rolado pelo Narrador. O alvo pode reduzir somente a parcela da queda em seu turno, mesmo que alcance a DE; depois fica Caído. Para empurrar um alvo de um precipício, teste contra a DE defensiva dele. Se acertar, o alvo precisa superar o resultado válido do empurrão para evitar a queda. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. Se igualar ou ficar abaixo, cai e sofre o dano integral, sem descontar o teste de resistência. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; conte as faces críticas sem descartar dados. Quatro ou mais faces críticas concedem o benefício máximo de quatro dados (dano dobrado), sem bônus adicional acima disso e sem recuperação de Coragem pelo crítico. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). A resistência só reduz dano ambiental se abranger todos os tipos de dano presentes: cada Êxito vale 0,5 dano e cada Temor vale zero dano, sem apagar suas consequências. Resistência incompleta não reduz o dano. Imunidade é proporcional: de N tipos distintos, imunidade a I deles deixa (N − I)/N do dano. Imunidade a todos anula o dano; imunidade a dois de três elimina 2/3. Arredondamento de dano fracionário e combinação de imunidade parcial com resistência permanecem pendentes. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Vida e Saúde
 
@@ -990,7 +990,15 @@ Você começa com 15 XP compartilhados. Compre pelo menos um Atributo no Grau 1 
 
 Vamos preencher a ficha de Eldric, um Aprendiz humano de nível 1, Marco I, que protege caravanas. Virtude: lealdade; personalidade: cauteloso. O conceito orienta suas escolhas, mas não concede bônus.
 
-### 2. Aptidões e Perícias
+### 2. Escolhas iniciais de Aptidões
+
+Ordem de criação: identidade, escolhas mínimas de Aptidões, compra de itens com VT, distribuição livre de XP (incluindo Perícias) e revisão. Volte às etapas anteriores se precisar ajustar carga ou requisitos; XP e VT continuam separados.
+
+### 3. Equipamentos, peso e carga
+
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 4). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 1 Carga: juntas, 2 no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT, que ocupam 1,3 Carga. Ele transporta 3,3 Cargas de um limite de 10: 7 no corpo e 3 na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+
+### 4. Distribuição livre de Aptidões e Perícias
 
 Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve as capacidades abaixo. As demais ficam no Grau 0, com os dados iniciais da categoria. Ele investe 13 XP em Aptidões e 2 XP na Perícia em Armas Leves (requer Disciplina 1). A Perícia é anotada na seção de Perícias e não fornece uma pilha própria. Concessões gratuitas de linhagem não consomem XP.
 
@@ -1005,21 +1013,14 @@ Registre o Grau, os dados e o XP acumulado em cada Aptidão. Eldric desenvolve a
 | Atletismo | 1 | 1d10 | 2 |
 | Perícia em Armas Leves | — | — | 2 |
 
-### 3. Vida, Coragem, defesa e movimento
+### 5. Vida, Coragem, defesa e movimento
 
 Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas 2/2/1/1), Coragem 10/10, DE natural 3 e movimento 9 m. Anote esses valores na ficha; o equipamento altera sua DE para 3.
 
-### 4. Equipamentos, peso e carga
-
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 4). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 1 Carga: juntas, 2 no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT, que ocupam 1,3 Carga. Ele transporta 3,3 Cargas de um limite de 10: 7 no corpo e 3 na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
-
-### 5. Dano e Integridade
+### 6. Dano e Integridade
 
 Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 4/4 para 2/4; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 4/4 em vez de recuperar Coragem.
 
-## Perícias, ramos e especializações
-
-Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas, efeitos e combinações de Aptidões; podem ser passivas ou depender de ativação. Disciplina é uma única Prática, marcial e mágica. Consulte o [catálogo de Perícias](../pericias/) para requisitos e custos e aprofunde-se depois das mecânicas.
 
 ## Equipamentos, compras e inventário
 
@@ -1061,6 +1062,11 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 
 **DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
 
+## Perícias, ramos e especializações
+
+Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas, efeitos e combinações de Aptidões; podem ser passivas ou depender de ativação. Disciplina é uma única Prática, marcial e mágica. Consulte o [catálogo de Perícias](../pericias/) para requisitos e custos e aprofunde-se depois das mecânicas.
+
+
 ## Kits de armas de longo alcance (24/11/2026)
 
 **DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
@@ -1071,7 +1077,7 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 
 **DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 5 + Força + piso(Vigor/2). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 3 Cargas adicionais; capacidade total base 8. Uma arma Pesada ocupa 3 Cargas. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
 
-**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
+**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, o dado da arma é reduzido conforme a categoria (v0.162), mas não habilita ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
 
 **Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
 
@@ -1329,7 +1335,9 @@ Referências experimentais para preparar DE sem ficha pertencem ao [Guia do Narr
 
 O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance, sua composição e suas Perícias determinam a ação. A profissão do jogador não impõe um estilo fixo. Veja a matriz de Vantagem/Desvantagem do capítulo Vantagem, Desvantagem e peso.
 
-**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico não determina automaticamente o tamanho ou a quantidade dos dados da arma. O confronto favorável entre o peso do ataque e o peso do alvo concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
+**Peso da arma e dados não são a mesma coisa [DEFINIDO].** O peso físico de inventário não determina a quantidade dos dados; a categoria de ataque determina o dado-base. O confronto favorável entre o peso do ataque e o peso do alvo concede **+1A pela Vantagem natural** sem a Perícia. **Manejo Perfeito [DEFINIDO — v0.104]:** Perícia passiva, sem custo de ativação; custa **1 XP**, exige **Especialização em Disciplina + Destreza 2**. Ao utilizar a arma correta contra oponente que tenha Desvantagem contra ela, aplica **Vantagem Absoluta (+1E)** em lugar do +1A do mesmo confronto; não acumula automaticamente ambos. Se a ação **já** estiver em Vantagem Absoluta, aplica **Golpe Certo (+2E no total)**. **Arma Certa foi removida como Perícia separada.** Ver [SRD v0.87](srd-continuidade-v0.87.md).
+
+**DEFINIDO — SRD v0.162:** arma Leve adiciona 1d6, Média 1d10 e Pesada 1d12 com a Perícia correspondente. Sem a Perícia, ainda adiciona um dado, reduzido para 1d4, 1d6 ou 1d10, respectivamente. A categoria, peso físico, alcance e propriedades não mudam; características continuam exigindo habilitações aplicáveis. Preservar regras especiais de munição, armas de fogo e demais exceções até revisão específica.
 
 ### Armas físicas já documentadas [DEFINIDO no conceito / catálogo PENDENTE]
 
@@ -1826,7 +1834,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 **Nome atualizado:** esta é a habilitação antes registrada como **Elemento: Vento**; as duas denominações correspondem ao **mesmo elemento**, não a duas compras. A ficha preserva o identificador antigo.
 
-**DEFINIDO — v0.157:** empurrar, puxar e elevar usam o limite do Grau. Ao elevar por ataque, a altura efetiva segue o resultado válido, limitado à metragem habilitada. Exemplo: G2 com resultado válido 5 em um acerto eleva 5 m, não 8 m. A queda segue o [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+**DEFINIDO — v0.157:** empurrar, puxar e elevar usam o limite do Grau. Ao elevar por ataque, a altura efetiva segue o resultado válido, limitado à metragem habilitada. Exemplo: G2 com resultado válido 5 em um acerto eleva 5 m, não 8 m. A queda segue o [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais). O ataque de Ar que eleva causa seu próprio dano no acerto da DE. O Narrador rola adicionalmente o dano da queda; o teste defensivo reduz exclusivamente a parcela da queda, mesmo quando alcança a DE do ataque. O alvo fica Caído após a resolução. O tipo de eventual dado adicional além da pilha de altura, mencionado pelo autor, não foi especificado; não o inventar.
 
 **PENDENTE:** duração e dano de Sufocar, detalhes ainda abertos da resolução de queda, áreas e largura dos formatos, ramificações e ações não ofensivas.
 

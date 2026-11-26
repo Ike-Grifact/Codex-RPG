@@ -2037,7 +2037,8 @@ function combatItem(item,mode){
  if(!((item.grade||1)<= (state.level>=20?4:state.level>=10?3:state.level>=5?2:1)))return [];
  const skills=allOwnedSkills(),properties=item.properties||[],range=properties.includes("À Distância");
  const cat=item.category||({leve:"leve",medio:"medio",alto:"pesado"}[item.weight]||"leve");
- const die=[6,10,12].includes(item.die)?item.die:({leve:6,medio:10,pesado:12}[cat]||0);
+ const die=item.firearm&&[6,10,12].includes(item.die)?item.die:({leve:6,medio:10,pesado:12}[cat]||0);
+ const reduced={6:4,10:6,12:10}[die]||0;
  if(!die)return [];
  if(mode==="conjuracao"){
   // SRD v0.89: apenas o Grau da magia adiciona seu dado, nunca o foco.
@@ -2046,12 +2047,12 @@ function combatItem(item,mode){
  if(mode!=="armas"||item.type!=="arma")return [];
  if(item.firearm)return skills.includes("armas-fogo")?[die]:[];
  if(range){
-  if(!skills.includes("armas-longo-alcance"))return [];
+  if(!skills.includes("armas-longo-alcance"))return reduced?[reduced]:[];
   const double=item.name.toLowerCase()==="besta de uma mão"&&skills.includes("armas-leves");
   return double?[die,die]:[die];
  }
  const id={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
- return id&&skills.includes(id)?[die]:[];
+ return id?(skills.includes(id)?[die]:reduced?[reduced]:[]):[];
 }
 function effectiveWeaponRange(item,skills=allOwnedSkills()){
   const base=Math.max(0,Number(item?.range)||0);
@@ -2098,8 +2099,8 @@ let geneShowFuture=false,geneDraft=new Map(),genePendingSkills=new Set(),geneIns
 const WIZARD_STEPS=[
  ["Identidade","Quem é seu Aprendiz?","Nome, raça e conceito"],
  ["Escolhas iniciais","Atributo e formação","1 Atributo + 1 Conhecimento ou Prática"],
- ["Distribuir XP","Compre graus e Perícias","Codex Genético por padrão; listas opcionais"],
  ["VT e Equipamentos","Seu patrimônio inicial","Distribua recursos e escolha itens"],
+ ["Distribuir XP","Compre graus e Perícias","Codex Genético por padrão; listas opcionais"],
  ["Revisão","Sua história começa aqui","Confira e confirme a ficha"]
 ];
 // Metadados usados na etapa 3 para explicar as abas do visualizador padrão.
@@ -2146,7 +2147,7 @@ function playerSheetMeta(s,id,createdAt=new Date().toISOString()){
   level:clamp(Math.floor(s.level||1),1,20),createdAt,updatedAt:new Date().toISOString()};
 }
 function wizardSnapshot(){
- return {version:4,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,
+ return {version:5,step:wizardStep,reached:wizardReached,category:wizardCategory,tab:wizardTab,mode:wizardMode,
   starterPhase:wizardStarterPhase,starterAttribute:wizardStarterAttribute,starterTraining:wizardStarterTraining,starterPurchased:wizardStarterPurchased,
   shopCategory:wizardShopCategory,shopWeight:wizardShopWeight,tradePreferred:wizardTradePreferred};
 }
@@ -2154,6 +2155,8 @@ function restoreWizard(w={}){
  const oldStep=Math.floor(w.step||0),oldReached=Math.floor(w.reached||oldStep);
  wizardStep=w.version>=4?clamp(oldStep,0,4):w.version>=2?(oldStep>=3?4:clamp(oldStep,0,2)):clamp(oldStep>0?1:0,0,4);
  wizardReached=w.version>=4?clamp(oldReached,wizardStep,4):w.version>=2?(oldReached>=3?4:Math.max(wizardStep,clamp(oldReached,0,2))):wizardStep;
+ // v5 reordena etapas sem alterar compras; rascunhos antigos retomam equipamentos.
+ if(w.version<5&&wizardStep>=2&&wizardStep<4){wizardStep=2;wizardReached=Math.max(2,wizardReached);}
  wizardCategory=["attr","know","practice"].includes(w.category)?w.category:"";
  wizardTab=["attr","know","practice","skills"].includes(w.tab)?w.tab:(wizardCategory||"attr");
  wizardMode=w.mode==="list"?"list":"genetic";
@@ -3799,7 +3802,7 @@ function renderGenetic(){
  for(const mapId of ["gene-map","gene-builder-map"]){
   const map=$(mapId);
   if(!map||map.isConnected===false)continue;
-  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===2&&wizardMode==="genetic"))continue;
+  if(mapId==="gene-builder-map"&&!(viewMode==="builder"&&wizardStep===3&&wizardMode==="genetic"))continue;
   window.CodexGeneGraph?.render(map,{skills:nodes,branches:SKILL_BRANCHES,affinity:SKILL_AFFINITY,
    selected:geneSelected,filter:mapId==="gene-builder-map"?"all":geneFilter,query:geneSearch,
    showFuture:geneShowFuture,edit:geneCanAdjust(),onSelect:choose,
@@ -3867,7 +3870,7 @@ function wizardSelectStep(next){
    wizardStep=2;wizardPersist();renderWizard();
    $("builder-root").scrollIntoView?.({behavior:"smooth",block:"start"});return;
   }
-  toast("Escolha um Atributo principal e um Conhecimento ou Prática. Confirme as duas opções para abrir a distribuição livre de XP.");
+  toast("Escolha um Atributo principal e um Conhecimento ou Prática. Confirme as duas opções para abrir a compra de equipamentos.");
   return;
  }
  if(next>=3&&!hasStarterSources()){
@@ -4094,7 +4097,7 @@ function wizardEquipment(){
    '</div></details>';
  }).join("");
  const owned=state.items.length?state.items.map(it=>'<div class="fp-wiz-owned-item"><span><strong>'+esc(it.name)+'</strong><small>G'+it.grade+' · '+esc(it.type)+' · '+(it.equipped?'Equipado':'No inventário')+'</small></span><button type="button" data-action="equip" data-id="'+esc(it.id)+'">'+(it.equipped?'Guardar':'Equipar')+'</button></div>').join(""):'<p>Nenhum equipamento comprado. Você pode continuar sem comprar itens.</p>';
- return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos '+CREATE_BUDGET.total+' XP.</p></div>'+
+ return '<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · PATRIMÔNIO INICIAL</span><h3>VT e equipamentos iniciais.</h3><p><strong>VT (Valor de Troca)</strong> é uma referência de escambo, não moeda. São <strong>20 VT iniciais experimentais</strong>, separados dos '+CREATE_BUDGET.total+' XP.</p></div>'+
  '<div class="fp-wiz-vt-stats"><div><small>VT INICIAIS</small><strong>'+STARTING_VT+'</strong></div><div><small>VT DISPONÍVEIS</small><strong>'+remaining+'</strong></div><div><small>VT GASTOS</small><strong>'+spent+'</strong></div></div>'+
  '<section class="fp-wiz-vt-section"><h4>Distribuição inicial dos recursos</h4><p>São cinco recursos de Grau 1; a distribuição inicial sugerida é de 4 unidades para cada. Você pode alterá-la antes da primeira compra.</p><div class="fp-wiz-vt-grid">'+resources+'</div>'+
  '<div class="fp-wiz-vt-actions"><strong>'+sum+(editable?' / '+STARTING_VT+' VT distribuídos':' VT restantes')+'</strong>'+(editable?'<button type="button" data-action="wizard-vt-allocate"'+(sum!==STARTING_VT?' disabled':'')+'>Confirmar distribuição</button>':'<span>Distribuição já consolidada.</span>')+'</div></section>'+
@@ -4186,16 +4189,16 @@ function renderWizard(){
    raceBenefitsForm()+'</div></div><div class="fp-wiz-reminder"><b>Liberdade de construção</b><p>O conceito é narrativo. A profissão emerge dos Atributos, Conhecimentos, Práticas, Perícias e escolhas feitas durante o jogo.</p></div>';
  }else if(stage===1){
   content=wizardStarterCards();
- }else if(stage===2){
-   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 03 · COMPRAR GRAUS E PERÍCIAS</span>'+
+ }else if(stage===3){
+   content='<div class="fp-wiz-copy"><span class="fp-kicker">ETAPA 04 · COMPRAR GRAUS E PERÍCIAS</span>'+
    '<h3>Construa seu Aprendiz.</h3><p>O <strong>Codex Genético</strong> é o modo principal. Se preferir, use as listas opcionais. Ambas as visualizações usam o mesmo personagem, as mesmas compras e o mesmo XP.</p></div>'+
    wizardBuild();
-  }else if(stage===3){
+  }else if(stage===2){
    content=wizardEquipment();
   }else content=wizardReview();
  $("wizard-content").innerHTML=content;
  $("wizard-summary").innerHTML=wizardOverview();
- if(stage===2&&wizardMode==="genetic")renderGenetic();
+ if(stage===3&&wizardMode==="genetic")renderGenetic();
  $("wizard-controls").innerHTML='<div class="fp-wiz-footer-left"><span>ETAPA '+(stage+1)+' DE '+WIZARD_STEPS.length+'</span><small>'+esc(WIZARD_STEPS[stage][1])+'</small></div>'+
   '<div class="fp-wiz-footer-buttons"><button type="button" class="fp-secondary" data-action="wizard-back"'+(stage===0?' disabled':'')+'>← Voltar</button>'+
   '<button type="button" class="fp-primary-btn" data-action="'+(stage===4?'wizard-finish':'wizard-next')+'"'+(stage===1&&wizardStarterPhase!=="confirm"?' disabled':'')+'>'+
@@ -4476,7 +4479,7 @@ function buildPool(){
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
   const dice=combatItem(item,draft.mode);
-  if(!dice.length&&!(draft.mode==="armas"&&item?.equipped&&projectileFamily(item)))errors.push("Equipe um item e adquira a Perícia de arma/foco ou elemento pertinente para receber seus dados.");
+  if(!dice.length&&!(draft.mode==="armas"&&item?.equipped&&projectileFamily(item)))errors.push("Equipe uma arma válida; armas comuns sem Perícia usam dado reduzido. Armas de fogo e focos seguem regras próprias.");
   else dice.forEach((sides,index)=>pool.push({id:"equipment:"+item.id+":"+index,group:"equipment",key:item.name,sides,baseSides:sides}));
  }
  if(draft.potionResearch&&(!ownsSkill("pesquisa-avancada-pocoes")||skillReq("pesquisa-avancada-pocoes")||draft.maosLeves||draft.mode==="conjuracao"||draft.shieldThrowId))
@@ -4598,7 +4601,7 @@ function renderComposer(){
  const throwingShield=!!draft.shieldThrowId;
  const spellSelection=draft.mode==="conjuracao"&&!!draft.magicElement;
  const gearOptions=throwingShield?"":spellSelection?magicComposerFields():
-  usingDiscipline()?'<label class="fp-form-field full">Arma (dado extra somente de arma habilitada)'+
+  usingDiscipline()?'<label class="fp-form-field full">Arma (dado reduzido sem a Perícia correspondente)'+
    select("equipmentId",[["","Sem dado adicional"],...state.items.filter(x=>x.equipped&&x.type==="arma")
      .map(x=>[x.id,x.name+(x.range?" · "+effectiveWeaponRange(x)+" m":"")+(combatItem(x,draft.mode).length?" · "+combatItem(x,draft.mode).map(n=>"d"+n).join("+"):" · Perícia não habilitada")])],draft.equipmentId)+
    '</label>':"";
@@ -5781,11 +5784,11 @@ function onClick(event){
   break;
  }
  case "wizard-tab":{
-  if(wizardStep!==2||!["attr","know","practice","skills"].includes(button.dataset.group))break;
+  if(wizardStep!==3||!["attr","know","practice","skills"].includes(button.dataset.group))break;
   wizardTab=button.dataset.group;wizardPersist();renderWizard();break;
  }
  case "wizard-mode":{
-  if(wizardStep!==2||!["list","genetic"].includes(button.dataset.mode))break;
+  if(wizardStep!==3||!["list","genetic"].includes(button.dataset.mode))break;
   wizardMode=button.dataset.mode;wizardPersist();renderWizard();break;
  }
  case "prepare-element":prepareElementSkill(id);break;
@@ -6035,11 +6038,11 @@ function onClick(event){
  }
  case "trade-buy":buyCatalogItem();break;
  case "trade-buy-equip":buyCatalogItem(undefined,undefined,true);break;
- case "wizard-buy-equip":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred,true);break;
+ case "wizard-buy-equip":if(viewMode==="builder"&&wizardStep===2)buyCatalogItem(button.dataset.item,wizardTradePreferred,true);break;
  case "stone-buy":buyElementalStone();break;
- case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===3)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
+ case "wizard-buy-item":if(viewMode==="builder"&&wizardStep===2)buyCatalogItem(button.dataset.item,wizardTradePreferred);break;
  case "wizard-shop-category":{
-  if(viewMode!=="builder"||wizardStep!==3||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
+  if(viewMode!=="builder"||wizardStep!==2||!["all","weapon","firearm","armor","shield"].includes(button.dataset.category))break;
   wizardShopCategory=button.dataset.category;wizardPersist();renderWizard();break;
  }
  case "trade-collect":collectResources();break;
@@ -6176,7 +6179,7 @@ function onChange(event){
  }
 
  if(el.dataset.wizardShopType!==undefined||el.dataset.wizardShopWeight!==undefined){
-  if(viewMode!=="builder"||wizardStep!==3)return;
+  if(viewMode!=="builder"||wizardStep!==2)return;
   if(el.dataset.wizardShopType!==undefined&&EQUIPMENT_FAMILIES.some(([key])=>key===el.value))wizardShopCategory=el.value;
   if(el.dataset.wizardShopWeight!==undefined&&EQUIPMENT_WEIGHT_OPTIONS.some(([key])=>key===el.value))wizardShopWeight=el.value;
   wizardPersist();renderWizard();return;
