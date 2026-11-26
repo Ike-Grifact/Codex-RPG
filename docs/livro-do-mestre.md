@@ -167,7 +167,7 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 **No turno do inimigo lançado**, ele pode realizar um teste de redução contra a **DE correspondente ao resultado do ataque do conjurador**. A queda é resolvida depois desse teste. O inimigo fica **Caído**, sem contra-atacar imediatamente. Os Temores gerados na resolução da queda provocada alimentam a **reserva pública de Pavor do Narrador**, respeitando seu teto, sem duplicação na reserva local.
 
-**Exemplo de rework — Ar:** uma magia G2 com referência de 16 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 16 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A referência de 16 m para G2 pertence ao exemplo autoral de rework, não altera por si só a tabela vigente de alcance do Ar (G2 8 m, G3 16 m).
+**Exemplo de rework — Ar:** uma magia G2 com limite de deslocamento de 8 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 8 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A escala vigente de deslocamento do Ar é **G1 4 m · G2 8 m · G3 12 m** (v0.157).
 
 ### Danos ambientais
 
@@ -381,7 +381,7 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 
 **DEFINIDO:** não há capacidade de spellslots mentais; a antiga distinção “por dado” versus “por Grau” foi revogada. **Focos permanecem objetos com carga física convencional**, e sua existência não altera a liberdade de descrever a magia na hora.
 
-**Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1, começando por magias Leves. Com a Perícia e o Grau habilitados, efeitos **G1/G2** têm custo-base de **0 Coragem**; efeitos G3, quando habilitados, exigem **1 Coragem** para elevação. Aplicações: G1 deslocamento 4m/empurrar/puxar; G2 sufocar com dano à Vida ou armadura, empurrar e derrubar, deslocamento até 8m; G3 agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda, referência 16m. Formas linha/círculo/cone/X. **PENDENTE:** interpretação de 16m, alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
+**Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1, começando por magias Leves. Com a Perícia e o Grau habilitados, efeitos **G1/G2** têm custo-base de **0 Coragem**; efeitos G3, quando habilitados, exigem **1 Coragem** para elevação. Aplicações: G1 empurrar/puxar/elevar/autoempurrar até 4 m; G2 até 8 m, sufocar com dano à Vida ou armadura, empurrar e derrubar; G3 até 12 m, agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda. Formas linha/círculo/cone/X. **PENDENTE:** detalhes de alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
 
 ## Conjuração — Água e Fôlego (17/11/2026)
 
