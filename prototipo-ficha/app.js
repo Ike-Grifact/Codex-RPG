@@ -5225,15 +5225,118 @@ function handLayout(items){
  const quick=items.filter(it=>itemPosition(it)==="quick").flatMap(it=>Array.from({length:it.qty},()=>it));
  return {slots,quick,free:Math.max(0,2-slots.length)};
 }
+function inventoryPositionOptions(it){
+ const current=itemPosition(it);
+ if(it.shieldGrounded)return [];
+ const options=it.ammoRole==="container"?["quick","bag"]:it.type==="arma"?["hands","quick","bag"]:it.type==="escudo"?["hands","bag"]:[];
+ return options.filter(pos=>pos!==current);
+}
 function handPanelMarkup(items=state.items){
  const {slots,quick,free}=handLayout(items);
- const action=(it,pos,label)=>'<button type="button" class="fp-secondary" data-action="inventory-position" data-id="'+esc(it.id)+'" data-position="'+pos+'">'+label+'</button>';
- const chip=(it,label,actions="",continuation=false)=>it?'<details class="fp-hand-slot is-occupied"><summary title="'+esc(label+" · "+it.name)+'" aria-label="'+esc(label+" · "+it.name)+'">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+(continuation?'<small class="fp-hand-link">2ª mão</small>':'')+'</summary><div class="fp-hand-actions">'+actions+'</div></details>':'<div class="fp-hand-slot is-free" aria-label="'+esc(label+" livre")+'"><span>Livre</span></div>';
- const held=(entry,i)=>chip(entry?.item,"Mão "+(i+1),entry?action(entry.item,"bag","Guardar na mochila")+(entry.item.type==="arma"?action(entry.item,"quick","Guardar no corpo"):""):"",!!entry?.continuation);
- const ready=(it,i)=>chip(it,"Espaço "+(i+1),it?(it.type==="arma"?action(it,"hands","Puxar para as mãos"):"")+action(it,"bag","Guardar na mochila"):"");
- return '<section class="fp-hand-panel" aria-label="Mãos e acesso rápido"><div class="fp-hand-row"><div class="fp-hand-label"><strong>Mãos</strong><small>'+free+'/2 livres</small></div><div class="fp-hand-grid">'+[0,1].map(i=>held(slots[i],i)).join("")+'</div></div><div class="fp-hand-row"><div class="fp-hand-label"><strong>Acesso rápido</strong><small>'+quick.length+'/3 ocupados</small></div><div class="fp-quick-grid">'+[0,1,2].map(i=>ready(quick[i],i)).join("")+'</div></div>'+(slots.length>2||quick.length>3?'<p class="fp-caption">Espaços excedidos; reorganize pelo inventário completo.</p>':"")+'<p class="fp-hand-note">Clique no item para mover. Em combate, respeite as penalidades de saque.</p></section>';
+ const chip=(it,label,continuation=false)=>it?'<button type="button" class="fp-hand-slot is-occupied'+(continuation?' is-linked':'')+'" data-hand-item="'+esc(it.id)+'" data-inventory-drag="'+esc(it.id)+'" draggable="true" aria-label="'+esc(label+" · "+it.name+(continuation?" · segunda mão":""))+'" aria-haspopup="dialog" aria-expanded="false" aria-controls="fp-hand-tooltip">'+codexItemIcon(it)+'</button>':'<div class="fp-hand-slot is-free" aria-label="'+esc(label+" livre")+'"></div>';
+ const held=(entry,i)=>chip(entry?.item,"Mão "+(i+1),!!entry?.continuation);
+ const ready=(it,i)=>chip(it,"Espaço "+(i+1));
+ return '<section class="fp-hand-panel" aria-label="Mãos e acesso rápido"><div class="fp-hand-row" data-inventory-drop="hands"><div class="fp-hand-label"><strong>Mãos</strong><small>'+free+'/2 livres</small></div><div class="fp-hand-grid">'+[0,1].map(i=>held(slots[i],i)).join("")+'</div></div><div class="fp-hand-row" data-inventory-drop="quick"><div class="fp-hand-label"><strong>Acesso rápido</strong><small>'+quick.length+'/3 ocupados</small></div><div class="fp-quick-grid">'+[0,1,2].map(i=>ready(quick[i],i)).join("")+'</div></div>'+(slots.length>2||quick.length>3?'<p class="fp-caption">Espaços excedidos; reorganize pelo inventário completo.</p>':"")+'<p class="fp-hand-note" data-inventory-drop="bag"><span class="fp-hand-instruction">Consulte os ícones; arraste ou toque para mover.</span><span class="fp-hand-drop-label">Solte aqui para guardar na mochila</span></p></section>';
+}
+let handTooltipTrigger=null,handTooltipPinned=false,inventoryDragId=null;
+function closeHandTooltip(restoreFocus=false){
+ const trigger=handTooltipTrigger;
+ if(trigger)trigger.setAttribute("aria-expanded","false");
+ handTooltipTrigger=null;handTooltipPinned=false;
+ const tip=$("fp-hand-tooltip");if(tip)tip.hidden=true;
+ if(restoreFocus&&trigger?.isConnected)trigger.focus();
+}
+function handTooltipMarkup(it,pinned){
+ const pos=itemPosition(it),labels={hands:"Puxar para as mãos",quick:"Guardar no corpo",bag:"Guardar na mochila"};
+ const integrity=it.type==="escudo"?shieldIntegrityDisplay(it):{hp:it.hp,max:it.max};
+ const info=[equipmentDetails(it),"Grau "+it.grade+" · "+pad(itemLoad(it))+" Alto · Qtd. "+it.qty,({hands:"Equipado",quick:"Acesso rápido",bag:"Mochila"})[pos]];
+ if(handItem(it))info.push("Empunhadura: "+itemHands(it)+" mão(s)");
+ if(integrity.max>0)info.push("Integridade: "+integrity.hp+" / "+integrity.max);
+ if(it.type==="arma"&&it.range>0&&effectiveWeaponRange(it)!==it.range)info.push("Alcance efetivo: "+effectiveWeaponRange(it)+" m");
+ if(it.ammoRole==="container"&&it.ammoMix)info.push(Object.entries(it.ammoMix).map(([k,n])=>k+": "+n).join(" · "));
+ if(it.packSize>0)info.push("Munição: "+it.ammoRemaining+" / "+it.packSize);
+ if(it.storageCapacity>0)info.push("Capacidade: "+it.storageCapacity+" munições");
+ if(it.embeddedWeapon)info.push("Arma cravada: "+it.embeddedWeapon);
+ if(it.catalogId)info.push("Preço de referência: "+it.priceVT+" VT");
+ return '<div class="fp-hand-tooltip-heading"><strong>'+esc(it.name)+'</strong>'+(pinned?'<button type="button" data-hand-close aria-label="Fechar detalhes">×</button>':"")+'</div>'+info.filter(Boolean).map(line=>'<p>'+esc(line)+'</p>').join("")+(it.description?'<p>'+esc(it.description)+'</p>':"")+(pinned?'<div class="fp-hand-actions">'+inventoryPositionOptions(it).map(pos=>'<button type="button" class="fp-secondary" data-action="inventory-position" data-id="'+esc(it.id)+'" data-position="'+pos+'">'+labels[pos]+'</button>').join("")+'</div><small>Em combate, respeite as penalidades de saque.</small>':"");
+}
+function showHandTooltip(trigger,pinned=false){
+ if(inventoryDragId||handTooltipPinned&&!pinned)return;
+ const it=state.items.find(x=>x.id===trigger.dataset.handItem);if(!it)return;
+ closeHandTooltip();
+ let tip=$("fp-hand-tooltip");
+ if(!tip){tip=document.createElement("div");tip.id="fp-hand-tooltip";tip.className="fp-hand-tooltip";document.body.append(tip);}
+ tip.setAttribute("role",pinned?"dialog":"tooltip");tip.setAttribute("aria-label",it.name);
+ tip.innerHTML=handTooltipMarkup(it,pinned);tip.hidden=false;tip.classList.toggle("is-pinned",pinned);
+ handTooltipTrigger=trigger;handTooltipPinned=pinned;trigger.setAttribute("aria-expanded","true");
+ const r=trigger.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;
+ tip.style.left=Math.max(8,Math.min(r.left,window.innerWidth-w-8))+"px";
+ tip.style.top=Math.max(8,Math.min(r.bottom+6+h<=window.innerHeight-8?r.bottom+6:r.top-h-6,window.innerHeight-h-8))+"px";
+ if(pinned)tip.querySelector("[data-hand-close]")?.focus({preventScroll:true});
+}
+function clearInventoryDrag(){
+ inventoryDragId=null;
+ document.body.classList.remove("fp-inventory-dragging");
+ document.querySelectorAll(".fp-inventory-drop-ready,.fp-inventory-drop-over").forEach(el=>el.classList.remove("fp-inventory-drop-ready","fp-inventory-drop-over"));
+}
+function bindInventorySlots(){
+ document.addEventListener("pointerover",event=>{
+  if(event.pointerType!=="mouse")return;
+  const trigger=event.target.closest?.("[data-hand-item]");
+  if(trigger&&!trigger.contains(event.relatedTarget))showHandTooltip(trigger);
+ });
+ document.addEventListener("pointerout",event=>{
+  if(event.pointerType!=="mouse"||handTooltipPinned)return;
+  const trigger=event.target.closest?.("[data-hand-item]");
+  if(trigger&&trigger===handTooltipTrigger&&!trigger.contains(event.relatedTarget))closeHandTooltip();
+ });
+ document.addEventListener("click",event=>{
+  const trigger=event.target.closest?.("[data-hand-item]");
+  if(trigger){if(handTooltipPinned&&handTooltipTrigger===trigger)closeHandTooltip(true);else showHandTooltip(trigger,true);return;}
+  if(event.target.closest?.("[data-hand-close]")){closeHandTooltip(true);return;}
+  if(!event.target.closest?.("#fp-hand-tooltip"))closeHandTooltip();
+ });
+ document.addEventListener("keydown",event=>{if(event.key==="Escape"&&handTooltipTrigger)closeHandTooltip(handTooltipPinned);});
+ window.addEventListener("resize",()=>closeHandTooltip());
+ window.addEventListener("scroll",event=>{if(!event.target.closest?.("#fp-hand-tooltip"))closeHandTooltip();},true);
+ document.addEventListener("dragstart",event=>{
+  const source=event.target.closest?.("[data-inventory-drag]");
+  if(!source||!event.dataTransfer)return;
+  const it=state.items.find(x=>x.id===source.dataset.inventoryDrag);
+  if(!it||!inventoryPositionOptions(it).length){event.preventDefault();return;}
+  closeHandTooltip();clearInventoryDrag();inventoryDragId=it.id;
+  event.dataTransfer.effectAllowed="move";event.dataTransfer.setData("text/plain",it.name);
+  document.body.classList.add("fp-inventory-dragging");
+  const positions=inventoryPositionOptions(it);
+  document.querySelectorAll("[data-inventory-drop]").forEach(el=>el.classList.toggle("fp-inventory-drop-ready",positions.includes(el.dataset.inventoryDrop)));
+ });
+ document.addEventListener("dragover",event=>{
+  if(!inventoryDragId)return;
+  const target=event.target.closest?.(".fp-inventory-drop-ready");
+  document.querySelectorAll(".fp-inventory-drop-over").forEach(el=>{if(el!==target)el.classList.remove("fp-inventory-drop-over");});
+  if(!target)return;
+  event.preventDefault();if(event.dataTransfer)event.dataTransfer.dropEffect="move";target.classList.add("fp-inventory-drop-over");
+ });
+ document.addEventListener("dragleave",event=>{
+  const target=event.target.closest?.(".fp-inventory-drop-over");
+  if(target&&!target.contains(event.relatedTarget))target.classList.remove("fp-inventory-drop-over");
+ });
+ document.addEventListener("drop",event=>{
+  if(!inventoryDragId)return;
+  const target=event.target.closest?.(".fp-inventory-drop-ready"),id=inventoryDragId;
+  event.preventDefault();clearInventoryDrag();
+  if(target)moveInventoryItem(id,target.dataset.inventoryDrop);
+ });
+ document.addEventListener("dragend",clearInventoryDrag);
+}
+function moveInventoryItem(id,pos){
+ const it=state.items.find(x=>x.id===id);if(!it||!setItemPosition(it,pos))return false;
+ if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
+ if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
+ renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();return true;
 }
 function renderInventory(){
+ closeHandTooltip();clearInventoryDrag();
  const focusSelector=$("focus-test-model");
  if(focusSelector){
   const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1);
@@ -5321,7 +5424,7 @@ function renderInventory(){
   previousGroup=group;
   const stats=equipmentDetails(it);
   return groupTitle+'<details class="fp-item fp-item-compact" data-item-id="'+esc(it.id)+'"'+(openedItems.has(it.id)?' open':'')+'>'+
-  '<summary class="fp-item-summary">'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
+  '<summary class="fp-item-summary"'+(inventoryPositionOptions(it).length?' draggable="true" data-inventory-drag="'+esc(it.id)+'"':'')+'>'+codexItemIcon(it)+'<strong>'+esc(it.name)+'</strong>'+
   '<small>'+esc(stats)+'</small><span class="fp-inventory-status">'+(it.shieldGrounded?'No chão':(handItem(it)||it.ammoRole==="container")?({hands:"Equipado",quick:"Acesso rápido",bag:"Guardado"}[itemPosition(it)]):it.equipped?'Equipado':'Guardado')+'</span></summary>'+
   '<div class="fp-item-editor"><div class="fp-inventory-name">'+codexItemIcon(it)+
   '<input type="text" value="'+esc(it.name)+'" data-id="'+esc(it.id)+'" data-item-field="name" maxlength="90" aria-label="Nome do item"></div>'+
@@ -6007,13 +6110,7 @@ function onClick(event){
   const it=state.items.find(x=>x.id===id);if(it){if(it.type==="escudo")changeShieldIntegrity(it,Number(delta));else it.hp=clamp(it.hp+Number(delta),0,it.max);renderInventory();renderVitals();save();}break;
  }
  case "ammo-refill":refillAmmo(id);break;
- case "inventory-position":{
-  const it=state.items.find(x=>x.id===id);if(!it)return;
-  if(!setItemPosition(it,button.dataset.position))return;
-  if(it.equipped&&usingDiscipline()&&combatItem(it,draft.mode).length)draft.equipmentId=it.id;
-  if(!it.equipped&&draft.equipmentId===it.id)draft.equipmentId="";
-  renderInventory();renderVitals();renderComposer();if(viewMode==="builder")renderWizard();save();break;
- }
+ case "inventory-position":moveInventoryItem(id,button.dataset.position);break;
  case "equip":{
   const it=state.items.find(x=>x.id===id);if(!it)return;
   if(it.type==="escudo"&&it.shieldGrounded){toast("Escudo no chão: confirme primeiro a recuperação conforme Arremesso de Armas.");return;}
@@ -6188,6 +6285,7 @@ function onChange(event){
 }
 function bind(){
  document.addEventListener("click",onClick);
+ bindInventorySlots();
  document.addEventListener("click",event=>{
   const button=event.target.closest("button[data-inventory-view]");
   if(button)chooseInventoryPane(button.dataset.inventoryView);
