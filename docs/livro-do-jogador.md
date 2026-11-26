@@ -705,7 +705,7 @@ Encher a mochila não transforma uma armadura Leve em Pesada. **Runa Espinhos s�
 
 #### Sobrecarga
 
-Ao atingir **100% ou mais da capacidade total**, você fica sobrecarregado: **−2E nos testes afetados** e **metade do movimento**.
+Ao atingir **100% ou mais da capacidade total**, você fica sobrecarregado: **−2E nos testes afetados** e **movimento reduzido pela metade**.
 
 **Exemplo:** 10 metros passam a **5 metros**. Sua DE e sua categoria de peso não mudam.
 
