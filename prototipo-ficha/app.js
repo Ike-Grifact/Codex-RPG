@@ -2809,7 +2809,7 @@ function dependentsValid(testState){
  const invalid=testState.skills.find(id=>skillReq(id,testState));
  return invalid?skillReq(invalid,testState):null;
 }
-function baseMovement(s=state){return 8+(s.attributes.agilidade||0)+Math.floor((s.attributes.destreza||0)/2);}
+function baseMovement(s=state){return 8+Math.floor(((s.attributes.agilidade||0)+(s.attributes.destreza||0))/2);}
 function movement(s=state){return baseMovement(s)*(s===state&&!NPC_MODE&&loadPercent()>=100?.5:1);}
 function renderXP(){
  const x=xpCosts();
@@ -4269,8 +4269,8 @@ function vitalHelpDetails(kind){
  "Capacidade = 1,5 + Força "+(a.forca||0)+" + piso(Vigor "+(a.vigor||0)+"/2) = "+capacity()+". Ocupação: "+used+" unidades Alto.",
  "Fórmula atual da ficha · Inventário (playtest)."],
  movement:["Movimento","Deslocamento padrão, reduzido à metade em sobrecarga; outros efeitos seguem suas regras.",
- "8 m + Agilidade ("+(a.agilidade||0)+") + ⌊Destreza ("+(a.destreza||0)+") / 2⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
- "Fórmula atual da ficha · Agilidade e Atletismo."]
+ "8 m + ⌊(Agilidade ("+(a.agilidade||0)+") + Destreza ("+(a.destreza||0)+")) / 2⌋ = "+baseMovement()+" m."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: metade = "+movement()+" m.":""),
+ "Movimento · Agilidade e Destreza."]
  };
  return entries[kind]||null;
 }
@@ -5349,7 +5349,7 @@ function renderInventory(){
  if(equipped)equipped.textContent=String(state.items.filter(it=>it.equipped).length);
  if(quickLoad)quickLoad.textContent=pad(load)+" / "+max+" Alto";
  fill.style.width=Math.min(100,max?load/max*100:0)+"%";fill.classList.toggle("over",load>max);
- $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · "+loadStatus(loadPercent())+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: −2E nos testes afetados e metade do deslocamento. Abrangência e aplicação de −2E pendentes.":"");
+ $("load-caption").textContent="Carga física: "+pad(load)+" / "+max+" Alto ("+pad(loadPercent())+"%) · "+loadStatus(loadPercent())+(load>max?" · capacidade excedida":"")+". Focos usam carga convencional."+(loadPercent()>=100&&!NPC_MODE?" Sobrecarga: −2E nos testes afetados e metade do deslocamento.":"");
  const cargoPanel=$("inventory-cargo-panel");
  if(cargoPanel)cargoPanel.hidden=NPC_MODE;
  if(!NPC_MODE&&cargoPanel){
