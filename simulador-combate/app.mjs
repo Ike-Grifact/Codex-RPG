@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
-import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261125-v0152";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261125-v0152";
-import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261125-v0152";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261125-v0152";
+import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,backpackCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
+ from "./comparador-logic.mjs?v=20261126-v0154-carga";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261126-v0154-carga";
+import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261126-v0154-carga";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0154-carga";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -441,7 +441,7 @@ function renderMartial(){
 function renderAffinity(){
  const hint=weightAffinity(chosenWeapon()||martialDeclaration().weapon,target(),actor());
  $("weight-affinity").textContent="Comparação por peso: "+hint.description+" A afinidade será aplicada na rolagem quando definida. Carga física do atacante: "+
-  (actor()?weightUsed(actor()).toFixed(3)+" / "+carryingCapacity(actor())+" Alto · Corpo "+bodyUsage(actor().items).toFixed(3)+"/"+(carryingCapacity(actor())-.5)+" · Saque "+quickUsage(actor().items)+"/3 · Mochila "+(weightUsed(actor())-bodyUsage(actor().items)).toFixed(3)+"/0,5":"—")+
+  (actor()?weightUsed(actor()).toFixed(3)+" / "+carryingCapacity(actor())+(isHumanoidKind(actor().kind)?" Cargas":" Alto")+" · Corpo "+bodyUsage(actor().items,actor()).toFixed(3)+"/"+(carryingCapacity(actor())-backpackCapacity(actor()))+" · Saque "+quickUsage(actor().items)+"/3 · Mochila "+(weightUsed(actor())-bodyUsage(actor().items,actor())).toFixed(3)+"/"+backpackCapacity(actor()):"—")+
   ". A categoria da armadura equipada determina a afinidade defensiva.";
  return hint;
 }
