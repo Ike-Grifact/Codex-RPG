@@ -1,8 +1,8 @@
 /* Criar Conflito — cálculos independentes da interface; SRD v0.44. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,XP_ATTRIBUTE,XP_TRAINING,SKILLS as BASE_SKILLS,
  sourceDice,lifeMax,naturalDE,keepLimit,monsterCap,narratorCap,loadCapacity,maxCourage}
- from "./codex-rules.mjs?v=20261125-v0152";
-import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261125-v0152";
+ from "./codex-rules.mjs?v=20261126-v0154-carga";
+import {PLAYER_SKILLS,playerSkillRequirement,isVisiblePlayerSkill,ADVANCED_SOURCE_DEFS} from "../prototipo-ficha/skills-catalog.mjs?v=20261126-v0154-carga";
 export {isVisiblePlayerSkill};
 // Sincronização pontual com os dois IDs de custo definido na Ficha do jogador.
 // Perícias com custo XP pendente não são habilitadas nem ganham custo inventado.
@@ -182,11 +182,22 @@ export function stats(t){
   keepCostP:Math.max(0,Number(t.keep||2)-naturalKeep),
   xp:ledger(t),capacity:human?loadCapacity({...s,monsterRules:false}):loadCapacity({...s,monsterRules:true}),used:weightUsed(t)};
 }
-export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+Number(it.weight||0)*Math.max(1,Number(it.qty||1)),0);}
-export function afterItem(t,item){const x=Number(item.weight)||0,qty=Math.max(1,Number(item.qty||1));return weightUsed(t)+x*qty;}
+// Carga de humanoides: o peso numérico antigo permanece para criaturas e importações.
+export const LOAD=Object.freeze({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-pesado":4});
+export function chargePerItem(it={}){
+ if(it.load!=null&&Number.isFinite(Number(it.load)))return Math.max(0,Number(it.load));
+ const cat=itemCategory(it)||({"0.0125":"muito-leve","0.0625":"leve","0.125":"leve","0.5":"medio","1":"pesado","2":"muito-pesado"})[String(it.weight)];
+ const base=LOAD[cat]??Math.max(0,Number(it.weight)||0);
+ const effective=it.properties?.includes("Muito Leve")||Number(it.weight)===.0625?base*.5:base;
+ const ammo=(Number(it.ammoLotWeight)===.0125?.5:Number(it.ammoLotWeight)===.125?1:0)*Object.values(it.ammoMix||{}).reduce((a,b)=>a+(Number(b)||0),0)/20;
+ return it.ammoRole==="supply"?ammo:effective+(it.ammoRole==="container"?ammo:0);
+}
+export function itemLoadFor(t,it){return isHumanoidKind(t.kind)||!t.kind?chargePerItem(it):Number(it.weight||0);}
+export function weightUsed(t){return(t.items||[]).reduce((n,it)=>n+itemLoadFor(t,it)*Math.max(1,Number(it.qty||1)),0);}
+export function afterItem(t,item){const x=itemLoadFor(t,item),qty=Math.max(1,Number(item.qty||1));return weightUsed(t)+x*qty;}
 export function remainingKinds(t){
  const free=Math.max(0,stats(t).capacity-weightUsed(t));
- return {leve:Math.floor((free+1e-9)/WEIGHT.leve),medio:Math.floor((free+1e-9)/WEIGHT.medio),pesado:Math.floor((free+1e-9)/WEIGHT.pesado)};
+ const w=isHumanoidKind(t.kind)?LOAD:WEIGHT;return {leve:Math.floor((free+1e-9)/w.leve),medio:Math.floor((free+1e-9)/w.medio),pesado:Math.floor((free+1e-9)/w.pesado)};
 }
 /** Atualização de Integridade G1 — SRD v0.151: preserva dano já sofrido e idempotência. */
 export function migrateArmorIntegrity(it){
@@ -231,7 +242,8 @@ export function normalize(raw){
   const weight=typeof i.weight==="number"?clamp(i.weight,0,100):
    (WEIGHT[category]??0);
   return {id:String(i.id||uid()).slice(0,100),name:String(i.name||"Item").slice(0,90),
-   weight,qty:Math.floor(clamp(i.qty,1,99)),kind,category,
+   weight,load:chargePerItem({...i,category}),qty:Math.floor(clamp(i.qty,1,99)),kind,category,
+   ammoRole:i.ammoRole,ammoFamily:i.ammoFamily,ammoMix:i.ammoMix,ammoLotWeight:i.ammoLotWeight,storageCapacity:i.storageCapacity,
    grade:Math.floor(clamp(i.grade??1,1,4)),
    integrityMax:max,integrity:Math.floor(clamp(i.integrity??i.hp??max,0,max)),
    equipped:!!i.equipped,position:i.equipped&&["weapon","shield"].includes(kind)?"hands":i.position==="quick"?"quick":"bag",hands:kind==="shield"?1:[1,2].includes(Number(i.hands))?Number(i.hands):kind==="weapon"?(/(?:duas|2) mãos|^arco (?:curto|longo)|^besta pesada/i.test(i.name||"")?2:/(?:uma|1) mão/i.test(i.name||"")?1:category==="pesado"?2:1):0,die:Number(i.die)||0,range:Number(i.range)||0,properties:Array.isArray(i.properties)?i.properties:[]};
