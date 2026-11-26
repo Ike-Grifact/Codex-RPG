@@ -616,7 +616,7 @@ Cada Grau de Força aumenta a capacidade corporal em **1 Alto**, além do **1 Al
 
 Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
 
-Um Aprendiz ágil percorre distâncias maiores e é mais difícil de atingir. Agilidade e Destreza contribuem igualmente para o deslocamento: a cada dois Graus somados, ele aumenta em 1 metro. A cada dois Graus somados de Agilidade e Vigor, a DE natural aumenta em 1.
+Investir em Agilidade ajuda você a percorrer distâncias maiores e dificulta que os inimigos acertem seu personagem. Ela contribui tanto para o movimento quanto para a defesa natural.
 
 **Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
 
@@ -673,23 +673,33 @@ Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo q
 
 Os Graus dos Atributos determinam suas capacidades básicas. O equipamento e as Perícias podem modificar alguns desses valores.
 
-#### Capacidade de carga, peso e sobrecarga
+#### Capacidade de carga
 
-O corpo suporta 1 Alto + o Grau de Força + metade do Grau de Vigor, arredondada para baixo. A mochila inicial oferece mais 0,5 Alto. As duas mãos e os três espaços de acesso rápido fazem parte da capacidade corporal.
+A capacidade de carga diz quanto equipamento você consegue levar na aventura. No Codex, usamos o Alto para medir essa carga: uma arma Pesada ocupa 1 Alto; uma Média ocupa metade; oito armas Leves ocupam o mesmo que uma Pesada, considerando os pesos convencionais.
 
-**Exemplo:** Força 2 e Vigor 1: 3 Altos no corpo e 0,5 na mochila, totalizando 3,5 Altos.
+Você começa com espaço para 1 Alto no corpo e mais meio Alto na mochila. Cada Grau de Força permite carregar mais 1 Alto no corpo, e cada dois Graus de Vigor acrescentam mais 1 Alto.
 
-O peso do personagem é determinado pela armadura equipada, não pela carga transportada. Runa Espinhos são sempre Pesados.
+Por exemplo, um Aprendiz com Força 2 e Vigor 1 pode carregar 3 Altos no corpo e meio Alto na mochila. Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem o espaço do corpo; não são espaços de carga adicionais.
 
-Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
+#### Peso do personagem
 
-#### Defesa e movimento
+O peso na ficha serve para descobrir quais ataques têm Vantagem ou Desvantagem contra você. Se vestir uma armadura Leve, seu peso é Leve; se vestir uma Média, seu peso é Médio. Encher a mochila não transforma uma armadura Leve em Pesada. Runa Espinhos são sempre Pesados.
 
-A DE natural começa em 2 e aumenta em 1 a cada dois Graus somados de Agilidade e Vigor, até 8. A armadura equipada modifica a DE. Maestria em Escudos acrescenta 1 DE com um escudo físico equipado. A DE final varia de 0 a 9.
+#### Sobrecarga
 
-O deslocamento padrão é 8 metros + metade da soma dos Graus de Agilidade e Destreza, arredondada para baixo. Atletismo é utilizado em testes e requisitos, não no cálculo do movimento.
+Quando toda a sua capacidade de carga estiver ocupada (100% ou mais), você fica sobrecarregado: perde 2 Êxitos nos testes afetados e só consegue percorrer metade da sua distância normal. Se seu movimento é de 10 metros, passa a ser de 5 metros. Sua DE e sua categoria de peso não mudam.
 
-**Movimento = 8 + piso((Agilidade + Destreza)/2) metros.** Exemplo: Agilidade 2 e Destreza 1 resultam em 9 m.
+#### Defesa
+
+Sua DE indica o quanto é difícil acertar você. Todo Aprendiz começa com DE natural 2. A cada dois Graus de Agilidade e Vigor somados, ganhe mais 1 DE, até o máximo natural de 8. A armadura pode reduzir esse valor, e Maestria em Escudos pode acrescentar 1 DE com um escudo físico equipado. A DE final fica entre 0 e 9.
+
+#### Movimento
+
+Seu movimento indica quantos metros você pode percorrer em um deslocamento. Todo Aprendiz começa com 8 metros. A cada dois Graus que você tiver em Agilidade e Destreza somados, ganhe mais 1 metro de movimento.
+
+Por exemplo, Eldric tem Agilidade 2 e Destreza 1. Juntos, são três Graus: um par completo e um Grau sobrando. Ele ganha 1 metro e pode se deslocar 9 metros. Se desenvolver Destreza para Grau 2, passa a percorrer 10 metros.
+
+Atletismo ajuda quando você precisa saltar, escalar ou superar outros obstáculos, mas não aumenta essa distância por si só.
 
 #### Equipamentos, Integridade e dano
 
@@ -971,9 +981,7 @@ Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas
 
 ### Peso e sobrecarga
 
-O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. A categoria de humanoides sem armadura não possui regra definida.
-
-Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
+Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga) para organizar seus equipamentos e saber quando seu movimento é reduzido.
 
 **DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
@@ -1062,7 +1070,7 @@ Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −
 | Naginata | 2 m |
 
 
-### Capacidade de Carga — exemplos e referência (v0.118)
+### Capacidade de Carga — exemplos
 
 | Peso físico | Alto |
 |---|---:|
@@ -1166,7 +1174,7 @@ Monstros extraordinários não humanoides seguem suas regras próprias de defesa
 
 **Regra de referência:** contra humanoides, a coluna da matriz decorre **exclusivamente da armadura equipada**, não da carga do inventário. Armadura Muito Leve conta como Leve; Muito Pesada conta como Pesada. O peso tático de cada ataque depende de armas, Perícias e abordagem. Requisitos, efeitos, dados e Vantagens de especializações existentes não se alteram.
 
-O peso do personagem é definido pelo tipo da armadura equipada, independentemente da carga transportada. Runa Espinhos são sempre Pesados. A categoria de humanoides sem armadura não possui regra definida. Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens.
+O peso de combate depende da armadura, não da mochila. Runa Espinhos contam como Pesados. Sem armadura, o Narrador resolve a situação, pois não há uma categoria automática.
 
 **Criaturas:** o Narrador considera **tamanho/porte natural, Força e Vigor**, com a referência de 50% ainda sem fórmula operacional aprovada. Humanoides inimigos seguem a armadura. **PENDENTE:** tratamento de humanoides sem armadura, cálculo do peso natural de monstros e formas druídicas. Não conceder automaticamente bônus por um critério não decidido.
 
@@ -1217,7 +1225,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga (unidades Alto):** corpo = **1 + Força + piso(Vigor/2)**; mochila inicial = **0,5 Alto**; total = soma dos dois. Força integral e metade de Vigor arredondada para baixo; nenhuma Prática ou Conhecimento contribui. O corpo tem 3 espaços de saque rápido e 2 mãos, sem capacidade extra por espaço. Todos os itens transportados, inclusive não equipados e recursos físicos de troca, entram na soma. Ao atingir 100% da capacidade total, o personagem fica sobrecarregado: sofre −2 Êxitos nos testes afetados e seu deslocamento é reduzido à metade. A sobrecarga não altera a DE nem a categoria de peso. Exceder a capacidade de um compartimento exige reorganizar os itens. **Compras:** mostrar carga projetada descontando o peso dos recursos gastos; avisos não bloqueiam compras. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html).
+**Capacidade de carga:** Você começa com espaço para 1 Alto no corpo e mais meio Alto na mochila. Cada Grau de Força permite carregar mais 1 Alto no corpo, e cada dois Graus de Vigor acrescentam mais 1 Alto. Tudo o que você transporta conta para a carga, inclusive recursos de troca. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html) para os exemplos, limites e efeitos da sobrecarga.
 
 ## Combate Coordenado
 
