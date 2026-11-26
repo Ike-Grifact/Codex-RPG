@@ -723,11 +723,11 @@ test("Zarabatana: Armas de Longo Alcance, 1 Coragem mesmo no crítico, somente n
 
 test("Importa kit com acesso rápido, mistura, carga e sem ocupar mãos",()=>{
  const q=normalizeEquipment({name:"Aljava Pequena",type:"outro",weight:"leve",category:"leve",ammoRole:"container",ammoFamily:"arco-curto",ammoLotWeight:.0125,ammoMix:{Cortante:8,Perfurante:12},position:"quick",qty:1});
- assert.equal(q.kind,"container");assert.equal(q.position,"quick");assert.equal(q.hands,0);assert.equal(q.storageCapacity,20);assert.equal(q.weight,.1375);
+ assert.equal(q.kind,"container");assert.equal(q.position,"quick");assert.equal(q.hands,0);assert.equal(q.storageCapacity,20);assert.equal(q.weight,.1375);assert.equal(q.load,1.5);
  assert.deepEqual(q.ammoMix,{Cortante:8,Perfurante:12});assert.equal(heldHands([q]),0);
  assert.equal(normalizeEquipment(q).weight,q.weight);
  const spare=normalizeEquipment({name:"Flechas para Arco Curto",type:"outro",weight:"muito_leve",category:"muito-leve",ammoRole:"supply",ammoFamily:"arco-curto",ammoLotWeight:.0125,ammoMix:{Cortante:10,Perfurante:0}});
- assert.equal(spare.weight,.00625);assert.equal(spare.kind,"ammunition");
+ assert.equal(spare.weight,.00625);assert.equal(spare.load,.25);assert.equal(spare.kind,"ammunition");
 });
 
 
