@@ -26,7 +26,7 @@ test("faces simbólicas mantêm a identidade do Codex",()=>{
  assert.deepEqual(faceSymbols(20,15),[0,2,3]);
  assert.deepEqual(faceSymbols(12,12),[3,0,0]);
  for(let i=1;i<=12;i++){assert.deepEqual(faceSymbols(20,i),faceSymbols(12,i));if(i<=10)assert.deepEqual(faceSymbols(10,i),faceSymbols(12,i));}
- assert.deepEqual(faceSymbols(20,20),[8,0,0]);
+ assert.deepEqual(faceSymbols(20,20),[6,2,0]);
 });
 test("Vantagens e Desvantagens são seleção da rolagem, crítico NÃO",()=>{
  assert.deepEqual(Object.keys(SITUATIONS),["superior","advantage","neutral","disadvantage","inferior","luck"]);
