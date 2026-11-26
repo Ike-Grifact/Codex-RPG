@@ -759,7 +759,7 @@ Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** n
 
 #### Quedas e perigos ambientais
 
-Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, o resultado do teste reduz o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Um inimigo lançado para cima por um ataque pode tentar reduzir o dano em seu turno, antes da queda; depois fica Caído e não contra-ataca imediatamente. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Um alvo derrubado por ataque ou elevado por Ar pode tentar reduzir o dano; depois fica Caído. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; críticos não recuperam Coragem por si mesmos. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Vida e Saúde
 

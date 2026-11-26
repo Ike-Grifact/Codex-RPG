@@ -152,12 +152,12 @@ Cada metro de altura equivale a **1 ponto de intensidade**. Para montar a rolage
 
 ### Queda involuntária
 
-O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. O jogador testa **Destreza + Atletismo**; com Atletismo Avançado, pode acrescentar uma terceira Aptidão pertinente.
+O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. Jogadores e inimigos humanoides testam **Destreza + Atletismo**; com Atletismo Avançado, podem acrescentar uma terceira Aptidão pertinente. Monstros e criaturas testam **Agilidade + Destreza**.
 
 - Se alcançar a DE, evita a queda.
 - Se falhar, a queda acontece. O Narrador rola os dados correspondentes à altura original. O resultado do teste do jogador reduz o dano obtido, mesmo na falha.
 
-Cada Temor obtido na rolagem de dano de queda involuntária do jogador recupera **1 Coragem**, respeitando seu teto. Não confundir os Temores dessa rolagem com os do próprio teste de Aptidões, que seguem a regra geral.
+Na queda ou no dano ambiental sofrido por um jogador, cada Temor não anulado da rolagem de dano do Narrador recupera 1 Coragem do jogador atingido, até seu teto. Os Temores não anulados do teste do jogador para evitar ou reduzir a queda vão à reserva pública de Pavor do Narrador, até o teto, sem duplicação na reserva local. Críticos da rolagem de dano não recuperam Coragem.
 
 **Exemplo:** risco de cair 8 m, DE 8. O jogador não alcança a DE. O Narrador rola 1d20 + 1d10 e calcula o dano bruto. O resultado anterior do teste reduz esse dano, não a altura nem a composição de dados.
 
@@ -169,17 +169,27 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 **Exemplo de rework — Ar:** uma magia G2 com limite de deslocamento de 8 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 8 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A escala vigente de deslocamento do Ar é **G1 4 m · G2 8 m · G3 12 m** (v0.157).
 
+### Empurrão de uma altura e superfície de impacto
+
+Para empurrar alguém de uma altura, o atacante realiza um teste contra a DE aplicável. Se acertar, derruba o alvo; o Narrador determina a altura real conforme a cena. A queda provocada admite teste para reduzir o dano, seguindo o procedimento da elevação por Ar, com as Aptidões do alvo. A referência de DE da redução é o resultado válido do ataque, por analogia com a elevação; a altura de queda não é determinada por esse resultado. O alvo fica Caído após a resolução.
+
+O Narrador considera a superfície de impacto: água, forragem ou inclinação favorável podem amortecer a queda; pedras pontiagudas, espinhos e outras superfícies perigosas podem agravá-la. Recomenda-se ajustar a intensidade de dano em −5 m ou +5 m equivalentes, conforme a cena, sem alterar a altura real ou a DE do teste. Não há intensidade negativa.
+
 ### Danos ambientais
 
 A mesma escala representa perigos ambientais, com intensidade (DE de referência) de **1 a 30**. O Narrador define a intensidade conforme a situação: um vulcão, terremoto, chuva de meteoros ou outra catástrofe pode alcançar a extremidade da escala. Intensidade 30 corresponde a **6d20**, pois cada d20 possui peso 5. Esse é o limite da escala de perigo ambiental, não uma nova DE defensiva dos personagens.
+
+Não existe imunidade universal a dano ambiental. O Narrador considera os tipos de dano presentes na cena (por exemplo, Terra e físico em um terremoto), as proteções e resistências pertinentes; catástrofes podem combinar vários tipos, tornando difícil ignorar todo o dano. Não se cria imunidade ou resistência automática por analogia.
+
+Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Os críticos seguem os benefícios da regra geral, sem gerar Coragem pela ocorrência do crítico. A rolagem integral precisa satisfazer o critério de faces críticas da regra geral; não se descarta dado para formar crítico. A regra existente detalha críticos de dois, três e quatro dados (quatro dobram o dano); o enquadramento de cinco ou mais dados críticos permanece pendente.
 
 ### Resolução do dano
 
 **Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
 
-Na queda com teste de redução, subtraia o resultado do teste do dano bruto rolado pelo Narrador. **Interpretação documental:** usar o total válido que seria comparado à DE (E + T válidos após gastos e anulações), com dano restante nunca negativo. Exemplo ilustrativo: teste com 3 pontos válidos que falha contra DE 8; dano bruto de 5; restam 2 de dano. Não substituir a altura por 8 − 3 nem reduzir a pilha antes de rolar.
+Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
-**PENDENTE:** confirmação da composição exata da redução (E + T válidos ou apenas E), aplicação à Integridade/Vida, imunidades, críticos, seleção de mantidos da rolagem de dano, situações de queda provocada não cobertas pelo exemplo de elevação, tratamento de alturas fracionárias e Temor nos demais perigos ambientais. A leitura integral da pilha ambiental permanece interpretação documental da v0.155. A ausência de contra-ataque imediato após o teste não substitui a regra geral de levantar-se da condição Caído.
+**PENDENTE:** alturas fracionárias, críticos com cinco ou mais dados, detalhamento de interações específicas de proteção ambiental, situações de empurrão não cobertas pelo procedimento e consequências exatas de alcançar a DE numa queda já provocada. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.158](srd-continuidade-v0.158.md).
 
 ## 1. Provocação, liderança e objetivos da oposição
 
@@ -381,7 +391,7 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 
 **DEFINIDO:** não há capacidade de spellslots mentais; a antiga distinção “por dado” versus “por Grau” foi revogada. **Focos permanecem objetos com carga física convencional**, e sua existência não altera a liberdade de descrever a magia na hora.
 
-**Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1, começando por magias Leves. Com a Perícia e o Grau habilitados, efeitos **G1/G2** têm custo-base de **0 Coragem**; efeitos G3, quando habilitados, exigem **1 Coragem** para elevação. Aplicações: G1 empurrar/puxar/elevar/autoempurrar até 4 m; G2 até 8 m, sufocar com dano à Vida ou armadura, empurrar e derrubar; G3 até 12 m, agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda. Formas linha/círculo/cone/X. **PENDENTE:** detalhes de alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
+**Perícia em Elemento Ar:** 1 XP, requisitos Disciplina 1 + Inteligência 1, começando por magias Leves. Com a Perícia e o Grau habilitados, efeitos **G1/G2** têm custo-base de **0 Coragem**; efeitos G3, quando habilitados, exigem **1 Coragem** para elevação. Aplicações: G1 empurrar/puxar/elevar/autoempurrar até 4 m; G2 até 8 m, sufocar com dano à Vida ou armadura, empurrar e derrubar; G3 até 12 m, agir no fim do turno dos aliados, tornado/rajada e possíveis danos por queda. Formas linha/círculo/cone/X. **PENDENTE:** detalhes de alcance/área, dano, durações, sufocamento e uso de efeitos utilitários fora de ataque. **Elemento: Vento** é nome antigo da mesma habilitação; não comprar duas vezes.
 
 ## Conjuração — Água e Fôlego (17/11/2026)
 
