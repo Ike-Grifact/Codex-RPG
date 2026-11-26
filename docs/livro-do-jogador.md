@@ -759,7 +759,7 @@ Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** n
 
 #### Quedas e perigos ambientais
 
-A altura da queda determina os dados de dano que o Narrador rola. Se cair involuntariamente, você pode tentar reduzir o dano com **Destreza + Atletismo**, contra uma **DE igual à altura em metros**. Com Atletismo Avançado, pode acrescentar uma terceira Aptidão pertinente. Se alguém derrubar você de uma altura, sofre a rolagem de dano integral, sem esse teste de redução. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, o resultado do teste reduz o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Um inimigo lançado para cima por um ataque pode tentar reduzir o dano em seu turno, antes da queda; depois fica Caído e não contra-ataca imediatamente. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Vida e Saúde
 
