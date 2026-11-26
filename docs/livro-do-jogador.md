@@ -608,7 +608,7 @@ Potência física para vencer resistência, deslocar massas e aplicar força de 
 
 Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**.
 
-Cada Grau de Força aumenta a capacidade corporal em **1 Alto**, além do **1 Alto inicial**. Some metade de Vigor, arredondada para baixo. A mochila inicial oferece mais 0,5 Alto.
+Cada Grau de Força aumenta a capacidade corporal em **1 Carga**, além do **5 Cargas iniciais**. Some metade de Vigor, arredondada para baixo. A mochila inicial oferece mais 3 Cargas.
 
 **Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
 
@@ -656,7 +656,7 @@ Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajud
 
 Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**.
 
-A cada **2 Graus completos de Vigor**, sua capacidade corporal aumenta em **1 Alto**.
+A cada **2 Graus completos de Vigor**, sua capacidade corporal aumenta em **1 Carga**.
 
 A cada **2 Graus somados de Agilidade e Vigor**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
 
@@ -675,25 +675,23 @@ Os Graus dos Atributos determinam suas capacidades básicas. O equipamento e as 
 
 #### Capacidade de carga
 
-A capacidade de carga diz quanto equipamento você consegue levar na aventura. No Codex, usamos o **Alto** para medir essa carga.
+A capacidade de carga diz quanto equipamento você consegue levar na aventura. Cada item ocupa **Cargas**.
 
-| 1 arma Pesada | 2 armas Médias | 8 armas Leves |
-|---|---|---|
-| 1 Alto | 1 Alto | 1 Alto |
+| Categoria | Carga |
+|---|---:|
+| Muito Leve | **0,5** |
+| Leve | **1** |
+| Médio | **2** |
+| Pesado | **3** |
+| Muito Pesado | **4** |
 
-Equivalências convencionais: confira o peso de cada item. Não concedem espaços extras.
+Itens Muito Leves guardados aparecem em Itens Pequenos na mochila e contam para sua capacidade. Dois ocupam 1 Carga. A carga não altera a categoria de peso em combate.
 
-Você começa com espaço para **1 Alto no corpo e mais meio Alto na mochila**. **Cada Grau de Força permite carregar mais 1 Alto no corpo**, e **cada dois Graus de Vigor acrescentam mais 1 Alto**.
+Todo Aprendiz começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga.
 
-Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem o espaço do corpo; **não são espaços de carga adicionais**.
+> **Exemplo — Força 2, Vigor 1:** 7 Cargas no corpo + 3 na mochila = **10 Cargas**.
 
-> **Exemplo — Força 2, Vigor 1**
->
-> 1 Alto inicial + 2 Altos de Força + 0 de Vigor = **3 Altos no corpo**.
->
-> 3 Altos no corpo + 0,5 Alto na mochila = **3,5 Altos de carga total**.
->
-> Vigor 1 ainda não completa um par de Graus.
+Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem a capacidade corporal; não são espaços extras.
 
 #### Peso do personagem
 
@@ -1007,7 +1005,7 @@ Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas
 
 ### 4. Equipamentos, peso e carga
 
-Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 4). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 0,125 Alto: juntas, 0,25 Alto no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT. Na referência de carga dos recursos físicos (10 VT = 0,125 Alto), o saldo ocupa 0,1625 Alto; o total transportado é 0,4125 Alto. Capacidade corporal = 1 + 2 + piso(1/2) = 3 Altos, mais 0,5 Alto na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
+Eldric escolhe Espada Curta G1 (Leve, 1d6, Cortante, alcance 1 m) e Armadura Leve G1 (0 DE, Integridade 4). Com a armadura equipada, a DE final é 3 e seu peso é Leve. A espada custa 2 VT e a armadura 5 VT no catálogo de playtest; registre as compras separadamente do XP. Cada peça ocupa 1 Carga: juntas, 2 no corpo. Eldric começa com 20 VT e gasta 7 VT nessas duas peças, restando 13 VT, que ocupam 1,3 Carga. Ele transporta 3,3 Cargas de um limite de 10: 7 no corpo e 3 na mochila. Registre também o peso dos demais itens e recursos físicos. Não some a capacidade da mochila aos espaços de acesso rápido ou às mãos.
 
 ### 5. Dano e Integridade
 
@@ -1023,7 +1021,7 @@ Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas
 
 Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga) para organizar seus equipamentos e saber quando seu movimento é reduzido.
 
-**DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. 1 Alto equivale a 1 Pesada, 2 Médias ou 8 Leves na escala convencional, podendo combinar pesos e respeitando a carga total e acomodação física. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
+**DEFINIDO — Saque Rápido e inventário:** Agilidade 2 + Destreza 1 + Disciplina 2, passiva. Arma empunhada: sem penalidade de saque. Acesso rápido: sem a Perícia, Desvantagem Absoluta (−1E); com Saque Rápido, gasta 1 Antecipar da ação para evitar a penalidade; se não houver Antecipar, mantém −1E. Dentro do inventário: sem Saque Rápido, Golpe de Sorte (−2E); com Saque Rápido, Desvantagem Absoluta (−1E), sem consumo adicional de Antecipar. Armas de acesso rápido não ocupam mãos, mas contam na carga; não há capacidade adicional. A carga de cada item conta para a capacidade total. **Desarmar:** Remove a arma empunhada pelo alvo. Quem realiza o desarme pode guardá-la em seu inventário se possuir Saque Rápido, respeitando a carga; pode mantê-la em uma mão livre compatível com a arma ou deixá-la cair no chão. A arma deixa de estar empunhada pelo alvo. **DEFINIDO:** aquisição de Saque Rápido por 1 XP. **PENDENTE:** procedimento detalhado de mãos, troca, armazenamento, coleta e automação; não inferir preço nem custos adicionais.
 
 [Referência de mecânica](../mecanicas/inventario-e-acesso-rapido.html) · [SRD v0.109](srd-continuidade-v0.109.md).
 
@@ -1052,7 +1050,7 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 **Características de Armas, Golpes e Magias [DEFINIDO — SRD v0.115]:** Cravar segue as características ativas de armas físicas; nunca se ativa sem a Perícia de peso correspondente. A exceção histórica da v0.77 fica revogada. Características de armas, manobras de golpes e efeitos de magias possuem habilitações próprias; não transferir automaticamente gatilhos entre categorias. Consultar [mecânicas relacionadas](../mecanicas/caracteristicas-de-combate.html) e [SRD v0.115](srd-continuidade-v0.115.md).
 
 
-**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 0,5 Alto e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
+**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 2 e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
 
 
 **DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
@@ -1061,11 +1059,11 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 
 **DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
 
-**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Recipientes continuam Leves (0,125 Alto). Lote Muito Leve 0,0125 Alto, Leve 0,125 Alto; ao dividir/consumir lote, carga proporcional à quantidade (PROPOSTO para não duplicar carga). Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
+**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Lotes de munição Muito Leves ocupam 0,5 Carga; Leves, 1. Ao usar parte de um lote, a carga acompanha a quantidade restante. Recursos de troca: 10 VT ocupam 1 Carga, proporcionalmente. Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
 
 ## Carga por compartimento e disparos (24/11/2026)
 
-**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 1 Alto + Força + piso(Vigor/2). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 0,5 Alto adicionais; capacidade total base 1,5 Alto. Uma arma Pesada (1 Alto) esgota a capacidade corporal base; só se pode acomodar outros itens no corpo ao aumentar a tolerância. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
+**DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 5 + Força + piso(Vigor/2). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 3 Cargas adicionais; capacidade total base 8. Uma arma Pesada ocupa 3 Cargas. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
 
 **DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, não concede dado extra da arma nem ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
 
@@ -1112,15 +1110,15 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 
 ### Capacidade de Carga — exemplos
 
-| Peso físico | Alto |
+| Categoria | Carga |
 |---|---:|
-| Muito Leve | 0,0125 |
-| Leve | 0,125 |
-| Médio | 0,5 |
-| Pesado | 1 |
-| Extremo | 2 |
+| Muito Leve | 0,5 |
+| Leve | 1 |
+| Médio | 2 |
+| Pesado | 3 |
+| Muito Pesado | 4 |
 
-Exemplo: 0,75 Alto no corpo e 0,5 Alto na mochila totalizam 1,25 de 1,5 Alto. O personagem não está em sobrecarga. Sua armadura, e não a porcentagem de carga, determina seu peso. Com Força 2 e Vigor 1, a capacidade passa a 3 Altos no corpo + 0,5 na mochila.
+Exemplo: 4 Cargas no corpo e 2 na mochila totalizam 6 de 8 Cargas. O personagem não está em sobrecarga. Sua armadura, e não a porcentagem de carga, determina seu peso. Com Força 2 e Vigor 1, a capacidade passa a 7 Cargas no corpo + 3 na mochila.
 
 ## Evolução, níveis, Marcos e XP
 
@@ -1265,7 +1263,7 @@ O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem
 
 **Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
 
-**Capacidade de carga:** Você começa com espaço para 1 Alto no corpo e mais meio Alto na mochila. Cada Grau de Força permite carregar mais 1 Alto no corpo, e cada dois Graus de Vigor acrescentam mais 1 Alto. Tudo o que você transporta conta para a carga, inclusive recursos de troca. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html) para os exemplos, limites e efeitos da sobrecarga.
+**Capacidade de carga:** Todo Aprendiz começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga. Tudo o que você transporta conta para a carga, inclusive recursos de troca. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html) para os exemplos, limites e efeitos da sobrecarga.
 
 ## Combate Coordenado
 
