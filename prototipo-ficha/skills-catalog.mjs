@@ -206,7 +206,7 @@ const SKILLS=[
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: autoempurrão +4 m de deslocamento; puxar/empurrar objetos; linha, círculo, cone, X. G2: sufocar com dano à Vida ou armadura, puxar, empurrar + derrubar com dano, deslocamento até +8 m. G3: conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada, possíveis danos por queda (16 m ainda sem interpretação geométrica). Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: até 4 m para empurrar, puxar, elevar ou autoempurrar; linha, círculo, cone, X. G2: até 8 m para esses deslocamentos; sufocar com dano à Vida ou armadura, empurrar + derrubar com dano. G3: até 12 m para esses deslocamentos; conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada. Elevação por ataque segue a altura efetiva do resultado válido e as regras de queda; trajetórias curvas somam seus trechos dentro do limite do Grau. Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
   1
  ],
  [

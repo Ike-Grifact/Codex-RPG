@@ -1816,17 +1816,19 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 | Grau | Efeitos e formas |
 |---|---|
-| **G1** | Autoempurrão para aumentar deslocamento em **4 m**; puxar ou empurrar objetos; linha reta, círculo, cone, X |
-| **G2** | **Sufocar**, causando dano à Vida ou armadura; puxar, empurrar + derrubar com dano; deslocamento até **8 m**; linha reta, círculo, cone, X |
-| **G3** | Conjurar ao **final do turno dos aliados**; grandes áreas e múltiplos alvos, tornado/rajada, possíveis danos por queda e referência de **16 m**; linha reta, círculo, cone, X |
+| **G1** | **Até 4 m** para empurrar, puxar, elevar ou autoempurrar; linha reta, círculo, cone, X |
+| **G2** | **Até 8 m** para os deslocamentos de Ar; **Sufocar**, causando dano à Vida ou armadura; empurrar + derrubar com dano; linha reta, círculo, cone, X |
+| **G3** | Conjurar ao **final do turno dos aliados**; **até 12 m** para os deslocamentos de Ar; grandes áreas e múltiplos alvos, tornado/rajada, possíveis danos por queda; linha reta, círculo, cone, X |
 
-**Curvatura de Ar [DEFINIDO — v0.85]:** linhas quebradas, correntes em L/X e outros caminhos curvos são permitidos; a **soma da distância percorrida** por todos os trechos conta contra a metragem disponível para a magia no Grau usado (**4 m G1, 8 m G2 e referência de 16 m G3**), sem benefício de alcance por curva, sem atravessar paredes e sem efeito automático. A distância não é calculada apenas entre início e fim. [SRD v0.85](srd-continuidade-v0.85.md).
+**Curvatura de Ar [DEFINIDO — v0.85]:** linhas quebradas, correntes em L/X e outros caminhos curvos são permitidos; a **soma da distância percorrida** por todos os trechos conta contra a metragem disponível para a magia no Grau usado (**4 m G1, 8 m G2 e 12 m G3**, revisão v0.157), sem benefício de alcance por curva, sem atravessar paredes e sem efeito automático. A distância não é calculada apenas entre início e fim. [SRD v0.85](srd-continuidade-v0.85.md).
 
 **Ar também pode recuperar Fôlego [DEFINIDO no efeito].** **PENDENTE:** em qual Grau, quanto Fôlego recupera, quem recebe e qual gatilho/custo; não confundir Fôlego com Coragem ou Vida.
 
 **Nome atualizado:** esta é a habilitação antes registrada como **Elemento: Vento**; as duas denominações correspondem ao **mesmo elemento**, não a duas compras. A ficha preserva o identificador antigo.
 
-**PENDENTE:** duração e dano de Sufocar/queda, áreas e largura dos formatos, ramificações e ações não ofensivas. O uso de 16 m como limite de trajeto curvo de G3 já está DEFINIDO pela v0.85.
+**DEFINIDO — v0.157:** empurrar, puxar e elevar usam o limite do Grau. Ao elevar por ataque, a altura efetiva segue o resultado válido, limitado à metragem habilitada. Exemplo: G2 com resultado válido 5 em um acerto eleva 5 m, não 8 m. A queda segue o [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+
+**PENDENTE:** duração e dano de Sufocar, detalhes ainda abertos da resolução de queda, áreas e largura dos formatos, ramificações e ações não ofensivas.
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 

@@ -48,7 +48,7 @@ test("v0.85: curvas de Ar consomem a distância somada dos trechos do Grau",()=>
  assert.match(srd,/não atravessa parede sólida/i);
  assert.match(book,/A distância não é calculada apenas entre início e fim/);
  const ar=entry("pericia-em-elemento-ar");
- assert.match(ar,/4 m G1, 8 m G2, 16 m G3/);
+ assert.match(ar,/4 m G1, 8 m G2, 12 m G3/);
  assert.match(ar,/srd-continuidade-v0\.85\.md/);
  assert.match(app,/soma dos trechos dentro da metragem do Grau/);
  const allowed=(segments,max)=>segments.reduce((total,s)=>total+s,0)<=max;
@@ -66,3 +66,11 @@ test("Livro ensina resistência e preserva referências de versões no arquivo e
  assert.match(entry("pericia-em-elemento-ar"),/recuperar Fôlego/);
  assert.ok(!srd.includes("dois elementos gratuitos"));
 });
+
+ test("v0.157: Ar tem deslocamento 4/8/12 e elevação limitada ao resultado",()=>{
+ const ar=readFileSync(new URL("../pericias/pericia-em-elemento-ar.html",import.meta.url),"utf8");
+ assert.match(ar,/4 m G1, 8 m G2, 12 m G3/);
+ assert.match(ar,/empurrar, puxar, elevar/);
+ assert.match(ar,/eleva 5 m, não 8 m/);
+ assert.doesNotMatch(ar,/16 m/);
+ });
