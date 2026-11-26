@@ -66,7 +66,7 @@ export const maxCourage=level=>Math.min(15,10+Number(level>=5)+Number(level>=10)
 export const keepLimit=(level,extra=false,monster=false)=>monster?Math.min(Number(level)>=5?4:3,2+Math.max(0,Math.min(2,Number(extra)||0))):Math.min(4,(level>=10?3:2)+(extra?1:0));
 export const narratorCap=players=>2+Math.max(0,Math.floor(Number(players)||0));
 export const monsterCap=grade=>Math.max(1,Math.min(6,Math.floor(Number(grade)||1)));
-export const loadCapacity=s=>s.monsterRules?1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3):1.5+Number(s.attributes?.forca||0)+Math.floor(Number(s.attributes?.vigor||0)/2); // humanoides: inclui mochila inicial
+export const loadCapacity=s=>s.monsterRules?1+Math.floor(Number(s.attributes?.forca||0)/3)+Math.floor(Number(s.attributes?.vigor||0)/3)+Math.floor(Number(s.practices?.atletismo||0)/3):8+Number(s.attributes?.forca||0)+Math.floor(Number(s.attributes?.vigor||0)/2); // humanoides: inclui mochila inicial
 export const affinity=(attack,target)=>({leve:{leve:0,medio:1,pesado:-1},medio:{leve:1,medio:-1,pesado:0},pesado:{leve:-1,medio:0,pesado:1}})[attack]?.[target]??0;
 export function xpLedger(s){
  const attr=ATTRIBUTES.reduce((n,[k])=>n+XP_ATTRIBUTE[Number(s.attributes?.[k]||0)],0);
@@ -161,4 +161,11 @@ export function resolveRoll(rolled,selectedIds,options={}){
  return{ok:errors.length===0,errors,raw:{e:raw[0],a:raw[1],p:raw[2]},e,p,aRemaining:a-cancelP-2*convertPairs,
   reached,de,success,outcome,damage,critical,criticalRefundCourage:monster||hostile?0:refund,monsterCriticalPavor:monster||hostile?2*refund:0,
   freeCharacteristics:success&&crit?1:0,selected:kept};
+}
+
+// v0.154: carga de humanoides derivada da categoria, sem modificar o peso legado.
+export function equipmentCharge(it={}){
+ const category=({"muito_leve":"muito-leve",alto:"pesado",extremo:"muito-pesado",muito_pesado:"muito-pesado"})[it.category]||it.category;
+ const base=({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-pesado":4})[it.kind==="armor"&&category==="muito-leve"?"leve":category]??1;
+ return base*(it.properties?.includes("Muito Leve")?.5:1);
 }
