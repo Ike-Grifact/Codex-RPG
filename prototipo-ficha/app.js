@@ -1782,7 +1782,7 @@ function renderWizardSkillCards(){
  if(container)container.innerHTML=wizardSkillCardsMarkup();
 }
 
-const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Alto / Pesado",1],extremo:["Extremo",2]};
+const WEIGHTS={muito_leve:["Muito leve",.0125],leve:["Leve",.125],medio:["Médio",.5],alto:["Pesado",1],extremo:["Extremo",2]};
 const CATALOG=(window.CODEX_G1_CATALOG||[]).filter(x=>x.grade===1);
 // Pictogramas apenas visuais: não fornecem dados, habilidades nem novos requisitos.
 const CODEX_SKILL_ICONS=Object.freeze({

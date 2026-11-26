@@ -104,3 +104,10 @@ test("Sobrecarga: metade do deslocamento em 100%, recupera abaixo de 100%",()=>{
  assert.equal(get({race:"runa_espinhos"},null),"Pesado");
  assert.equal(get({race:"humano"},null),"Sem armadura");
  });
+
+test("Rótulo de categoria Pesado não se confunde com a unidade Alto",()=>{
+ const declaration=app.match(/const WEIGHTS=\{[^\n]+\};/)[0];
+ const weights=new Function(declaration+"return WEIGHTS;")();
+ assert.deepEqual(weights.alto,["Pesado",1]);
+ assert.match(app,/inventorySelect\("weight",it\.weight,Object\.entries\(WEIGHTS\)/);
+});
