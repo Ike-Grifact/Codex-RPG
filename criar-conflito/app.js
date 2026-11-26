@@ -1,10 +1,10 @@
 /* Codex RPG — Criar Conflito: editor local e independente de contas. */
 import {KINDS,LEGACY_KINDS,isHumanoidKind,monsterAttributeCost,WEIGHT,uid,blank,normalize,stats,ledger,dice,ATTRIBUTES,KNOWLEDGES,
- PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory}
- from "./rules.mjs?v=20261125-v0152";
+ PRACTICES,SKILLS,humanoidSourceCost,humanoidSkillCost,humanoidHasFocus,humanoidRacialGrants,humanoidSkillRequirement,isPlayerCatalogSkill,isVisiblePlayerSkill,canBuyDomarMedium,canBuyDomarGrande,encounterSummary,narratorCap,maxCourage,remainingKinds,afterItem,clamp,quickHumanoid,COMPANION_TYPES,normalizeCompanions,companionEncounterXP,equippedArmor,canEquipArmor,itemCategory,chargePerItem,itemLoadFor}
+ from "./rules.mjs?v=20261126-v0154-carga";
 import {canDeclareJoint,creaturePool,humanoidPool,composeActionPool,rollCreatureFaces,previewCreatureRoll,previewHumanoidRoll,settleCreatureRoll,faceSymbols,isCriticalFace,SITUATIONS}
- from "./roll-engine.mjs?v=20261125-v0152";
-import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261125-v0152";
+ from "./roll-engine.mjs?v=20261126-v0154-carga";
+import {planSkillPurchase} from "../prototipo-ficha/skill-auto-plan.mjs?v=20261126-v0154-carga";
 const KEY="codex-rpg-criar-conflito-v1";
 const HUMANOID_INBOX_KEY="codex-rpg-conflito-humanoide-inbox-v1";
 const el=id=>document.getElementById(id);
@@ -434,14 +434,14 @@ function skillPanel(t){
   '<aside id="cf-gene-inspector" class="cf-gene-inspector" aria-label="Detalhes da capacidade selecionada"'+
   (enemyGeneUI.selected?'':' hidden')+'>'+enemyGeneInspectorMarkup(t)+'</aside></div>';
 }
-function itemOptions(){
+function itemOptions(t){
  const groups=[["armor","Armaduras G1"],["shield","Escudos G1"],["weapon","Armas G1"],
   ["firearm","Armas de fogo G1"],["other","Outros equipamentos G1"]];
  return groups.map(([kind,label])=>{
   const options=catalog.map((it,i)=>({it,i})).filter(({it})=>
    kind==="other"?!["armor","shield","weapon","firearm"].includes(it.kind):it.kind===kind);
   return options.length?'<optgroup label="'+label+'">'+options.map(({it,i})=>
-   '<option value="'+i+'">'+esc(it.name)+' · '+esc(it.priceVT??"Preço pendente")+' VT* · '+fmt(catalogWeight(it))+' Alto</option>').join("")+'</optgroup>':"";
+   '<option value="'+i+'">'+esc(it.name)+' · '+esc(it.priceVT??"Preço pendente")+' VT* · '+fmt(isHumanoidKind(t.kind)?chargePerItem(it):catalogWeight(it))+' '+(isHumanoidKind(t.kind)?'Cargas':'Alto')+'</option>').join("")+'</optgroup>':"";
  }).join("");
 }
 function catalogWeight(it){
@@ -462,17 +462,17 @@ function inventory(t,x){
  return '<section class="cf-panel"><h3>Equipamento e carga</h3>'+
   '<p>Inventário do encontro. Os preços G1 são propostos; adicionar um item aqui não simula uma compra com VT nem concede uma Perícia.</p>'+
   '<div class="cf-weight-status">'+
-  '<strong'+(free<-1e-9?' style="color:#e9a7a7"':'')+'>Carga física: '+fmt(x.used)+' / '+fmt(x.capacity)+' Alto</strong>'+
-  (free<-1e-9?'<p class="cf-warning">Capacidade de carga excedida por '+fmt(-free)+' Alto. Penalidade mecânica pendente.</p>':'')+
+  '<strong'+(free<-1e-9?' style="color:#e9a7a7"':'')+'>Carga física: '+fmt(x.used)+' / '+fmt(x.capacity)+' '+(isHumanoidKind(t.kind)?'Cargas':'Alto')+'</strong>'+
+  (free<-1e-9?'<p class="cf-warning">Capacidade de carga excedida por '+fmt(-free)+' '+(isHumanoidKind(t.kind)?'Cargas. Sobrecarga.':'Alto. Penalidade mecânica pendente.')+'</p>':'')+
   '<div class="cf-weight-counts"><span><b>'+counts.leve+'</b> leves</span><span><b>'+counts.medio+'</b> médios</span><span><b>'+counts.pesado+'</b> pesados</span></div>'+
   '<p class="cf-note">Quantidades alternativas, não somadas. Itens equipados também pesam.</p></div>'+
-  (catalog.length?'<div class="cf-form-row"><label>Adicionar do catálogo G1<select id="catalog-choose">'+itemOptions()+'</select></label>'+
+  (catalog.length?'<div class="cf-form-row"><label>Adicionar do catálogo G1<select id="catalog-choose">'+itemOptions(t)+'</select></label>'+
    '<label>Quantidade<input id="item-quantity" type="number" min="1" max="99" value="1"></label>'+
    '<button type="button" data-add-catalog>Adicionar ao inventário</button></div>':
    '<p class="cf-note">Catálogo indisponível nesta página.</p>')+
   '<div class="cf-items">'+(t.items.length?t.items.map(it=>
    '<div class="cf-item"><div class="cf-item-descriptor"><strong>'+esc(it.name)+'</strong>'+
-   '<small>'+it.qty+' un. · '+fmt(it.weight*it.qty)+' Alto · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
+   '<small>'+it.qty+' un. · '+fmt(itemLoadFor(t,it)*it.qty)+' '+(isHumanoidKind(t.kind)?'Cargas':'Alto')+' · '+esc(it.kind==="armor"?"Armadura":it.kind==="shield"?"Escudo":"Equipamento")+'</small>'+
    (rangedInventoryRange(t,it)?'<small>Alcance efetivo: '+rangedInventoryRange(t,it).effective+' m'+(rangedInventoryRange(t,it).bonus?' (base '+rangedInventoryRange(t,it).base+' m + Olhos de Águia)':'')+'</small>':'')+
    (it.kind==="armor"||it.kind==="shield"?'<small>'+(it.equipped?"Equipado":"Guardado")+'</small>':'')+
    (it.kind==="armor"||it.kind==="shield"?'<span class="cf-integrity-label">Integridade: <strong>'+
@@ -978,9 +978,9 @@ function toggleEquipment(id){
 function addCatalogItem(){
  const t=selected(),idx=Math.floor(Number(el("catalog-choose")?.value)),it=catalog[idx];if(!t||!it)return;
  const qty=Math.floor(clamp(el("item-quantity")?.value,1,99)),weight=catalogWeight(it);
- const next=afterItem(t,{weight,qty}),limit=stats(t).capacity;
- if(next>limit+1e-9&&!confirm("ATENÇÃO: "+qty+" × "+it.name+" ultrapassam a carga ("+fmt(next)+" / "+fmt(limit)+" Alto). A penalidade por sobrecarga está PENDENTE. Adicionar mesmo assim?"))return;
- t.items.push({id:uid(),name:it.name,weight,qty,kind:it.kind,
+ const next=afterItem(t,{...it,weight,qty}),limit=stats(t).capacity;
+ if(next>limit+1e-9&&!confirm("ATENÇÃO: "+qty+" × "+it.name+" ultrapassam a carga ("+fmt(next)+" / "+fmt(limit)+(isHumanoidKind(t.kind)?" Cargas). Sobrecarga: −2E e metade do movimento.":" Alto). Penalidade por sobrecarga pendente.")+" Adicionar mesmo assim?"))return;
+ t.items.push({id:uid(),name:it.name,weight,load:chargePerItem(it),qty,kind:it.kind,
  category:itemCategory(it),grade:Number(it.grade)||1,
  integrityMax:Math.max(0,Number(it.integrity?.max)||0),
  integrity:Math.max(0,Number(it.integrity?.value)||0),equipped:false});
