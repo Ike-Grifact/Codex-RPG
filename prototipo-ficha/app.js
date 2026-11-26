@@ -1955,7 +1955,7 @@ function equipmentDetails(item){
  const weight=equipmentWeightName(equipmentWeight(item));
  const p=item.properties||[];
  const info=[weight];
- if(item.kind)info.push("Carga "+pad(item.load??(({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-pesado":4})[item.category]||1)*(p.includes("Muito Leve")?.5:1)));
+ if(item.kind)info.push("Carga "+String(item.load??(({"muito-leve":.5,leve:1,medio:2,pesado:3,"muito-pesado":4})[item.category]||1)*(p.includes("Muito Leve")?.5:1)).replace(".",","));
  if(item.die>0)info.push("d"+item.die+" com Perícia");
  if(kind==="armor"||kind==="armadura"){
   info.push("Integridade "+(item.integrity?.max??item.max??0));
