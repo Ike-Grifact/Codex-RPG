@@ -220,7 +220,7 @@ Você pode começar a escolha por qualquer um dos grupos. O que importa é expli
 
 
 
-Consulte as tabelas completas de Aptidões na criação e as combinações avançadas no aprofundamento das Perícias.
+Consulte as tabelas completas de Aptidões em Características de um personagem e as combinações avançadas no aprofundamento das Perícias.
 
 ## Crítico
 
@@ -436,116 +436,15 @@ Perícias, magias e condições com duração em turnos contam ações; as que d
 
 O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir mais de uma vez não concede recursos extras.
 
-## Parte II — Construindo seu personagem
+## Parte II — Características e construção do personagem
 
-Comece pelo nome, conceito e identidade de seu Aprendiz. Pense no que pretende fazer durante a aventura; a profissão surge das escolhas.
+<a id="aptidões-na-criação--dados-graus-e-xp"></a>
 
-## Crie seu Aprendiz
+## Características de um personagem
 
-Comece pelo nome, conceito e identidade do seu Aprendiz. Pense no que deseja fazer durante a aventura; sua profissão surgirá de suas escolhas. Depois, escolha uma linhagem, distribua seu XP, confira os valores da ficha e escolha equipamentos.
+Antes de construir seu personagem, conheça as Aptidões, os Graus, os recursos e as capacidades que fazem parte de sua ficha. Depois, você poderá escolher sua identidade, sua linhagem, seus equipamentos e como investir seu XP.
 
-### Escolha sua linhagem
-
-A origem do seu Aprendiz ajuda a definir sua história e suas aptidões iniciais. Escolha a linhagem que mais combina com o personagem que deseja interpretar, não uma classe pronta. Todos podem construir profissões híbridas. Os benefícios iniciais são concessões de origem; as diferenças de XP alteram o custo de desenvolver capacidades, não impõem penalidades fixas às rolagens.
-
-#### Humanos
-
-Há cerca de 1.400 anos, os humanos retornaram a um mundo que já não dominavam. Dos destroços das Arcas surgiram cidades com diferentes caminhos para sobreviver: da tecnomagia de Arcanum à engenharia de Arcrois e às tradições de Triarca. A capacidade de se adaptar a essas realidades é uma marca da humanidade.
-
-**Tradição de nomes.** Escolha um nome pessoal e, se desejar, um sobrenome, título ou referência à sua origem. A história da família e da Arca pode inspirar essa escolha. *Elisa, Helena, Caio ou Davi (sugestões livres).* [Guia de nomes — Humanos](#nomes-humanos).
-
-**Benefícios de origem**
-
-- Perseverança Humana: pode rolar novamente um teste uma vez por descanso longo.
-- Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas concedidas gratuitamente na criação.
-
-**Vantagens:** Facilidade para construir personagens de longo alcance com armas de fogo ou combinar esse estilo com outras especialidades.
-
-**Desvantagens:** Não possui bônus racial no desenvolvimento das Aptidões.
-
-#### Luckers Puros
-
-Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a capacidade de sentir e experimentar emoções. Não morrem naturalmente pelo envelhecimento, mas podem morrer se forem abatidos. Restam cerca de 300. Aprenderam a magia com os Runa Espinhos e a transmitiram à humanidade; em Arcanum, convivem com os outros povos.
-
-**Tradição de nomes.** Escolha uma sonoridade inicial e combine-a com uma partícula tradicional. El é associado aos Puros rebatizados; Et era comum antes do Infortúnio. Ast é um fragmento sem significado fixo.
-
-- Ast + el → Astel
-- Et + el → Etel
-- Lu + et + 'el → Luet'el
-
-[Guia de nomes — Luckers Puros](#nomes-luckers-puros).
-
-**Benefícios de origem**
-
-- Inteligência 1 e Destreza 1 automáticas, sem custo de XP.
-- Uma Perícia elemental gratuita à escolha: Fogo, Água, Ar, Terra ou Sagrado.
-- Criar Item de Foco e Magia custa 0 XP, mas precisa ser adquirida após cumprir Disciplina 1, Inteligência 1 e Artesão 1. A Inteligência racial já satisfaz o segundo requisito.
-
-**Vantagens:** XP reduzido em Inteligência e Destreza.
-
-**Desvantagens:** XP elevado em Força e Atletismo.
-
-#### Luckers de Sangue
-
-O Infortúnio privou os Luckers de Sangue das sensações físicas e emocionais, mas não da capacidade de aprender, compreender e decidir. Sua imortalidade é literal: não conseguem alcançar a morte definitiva. Os aventureiros desta linhagem são párias de sua sociedade, e alguns encontraram acolhimento em Arcanum. Diários e formas próprias de linguagem podem ajudá-los a preservar sua identidade.
-
-**Tradição de nomes.** Os nomes de Sangue podem guardar marcas de sua identidade anterior ou de uma nova escolha. Et remete à tradição anterior ao Infortúnio; ion, presente em nomes como Arion e Ikarion, é associado à força psicológica e a antigas lideranças; reaver, à busca por recordar algo. Combine esses fragmentos com um início sonoro.
-
-- Or + 'et → Or'et
-- Ar + ion → Arion
-- Ket + reaver → Ketreaver
-
-[Guia de nomes — Luckers de Sangue](#nomes-luckers-sangue).
-
-**Benefícios de origem**
-
-- Vigor 1 e Agilidade 1 automáticos, sem custo de XP.
-- Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas desde a criação. Transfusão Sanguinária é exclusiva da linhagem.
-
-**Vantagens:** XP reduzido em Vigor e Agilidade.
-
-**Desvantagens:** XP elevado em Influência e Apresentação.
-
-#### Runa Espinhos
-
-Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa Espinhos também são conhecidos como Pastores por sua dedicação à natureza. Habitam florestas, encostas e montanhas e preservam tradições xamânicas. Ensinaram a magia aos Luckers Puros. Os Runalmas são uma facção extremista distinta dos Pastores, não o caminho obrigatório de um personagem dessa linhagem.
-
-**Tradição de nomes.** Escolha dois ou três fragmentos sonoros inspirados nas runas, como Ru, Na, Ha, Lo, Thu, So, Ri, Saz ou Fe, e una-os para criar um nome. Os nomes completos das runas aparecem ao lado dos fragmentos usados no Codex. Você pode adaptar a sonoridade ao criar o nome do seu personagem.
-
-- ᚱ Raidho (Ru) + ᚦ Thurisaz (Thu) + ᚠ Fehu (Fe) → Ruthufe
-- ᛚ Laguz (Lo) + ᚦ Thurisaz (Thu) + ᛋ Sowilo (So) → Lothuso
-- ᛋ Sowilo (So) + ᚠ Fehu (Fe) → Sofe
-
-[Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
-
-**Benefícios de origem**
-
-- Vigor 1 e Força 1 automáticos, sem custo de XP.
-- Pugilismo, Criar Item de Foco e Magia e Escudo Rúnico gratuitos, além de uma Perícia elemental à escolha entre Ar, Água, Terra e Fogo.
-- Escudo Rúnico: uma ativação de custo-base zero por dia; as demais têm custo-base de 1 Coragem. A barreira concede resistência a um elemento habilitado por utilização, não imunidade; a rolagem e eventuais custos adicionais permanecem.
-
-**Vantagens:** XP reduzido em Vigor e Força.
-
-**Desvantagens:** XP elevado em Agilidade e Destreza. Não pode equipar armaduras físicas, mas pode equipar escudos físicos normalmente.
-
-### Compare as quatro linhagens
-
-Use este resumo para comparar as origens depois de conhecer cada povo. As colunas de XP indicam custos de evolução, e não modificadores de dados.
-
-| Linhagem | Grau 1 gratuito | XP reduzido | XP elevado | Identidade mecânica |
-|---|---|---|---|---|
-| Humanos | — | — | — | Perseverança e armas de fogo; custos neutros. |
-| Luckers Puros | Inteligência, Destreza | Inteligência, Destreza | Força, Atletismo | Afinidade mágica; um elemento e Foco a 0 XP mediante requisitos. |
-| Luckers de Sangue | Vigor, Agilidade | Vigor, Agilidade | Influência, Apresentação | Hemomancia; Sangue e Transfusão Sanguinária. |
-| Runa Espinhos | Vigor, Força | Vigor, Força | Agilidade, Destreza | Pugilismo, Foco, elemento e Escudo Rúnico; sem armadura física. |
-
-Os Graus 1 (primeiro dado aprimorado da Aptidão) indicados acima são adquiridos gratuitamente, por 0 XP. Uma Perícia de origem gratuita não concede outros graus ou Perícias automaticamente e não dispensa os custos de ativação ou as condições de utilização, salvo exceções expressamente descritas. As demais Aptidões seguem os custos normais.
-
-Conheça mais sobre o cenário em Crônicas e histórias do mundo e veja como interpretar os Luckers em Interpretando seu personagem.
-
-Agora que você escolheu sua origem, veja como desenvolver as capacidades do seu Aprendiz e quais dados cada Aptidão fornece.
-
-## Aptidões na criação — dados, Graus e XP
+**Aptidões, Graus e XP**
 
 ### O que é um Grau?
 
@@ -733,34 +632,6 @@ Seu movimento indica quantos metros você pode percorrer em um deslocamento. Tod
 
 Atletismo ajuda quando você precisa saltar, escalar ou superar outros obstáculos, mas **não aumenta essa distância por si só**.
 
-#### Equipamentos, Integridade e dano
-
-A armadura equipada modifica a DE e possui Integridade própria. A DE indica a dificuldade de acertar; a Integridade indica quanto desgaste a peça suporta. Uma armadura mais pesada pode reduzir a DE, mas suportar mais dano. Os valores abaixo são as referências do catálogo de Grau 1.
-
-| Armadura | Modificador de DE | Integridade G1 |
-|---|---|---|
-| Leve | **0** | **4** |
-| Média | **−1** | **8** |
-| Pesada | **−2** | **12** |
-| Muito Pesada | **−3** | — |
-
-Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
-
-Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado da arma cai um nível sem a Perícia correspondente; características exigem habilitação. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
-
-> **Exemplo — Dano à Integridade**
->
-> 2 Êxitos + 1 pelos dois Temores não anulados = **3 de dano à Integridade**.
->
-> Uma armadura Leve de 4/4 passa para **1/4**.
-
-Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. **Ataques que falham não desgastam a armadura.**
-
-
-#### Quedas e perigos ambientais
-
-Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Arredonde a altura fracionária para baixo. Um ataque de Ar que eleva causa seu dano no acerto e, depois, dano adicional de queda rolado pelo Narrador. O alvo pode reduzir somente a parcela da queda em seu turno, mesmo que alcance a DE; depois fica Caído. Para empurrar um alvo de um precipício, teste contra a DE defensiva dele. Se acertar, o alvo precisa superar o resultado válido do empurrão para evitar a queda. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. Se igualar ou ficar abaixo, cai e sofre o dano integral, sem descontar o teste de resistência. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; conte as faces críticas sem descartar dados. Quatro ou mais faces críticas concedem o benefício máximo de quatro dados (dano dobrado), sem bônus adicional acima disso e sem recuperação de Coragem pelo crítico. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). A resistência só reduz dano ambiental se abranger todos os tipos de dano presentes: cada Êxito vale 0,5 dano e cada Temor vale zero dano, sem apagar suas consequências. Resistência incompleta não reduz o dano. Imunidade é proporcional: de N tipos distintos, imunidade a I deles deixa (N − I)/N do dano. Imunidade a todos anula o dano; imunidade a dois de três elimina 2/3. Arredondamento de dano fracionário e combinação de imunidade parcial com resistência permanecem pendentes. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
-
 #### Vida e Saúde
 
 A Vida representa quanto desgaste físico o Aprendiz ainda consegue suportar. Todo Aprendiz parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
@@ -805,8 +676,36 @@ Eldric tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones
 | 1/6 | □□ | □□ | □ | ■ | Inconsciente | −2E; +2T; 2 Coragens para agir |
 | 0/6 | □□ | □□ | □ | □ | Morto | Não pode agir |
 
+#### Resolvendo dano
 
+<a id="equipamentos-integridade-e-dano"></a>
 
+##### Integridade das armaduras e dano de ataques
+
+A armadura equipada modifica a DE e possui Integridade própria. A DE indica a dificuldade de acertar; a Integridade indica quanto desgaste a peça suporta. Uma armadura mais pesada pode reduzir a DE, mas suportar mais dano. Os valores abaixo são as referências do catálogo de Grau 1.
+
+| Armadura | Modificador de DE | Integridade G1 |
+|---|---|---|
+| Leve | **0** | **4** |
+| Média | **−1** | **8** |
+| Pesada | **−2** | **12** |
+| Muito Pesada | **−3** | — |
+
+Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
+
+Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado da arma cai um nível sem a Perícia correspondente; características exigem habilitação. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
+
+> **Exemplo — Dano à Integridade**
+>
+> 2 Êxitos + 1 pelos dois Temores não anulados = **3 de dano à Integridade**.
+>
+> Uma armadura Leve de 4/4 passa para **1/4**.
+
+Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. **Ataques que falham não desgastam a armadura.**
+
+##### Quedas e perigos ambientais
+
+Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Arredonde a altura fracionária para baixo. Um ataque de Ar que eleva causa seu dano no acerto e, depois, dano adicional de queda rolado pelo Narrador. O alvo pode reduzir somente a parcela da queda em seu turno, mesmo que alcance a DE; depois fica Caído. Para empurrar um alvo de um precipício, teste contra a DE defensiva dele. Se acertar, o alvo precisa superar o resultado válido do empurrão para evitar a queda. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. Se igualar ou ficar abaixo, cai e sofre o dano integral, sem descontar o teste de resistência. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; conte as faces críticas sem descartar dados. Quatro ou mais faces críticas concedem o benefício máximo de quatro dados (dano dobrado), sem bônus adicional acima disso e sem recuperação de Coragem pelo crítico. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). A resistência só reduz dano ambiental se abranger todos os tipos de dano presentes: cada Êxito vale 0,5 dano e cada Temor vale zero dano, sem apagar suas consequências. Resistência incompleta não reduz o dano. Imunidade é proporcional: de N tipos distintos, imunidade a I deles deixa (N − I)/N do dano. Imunidade a todos anula o dano; imunidade a dois de três elimina 2/3. Arredondamento de dano fracionário e combinação de imunidade parcial com resistência permanecem pendentes. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Coragem
 
@@ -979,6 +878,113 @@ Imagine que todos os dados escolhidos sejam d12. Um d12 oferece no máximo três
 Uma pilha com somente três d12 disponíveis para retenção pode alcançar 9 símbolos mantendo os três; não alcança 12 apenas por chegar ao nível 10. Para alcançar 12 brutos, é necessário um quarto d12 disponível e mantido. Um Atributo ainda deve participar da rolagem, mesmo que seu dado seja descartado. Críticos de três ou quatro dados podem acrescentar 1 Êxito, chegando a 10 ou 13 respectivamente neste exemplo.
 
 Esses valores são limites possíveis, não dificuldades recomendadas nem garantias de acerto. Uma ação pode alcançar a dificuldade com Temor e ainda trazer riscos. A escolha de dificuldades de encontros e grupos será aprofundada no Guia do Narrador.
+
+<a id="crie-seu-aprendiz"></a>
+
+## Construindo seu personagem
+
+Comece pelo nome, conceito e identidade do seu Aprendiz. Pense no que deseja fazer durante a aventura; sua profissão surgirá de suas escolhas. Depois, escolha uma linhagem, faça as escolhas mínimas de Aptidões, compre seus equipamentos com VT, distribua o XP livre em Graus e Perícias e revise a ficha.
+
+### Escolha sua linhagem
+
+A origem do seu Aprendiz ajuda a definir sua história e suas aptidões iniciais. Escolha a linhagem que mais combina com o personagem que deseja interpretar, não uma classe pronta. Todos podem construir profissões híbridas. Os benefícios iniciais são concessões de origem; as diferenças de XP alteram o custo de desenvolver capacidades, não impõem penalidades fixas às rolagens.
+
+#### Humanos
+
+Há cerca de 1.400 anos, os humanos retornaram a um mundo que já não dominavam. Dos destroços das Arcas surgiram cidades com diferentes caminhos para sobreviver: da tecnomagia de Arcanum à engenharia de Arcrois e às tradições de Triarca. A capacidade de se adaptar a essas realidades é uma marca da humanidade.
+
+**Tradição de nomes.** Escolha um nome pessoal e, se desejar, um sobrenome, título ou referência à sua origem. A história da família e da Arca pode inspirar essa escolha. *Elisa, Helena, Caio ou Davi (sugestões livres).* [Guia de nomes — Humanos](#nomes-humanos).
+
+**Benefícios de origem**
+
+- Perseverança Humana: pode rolar novamente um teste uma vez por descanso longo.
+- Perícia em Armas de Fogo e Especialização em Armas de Fogo, ambas concedidas gratuitamente na criação.
+
+**Vantagens:** Facilidade para construir personagens de longo alcance com armas de fogo ou combinar esse estilo com outras especialidades.
+
+**Desvantagens:** Não possui bônus racial no desenvolvimento das Aptidões.
+
+#### Luckers Puros
+
+Os Luckers habitam o continente há cerca de 20 mil anos. Os Puros preservaram a capacidade de sentir e experimentar emoções. Não morrem naturalmente pelo envelhecimento, mas podem morrer se forem abatidos. Restam cerca de 300. Aprenderam a magia com os Runa Espinhos e a transmitiram à humanidade; em Arcanum, convivem com os outros povos.
+
+**Tradição de nomes.** Escolha uma sonoridade inicial e combine-a com uma partícula tradicional. El é associado aos Puros rebatizados; Et era comum antes do Infortúnio. Ast é um fragmento sem significado fixo.
+
+- Ast + el → Astel
+- Et + el → Etel
+- Lu + et + 'el → Luet'el
+
+[Guia de nomes — Luckers Puros](#nomes-luckers-puros).
+
+**Benefícios de origem**
+
+- Inteligência 1 e Destreza 1 automáticas, sem custo de XP.
+- Uma Perícia elemental gratuita à escolha: Fogo, Água, Ar, Terra ou Sagrado.
+- Criar Item de Foco e Magia custa 0 XP, mas precisa ser adquirida após cumprir Disciplina 1, Inteligência 1 e Artesão 1. A Inteligência racial já satisfaz o segundo requisito.
+
+**Vantagens:** XP reduzido em Inteligência e Destreza.
+
+**Desvantagens:** XP elevado em Força e Atletismo.
+
+#### Luckers de Sangue
+
+O Infortúnio privou os Luckers de Sangue das sensações físicas e emocionais, mas não da capacidade de aprender, compreender e decidir. Sua imortalidade é literal: não conseguem alcançar a morte definitiva. Os aventureiros desta linhagem são párias de sua sociedade, e alguns encontraram acolhimento em Arcanum. Diários e formas próprias de linguagem podem ajudá-los a preservar sua identidade.
+
+**Tradição de nomes.** Os nomes de Sangue podem guardar marcas de sua identidade anterior ou de uma nova escolha. Et remete à tradição anterior ao Infortúnio; ion, presente em nomes como Arion e Ikarion, é associado à força psicológica e a antigas lideranças; reaver, à busca por recordar algo. Combine esses fragmentos com um início sonoro.
+
+- Or + 'et → Or'et
+- Ar + ion → Arion
+- Ket + reaver → Ketreaver
+
+[Guia de nomes — Luckers de Sangue](#nomes-luckers-sangue).
+
+**Benefícios de origem**
+
+- Vigor 1 e Agilidade 1 automáticos, sem custo de XP.
+- Perícia em Elemento Sangue e Transfusão Sanguinária, ambas gratuitas desde a criação. Transfusão Sanguinária é exclusiva da linhagem.
+
+**Vantagens:** XP reduzido em Vigor e Agilidade.
+
+**Desvantagens:** XP elevado em Influência e Apresentação.
+
+#### Runa Espinhos
+
+Gigantes de pedra e espinhos cuja história remonta a milhões de anos, os Runa Espinhos também são conhecidos como Pastores por sua dedicação à natureza. Habitam florestas, encostas e montanhas e preservam tradições xamânicas. Ensinaram a magia aos Luckers Puros. Os Runalmas são uma facção extremista distinta dos Pastores, não o caminho obrigatório de um personagem dessa linhagem.
+
+**Tradição de nomes.** Escolha dois ou três fragmentos sonoros inspirados nas runas, como Ru, Na, Ha, Lo, Thu, So, Ri, Saz ou Fe, e una-os para criar um nome. Os nomes completos das runas aparecem ao lado dos fragmentos usados no Codex. Você pode adaptar a sonoridade ao criar o nome do seu personagem.
+
+- ᚱ Raidho (Ru) + ᚦ Thurisaz (Thu) + ᚠ Fehu (Fe) → Ruthufe
+- ᛚ Laguz (Lo) + ᚦ Thurisaz (Thu) + ᛋ Sowilo (So) → Lothuso
+- ᛋ Sowilo (So) + ᚠ Fehu (Fe) → Sofe
+
+[Guia de nomes — Runa Espinhos](#nomes-runa-espinhos).
+
+**Benefícios de origem**
+
+- Vigor 1 e Força 1 automáticos, sem custo de XP.
+- Pugilismo, Criar Item de Foco e Magia e Escudo Rúnico gratuitos, além de uma Perícia elemental à escolha entre Ar, Água, Terra e Fogo.
+- Escudo Rúnico: uma ativação de custo-base zero por dia; as demais têm custo-base de 1 Coragem. A barreira concede resistência a um elemento habilitado por utilização, não imunidade; a rolagem e eventuais custos adicionais permanecem.
+
+**Vantagens:** XP reduzido em Vigor e Força.
+
+**Desvantagens:** XP elevado em Agilidade e Destreza. Não pode equipar armaduras físicas, mas pode equipar escudos físicos normalmente.
+
+### Compare as quatro linhagens
+
+Use este resumo para comparar as origens depois de conhecer cada povo. As colunas de XP indicam custos de evolução, e não modificadores de dados.
+
+| Linhagem | Grau 1 gratuito | XP reduzido | XP elevado | Identidade mecânica |
+|---|---|---|---|---|
+| Humanos | — | — | — | Perseverança e armas de fogo; custos neutros. |
+| Luckers Puros | Inteligência, Destreza | Inteligência, Destreza | Força, Atletismo | Afinidade mágica; um elemento e Foco a 0 XP mediante requisitos. |
+| Luckers de Sangue | Vigor, Agilidade | Vigor, Agilidade | Influência, Apresentação | Hemomancia; Sangue e Transfusão Sanguinária. |
+| Runa Espinhos | Vigor, Força | Vigor, Força | Agilidade, Destreza | Pugilismo, Foco, elemento e Escudo Rúnico; sem armadura física. |
+
+Os Graus 1 (primeiro dado aprimorado da Aptidão) indicados acima são adquiridos gratuitamente, por 0 XP. Uma Perícia de origem gratuita não concede outros graus ou Perícias automaticamente e não dispensa os custos de ativação ou as condições de utilização, salvo exceções expressamente descritas. As demais Aptidões seguem os custos normais.
+
+Conheça mais sobre o cenário em Crônicas e histórias do mundo e veja como interpretar os Luckers em Interpretando seu personagem.
+
+Agora que você conhece as características do personagem e escolheu sua origem, siga o tutorial de preenchimento da ficha para construir seu Aprendiz.
 
 ## Como começar a montar sua ficha
 
@@ -2088,7 +2094,7 @@ A origem e a história de um Aprendiz ajudam a construir sua identidade, seus v�
 
 ### Os Luckers — guia de interpretação [DEFINIDO no cenário; linhagens v0.55]
 
-> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo Crie seu Aprendiz**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
+> **Orientação ao jogador.** Este capítulo apresenta como interpretar os Luckers sem revelar as causas do **Infortúnio**. O conhecimento que um personagem possui sobre os eventos antigos depende de sua história e do Narrador. As descrições culturais abaixo **não criam efeitos adicionais além das concessões raciais apresentadas no capítulo Construindo seu personagem**. O criador permite escolher Humanos, Luckers de Sangue, Luckers Puros e Runa Espinhos. As faixas reduzidas e elevadas de XP seguem as tabelas raciais já estabelecidas; a seleção da linhagem não revoga os limites e requisitos gerais.
 
 #### Dois destinos para um povo antigo
 
