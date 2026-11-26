@@ -72,12 +72,16 @@ test("Envio do NPC transporta inventário, Integridade e equipamento",()=>{
   {id:"id1",name:"Armadura Média",type:"armadura",weight:"medio",grade:1,qty:1,max:12,hp:5,equipped:true},
   {id:"id2",name:"Escudo Leve",type:"escudo",weight:"leve",grade:1,qty:1,max:2,hp:1,equipped:true}
  ]};
- const WEIGHTS={medio:["Médio",.5],leve:["Leve",.125]};
+ const weightsSrc=npcSrc.match(/const WEIGHTS=\{[^\n]+\};/)[0];
+ const legacySrc=npcSrc.match(/const LEGACY_WEIGHT=\{[^\n]+\};/)[0];
+ const itemLoadSrc=npcSrc.slice(npcSrc.indexOf("function itemLoad("),npcSrc.indexOf("function loadUsed("));
  const helperStart=npcSrc.indexOf("function itemHands("),helperEnd=npcSrc.indexOf("function canHoldItem(",helperStart);
  assert.ok(helperStart>=0&&helperEnd>helperStart);
- const transfer=new Function("state","WEIGHTS",npcSrc.slice(helperStart,helperEnd)+npcSrc.slice(begin,end+2)+";return npcConflictItems;")(mockState,WEIGHTS);
+ const transfer=new Function("state",weightsSrc+"\n"+legacySrc+"\n"+itemLoadSrc+"\n"+npcSrc.slice(helperStart,helperEnd)+npcSrc.slice(begin,end+2)+";return npcConflictItems;")(mockState);
  const exported=transfer();
  assert.equal(exported.length,2);
+ assert.deepEqual(exported.map(x=>x.load),[2,1]);
+ assert.deepEqual(exported.map(x=>x.weight),[.5,.125]);
  assert.deepEqual(exported.map(x=>[x.kind,x.integrity,x.integrityMax,x.equipped]),
   [["armor",5,12,true],["shield",1,2,true]]);
  assert.equal(exported[1].hands,1);
