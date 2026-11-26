@@ -72,7 +72,7 @@ test("Arma equipada exige especialização e recupera dados e alcance do catálo
  assert.equal(weapons.length,1);assert.equal(weapons[0].eligible,true);
  p.skills=[];
  weapons=equippedWeapons(p,[]);
- assert.equal(weapons[0].eligible,false);
+ assert.equal(weapons[0].eligible,true);assert.equal(weapons[0].die,4);assert.equal(weapons[0].trained,false);
 });
 
 test("Pavor mantido não anulado é transferido uma vez ao alvo inimigo",()=>{

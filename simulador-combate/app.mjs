@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,backpackCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
- from "./comparador-logic.mjs?v=20261126-v0161-critico";
+ from "./comparador-logic.mjs?v=20261126-v0162-armas";
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261126-v0161-critico";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261126-v0161-critico";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0161-critico";
+import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0162-armas";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -399,7 +399,7 @@ function renderWeapons(){
  $("weapon-source").innerHTML='<option value="">Sem arma / ataque desarmado</option>'+weapons.map(w=>
   '<option value="'+esc(w.id)+'"'+(w.eligible||projectileFamily(w)?"":" disabled")+'>'+esc(w.name)+
   ' · '+(w.eligible&&w.die?"d"+w.die:"sem dado adicional")+(w.range?" · "+w.range+" m":"")+' · '+({hands:"Mãos",quick:"Acesso rápido",bag:"Inventário"}[equipmentPosition(w)])+' · '+(weaponHands(w)?weaponHands(w)+" mão(s)":"empunhadura a definir")+
-  (w.eligible?"":" · requer "+esc(w.skill))+'</option>').join("");
+  (w.trained?"":w.eligible?" · dado reduzido sem Perícia":" · requer "+esc(w.skill))+'</option>').join("");
  if(weapons.some(w=>w.id===old&&(w.eligible||projectileFamily(w))))$("weapon-source").value=old;
  else $("weapon-source").value=weapons.find(w=>w.eligible&&w.equipped)?.id||"";
  renderDrawControls();renderAffinity();renderWeaponEffects();
@@ -664,7 +664,7 @@ function roll(){
  if(!draw.ok)return notice(draw.error);
  if(w){
   if((!w.eligible&&!projectileFamily(w))||!human||mode!=="armas"||key!=="armas_conjuracao")
-   return notice("Dado de arma exige Disciplina em modo Armas e especialização do peso.");
+   return notice("Dado de arma exige Disciplina em modo Armas e arma válida.");
   if(w.eligible){if(pool.pool.length+1>9)return notice("Máximo de 9 dados rolados por participante.");
   pool.pool.push({id:"equipment.0",group:"equipment",key:w.id,sides:w.die});}
  }
@@ -675,7 +675,7 @@ function roll(){
   return notice("Arremesso exige arma equipada e Perícia em Arremesso de Armas.");
  let fulminanteId="";
  if(fulminants.length){
-  if(!w)return notice("Fulminante exige dado de arma habilitada e equipada.");
+  if(!w||!w.trained)return notice("Fulminante exige dado de arma habilitada e equipada.");
   const changed=applyFulminanteToPool(pool.pool,w,fulminants[0].id,thrown);
   if(!changed.ok)return notice(changed.error);
   pool.pool=changed.pool;fulminanteId=fulminants[0].id;

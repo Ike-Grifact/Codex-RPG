@@ -94,3 +94,10 @@ O laboratório é uma ferramenta para desenhar e comparar hipóteses, **não con
 ## Próxima etapa
 
 Criar as primeiras árvores abertas de Perícias com caminhos especializados e cruzamentos entre profissões, requisitos verificáveis, custos apropriados e efeitos distintos de dano, defesa, controle, mobilidade e suporte. Depois implementar combate conjunto, inventário, magia e playtest de várias rodadas.
+
+
+## Revisão v0.162 — criação
+
+Ordem de criação: identidade, escolhas mínimas de Aptidões, compra de itens com VT, distribuição livre de XP (incluindo Perícias) e revisão. Volte às etapas anteriores se precisar ajustar carga ou requisitos; XP e VT continuam separados.
+
+O criador retoma rascunhos anteriores na etapa de equipamentos, sem apagar compras. As duas visualizações do Codex Genético permanecem disponíveis.

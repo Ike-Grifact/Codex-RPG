@@ -1,23 +1,17 @@
 /* Controle de equipamento e orçamento para a ficha Foundry. */
 import {SKILLS,xpLedger} from "./rules.mjs";
 export function equippedDie(actor,item,mode){
- if(!item||!item.system.equipped)return 0;
- const s=actor.system,k=item.system.kind,cat=item.system.category;
- const keys=s.skills||[];
- if(mode==="conjuracao"){
-  // SRD v0.89: foco habilita/encurta a conjuração, mas NUNCA concede dado.
-  return 0;
- }else if(mode==="armas"){
-  if(!["weapon","firearm"].includes(k))return 0;
-  if(k==="firearm"){if(!keys.includes("armas-fogo"))return 0;}
-  else {
-   const long=Array.isArray(item.system.properties)&&item.system.properties.some(x=>x.toLowerCase()==="à distância");
-   const categorySkill={leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat];
-   if(!(keys.includes(categorySkill)||(long&&keys.includes("armas-longo-alcance"))))return 0;
-  }
- }else return 0;
- const die=Number(item.system.die)||({leve:6,medio:10,pesado:12}[cat]||0);
- return [6,10,12].includes(die)?die:0;
+ if(!item||!item.system.equipped||mode!=="armas")return 0;
+ const s=actor.system,k=item.system.kind,cat=item.system.category,keys=s.skills||[];
+ if(!["weapon","firearm"].includes(k))return 0;
+ if(k==="firearm"){
+  const die=Number(item.system.die)||({leve:6,medio:10,pesado:12}[cat]||0);
+  return keys.includes("armas-fogo")&&[6,10,12].includes(die)?die:0;
+ }
+ const base=({leve:6,medio:10,pesado:12}[cat]||0);
+ const long=Array.isArray(item.system.properties)&&item.system.properties.some(x=>x.toLowerCase()==="à distância");
+ const trained=keys.includes({leve:"armas-leves",medio:"armas-medias",pesado:"armas-pesadas"}[cat])||(long&&keys.includes("armas-longo-alcance"));
+ return trained?base:({6:4,10:6,12:10}[base]||0);
 }
 export function skillPrerequisite(system,id){
  const a=system.attributes||{},p=system.practices||{},s=system.skills||[];

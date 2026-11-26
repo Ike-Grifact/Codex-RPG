@@ -120,6 +120,10 @@ Este é o capítulo do **Livro do Mestre** para conduzir Provocação, Lideranç
 
 Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Temor puderem interferir significativamente na narrativa. Se não houver incerteza relevante, narre o resultado sem exigir rolagem; se a ação for inviável, explicite a limitação e permita outra abordagem. Considere as Aptidões, condições e recursos disponíveis. Não transforme o potencial máximo de uma pilha em sucesso garantido. A escala de DE por nível, composição e cooperação do grupo ainda será revisada.
 
+## Dados de armas
+
+**DEFINIDO — SRD v0.162:** arma Leve adiciona 1d6, Média 1d10 e Pesada 1d12 com a Perícia correspondente. Sem a Perícia, ainda adiciona um dado, reduzido para 1d4, 1d6 ou 1d10, respectivamente. A categoria, peso físico, alcance e propriedades não mudam; características continuam exigindo habilitações aplicáveis. Preservar regras especiais de munição, armas de fogo e demais exceções até revisão específica.
+
 ## Críticos de inimigos e monstros
 
 Inimigos recuperam Pavor no lugar da Coragem pela regra de proporção 1:1. Todos os dados mantidos devem estar em suas faces críticas, com mínimo de dois. O Pavor gerado preenche primeiro a reserva local; o excedente vai à reserva pública, respeitando os tetos, sem duplicação.
@@ -148,7 +152,7 @@ Cada dado possui um peso numérico que permite medir a intensidade de um perigo.
 
 ### Dano de queda
 
-Cada metro de altura equivale a **1 ponto de intensidade**. Para montar a rolagem de dano, utilize sempre o dado de maior peso que caiba no valor restante, repetindo até completar a intensidade. O **Narrador rola** os dados de dano; leia os símbolos de Êxito e Temor, não os números das faces.
+Cada metro de altura equivale a **1 ponto de intensidade**. Alturas são inteiras em metros: arredonde frações para baixo antes de calcular a DE e a pilha de dano. Abaixo de 1 m, a intensidade de queda é zero. Para montar a rolagem de dano, utilize sempre o dado de maior peso que caiba no valor restante, repetindo até completar a intensidade. O **Narrador rola** os dados de dano; leia os símbolos de Êxito e Temor, não os números das faces.
 
 | Altura | Dados de dano |
 |---:|---|
@@ -175,7 +179,7 @@ Na queda ou no dano ambiental sofrido por um jogador, cada Temor não anulado da
 
 ### Queda provocada por elevação de um ataque
 
-Uma ação que lança um inimigo para cima não aplica imediatamente o dano da futura queda. A altura efetivamente alcançada é determinada pelo resultado válido do ataque que o eleva, dentro dos limites do efeito habilitado.
+Uma ação que lança um inimigo para cima não aplica imediatamente o dano da futura queda. O ataque de Ar que eleva causa seu próprio dano no acerto da DE. O Narrador rola adicionalmente o dano da queda; o teste defensivo reduz exclusivamente a parcela da queda, mesmo quando alcança a DE do ataque. O alvo fica Caído após a resolução. O tipo de eventual dado adicional além da pilha de altura, mencionado pelo autor, não foi especificado; não o inventar. A altura efetivamente alcançada é determinada pelo resultado válido do ataque que o eleva, dentro dos limites do efeito habilitado.
 
 **No turno do inimigo lançado**, ele pode realizar um teste de redução contra a **DE correspondente ao resultado do ataque do conjurador**. A queda é resolvida depois desse teste. O inimigo fica **Caído**, sem contra-atacar imediatamente. Os Temores gerados na resolução da queda provocada alimentam a **reserva pública de Pavor do Narrador**, respeitando seu teto, sem duplicação na reserva local.
 
@@ -183,7 +187,7 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 ### Empurrão de uma altura e superfície de impacto
 
-Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão: precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade absorve o dano e o excedente atinge a Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
+Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. O alvo precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade absorve o dano e o excedente atinge a Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
 
 **Exemplo: alvo com DE 4, empurrão com resultado válido 6. Resistência 7 ou mais evita a queda; 6 ou menos provoca a queda. Se a altura for 15 m e a superfície for comum, o Narrador rola 3d20 de dano, sem descontar a resistência.**
 
@@ -195,6 +199,8 @@ A mesma escala representa perigos ambientais, com intensidade (DE de referência
 
 Não existe imunidade universal a dano ambiental. O Narrador considera os tipos de dano presentes na cena (por exemplo, Terra e físico em um terremoto), as proteções e resistências pertinentes; catástrofes podem combinar vários tipos, tornando difícil ignorar todo o dano. Não se cria imunidade ou resistência automática por analogia.
 
+A resistência só reduz dano ambiental se abranger todos os tipos de dano presentes: cada Êxito vale 0,5 dano e cada Temor vale zero dano, sem apagar suas consequências. Resistência incompleta não reduz o dano. Imunidade é proporcional: de N tipos distintos, imunidade a I deles deixa (N − I)/N do dano. Imunidade a todos anula o dano; imunidade a dois de três elimina 2/3. Arredondamento de dano fracionário e combinação de imunidade parcial com resistência permanecem pendentes.
+
 Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Para determinar o benefício crítico ambiental, conte os dados que caíram em suas faces críticas: dois concedem o benefício de dois, três concedem o de três, e quatro ou mais concedem o de quatro (dano calculado dobrado antes das proteções). Dados não críticos não invalidam o crítico ambiental e continuam contribuindo com seus símbolos. Não existe categoria adicional acima de quatro críticos: cinco ou seis faces críticas não aumentam os benefícios nem multiplicam novamente o dano. O crítico ambiental não recupera Coragem nem gera Pavor como recompensa de crítico; preserva-se o destino normal dos Temores da rolagem de dano. Esta é uma exceção ambiental à exigência convencional de que todos os dados mantidos estejam em faces críticas.
 
 ### Resolução do dano
@@ -203,7 +209,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 
 Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
-**PENDENTE:** alturas fracionárias, detalhamento de interações específicas de proteção ambiental, Aptidões e momento exato da resistência ao empurrão quando não especificados e consequências exatas de alcançar a DE na elevação por Ar. A ausência de contra-ataque imediato não substitui a regra geral de levantar-se. Ver [SRD v0.160](srd-continuidade-v0.160.md).
+**PENDENTE:** momento exato da resistência ao empurrão, arredondamento de dano fracionário, interação entre imunidade parcial e resistência e tipo de eventual dado adicional além da pilha de queda. Ver [SRD v0.162](srd-continuidade-v0.162.md).
 
 ## 1. Provocação, liderança e objetivos da oposição
 
