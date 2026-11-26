@@ -1,7 +1,7 @@
 /* Codex RPG — ficha e criação de Actor para Foundry v14. Protótipo não validado no cliente. */
 import {ATTRIBUTES,KNOWLEDGES,PRACTICES,SKILLS,SITUATIONS,XP_ATTRIBUTE,XP_TRAINING,
  sourceDice,sourceLabel,buildPool,resolveRoll,lifeMax,healthBands,healthByLife,naturalDE,balance,maxCourage,keepLimit,
- loadCapacity,mayComplement,affinity,xpLedger,monsterCap,isCriticalFace} from "./rules.mjs";
+ loadCapacity,equipmentCharge,mayComplement,affinity,xpLedger,monsterCap,isCriticalFace} from "./rules.mjs";
 import {rollPool,dieSvg,escapeHTML} from "./roll-engine.mjs";
 import {equippedDie,skillPrerequisite,canSpendXP,defenseDE,characteristicActivationPayment,fireActivationCourage} from "./equipment-logic.mjs";
 import {G1_CATALOG} from "./catalog.mjs";
@@ -54,7 +54,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    healthLabel:healthLabels[health.id],healthEffect:healthEffect+(actor.type==="character"&&healthCost?" · "+healthCost+" Coragem/ação":""),
    lifeBandsText:healthBands(s).join(" / "),
    courage:s.courage,courageMax:maxCourage(s.level),de:monster?defenseDE(actor):defenseDE(actor),
-   balance:balance(s),capacity:loadCapacity(s),xp:s.xp,xpLedger:ledger,
+   balance:balance(s),capacity:loadCapacity(s),loadUsed:actor.items.filter(i=>i.type==="equipment").reduce((n,i)=>n+(monster?Number(i.system.weight||0):equipmentCharge(i.system))*Number(i.system.quantity||1),0),loadUnit:monster?"Alto":"Cargas",xp:s.xp,xpLedger:ledger,
    isMonster:monster,isHumanoid:actor.type==="humanoid",isGM:game.user.isGM,
    threatGrade:s.threatGrade,pavorLocal:s.pavorLocal,pavorCap:monsterCap(s.threatGrade),
    catalog:G1_CATALOG.map((row,i)=>({id:String(i),name:row.name,status:row.status,legacy:row.legacy})).filter(row=>row.status!=="PENDENTE"&&!row.legacy),
@@ -63,7 +63,7 @@ export class CodexCharacterSheet extends foundry.applications.api.HandlebarsAppl
    practices:monster?[]:cards(PRACTICES,"practice",s,d),
    skills:monster?[]:SKILLS.map(k=>({...k,detail:k.detail.slice(0,190),owned:s.skills.includes(k.id)})),
    gear:actor.items.filter(i=>i.type==="equipment").map(i=>({
-    id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:i.system.weight,
+    id:i.id,name:i.name,kind:i.system.kind,grade:i.system.grade,weight:monster?i.system.weight:equipmentCharge(i.system),loadUnit:monster?"Alto":"Cargas",
     quantity:i.system.quantity,equipped:i.system.equipped,
     integrity:i.system.integrity.value,integrityMax:i.system.integrity.max,die:i.system.die,priceVT:i.system.priceVT
    })),
