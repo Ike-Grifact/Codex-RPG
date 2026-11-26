@@ -675,31 +675,63 @@ Os Graus dos Atributos determinam suas capacidades básicas. O equipamento e as 
 
 #### Capacidade de carga
 
-A capacidade de carga diz quanto equipamento você consegue levar na aventura. No Codex, usamos o Alto para medir essa carga: uma arma Pesada ocupa 1 Alto; uma Média ocupa metade; oito armas Leves ocupam o mesmo que uma Pesada, considerando os pesos convencionais.
+A capacidade de carga diz quanto equipamento você consegue levar na aventura. No Codex, usamos o **Alto** para medir essa carga.
 
-Você começa com espaço para 1 Alto no corpo e mais meio Alto na mochila. Cada Grau de Força permite carregar mais 1 Alto no corpo, e cada dois Graus de Vigor acrescentam mais 1 Alto.
+| 1 arma Pesada | 2 armas Médias | 8 armas Leves |
+|---|---|---|
+| 1 Alto | 1 Alto | 1 Alto |
 
-Por exemplo, um Aprendiz com Força 2 e Vigor 1 pode carregar 3 Altos no corpo e meio Alto na mochila. Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem o espaço do corpo; não são espaços de carga adicionais.
+Equivalências convencionais: confira o peso de cada item. Não concedem espaços extras.
+
+Você começa com espaço para **1 Alto no corpo e mais meio Alto na mochila**. **Cada Grau de Força permite carregar mais 1 Alto no corpo**, e **cada dois Graus de Vigor acrescentam mais 1 Alto**.
+
+Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem o espaço do corpo; **não são espaços de carga adicionais**.
+
+> **Exemplo — Força 2, Vigor 1**
+>
+> 1 Alto inicial + 2 Altos de Força + 0 de Vigor = **3 Altos no corpo**.
+>
+> 3 Altos no corpo + 0,5 Alto na mochila = **3,5 Altos de carga total**.
+>
+> Vigor 1 ainda não completa um par de Graus.
 
 #### Peso do personagem
 
-O peso na ficha serve para descobrir quais ataques têm Vantagem ou Desvantagem contra você. Se vestir uma armadura Leve, seu peso é Leve; se vestir uma Média, seu peso é Médio. Encher a mochila não transforma uma armadura Leve em Pesada. Runa Espinhos são sempre Pesados.
+O peso na ficha serve para descobrir quais ataques têm **Vantagem ou Desvantagem** contra você. O que determina seu peso é a **armadura equipada**, não a mochila.
+
+| Armadura Leve | Armadura Média | Armadura Pesada |
+|---|---|---|
+| **Leve** | **Médio** | **Pesado** |
+
+Encher a mochila não transforma uma armadura Leve em Pesada. **Runa Espinhos são sempre Pesados.**
 
 #### Sobrecarga
 
-Quando toda a sua capacidade de carga estiver ocupada (100% ou mais), você fica sobrecarregado: perde 2 Êxitos nos testes afetados e só consegue percorrer metade da sua distância normal. Se seu movimento é de 10 metros, passa a ser de 5 metros. Sua DE e sua categoria de peso não mudam.
+Ao atingir **100% ou mais da capacidade total**, você fica sobrecarregado: **−2E nos testes afetados** e **metade do movimento**.
+
+**Exemplo:** 10 metros passam a **5 metros**. Sua DE e sua categoria de peso não mudam.
 
 #### Defesa
 
-Sua DE indica o quanto é difícil acertar você. Todo Aprendiz começa com DE natural 2. A cada dois Graus de Agilidade e Vigor somados, ganhe mais 1 DE, até o máximo natural de 8. A armadura pode reduzir esse valor, e Maestria em Escudos pode acrescentar 1 DE com um escudo físico equipado. A DE final fica entre 0 e 9.
+Sua DE indica o quanto é difícil acertar você. Todo Aprendiz começa com **DE natural 2**. A cada **dois Graus de Agilidade e Vigor somados, ganhe mais 1 DE**, até o **máximo natural de 8**. A armadura pode reduzir esse valor, e **Maestria em Escudos pode acrescentar 1 DE** com um escudo físico equipado. A DE final fica **entre 0 e 9**.
+
+> **Exemplo — Agilidade 2, Vigor 2**
+>
+> 2 DE iniciais + 2 DE pelos quatro Graus = **4 DE natural**. Com armadura Média (−1 DE), a defesa passa a **3**.
 
 #### Movimento
 
-Seu movimento indica quantos metros você pode percorrer em um deslocamento. Todo Aprendiz começa com 8 metros. A cada dois Graus que você tiver em Agilidade e Destreza somados, ganhe mais 1 metro de movimento.
+Seu movimento indica quantos metros você pode percorrer em um deslocamento. Todo Aprendiz começa com **8 metros**. A cada **dois Graus que você tiver em Agilidade e Destreza somados, ganhe mais 1 metro de movimento**.
 
-Por exemplo, Eldric tem Agilidade 2 e Destreza 1. Juntos, são três Graus: um par completo e um Grau sobrando. Ele ganha 1 metro e pode se deslocar 9 metros. Se desenvolver Destreza para Grau 2, passa a percorrer 10 metros.
+**Agilidade e Destreza têm o mesmo valor para o movimento.**
 
-Atletismo ajuda quando você precisa saltar, escalar ou superar outros obstáculos, mas não aumenta essa distância por si só.
+> **Exemplo — Eldric: Agilidade 2, Destreza 1**
+>
+> 8 m iniciais + 1 m pelos três Graus = **9 metros**.
+>
+> Os três Graus formam um par completo e sobra um Grau. Com **Destreza 2**, Eldric completa outro par e passa a percorrer **10 metros**.
+
+Atletismo ajuda quando você precisa saltar, escalar ou superar outros obstáculos, mas **não aumenta essa distância por si só**.
 
 #### Equipamentos, Integridade e dano
 
@@ -707,14 +739,22 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 | Armadura | Modificador de DE | Integridade G1 |
 |---|---|---|
-| Leve | 0 | 4 |
-| Média | −1 | 8 |
-| Pesada | −2 | 12 |
-| Muito Pesada | −3 | — |
+| Leve | **0** | **4** |
+| Média | **−1** | **8** |
+| Pesada | **−2** | **12** |
+| Muito Pesada | **−3** | — |
 
 Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
 
-Armaduras Muito Pesadas exigem Vigor 6 e Atletismo 6 e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é E válidos + 1 por par completo de T não anulados, salvo efeitos específicos. Sem armadura equipada, um acerto com 5 ou mais E + T válidos causa 2 Vida na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. Ataques que falham não desgastam a armadura.
+Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado extra e a ativação de características dependem da habilitação pertinente. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
+
+> **Exemplo — Dano à Integridade**
+>
+> 2 Êxitos + 1 pelos dois Temores não anulados = **3 de dano à Integridade**.
+>
+> Uma armadura Leve de 4/4 passa para **1/4**.
+
+Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. **Ataques que falham não desgastam a armadura.**
 
 
 #### Vida e Saúde
