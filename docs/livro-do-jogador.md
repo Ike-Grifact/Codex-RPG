@@ -697,7 +697,9 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
 
-Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Uma arma tem dado, peso, alcance e características próprios; o dado da arma cai um nível sem a Perícia correspondente; características exigem habilitação. Após acertar, o dano básico à Integridade é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
+Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum.
+
+Após acertar um ataque, o dano básico à Integridade da armadura é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
 
 > **Exemplo — Dano à Integridade**
 >
@@ -777,6 +779,12 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange o uso de armas, o domínio de movimentos de combate e, junto à Inteligência, a execução de conjurações habilitadas. Disciplina é uma única Prática: você pode se especializar em armas, magia ou combinar ambas sem comprar a mesma Aptidão duas vezes. Equipamentos e Perícias determinam as técnicas disponíveis, inclusive o uso especializado dos punhos.
 
 **Possibilidades em jogo:** Disciplina + Força para aplicar potência a um golpe com arma habilitada; Disciplina + Destreza para mirar; Disciplina + Inteligência para executar uma conjuração permitida. A Especialização em Disciplina permite acrescentar uma terceira Aptidão quando Disciplina é a principal, sem dispensar as habilitações específicas.
+
+##### Uso de armas
+
+Cada arma possui dado, categoria de peso, alcance e características próprios. Armas Leves, Médias e Pesadas acrescentam, respectivamente, 1d6, 1d10 e 1d12 à pilha quando o personagem possui a Perícia correspondente. Sem essa Perícia, o dado cai um nível: 1d4, 1d6 e 1d10, respectivamente. A categoria da arma não muda, e suas características continuam exigindo as habilitações pertinentes. Armas de fogo e outras exceções mantêm suas regras específicas.
+
+Consulte [Armas, alcance e efeitos](#armas-alcance-e-efeitos) para os detalhes de combate.
 
 #### ⚔ Atletismo
 
