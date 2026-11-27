@@ -29,6 +29,8 @@ Apresentar primeiro o universo, a fantasia de personagem e os caminhos profissio
 
 Descrever o que cada capacidade faz atualmente. Não repetir no verbete funções que ela deixou de exercer ou nunca exerceu (ex.: Destreza não aumenta DE). Restrições indispensáveis à resolução devem permanecer na regra pertinente; histórico de mudanças fica no SRD.
 
+Nos verbetes de Aptidões, integrar efeitos mecânicos à prosa com ícones oficiais junto aos recursos mencionados. Evitar rótulos repetitivos como “Na ficha” e listas obrigatórias de efeitos quando duas frases naturais bastam. Reservar tabelas e listas para comparações ou procedimentos em que realmente facilitem a consulta.
+
 Modelo flexível: nem toda seção precisa de tabela, exemplo ou ícone. Preservar a narrativa e as ilustrações que apresentam o mundo. Preferir parágrafos curtos e títulos descritivos. Evitar histórico de alterações, nomes de funções, notas de implementação e justificativas de balanceamento no fluxo de leitura. Pendências não são regras: manter no SRD ou referência técnica, sem ocultar lacunas que impeçam jogar.
 
 ## Identidade visual

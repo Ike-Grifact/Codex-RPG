@@ -519,10 +519,7 @@ Estas descrições ajudam a interpretar o personagem sem determinar automaticame
 
 Potência física para vencer resistência, mover objetos pesados e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços ou carregar um companheiro ferido.
 
-**Na ficha:**
-
-- <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida:** +1 por dois Graus completos de Força.
-- <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal:** +1 por Grau de Força.
+Cada dois Graus completos de Força aumentam sua <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida** em 1 ponto. Cada Grau acrescenta 1 à sua <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal**.
 
 **Em jogo:** Força + Atletismo para erguer uma viga; Força + Artesão para trabalhar uma peça pesada. O uso de armas continua sujeito às suas habilitações.
 
@@ -530,10 +527,7 @@ Potência física para vencer resistência, mover objetos pesados e aplicar for�
 
 Rapidez de reação, mudança de direção e controle da posição. Favorece quem precisa alcançar um lugar seguro, aproveitar cobertura ou evitar um ataque.
 
-**Na ficha:**
-
-- <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa:** contribui junto de Vigor.
-- <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento:** contribui junto de Destreza.
+Junto de Vigor, Agilidade melhora sua <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa**; junto de Destreza, amplia seu <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento**.
 
 **Em jogo:** Agilidade + Atletismo para saltar entre plataformas; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição.
 
@@ -541,9 +535,7 @@ Rapidez de reação, mudança de direção e controle da posição. Favorece que
 
 Percepção, mira e precisão. Permite notar detalhes, acompanhar movimentos e coordenar mãos e ferramentas. Perceber uma marca não significa entender sua origem; para interpretá-la, pode ser necessário um Conhecimento.
 
-**Na ficha:**
-
-- <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento:** contribui junto de Agilidade.
+Em conjunto com Agilidade, Destreza amplia seu <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento**.
 
 **Em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para retirar um material frágil.
 
@@ -553,7 +545,7 @@ Raciocínio, aprendizado e capacidade de relacionar informações. Ajuda a inves
 
 É o Atributo fundamental da conjuração, que exige também Disciplina e as Perícias pertinentes. Em conjunto com Influência, orienta a liderança. Não substitui treinamento nem materiais. Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
-**Na ficha — proposta em revisão:** A partir de Inteligência 1, o personagem domina sua própria Psique, o elemento base. Esse domínio representa sua capacidade mental; para conjurar magias de Psique, é necessário adquirir Criar Item de Foco e Magia. Inteligência também limita quantos outros elementos habilitados podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. A seleção pode ser alterada ao concluir um descanso longo.
+**Em estudo:** A partir de Inteligência 1, o personagem domina sua própria Psique, o elemento base. Esse domínio representa sua capacidade mental; para conjurar magias de Psique, é necessário adquirir Criar Item de Foco e Magia. Inteligência também limita quantos outros elementos habilitados podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. A seleção pode ser alterada ao concluir um descanso longo.
 
 A progressão intermediária da capacidade elemental permanece em revisão. Os requisitos vigentes de conjuração continuam aplicáveis.
 
@@ -571,12 +563,7 @@ Enquanto Inteligência ajuda a elaborar estratégias, Influência ajuda a comuni
 
 Resistência física, fôlego e capacidade de continuar diante do desgaste. Enquanto Força ajuda a erguer algo pesado, Vigor ajuda a sustentar o esforço por mais tempo.
 
-**Na ficha:**
-
-- <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida:** +1 por Grau de Vigor.
-- <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal:** +1 por dois Graus completos de Vigor.
-- <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa:** contribui junto de Agilidade.
-- <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> **Coragem:** Grau de Vigor + 1 no descanso longo válido, se escolher recuperá-la.
+Cada Grau de Vigor acrescenta 1 ponto à sua <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida**, e cada dois Graus completos aumentam a <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal** em 1. Junto de Agilidade, Vigor melhora sua <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa**. Ao concluir um descanso longo válido, você pode recuperar <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> **Coragem** igual ao Grau de Vigor + 1, caso escolha recuperá-la.
 
 **Em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca desgastante. Vigor não elimina condições de Saúde nem custos de Coragem automaticamente.
 

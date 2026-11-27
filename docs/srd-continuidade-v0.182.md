@@ -17,3 +17,7 @@ A seleção de elementos disponíveis é distinta da aquisição de Perícias e 
 **DEFINIDO — esclarecimento autoral de 27/11/2026:** o domínio de Psique em Inteligência 1 indica domínio da própria mente e não habilita conjuração. Criar Item de Foco e Magia permanece necessário para conjurar Psique. Por se tratar de resposta à pergunta específica sobre Psique, preserva-se a independência das demais Perícias elementais prevista na v0.81–0.82, até eventual confirmação de mudança geral. Não alterar requisitos ou custos.
 
 **PENDENTE:** confirmação da progressão intermediária, situação em G0; interação com Improviso Elemental (elemento disponível na cena sem propriedade especial), Maestria, invocações, fontes/focos, magias raciais, criação de itens, conjurações em curso e alterações temporárias de Inteligência. Preservar custos, requisitos, Graus e procedimentos vigentes até decisão específica. Não automatizar nem publicar como regra definida enquanto a escala e as interações pendentes não forem confirmadas. A prévia de Inteligência indica explicitamente que a proposta está em revisão.
+
+## DEFINIDO — Fluidez dos verbetes de Atributos
+
+Por orientação autoral, retirar o bloco repetitivo “Na ficha” dos Atributos. Integrar seus efeitos à prosa, preservando os ícones, valores, exemplos e a distinção de proposta em estudo para Inteligência. O padrão editorial passa a privilegiar parágrafos naturais em vez de listas obrigatórias. Nenhuma alteração de regra ou automação.
