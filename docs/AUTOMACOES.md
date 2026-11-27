@@ -1,0 +1,12 @@
+# Estado das automações
+27/11/2026. Separado do estado das regras. Fonte: [SRD v0.194](https://github.com/Ike-Grifact/Codex-RPG/blob/49de5d56b82b756077ecb993ea85058c7fc98297/docs/srd-continuidade-v0.194.md) e [relatório da branch de sincronização](https://github.com/Ike-Grifact/Codex-RPG/blob/feat/sincronizacao-conjuracao-v0.194/docs/sincronizacao-conjuracao-v0.194.md). Os resultados são os relatados pela implementação anterior, não testes reexecutados nesta auditoria.
+| Recurso | Estado registrado |
+|---|---|
+| Catálogo da ficha e 12 Perícias mágicas | Atualizado na branch de sincronização, ainda não na main no momento auditado. 112 IDs/custos preservados segundo relatório. |
+| Conjuração G1–G4 | Progressão básica e custo atualizados na branch. |
+| Focos | Capacidade, retirada da gratuidade e recarga manual na branch; preço informado pelo Narrador. Números recuperados em DECISOES FOC-03. |
+| Comparador | Básico G1–G4, alvo único; elementos e tempo confirmados pelo Narrador. |
+| G5, Sagrado, Sangue, Psique mental, Bênção/Aflição, dano múltiplo, invocação | Total ou parcialmente manuais na branch. Não equivale a regra indefinida. |
+| Testes | Relatório: 112 pares ID/custo, 12 descrições, 56 casos de elevação e quatro builds; faltam testes integrados de navegador, persistência, comércio, combate completo. |
+| Foundry | Não alterado por esta sincronização. Instalações externas não verificadas. |
+Esta branch documental não altera código ou validação funcional. Antes de mesclar a branch de sincronização, corrigir a expressão genérica “preços oficiais pendentes” e confrontar DIV-01 a DIV-09 com as decisões recuperadas. Não alterar custos/efeitos por inferência.
