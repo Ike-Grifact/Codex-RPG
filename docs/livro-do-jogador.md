@@ -707,7 +707,17 @@ Após acertar um ataque, o dano básico à Integridade da armadura é **E válid
 >
 > Uma armadura Leve de 4/4 passa para **1/4**.
 
-Sem armadura equipada, um acerto com **5 ou mais E + T válidos causa 2 Vida** na escala de playtest. Excedentes de Integridade e resultados menores permanecem pendentes. **Ataques que falham não desgastam a armadura.**
+##### Dano à Vida
+
+Quando um ataque acerta um alvo sem armadura equipada, converta o dano positivo que atinge a Vida pela escala abaixo. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
+
+| Dano | Vida perdida |
+|---:|---:|
+| 1–4 | 1 |
+| 5–8 | 2 |
+| 9 | 3 |
+
+Ataques que falham não desgastam a armadura. Com armadura equipada, resolva a Integridade primeiro; a conversão do excedente de ataques comuns permanece pendente. Quedas e perigos ambientais conservam o procedimento próprio.
 
 ##### Quedas e perigos ambientais
 
@@ -1258,14 +1268,14 @@ O peso de combate depende da armadura, não da mochila. Runa Espinhos contam com
 
 ## Dano, armadura e Vida
 
-> **DEFINIDO — adendo autoral de 22/11/2026, nova escala de Vida em playtest:** quando um ataque **acerta** e soma **5 ou mais pontos válidos (E + T não anulado)**, o alvo **SEM armadura equipada sofre 2 de dano à Vida**. **Com armadura equipada, NÃO existe esse dano direto de 2 Vida:** resolver o dano à **Integridade separadamente**, pelo cálculo convencional abaixo e pelas propriedades habilitadas. O dano à Vida para resultados menores que cinco e o tratamento de excedentes de Integridade na nova escala seguem **PENDENTES**. [Detalhes e exemplos](adendo-playtest-dano-vida-5-pontos-2026-11-22.md). Os parágrafos históricos abaixo sobre dano convencional à armadura não autorizam aplicar 5E como 5 Vida diretos.
+> **DEFINIDO — SRD v0.167:** a escala de dano à Vida para alvos sem armadura é apresentada em [Resolvendo dano](#dano-à-vida). Ela substitui a escala provisória do adendo de 22/11/2026. O desgaste de Integridade é calculado separadamente; os procedimentos de efeitos especiais e de excedente de ataques comuns não são definidos por esta atualização.
 
 
 **Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
 
 **DEFINIDO — SRD v0.149:** não há teto geral de Êxitos por Perícia nem por ação. Aplique os efeitos, requisitos e custos específicos de cada Perícia; Êxitos valem para DE e dano, salvo efeito explicitamente exclusivo de dano. Golpe Colossal mantém +1E por Coragem e o teto de 5 Coragens por turno.
 
-Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O golpe não colossal causa até **3 Vida**; limiares precisos seguem PENDENTES. Golpe colossal exige dano efetivo após proteção de ao menos **3 × Vida máxima** em um único ataque.
+Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O antigo teto de 3 Vida para golpes não colossais é substituído pela escala de dano à Vida da v0.167. O critério de dano colossal de ao menos **3 × Vida máxima** após proteção permanece inalterado.
 
 
 ### Levantar Escudo físico [DEFINIDO — 16/11/2026]
