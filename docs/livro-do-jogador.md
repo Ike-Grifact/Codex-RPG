@@ -771,27 +771,27 @@ Um descanso de 8 horas, com pelo menos 6 horas de sono. Fora de um ambiente segu
 
 | Necessidade | Mínimo diário | Privação |
 | --- | --- | --- |
-| Sono | 6 horas | Fadiga |
-| Alimentação | 1 unidade de comida | Fome |
-| Hidratação | 1 unidade de água | Sede |
+| <img src="../assets/icons/codex/necessidade-sono.svg" width="18" height="18" alt=""> Sono | 6 horas | Fadiga |
+| <img src="../assets/icons/codex/necessidade-comida.svg" width="18" height="18" alt=""> Alimentação | 1 unidade de comida | Fome |
+| <img src="../assets/icons/codex/necessidade-agua.svg" width="18" height="18" alt=""> Hidratação | 1 unidade de água | Sede |
 
-Verifique as necessidades a cada dia, mesmo sem um descanso longo válido. Cada necessidade não atendida soma um nível de Desvantagem. Use apenas o nível resultante, até −2E; considere também as demais circunstâncias desfavoráveis.
+Verifique as necessidades a cada dia, mesmo sem um descanso longo válido. **Cada necessidade não atendida soma um nível de Desvantagem.** Use apenas o nível resultante, até −2E; considere também as demais circunstâncias desfavoráveis.
 
 | Privações | Condição | Efeito |
 | --- | --- | --- |
 | 0 | Normal | — |
-| 1 | Desvantagem | −1A |
-| 2 | Desvantagem Absoluta | −1E |
-| 3 ou mais | Golpe de Sorte | −2E |
+| 1 | Desvantagem | <img src="../assets/icons/codex/status-antecipar.svg" width="18" height="18" alt=""> −1A |
+| 2 | Desvantagem Absoluta | <img src="../assets/icons/codex/status-exito.svg" width="18" height="18" alt=""> −1E |
+| 3 ou mais | Golpe de Sorte | <img src="../assets/icons/codex/status-exito.svg" width="18" height="18" alt=""> −2E |
 
-Se uma privação persistir por mais um dia, começa a prejudicar a Saúde. As penalidades da faixa atual de Saúde somam-se à privação e não são limitadas pelo teto de −2E. [Consultar privações e penalidades de Saúde](../mecanicas/vantagens-e-desvantagens.html#privacoes).
+**<img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> Saúde:** Se uma privação persistir por mais um dia, começa a prejudicar a Saúde. As penalidades da faixa atual de Saúde somam-se à privação e não são limitadas pelo teto de −2E. [Consultar privações e penalidades de Saúde](../mecanicas/vantagens-e-desvantagens.html#privacoes).
 
 ##### Água e comida
 
 | Suprimento | Carga no inventário | Usos |
 | --- | --- | --- |
-| Cantil | 1 (Leve), cheio ou vazio | 2; reabastecível |
-| Ração | 1 (Leve) | 1; consumida |
+| <img src="../assets/icons/codex/necessidade-agua.svg" width="18" height="18" alt=""> Cantil | 1 (Leve), cheio ou vazio | 2; reabastecível |
+| <img src="../assets/icons/codex/necessidade-comida.svg" width="18" height="18" alt=""> Ração | 1 (Leve) | 1; consumida |
 
 Um cantil cheio e duas rações sustentam um personagem por dois dias e ocupam inicialmente 3 Cargas. Reabasteça o cantil em uma fonte apropriada. [Consultar suprimentos e carga](../mecanicas/capacidade-de-carga.html#suprimentos).
 
@@ -799,8 +799,8 @@ Um cantil cheio e duas rações sustentam um personagem por dois dias e ocupam i
 
 | Recurso | Recuperação no descanso longo |
 | --- | --- |
-| Vida | 1 por dia; 2 com Recuperação Vigorosa |
-| Coragem | Grau de Vigor + 1, ou optar pelo reparo durante o descanso |
+| <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> Vida | 1 por dia; 2 com Recuperação Vigorosa |
+| <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> Coragem | Grau de Vigor + 1, ou optar pelo reparo durante o descanso |
 
 Incapacitado ou Inconsciente? Antes de recuperar Vida pelo descanso, receba tratamento com sucesso em Medicina. O tratamento pode envolver vários testes; não recupera Vida automaticamente.
 
@@ -814,11 +814,11 @@ A Vida é recuperada independentemente da escolha entre Coragem e reparo, quando
 
 Dedique 1 hora exclusivamente ao reparo, com ferramentas de Artesão adequadas e materiais compatíveis no valor de metade do preço da armadura. Role Destreza + Artesão e compare os Êxitos aos Temores válidos não anulados.
 
-| Resultado E − T | Consequência |
+| Resultado <img src="../assets/icons/codex/status-exito.svg" width="18" height="18" alt=""> E − <img src="../assets/icons/codex/status-pavor.svg" width="18" height="18" alt=""> T | Consequência |
 | --- | --- |
 | Positivo | Restaura toda a Integridade. |
 | Zero | Não altera a Integridade. |
-| Negativo | Perde T − E de Integridade (mínimo zero). |
+| Negativo | Perde T − E de <img src="../assets/icons/codex/status-integridade.svg" width="18" height="18" alt=""> Integridade (mínimo zero). |
 
 Os materiais são consumidos mesmo na falha; as ferramentas não são consumidas automaticamente. Não use a própria peça como fonte de materiais. Durante essa hora, não durma nem faça a guarda.
 
