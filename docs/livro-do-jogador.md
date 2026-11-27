@@ -24,6 +24,8 @@ Entre cidades e ruínas, você poderá encontrar seres de aparência angelical, 
 
 ### Construa sua própria profissão
 
+***Do Aprendiz a um herói capaz de superar confrontos dignos de um semideus.***
+
 No Codex RPG, você não precisa escolher uma classe predefinida para começar sua aventura. Você pode criar um guerreiro em formação, um aprendiz de conjuração, um engenheiro, um artesão ou alguém que combine diferentes vocações. Desde o início, seu personagem pode ter uma profissão, uma identidade e um caminho que deseja seguir.
 
 **Ser Aprendiz representa o começo dessa trajetória, não uma classe.** Ao desenvolver suas Aptidões — Atributos, Conhecimentos e Práticas — e adquirir Perícias, você constrói as capacidades que definem sua especialização e dão forma à sua classe ou profissão.
