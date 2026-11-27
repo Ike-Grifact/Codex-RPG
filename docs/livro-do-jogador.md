@@ -723,74 +723,11 @@ Ataques que falham não desgastam a armadura. Com armadura equipada, resolva a I
 
 ##### Quedas e perigos ambientais
 
-**Evitar uma queda involuntária**
+Quedas, terremotos e outros perigos do ambiente também podem causar dano. O Narrador determina a intensidade e rola os dados correspondentes. Em uma queda involuntária, você pode tentar evitá-la ou reduzir o impacto; a Integridade disponível da armadura absorve o dano de queda antes da Vida.
 
-Antes de cair, faça um teste contra uma DE igual à altura da queda em metros. Arredonde alturas fracionárias para baixo.
+> **Exemplo:** Uma queda de 6 metros exige DE 6 em Destreza + Atletismo. Se você obtiver 2E + 1T válido, não evita a queda, mas reduz em 3 o dano que o Narrador rolar.
 
-| Personagem | Aptidões |
-| --- | --- |
-| Jogadores e humanoides | Destreza + Atletismo |
-| Monstros e criaturas | Agilidade + Destreza |
-
-- **Se alcançar a DE:** Você evita a queda.
-- **Se falhar:** O Narrador rola o dano da queda. Cada Êxito e Temor válido do seu teste reduz esse dano em 1.
-
-> **Exemplo:** Uma queda de 6 m exige DE 6. Se você obtiver 2E + 1T válido, falha, mas reduz em 3 o dano rolado pelo Narrador.
-
-Atletismo Avançado permite acrescentar uma terceira Aptidão pertinente.
-
-**Ser elevado por uma magia de Ar**
-
-O ataque de Ar causa seu próprio dano ao acertar. A queda é uma segunda fonte de dano, rolada pelo Narrador.
-
-- **No turno do alvo:** Faça o teste de redução contra a DE correspondente ao resultado válido do ataque de Ar.
-- **Redução:** Desconte os Êxitos e Temores válidos somente do dano de queda, mesmo se alcançar a DE. O dano original de Ar não é reduzido por esse teste.
-- **Após a resolução:** O alvo fica Caído.
-
-**Ser empurrado de um precipício**
-
-O atacante precisa acertar a DE defensiva do alvo. Se acertar, o alvo tenta resistir utilizando as mesmas Aptidões indicadas na tabela acima.
-
-- **Superar o resultado válido do empurrão:** Evita a queda.
-- **Igualar ou ficar abaixo:** Sofre o dano integral da queda, sem descontar o teste de resistência.
-
-> **Exemplo:** Se o empurrão obtiver 6 pontos válidos, a resistência precisa obter 7 ou mais. Um resultado de 6 não evita a queda.
-
-**Resolver o impacto**
-
-A Integridade disponível da armadura absorve primeiro o dano de queda. Se sobrar dano, o excedente atinge a Vida.
-
-O Narrador pode ajustar a intensidade do impacto conforme a superfície, sem alterar a altura real nem a DE.
-
-| Superfície | Ajuste recomendado de intensidade |
-| --- | --- |
-| Amortecedora (água, forragem ou inclinação favorável) | −5 m equivalentes |
-| Comum | Sem ajuste |
-| Perigosa (espinhos ou pedras pontiagudas) | +5 m equivalentes |
-
-**Temor, Coragem e críticos**
-
-| Origem do Temor não anulado | Consequência |
-| --- | --- |
-| Teste de queda do jogador | Vai para o Pavor público do Narrador. |
-| Rolagem de dano de queda ou ambiental sofrido pelo jogador | Cada Temor recupera 1 Coragem, respeitando o teto. |
-
-Nas rolagens de dano ambiental, todos os dados contam: não há descarte. Conte as faces críticas. Quatro ou mais concedem o benefício máximo (dano dobrado), sem bônus adicional acima de quatro e sem recuperar Coragem pelo crítico em si.
-
-**Resistências e imunidades ambientais**
-
-Um perigo ambiental pode combinar diferentes tipos de dano. Um terremoto, por exemplo, pode envolver Terra e dano Físico.
-
-- **Resistência a todos os tipos presentes:** Cada Êxito vale 0,5 de dano e cada Temor vale zero dano. O Temor mantém suas demais consequências.
-- **Resistência incompleta:** Não reduz o dano ambiental.
-- **Imunidade:** Elimina a parcela proporcional aos tipos de dano aos quais o alvo é imune. Se for imune a todos, não sofre dano.
-
-> **Exemplo:** Um perigo possui três tipos de dano. Se você é imune a dois deles, ignora dois terços do dano e recebe apenas um terço.
-
-O arredondamento de dano fracionário e a combinação de imunidade parcial com resistência ainda não estão definidos.
-
-[Consultar regras completas no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
-
+Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/perigos-ambientais.html) nas Mecânicas, ou os procedimentos no [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
 #### Coragem
 
