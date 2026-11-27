@@ -1,0 +1,9 @@
+# Codex RPG — SRD de Continuidade v0.190 — publicação do rework elemental
+
+**Data:** 27/11/2026. Autorização autoral para publicar na main. Incorpora v0.185–0.189, cujas notas de branch registram o estado de elaboração na época. As decisões DEFINIDAS entram em vigor; propostas e pendências não se tornam regras por publicação. Referência consolidada: [verbetes v0.189](rework-elemental-verbetes-v0.189.md).
+
+**DEFINIDO:** G1/G2 imediatos, G3/G4/G5 com 2/3/4 turnos totais e elevação de Inteligência 1/2/3 passos; sem antigos dados mágicos extras. Maestria G5 combina propriedades, Improviso 1A mistura apenas natureza, foco por peso 1/2/3, Seir, efeitos dos nove elementos e composição mental de Psique. Ar reduz altura mesmo na falha; descida 8 m por turno. Preservar faces do d20 e acesso extraordinário pendente. Dominação Mental em desenvolvimento. As regras de combate, armas, condições, XP e aquisições não sofrem alterações não aprovadas.
+
+**PENDENTE:** classificação dos preços de focos, Hemomancia direta (custo), Sagrado (recuperação e anulação), mistura Sagrado/Trevas, preparação mínima G5, demais custos e interações, esquiva e detalhes de amortecimento/efeitos mentais. As notas históricas nos livros, catálogo e código não prevalecem sobre esta continuidade; rotinas de ficha, simuladores, comércio, Foundry e demais automações não migradas. Não declarar que estão sincronizadas. A publicação documental é uma etapa distinta da implementação funcional.
+
+**Editorial:** capítulo de conjuração e verbetes atualizados; preservar capítulos de armas e regras defensivas não substituídas. Próxima revisão: Práticas, Conhecimentos e apresentação integrada de Disciplina, armas e elementos, em prévia separada.

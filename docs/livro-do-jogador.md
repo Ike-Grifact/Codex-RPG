@@ -797,6 +797,8 @@ Ataques que falham não desgastam a armadura. Após determinar o dano de um ataq
 
 ##### Quedas e perigos ambientais
 
+Ar Leve (G2) reduz 4 m da altura considerada para o dano mesmo em falha; recompor a pilha conforme a altura efetiva. A queda progride 8 m por turno. O efeito de Ar não subtrai diretamente dano; a relação com redução defensiva convencional e valores superiores está em revisão. Uma queda de 24 m permite conjurar G3 (2 turnos totais) antes do impacto.
+
 Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o Narrador informa a dificuldade (DE) e solicita um teste defensivo conforme a reação descrita.
 
 A combinação defensiva deve corresponder à reação descrita e respeitar as regras gerais de composição de Aptidões. Atletismo + Agilidade pode servir para saltar para um local seguro; Atletismo + Destreza, para agarrar um apoio com precisão; Atletismo + Força, para sustentar o corpo ao segurar uma borda. São exemplos, não uma lista fechada. O Narrador valida a pertinência das Aptidões.
@@ -1579,18 +1581,18 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | Perícia | XP | Função |
 |---|---:|---|
 | Artes Marciais | 1 | Combinação desarmada com habilitação de Punhos; requisitos revisados ainda em teste |
-| **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1; Psíquico, magias Leves, fabricação com Artesão e recarga por Grau |
+| **Criar Item de Foco e Magia** | **1** | Disciplina 1 + Inteligência 1 + Artesão 1; Psique e fabricação de focos, capacidade pelo peso. |
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
-| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Inteligência 1; ativação-base de efeitos G1/G2 **gratuita** com a Perícia e Grau habilitados; elevar a G3 custa **1 Coragem**; recuperação de Fôlego ainda pendente |
-| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; Congelar G1 sem dano, Perfurar G2 por crítico ou ativação, efeitos G3 |
-| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; Desvantagem e sentido sísmico G1–G3, enredar e espinhos G2, dano/empurrão/derrubada G3 |
-| **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G1/G2 **gratuitos em Coragem** (inclusive G2 sem foco com fonte válida); G2 **Queimar E + T à Integridade** (4 × 4); G3 **Derreter: 1 Coragem**, dano à Integridade + 1 Vida direta fixa (8 × 8, fim do turno dos aliados); G4 conjunta cobra **1 Coragem pelo componente Fogo elevado a G3** |
+| **Perícia em Elemento Ar** | **1** | Disciplina 1 + Inteligência 1; G2–G4: deslocamento 4/8/12 m, sufocar, rajadas; amortecimento G2 4 m mesmo em falha. |
+| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; G2 Congelar, G3 Perfurar, G4 controle avançado. |
+| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; G2 controle e Sentido Sísmico 18 × 18 m; G3 Cravar/Perfurar; G4 área. |
+| **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G3 Queimar E + T à Integridade; G4 Derreter acrescenta 1 Vida direta fixa. |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Improviso Mágico | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
-| **Perícia em Elemento Sagrado** | **2** | **Disciplina 2 + Inteligência 2**; 1E pode virar 1 Coragem para um participante uma vez por conjuração/turno, sem contar para DE/dano; G2/G3 por combinação |
+| **Perícia em Elemento Sagrado** | **2** | Disciplina 2 + Inteligência 2; G2 recuperar Coragem, G3 Bênção, G4 anulação de Temor. |
 | Magia de Sangue / de Trevas / de Veneno | 3 cada | Habilitação especial, sujeita a graus |
 | Montar Animal | 2 | Requer Influência 2; concede **Vantagem** nos testes com montaria (**não +1A**) |
 | **Perícia em Montaria** | **PENDENTE** | Requer **Influência 1 + Destreza 2**; concede **+1A (Antecipar)** nos testes com montaria (**não Vantagem**); custo XP não definido, aquisição bloqueada |
@@ -1607,45 +1609,57 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 ## Conjuração, elementos e possibilidades
 
-### Regra geral de dados, foco e declaração [DEFINIDO — SRD v0.89, 22/11/2026]
+A conjuração combina normalmente Disciplina + Inteligência. Aprender uma Perícia elemental habilita os primeiros efeitos de G2, sem exigir Criar Item de Foco e Magia; Psique e a fabricação de focos continuam exigindo essa Perícia. Magias são descritas na hora, sem lista fechada, memorização ou slots. A descrição não concede efeitos, alcance ou habilitações adicionais.
 
-**DEFINIDO — adendo autoral de 22/11/2026:** a magia adiciona os dados do Grau: **G1 +1d6; G2 +1d10; G3 +1d12; G4 +2d12 (dois dados distintos)**. Não acumular os dados dos Graus anteriores. **Os dados da magia não vêm do item de foco**. G4 continua exigindo dois elementos diferentes, cada qual com sua magia G3 habilitada; não ganha dois d12 por uma conjuração de elemento único. Este dado integra a pilha normal (máximo 9 rolados, retenção por Marco) e não é uma fonte Atributo, Conhecimento ou Prática extra a ser comprada. A substituição da regra anterior de dado de foco vale para novas rolagens; não reescrever resultados históricos.
+Regras de referência: SRD v0.185–0.189. As regras novas substituem os dados mágicos adicionais, os antigos Graus elementais e os tempos anteriores. As automações da ficha e do simulador ainda utilizam regras anteriores; resolva manualmente os novos procedimentos. Onde há pendência, não invente valores ou benefícios.
 
-**Rolar assim que a magia é DECLARADA, no início da preparação.** Rolar os dados, selecionar os mantidos e aplicar Antecipar; os símbolos ficam conhecidos. **Temor mantido e não anulado dá oportunidade para o inimigo tentar revidar, fugir ou perturbar durante a janela de preparação**. O Narrador resolve essas ações conforme o contexto; Temor não é falha automática nem ataque bem-sucedido automático. **Antecipar pode passar o protagonismo a um aliado pelo custo progressivo vigente**, que pode tentar impedir fuga ou proteger o conjurador; esse A não apaga Temor.
+### Graus de conjuração
 
-**Tempo da magia:** G1 imediato (1 turno); **G2 2 turnos sem gastar carga e 1 turno ao gastar exatamente 1 carga do foco compatível**, conservando G2 e +1d10. Foco vazio não acelera. G3 3 turnos, reduzíveis para 2 por 1 carga ou 1 por 2 cargas do foco correspondente. **G4 plena +2d12**, 6 turnos e mínimo 3; a aceleração exige 1 carga **de cada um de dois focos dos elementos distintos** por turno reduzido, conforme regra própria. **O foco não soma dado** à rolagem e sua aceleração não muda o Grau nem concede Êxitos automáticos. **O custo exato de cargas de foco para G2 está PENDENTE:** o uso de foco compatível para acelerar está DEFINIDO, mas não impor 1 carga não aprovada. A rolagem inicia na declaração; **somente concluir/aplicar efeito após o tempo devido**. Critérios genéricos para interromper pela ação inimiga permanecem PENDENTES; aplicar as exceções aprovadas para técnicas específicas.
+| Grau | Efeito geral | Inteligência | Turnos totais sem foco |
+|---|---|---|---:|
+| 1 | Manifestar a natureza do elemento, sem efeito especial; Improviso permite mescla apenas de natureza elemental por 1A, e Psique conserva suas aplicações simples | Inalterada | 1 |
+| 2 | Primeiros efeitos especiais do elemento habilitado | Inalterada | 1 |
+| 3 | Efeitos superiores | +1 Grau temporário | 2 |
+| 4 | Efeitos avançados | +2 Graus temporários | 3 |
+| 5 | Mistura de propriedades especiais habilitada por Maestria Elemental | +3 Graus temporários | 4 |
 
-Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substituída por **um dado pelo Grau**. Criação continua em **15 XP iniciais compartilhados**, com custos e requisitos normais.
+A elevação usa a pilha inteira de Inteligência; não somar antigos dados mágicos extras. O d20 não pertence à Maestria comum. Respeitar fontes, DE, limites, custos e preparação. Inimigo próximo em G3/G4/G5: −1A/−1E/−2E; aliado na trajetória soma um nível apenas em ataque de alvo único. Condições gerais acumulam conforme a escala. Efeitos temporários de elevação e redução duram uma ação do beneficiário/alvo, salvo regras específicas (Veneno, Cravar). Acesso exato a efeitos, custos de elevação e lacunas de resolução devem ser fechados antes de automação.
 
+### Progressão temporária de Inteligência
 
+| Inteligência original | Magia G1/G2 | Magia G3 | Magia G4 | Magia G5 |
+|---|---|---|---|---|
+| 1d4 | 1d4 | 1d6 | 2d6 | 3d6 |
+| 1d6 | 1d6 | 2d6 | 3d6 | 2d6 + 1d10 |
+| 2d6 | 2d6 | 3d6 | 2d6 + 1d10 | 1d6 + 2d10 |
+| 3d6 | 3d6 | 2d6 + 1d10 | 1d6 + 2d10 | 3d10 |
+| 2d6 + 1d10 | 2d6 + 1d10 | 1d6 + 2d10 | 3d10 | 2d10 + 1d12 |
+| 1d6 + 2d10 | 1d6 + 2d10 | 3d10 | 2d10 + 1d12 | 1d10 + 2d12 |
+| 3d10 | 3d10 | 2d10 + 1d12 | 1d10 + 2d12 | 3d12 |
 
-**Criar Item de Foco e Magia (1 XP; Lucker Puro: 0 XP após requisitos; Disciplina 1 + Inteligência 1 + Artesão 1)** substitui **Aprendiz de Conjurador** e **Magia Única**. As duas Perícias antigas deixam de ser oferecidas para compra. O conjurador inicia com Psíquico; outros elementos mantêm suas habilitações próprias.
+O Grau permanente permanece limitado a 6. O d20 não é concedido pela Maestria comum: seu acesso extraordinário por Sangue está em revisão; não alterar suas faces. Elevações de Coragem, Bênção e Sangue podem acumular, sem criar automaticamente novos limites ou requisitos permanentes.
 
-**Ácido (Fogo + Veneno) [DEFINIDO — v0.85]:** segue toda a regra geral de mistura: **1A** para introduzir o segundo elemento e os custos e habilitações dos Graus. **Improviso Elemental** troca a natureza do dano, mas não ativa Veneno; **Maestria Elemental** é necessária para usar Queimar e o efeito especial de Veneno conjuntamente. Quando houver acerto com Queimar, a queimadura substitui Sangramento para transmitir **1 acúmulo de Veneno por 2 rodadas**, sem novo dano ou custo exclusivo. Defesa mista segue a matriz geral. [SRD v0.85](srd-continuidade-v0.85.md).
+### Itens de foco e preparação
 
-**Combinação de até dois elementos:** a ordem define o **principal** e o **secundário**. **DEFINIDO — esclarecimento posterior (SRD v0.79, 17/11/2026):** misturar conscientemente o segundo elemento custa **1 Antecipar (1A)**, não reutilizável. Com a **Perícia do elemento** adquirida e o Grau habilitado, **conjurar/controlar e ativar os efeitos G1 e G2 não cobra Coragem como custo-base de ativação**. **Cada elemento elevado a G3 custa +1 Coragem**, separadamente da mistura e das cargas de foco gastas na aceleração. **G4 plena de dois efeitos G3 simultâneos:** **1A + 2 Coragens** para mistura/elevação, não 1A + 3. **Improviso Elemental** adapta o elemento da manifestação/dano sem ativar duas propriedades; **Maestria Elemental** permite combinar simultaneamente as propriedades especiais dos dois elementos quando o conjurador possui as duas Perícias. A mistura não concede automaticamente dados nem Êxitos. Custos específicos históricos de Maestria/Invocação seguem em revisão própria. **Fogo G2 sem foco já está resolvido: ativação gratuita em Coragem** com a Perícia, o Grau e uma fonte elemental válida.
+O foco do elemento habilitado pode permanecer no inventário; não precisa estar empunhado. Permite conjurar sem a presença ambiental do elemento. Não concede dados. Quando o elemento está em abundância, o Narrador pode dispensar o foco e reduzir a preparação, respeitando os limites.
 
-### Dano elemental, Improviso e Maestria [DEFINIDO / procedimento PENDENTE]
+| Peso | Capacidade elemental | Carga física |
+|---|---:|---:|
+| Leve | 1 | 1 |
+| Médio | 2 | 2 |
+| Pesado | 3 | 3 |
 
-**Dano elemental não é controle elemental.** Armas ou equipamentos encantados podem **causar dano de Ar/Vento, Água, Fogo etc. sem que o portador tenha a Perícia do elemento**. Mas isso **não** habilita efeitos de controle como **puxar, empurrar, congelar ou criar tornados**. Exemplo: uma espada encantada com Vento causa **dano de Vento**; sem **Perícia em Elemento Ar/Vento**, seu portador não controla o vento. **Com** a Perícia e o Grau/habilitação pertinentes, poderá manifestar os efeitos de Ar através da arma (um **tornado** pertence às manifestações avançadas G3). Ter um equipamento encantado não concede a Perícia gratuitamente.
+Cargas do foco são vinculadas ao seu elemento. Em G3 e G4, a aceleração segue a lógica de uma carga compatível por turno reduzido, até a conjuração instantânea; em G5, uma carga de cada um dos dois elementos por turno reduzido, com piso mínimo ainda em revisão. O peso físico não diminui ao gastar cargas. Após esgotar, um foco comum recupera uma carga ao fim da rodada, e uma ao fim de cada rodada seguinte, até o máximo. Pedra da Alma não recarrega naturalmente; Fixar Alma ainda está em desenvolvimento.
 
-**Perícia em elemento [DEFINIDO]:** permite conjurar, controlar e ativar **gratuitamente quanto ao custo-base de ativação** os efeitos de **G1 e G2**, respeitando o Grau já habilitado, a fonte elemental disponível (foco correspondente apenas no inventário ou abundância ambiental a critério do Narrador), as rolagens e a DE. **Gratuidade não elimina** requisitos, limites, resistências, imunidades, testes, gasto de 1A por mistura, custo de elevação a G3 nem custos especiais cujo procedimento ainda precisa ser reconciliado.
+**Comércio:** valores unitários informados: foco inicial Leve 10 VT, outros elementos 30 VT, Pedra da Alma de Sangue 10.000 VT; valor proporcional ao peso (Pedra da Alma Pesada 30.000 VT). A classificação de focos básicos/elementais/raros e a separação entre suporte e pedra ainda precisam de confirmação. Não alterar comércio automático. A Pedra da Alma continua indisponível para compra na criação de nível 1.
 
-**Improviso Elemental [DEFINIDO — aquisição revisada no SRD v0.82, 18/11/2026]:** requer apenas **Disciplina 1 + Inteligência 1 + Destreza 1**, custa **1 XP** e **não exige Criar Item de Foco e Magia**. Esta mudança permite compras em builds mágicas híbridas sem obrigar a via de Psique ou fabricação de Foco, mas não concede novas técnicas de forja, alquimia ou encantamento nem muda o procedimento de conjuração. O efeito continua inalterado. [SRD v0.82](srd-continuidade-v0.82.md).
+Role quando declarar a magia, escolha os mantidos e aplique Antecipar; conclua o efeito após a preparação. Temor não anulado permite que a oposição tente interferir conforme as oportunidades e recursos vigentes. Custos gerais de elevação e interrupção ainda precisam de conciliação. G1 e G2 são instantâneos; G3/G4/G5 levam respectivamente 2/3/4 turnos totais sem aceleração. Não somar dados extras por Grau. Elevação por Coragem pode acumular, respeitando o teto de cinco Coragens gastas por turno e os limites de dados.
 
-**Improviso Elemental [DEFINIDO]:** incorpora **um elemento adicional em uma mistura simples**, adaptando o **tipo/natureza do dano** para lidar com resistências da cena, sem ativar o efeito especial do elemento acrescentado e **sem duplicar automaticamente o dano**. Ex.: Água + Vento pode manifestar o ataque como dano de Vento contra um alvo resistente à Água; **não** significa puxar com Vento e congelar com Água simultaneamente. O elemento precisa estar disponível conforme a habilitação/contexto; a Perícia é necessária para controlar suas propriedades especiais. O bônus próprio **+1A** da Perícia descrito em seu verbete não é o mesmo que criar Êxitos gratuitos.
+### Improviso e Maestria
 
-**Maestria Elemental [DEFINIDO]:** com as duas **Perícias elementais** adquiridas e os requisitos da Maestria, é possível usar **os efeitos especiais reais dos dois elementos na mesma combinação**; por exemplo, **puxar com Vento e congelar com Água**, aplicando dano dos elementos quando pertinente e permitido. O autor esclareceu que **uma combinação apropriada pode dobrar o dano**; isso **não** significa dobrar qualquer mescla ou aplicar um segundo multiplicador automático ao dano já contabilizado. **PENDENTE:** critérios de compatibilidade, fórmula de dano e reconciliação com o **custo próprio histórico de Maestria (1 Coragem)**; não automatizar dano dobrado antes de defini-los.
+**Compra:** 1 XP. **Requisitos:** Disciplina 1, Inteligência 1, Destreza 1. Passiva: +1A em ações pertinentes de Disciplina e Conjuração, cumulativo com Maestria conforme regra anterior. Ao gastar **1 Antecipar**, incorpore apenas um elemento adicional disponível, escolhendo substituir a natureza elemental do ataque ou combinar as duas naturezas na mesma ação. O elemento improvisado não ativa sua propriedade especial, não eleva o Grau da magia e não cria dano ou dados adicionais automaticamente. A mera mistura de naturezas é permitida mesmo em G1; não equivale à mistura de propriedades especiais do G5. Respeite a matriz de resistências, imunidades e vulnerabilidades elementais vigente, sem duplicar o dano. A aplicação em Escudo Arcano, armas e encantamentos é pertinente dentro de suas habilitações; a Perícia não concede por si fabricação, encantamento, escudo ou novas resistências defensivas. Exemplo: Água + Ar para adaptar o ataque a uma defesa elemental, sem obter gratuitamente Congelar e Empurrar simultaneamente. O gasto de 1A consome o símbolo uma única vez. Não alterar custos próprios das demais técnicas. PENDENTE: procedimento específico de combinação defensiva e de encantamentos persistentes, quando ainda não definido.
 
-**Elevação a Grau 3 [DEFINIDO]:** cada elemento cujo efeito é elevado a **G3** exige **1 Coragem**. Se apenas um dos dois elementos é elevado, gasta-se 1 Coragem; se ambos forem, 2 Coragens. O gasto de **1 Antecipar para mistura** permanece. Os graus G1 e G2 são de ativação-base gratuita quando a Perícia é possuída. **PENDENTE:** classificação e tempo de uma mistura com apenas um elemento G3.
-
-**DIVERGÊNCIAS DE VERBETES ANTERIORES:** Perícias elementais (Ar/Água/Terra/Fogo e outras) e Maestria citam **1 Coragem** para ativar um efeito G1/G2, enquanto a decisão nova torna essa **ativação-base gratuita**. A cobrança histórica **não prevalece como regra geral de ativação-base**. O gasto **próprio de Maestria** em uma combinação de dois efeitos, os custos especiais de **Invocação Elemental** devem ser revisados separadamente. **Fogo G2 sem foco foi resolvido: não há cobrança adicional em Coragem** com a Perícia e o Grau habilitados e com fonte elemental válida. Não presumir que os demais custos próprios foram abolidos. O verbete de Improviso concede **+1A** como bônus e a regra de mistura usa **1A** como recurso: a ordem e origem do Antecipar na mistura seguem a mecânica vigente, sem criar um segundo símbolo gratuito.
-
-### Perícias elementais independentes de Foco [DEFINIDO — SRD v0.81, 18/11/2026]
-
-As Perícias em **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não exigem adquirir **Criar Item de Foco e Magia**. Para Ar/Água/Terra/Fogo, os requisitos continuam **Disciplina 1 + Inteligência 1**; para Sagrado/Sangue/Trevas, **Disciplina 2 + Inteligência 2**; Veneno conserva **Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2**. Os custos individuais de compra em XP não foram alterados.
-
-Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo sem a Perícia Criar Foco, desde que haja fonte elemental válida e os efeitos/Graus sejam permitidos. Uma fonte válida pode ser ambiental, conforme o Narrador, ou foco apropriado quando utilizado. **Criar Item de Foco e Magia** permanece para **Psique e a confecção de focos**; Escudo Arcano, Maestria Elemental, Conjuração Refinada e Invocação Elemental conservam seus requisitos próprios de Foco; **Improviso Elemental não exige mais Foco** (SRD v0.82). Preparação em turnos, cargas, DE, Temor e ativação não mudaram. [SRD v0.81](srd-continuidade-v0.81.md).
+Preservar requisitos vigentes: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia elemental; para misturar propriedades, ambos os elementos devem estar habilitados. Preservar +1A cumulativo ao Improviso e custo de mistura 1A. Habilita a mistura de propriedades especiais G5 e a elevação de Inteligência correspondente, sem d20 comum. Diferentemente do Improviso, permite aplicar propriedades dos dois elementos habilitados na mesma conjuração. Custos específicos, piso de preparação e exceções ainda em revisão. Não alterar Invocação Elemental ou Conjuração Refinada por inferência.
 
 <a id="capacidade-elemental"></a>
 
@@ -1653,35 +1667,133 @@ Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo se
 
 Inteligência 1 representa o domínio da própria Psique, o elemento base, sem habilitar sua conjuração. A proposta em estudo limita a quantidade de outros elementos habilitados que podem ficar disponíveis entre descansos longos, até quatro adicionais no Grau 6. Ao concluir um descanso longo, o personagem poderá trocar sua seleção dentre os elementos que aprendeu. A progressão intermediária ainda aguarda confirmação. Os requisitos vigentes de conjuração permanecem aplicáveis.
 
-### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 
-Os elementos **têm utilidades próprias** e não dependem de estarem combinados. A tabela organiza os efeitos por **peso/Grau do efeito** na referência de continuidade; um personagem não ganha efeitos pesados só por conhecer o elemento. Toda aplicação exige fonte, habilitação pertinente e sucesso na **Dificuldade de Êxito**; custos de Coragem, distância, área e efeitos avançados ainda dependem dos requisitos.
 
-| Elemento | Leve / Grau 1 | Médio / Grau 2 | Pesado / Grau 3 |
-|---|---|---|---|
-| **Água** | Congelar e imobilizar por 1 rodada com Desvantagem, sem dano automático | Perfuração no crítico habilitado | Empurrar e causar dano; mantém condições menores pertinentes |
-| **Fogo** | Disparo convencional e conduzir chamas, sem dano direto à Vida | **Queimar:** E + T à Integridade; área 4 × 4 | **Derreter:** E + T à Integridade e **+1 Vida direta fixa**; área 8 × 8 e conjuração ao fim do turno dos aliados |
-| **Terra** | Desvantagem por 2 rodadas | Enredar, imobilizar e espinhos que desgastam proteção | Dano, empurrar e derrubar |
-| **Ar / Vento** | Mover mais rápido, puxar/empurrar objetos | Sufocar, deslocar e derrubar | Grande área, vários alvos e possíveis danos de queda |
+### Psique — domínio da mente
 
-**Elementos especiais:**
+Habilitação: Criar Item de Foco e Magia.
 
-- **Psíquico / Psique:** elemento inicial de natureza neutra; técnicas específicas podem neutralizar a natureza de um efeito e contornar certas imunidades.
-- **Sagrado:** apoiar, acalmar, purificar e recuperar Coragem. A Perícia em Elemento Sagrado custa 2 XP, exige Disciplina 2 + Inteligência 2 e permite converter **1 Êxito da capacidade sagrada em 1 Coragem para um participante** no máximo uma vez por conjuração/turno; o Êxito gasto **não conta para DE nem para dano**. Graus 2 e 3 dependem de combinações.
-- **Trevas [DEFINIDO, SRD v0.42]:** escuridão, maldições e risco; técnica habilitada concede **+2T válidos à própria rolagem**, antes da DE. Os pontos contam para **acerto, dano e Temor transferível**, não apenas para dano depois de acertar. O conjurador escolhe **um ou dois alvos**; contra dois, usa **uma única rolagem** comparada com cada DE. O Temor não anulado é **distribuído tão igualmente quanto possível** entre os dois (se ímpar, o conjurador escolhe quem recebe 1T a mais) **ou concentrado integralmente num alvo**. Não duplicar Temor; atacar somente um alvo também é válido. Os requisitos **Disciplina 2 + Inteligência 2 + Criar Item de Foco e Magia** e custo **1 Coragem no acerto** permanecem; fluxo de gasto em falha é PENDENTE.
-- **Sangue [REWORK — SRD v0.73]:** a técnica separada **Extração de Sangue está revogada**. Sangue puro conjurado causa dano convencional contra proteção e armadura; sem armadura ou havendo excedente que atinja a Vida, cada ponto de Vida realmente perdido de inimigo gera 1 marca de sangue derramado. Para **amplificar uma magia**, inclusive habilitar dano direto à Vida contornando a armadura, **sacrificar 1 Vida própria OU consumir 3 marcas de sangue derramado de inimigos** (custos alternativos). Amplificação não concede dano numérico gratuito nem cria um dano extra de 1 Vida no alvo. Uma vez por turno, o Hemomante também pode escolher a substituição de Coragem para manter mais um dado ou elevar um dado, usando a mesma regra de pagamento. **Quando uma magia de Sangue acertar e tiver sido amplificada para contornar a armadura, TODO o dano convencional calculado do ataque é aplicado diretamente à Vida do alvo**, sem desgaste simultâneo de Integridade. Usa-se a fórmula vigente de dano e de crítico, **sem bônus numérico gratuito**, e preservam-se Temor e outros riscos. Um ataque que falhe não causa dano à Vida; os recursos pagos pela amplificação não são devolvidos. **Exclusivo da magia de Sangue dessa construção**, não se estende a Perfurante nem aos demais elementos. O rolador da ficha exibe o resultado para a Vida, mas aplicação em ficha externa ainda é manual. **Escudos físicos (inclusive Levantar Escudo) e Escudos Arcanos de outros elementos NÃO anulam o dano direto da Hemomancia amplificada**; **somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade**. Nessa exceção, o ataque volta a ser resolvido pelas regras usuais da barreira e das demais proteções, mantendo acerto, dano convencional e riscos, sem aplicar dano integral direto à Vida. Escudo Arcano de Sangue é **Escudo Arcano com elemento Sangue incorporado**, não uma Perícia nova nem um custo adicional presumido. Permanecem **PENDENTES** detalhes de coexistência de defesas, imunidades e aplicação em área.
-- **Veneno:** inflige penalidades de Saúde por turnos do alvo em até dois acúmulos, **não provoca dano automático à Vida**.
-**Raio não é elemento independente [DEFINIDO].** É uma **condição, manifestação ou efeito** que determinados elementos podem produzir quando a técnica e o ambiente o permitem. Exemplos conceituais: um **raio de Fogo** pode produzir impacto e queimadura; uma magia baseada em fenômeno **natural** pode atrair uma descarga atmosférica até a terra em dia chuvoso; a **Água** pode ser eletrificada; o **Ar/Vento** pode permitir eletrificação e condução pelo corpo. Nenhum desses exemplos concede dano extra, condição automática ou custo próprio não aprovado. **PENDENTE:** gatilhos, requisitos, riscos e valores das técnicas. Não comprar “Elemento: Raio”.
+| Grau | Aplicações |
+|---|---|
+| G1 | Telecinese simples de objetos Muito Leves. |
+| G2 | Mover objetos Leves, impacto físico Leve, leitura de pensamentos e influência mental. |
+| G3 | Mover objetos Médios e produzir impacto físico Médio. |
+| G4 | Levitar objetos e produzir impacto físico Pesado. |
+| G5 | Com Maestria, aplicar mentalmente propriedades de outro elemento habilitado, ignorando resistência elemental. |
 
-### Peso padrão dos elementos e mudança de peso [DEFINIDO / Perícia parcialmente PENDENTE]
+Telecinese: Disciplina + Inteligência. Mentalismo: Disciplina + Inteligência + Influência, exigindo Disciplina Avançada (Especialização em Disciplina). Um objeto lançado causa impacto físico; manifestação puramente mental é neutra. Exemplo: Psique + Água induz sensação de congelamento. Não presumir dano material, imunidade anulada ou controle absoluto. Dominação Mental fica em Perícia futura. DE mental, limites de levitação e efeitos mentais detalhados permanecem pendentes.
 
-**Todas as magias elementais começam com peso padrão Leve e Grau 1 [DEFINIDO]**, seja o elemento Fogo, Água, Terra, Ar/Vento, Psique, Sagrado, Sangue, Trevas ou Veneno. Isto **substitui o antigo padrão Médio**. Não há elemento “Raio”; manifestações elétricas são efeitos/condições pertinentes. Técnicas de Graus superiores mantêm seus próprios requisitos e não são liberadas gratuitamente pela escolha de um elemento.
+### Ar — liberdade de movimento
 
-**Conjuração Refinada (1 XP):** passa a ampliar alcance de efeitos mágicos; distância e procedimento PENDENTES. O efeito antigo de alterar peso por esta Perícia foi substituído. Requisitos antigos preservados até nova escrita.
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
 
-**Os efeitos Leves, Médios e Pesados continuam válidos:** afinidade com o peso do alvo e demais propriedades dependem do peso efetivo da técnica, respeitando a habilitação e o Grau. A tabela apresenta a progressão de efeitos *Leve/Grau 1*, *Médio/Grau 2* e *Pesado/Grau 3*; a magia inicial é Leve/Grau 1, mas isso **não** oferece acesso antecipado às aplicações de Graus superiores.
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação elemental. |
+| G2 | Puxar, empurrar, elevar e autoempurrar até 4 m; amortecer 4 m de queda, mesmo em falha. |
+| G3 | Deslocamentos até 8 m; sufocar, empurrar e derrubar com dano pertinente. |
+| G4 | Deslocamentos até 12 m; tornados e rajadas em área, múltiplos alvos. |
+| G5 | Mistura de propriedades por Maestria. |
 
-**Peso da magia** não é **peso físico de inventário** nem sinônimo de Grau ou de dados. A alteração do padrão não remove outros requisitos já definidos para especializações, como os acessos específicos de Sangue e Trevas.
+Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso real, não atravessar paredes. Elevação por ataque segue resultado válido e limite do efeito. Queda progride 8 m por turno. Ar reduz altura de impacto, não pontos de dano diretamente; em queda de 12 m, G2 reduz para 8 m mesmo em falha. Amortecimento G3/G4 de 8/12 m é proposta; geometria, sufocamento, Fôlego e interação com redução defensiva convencional ainda exigem fechamento.
+
+### Água — contenção e precisão
+
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação elemental. |
+| G2 | Congelar e imobilizar sem dano próprio do congelamento; descongelar, extrair água do ar, mover, molhar e limpar. |
+| G3 | Perfurar conforme gatilho habilitado, com dano pertinente. |
+| G4 | Empurrar, Perfurar, Congelar e causar dano conforme efeitos habilitados. |
+| G5 | Mistura por Maestria. |
+
+Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. Preservar efeitos antigos; duração do congelamento e detalhes de Perfurar/alcance precisam conciliação.
+
+### Terra — terreno e proteção
+
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação elemental. |
+| G2 | Desvantagem, emaranhar pés, derrubar, pequenas pedras, plataformas, Sentido Sísmico. |
+| G3 | Enredar, imobilizar, espinhos, Cravar e Perfurar. |
+| G4 | Dano, empurrão e derrubada em área, linha, cone ou círculo a partir do alvo. |
+| G5 | Mistura por Maestria. |
+
+Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
+
+### Fogo — desgaste e destruição
+
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação elemental. |
+| G2 | Disparo convencional, conduzir e iluminar chamas. |
+| G3 | Queimar: E+T à Integridade, área 4×4. |
+| G4 | Derreter: E+T à Integridade e +1 Vida direta fixa, área 8×8. |
+| G5 | Mistura por Maestria, como Ácido. |
+
+Fogo exige fonte válida. Queimar substitui a contribuição convencional de Temor no dano à Integridade, não duplica. Derreter não multiplica o ponto fixo de Vida no crítico. Exemplo 3E+2T: Queimar 5 Integridade; Derreter 5 Integridade e 1 Vida direta, antes de proteções pertinentes. Queimar pode desfazer Congelamento e remover Sangrando conforme regra anterior; combinação com Sagrado sujeita à restrição de mistura em revisão.
+
+### Veneno — acúmulo e combinação
+
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2. Custo vigente não alterado.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação sem efeito especial. |
+| G2–G4 | Mesmo efeito de Envenenar; elevação de Inteligência segue regra geral, sem propriedades novas por Grau. |
+| G5 | Combinações por Maestria, por exemplo Ácido. |
+
+No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Sem dano direto automático; imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
+
+### Sagrado — fortalecimento e purificação
+
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. **Compra:** 2 XP.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Dano convencional de natureza neutra sagrada. |
+| G2 | Recuperar Coragem, suporte e purificação. |
+| G3 | Bênção: superar DE de outro aliado e elevar um Atributo em E−T Graus se positivo. |
+| G4 | Dano normal e possibilidade de anular Temor. |
+
+Pode optar por causar apenas dano normal. Bênção dura uma ação do beneficiário. Recuperação G2 mantém efeito anterior, com divergência entre verbete e Livro do Jogador a conciliar. Quantidade e destino do Temor anulado, restrição de mistura e detalhes de suporte continuam pendentes.
+
+### Trevas — enfraquecimento e Temor
+
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. Custo vigente não alterado.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Dano convencional de natureza sombria. |
+| G2 | Amplificação Sinistra: +1T antes da DE. |
+| G3 | Divisão das Sombras: +2T e ataque múltiplo. |
+| G4 | Aflição: reduzir um Atributo inimigo em E−T Graus se positivo. |
+
+Pode optar por dano normal. Divisão usa uma rolagem contra DE individual de cada alvo, mantendo referência de dois alvos e distribuição/concentração de Temor sem duplicação; +2T substitui +1T. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão exata da proibição continua pendente.
+
+### Sangue — sacrifício e amplificação
+
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. Custo vigente não alterado.
+
+| Grau | Técnica | Aplicação |
+|---|---|---|
+| G1 | Manifestação | Dano convencional. |
+| G2 | Hemomancia | Dano direto à Vida de alvo Sangrando ou que já perdeu Vida, consumindo marcas. |
+| G3 | Elevação Sanguínea | 3 marcas: +1 Grau temporário de Atributo próprio OU pagar uma Perícia de custo 1 Coragem. |
+| G4 | Seir | 6 marcas OU 2 Vida própria: +2 Graus temporários de um Atributo próprio. |
+| G5 | Maestria com Sangue | Combinação habilitada; via extraordinária de amplificação para d20 em revisão. |
+
+Uma marca por Vida realmente perdida de inimigo por dano convencional; não gera marca por dano à Integridade, mero Sangramento ou sacrifício próprio. Hemomancia direta consome marcas e não as realimenta automaticamente; custo exato e eventual alternativa em Vida pendentes. Elevações próprias duram uma ação e podem acumular com outras elevações autorizadas. Pedra da Alma é foco de Sangue e não recarrega naturalmente. Seir substitui o nome provisório Hiperventilação Sanguínea. Nenhuma nova Perícia comprável é criada.
+
+### Peso e natureza da manifestação
+
+Peso tático da manifestação e Grau da magia são distintos da carga física do foco. G2/G3/G4 correspondem às aplicações Leves/Médias/Pesadas apresentadas nos elementos, quando habilitadas. Não converter peso em acesso a efeitos superiores automaticamente. Ajustes de peso e custos específicos ainda precisam ser conciliados com o rework; Conjuração Refinada continua destinada a alcance, com valores pendentes.
 
 ### Exemplos de combinação criativa em diferentes cenas
 
@@ -1916,61 +2028,24 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 ### Criar Item de Foco e Magia [DEFINIDO / efeitos avançados PENDENTES]
 
-**Custo: 1 XP (Lucker Puro: 0 XP após compra); requisitos: Disciplina 1 + Inteligência 1 + Artesão 1.** A gratuidade racial não dispensa requisitos nem concede a Perícia automaticamente. Habilita os efeitos iniciais de **Psíquico**, magias **Leves**, criação de itens de foco e moldagem de magias segundo a capacidade de conjuração.
+**Compra:** 1 XP (Lucker Puro conserva compra gratuita após requisitos). **Requisitos:** Disciplina 1, Inteligência 1 e Artesão 1.
 
-**Efeitos especiais de Psíquico:** com a Perícia habilitadora e o Grau apropriado, **a ativação-base dos efeitos G1/G2 é gratuita** conforme a decisão posterior do SRD v0.79. A aplicação ainda exige alcançar a DE quando pertinente, e efeitos G3 precisam de elevação/habilitação e **1 Coragem**. A cobrança histórica de 1 Coragem para ativação-base G1/G2 foi substituída; custos próprios de técnicas especiais não foram automaticamente eliminados.
+Habilita Psique e fabricação de itens de foco. Crie e descreva magias livremente no momento da conjuração, dentro das habilitações. Não exige memorização. Não é pré-requisito geral para aprender outros elementos. Um foco válido permite conjurar seu elemento habilitado sem depender de sua presença no ambiente e pode acelerar a preparação. O foco não fornece dados próprios.
 
-| Grau | Exemplos do elemento Psíquico, neutro e não físico |
+Fabricação com Artesão. Capacidade e carga física: Leve 1, Médio 2, Pesado 3. Cargas vinculadas ao elemento; consumir carga não reduz peso físico. Recarga comum gradual após esgotamento; Pedra da Alma não recarrega naturalmente. Preços e pendências na v0.188. Preservar Cristal Elemental inicial e demais benefícios vigentes.
+
+Habilitação: Criar Item de Foco e Magia.
+
+| Grau | Aplicações |
 |---|---|
-| **G1** | Amassar armadura, arrancar objeto, lançar pedra, ler mente, impor pensamento ou sentir presenças; manifestações psicológicas/telecinéticas |
-| **G2** | Controlar **um alvo para atacar a si próprio** (**rolagem de Influência**) ou arremessar pequenos objetos mentalmente |
-| **G3** | Controlar **dois alvos para que um ataque o outro**, com **rolagem de Influência** e **Conjuração**; somente com **Psíquico puro ou combinado com Trevas** |
+| G1 | Telecinese simples de objetos Muito Leves. |
+| G2 | Mover objetos Leves, impacto físico Leve, leitura de pensamentos e influência mental. |
+| G3 | Mover objetos Médios e produzir impacto físico Médio. |
+| G4 | Levitar objetos e produzir impacto físico Pesado. |
+| G5 | Com Maestria, aplicar mentalmente propriedades de outro elemento habilitado, ignorando resistência elemental. |
 
-**Foco:** o personagem faz a **rolagem de criação com Artesão**. Itens de foco permitem conjurar magias elementais **sem depender da presença do elemento na cena**, dentro das habilitações adquiridas. **DEFINIDO — afinidade e disponibilidade do foco (17/11/2026):** o foco utilizado para conjurar ou acelerar uma magia **deve corresponder ao elemento conjurado**, e **basta estar no inventário do conjurador**; não precisa ser empunhado, estar equipado nas mãos nem requer mão livre. Um foco de outro elemento não fornece suas cargas. Em G4 com dois efeitos elementais máximos simultâneos, **quando a conjuração utiliza focos**, são usados **dois focos distintos, um de cada elemento, ambos apenas no inventário** (detalhes abaixo). **Exceção ambiental:** se o Narrador reconhecer abundância daquele elemento na cena, **não é necessário o foco do elemento suprido**, e a preparação pode ser reduzida por decisão do Narrador, sem prazo fixo automático. Cada grau investido em **Disciplina** aumenta a capacidade de criar Graus mais elevados de magias e itens; a correspondência numérica exata entre o Grau de Disciplina e o limite de fabricação ainda é **PENDENTE**. O **peso físico do foco** aumenta proporcionalmente ao Grau da magia, mas sem números de inventário definidos.
+Telecinese: Disciplina + Inteligência. Mentalismo: Disciplina + Inteligência + Influência, exigindo Disciplina Avançada (Especialização em Disciplina). Um objeto lançado causa impacto físico; manifestação puramente mental é neutra. Exemplo: Psique + Água induz sensação de congelamento. Não presumir dano material, imunidade anulada ou controle absoluto. Dominação Mental fica em Perícia futura. DE mental, limites de levitação e efeitos mentais detalhados permanecem pendentes.
 
-**Recarga dos focos comuns [DEFINIDO — SRD v0.79, 17/11/2026]:** a capacidade máxima do foco é igual ao seu Grau (G1 = 1 carga, G2 = 2, G3 = 3, G4 = 4). Depois de gastar a **última carga durante a rodada**, o foco recupera automaticamente **1 carga no encerramento dessa mesma rodada**, depois que jogadores e inimigos concluírem seus fluxos. Recupera mais **1 carga ao fim de cada rodada seguinte** até atingir a capacidade máxima. Cargas já recuperadas podem ser utilizadas antes de encher o foco. **Pedra da Alma não recarrega naturalmente**; depende da futura Perícia Fixar Alma. Assim, a descrição histórica “Grau N → N rodadas” indica **recuperação gradual**, não espera de N rodadas por uma restauração integral. **Criar Magia:** permite moldar elementos dentro das habilitações adquiridas, sem conceder outras gratuitamente.
-
-**Redução voluntária de Grau na conjuração [DEFINIDO — SRD v0.79, 17/11/2026]:** o conjurador pode **reduzir uma magia elemental G2 para G1 e lançá-la imediatamente**. A magia reduzida passa a utilizar **somente os efeitos e propriedades de G1**, inclusive dano e área de G1 quando definidos, **perdendo por completo os efeitos exclusivos de G2**. Ex.: a versão reduzida de Fogo G2 não mantém o dano especial E+T à Integridade de Queimar G2; usa a manifestação de Fogo G1 pertinente. Não criar custo extra ou bônus automático por essa escolha. A redução intermediária livre G3→G2 não foi aprovada. **PENDENTE:** integração da redução com magias memorizadas.
-
-**Conjuração G2 e foco [DEFINIDO — adendo autoral 22/11/2026]:** a magia G2 adiciona **1d10** à pilha. Sem gasto de carga, tem **2 turnos** de preparação. Ao gastar **exatamente 1 carga de foco do elemento correspondente**, reduz a preparação para **1 turno**, mantendo integralmente efeitos G2 e dado d10. O foco precisa ter a carga disponível e não soma dado próprio. O consumo é registrado na conclusão da rolagem; eventos de interrupção seguem procedimento ainda PENDENTE.
-
-**Conjuração G3 e foco [DEFINIDO — SRD v0.79, 17/11/2026]:** o **Grau da magia** e o **tempo de preparação** são grandezas distintas. Uma magia **G3 demora 3 turnos sem foco**, com seus efeitos completos de G3. Gastar **1 carga de foco** reduz a preparação para **2 turnos**; gastar **2 cargas do mesmo foco** reduz para **1 turno**, que significa **lançamento instantâneo no próprio turno do conjurador**. **A aceleração não transforma G3 em G2 nem retira efeitos G3**. O foco precisa possuir as cargas gastas; elas são consumidas normalmente. Não existe necessidade de gastar uma terceira carga para tornar G3 instantânea, pois isso já ocorre em um turno. Esta decisão substitui a limitação antiga de uma única carga por conjuração.
-
-**Conjuração G4 [DEFINIDO — dado 2d12 por decisão autoral 22/11/2026; demais procedimentos conforme SRD v0.79]:** a magia **G4 une duas magias G3 de dois elementos diferentes**, com **preparação-base de 6 turnos** (3 + 3), e **não pode ser acelerada para menos de 3 turnos**; nunca se torna instantânea por aceleração. Mantém o Grau e ambos os elementos, dentro das habilitações pertinentes.
-
-**DEFINIDO — opção B (G4 com ambos os efeitos máximos simultâneos):** para reduzir a preparação em **1 turno**, gastar **2 cargas de foco, uma vinculada a cada elemento**. Este pagamento adicional só se aplica à G4 que **ativa simultaneamente os efeitos máximos de dois elementos**; não se estende automaticamente às demais mesclas elementais. A escala é:
-
-| Preparação G4 com os dois efeitos máximos | Cargas do primeiro elemento | Cargas do segundo elemento | Total |
-|---|---:|---:|---:|
-| 6 turnos | 0 | 0 | 0 |
-| 5 turnos | 1 | 1 | 2 |
-| 4 turnos | 2 | 2 | 4 |
-| 3 turnos — mínimo | 3 | 3 | 6 |
-
-**DEFINIDO — focos elementais de G4 e inventário (17/11/2026):** na G4 com efeitos máximos simultâneos, **quando se usam focos**, são usados **dois focos distintos, um do elemento principal e outro do secundário**, **apenas presentes no inventário**, sem exigência de equipar ou segurar. Cada foco fornece exclusivamente as **cargas do seu elemento**: uma carga de cada foco reduz um turno. A redução de 6 para 3 turnos por focos consome **3 cargas de cada foco, 6 no total**, respeitando a capacidade individual, sem transferência de cargas entre focos. **Exceção ambiental [DEFINIDO]:** se o Narrador considerar que há abundância de um dos elementos na cena, **dispensa o foco daquele elemento** e pode reduzir a preparação por essa condição; se ambos forem suficientemente abundantes, os dois focos podem ser dispensados. **G4 nunca fica abaixo de 3 turnos**. **PENDENTE:** Grau mínimo dos focos para G4 e como quantificar/combinar a redução ambiental com as cargas quando só um elemento é abundante. Não transformar o ambiente em cargas fictícias nem inventar custos de mão/equipamento.
-
-**DEFINIDO — influência ambiental na conjuração elemental (17/11/2026):** se houver **abundância significativa de um elemento**, segundo o Narrador, o personagem **não precisa de foco desse elemento** e o próprio ambiente **facilita a conjuração, permitindo reduzir seu tempo de preparação**. **O Narrador determina quando há abundância suficiente e o quanto ela reduz o tempo**, sem uma tabela fixa. Ex.: uma magia colossal de Fogo em um incêndio pode ser mais fácil e rápida que a mesma magia numa geleira. A abundância pode ser avaliada separadamente em G4 para os dois elementos; não elimina habilitações de conjuração, não concede efeitos extras, nem altera os graus/dados. **Em G4, qualquer redução ambiental combinada com cargas respeita o piso de 3 turnos.** Ainda não há equivalência fixa entre ambiente e cargas, especialmente se só um elemento da G4 estiver abundante.
-
-**DEFINIDO — custos revisados de mistura e elevação a G3 (17/11/2026):** incluir o segundo elemento custa **1 Antecipar (1A)**. Se o personagem possui a **Perícia do elemento**, ativar seus efeitos G1/G2 **não cobra Coragem como custo-base**. Para elevar **cada** elemento a G3, gasta **+1 Coragem**. A cobrança anteriormente registrada de **1 Coragem extra para ativar a Perícia do segundo elemento**, mesmo em G1/G2, está **substituída** por esta decisão posterior.
-
-| Composição da mistura | Antecipar | Coragem para elevar a G3 | Custo geral de mistura/elevação |
-|---|---:|---:|---|
-| **Improviso:** segundo elemento apenas na natureza do dano, sem dois efeitos especiais | 1A | 0 | **1A** |
-| **Maestria:** dois efeitos especiais G1/G2 habilitados | 1A | 0 | **1A**, ressalvado o custo próprio histórico da Maestria ainda em revisão |
-| Apenas um elemento com efeitos G3 | 1A | +1 | **1A + 1 Coragem**, ressalvado o custo próprio da Maestria em revisão |
-| Dois elementos com efeitos G3 simultâneos — **G4 plena** | 1A | +2 (1 por elemento) | **1A + 2 Coragens**, além das cargas de aceleração, quando usadas |
-
-**DEFINIDO:** o valor **1A + 2 Coragens da G4 plena** cobre **mistura e elevação dos dois efeitos a G3**; não inclui cargas de aceleração nem automaticamente dispensa outros custos especiais que ainda precisem de reconciliação. A G4 plena leva **6 turnos sem aceleração**, com **mínimo absoluto de 3 turnos**, inclusive se favorecida pelo ambiente. Ao acelerar via focos, cada turno reduzido exige **1 carga de cada foco elemental**, ambos apenas no inventário. **PENDENTE:** definir Grau/tempo das mesclas em que só um elemento é G3, critérios de Maestria para dano dobrado e seu cálculo, harmonização do custo próprio de Maestria, procedimentos de Invocação Elemental. **Fogo G2 sem foco está resolvido em 0 Coragem** (Perícia, Grau e fonte elemental continuam exigidos). Não criar bônus, efeitos, custos ou habilitação G4 por inferência; magias não são memorizadas.
-
-**Elevação e redução de Grau [DEFINIDO — SRD v0.79]:** elevar G2 para G3 permite usar os efeitos G3 respeitando a preparação do grau; a redução voluntária para G1 usa apenas os efeitos G1, com lançamento imediato. Conjurar uma magia com efeitos de G2 não preserva efeitos exclusivos de G3/G4; gastar foco **não** equivale a alterar o Grau. A redução intermediária livre G3→G2 não foi aprovada. Conservar as demais exigências de conjuração.
-
-**DEFINIDO — criação livre de magias durante a ação (17/11/2026, decisão autoral posterior):** as magias **não precisam ser aprendidas individualmente, criadas fora de combate, memorizadas nem registradas em slots**. O jogador inventa e narra a manifestação da magia **no momento da ação**, orientando-se pelo conceito do elemento, seus efeitos habilitados e as combinações que o personagem consegue realizar. A descrição pode variar de uma ação para outra, sem comprar, memorizar ou pagar **2 Coragens de criação** para cada ideia. A antiga regra de “Criar Magia” com **−1 peso mental**, o **peso nominal G1–G4**, a tabela de **capacidade por Disciplina (0–6)** e os **spellslots mentais** foram **REVOGADOS como economia de magias memorizadas**. Disciplina continua sendo a Prática única de armas/conjuração, com seus próprios Graus, dados, custos de XP e requisitos; o revogado peso mental não é convertido em carga física.
-
-**DEFINIDO — improvisar não altera a potência:** o narrador e o jogador verificam **Perícia elemental, Grau de acesso, fonte elemental**, efeitos e combinações permitidos, **DE/rolagem**, custos de Coragem/Antecipar/cargas, bem como o **tempo de conjuração**. A preparação G2/G3/G4 continua sendo o **tempo efetivamente gasto para conjurar aquela magia**, não um período anterior para memorizá-la. G1 permanece imediato quando habilitado; G2 mantém 2 turnos, G3 3 turnos (com as acelerações válidas), e a G4 plena 6 turnos, mínimo 3. Uma magia diferente narrada no mesmo Grau não gera dados, dano ou propriedades extras. **Fabricação de foco** permanece separada e depende de sua Perícia e materiais/rolagem aplicáveis.
-
-**Itens de foco e carga física [DEFINIDO]:** todos os itens de foco **ocupam as cargas convencionais do inventário**, tenham ou não sido usados na conjuração livre. Utilize a capacidade de carga geral; isso não cria slots mentais. O foco comum criado com Artesão recupera **1 carga no encerramento da própria rodada do esgotamento**, e depois mais 1 no fim de cada rodada até encher, conforme seu Grau. A Pedra da Alma é exceção.
-
-**PENDENTE:** limites de controle de efeitos mentais, testes dos alvos, duração e alcance em casos ainda não regulamentados. A memorização/slots e a chamada “conjuração rápida da magia memorizada” foram revogados; continuam vigentes os tempos normais de conjuração e sua aceleração por foco/ambiente, quando aprovadas.
 
 ### Escudo Arcano [DEFINIDO / detalhes de aplicação PENDENTES]
 
@@ -1994,104 +2069,123 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 ### Perícia em Elemento Ar [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita magias elementais **Leves de Ar**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base dos efeitos G1/G2** que estejam habilitados, sem cobrar os antigos 1 Coragem; continuam as rolagens e a DE pertinentes. Acesso/elevação aos efeitos de **G3** exige habilitação e **1 Coragem**.
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
 
-| Grau | Efeitos e formas |
+| Grau | Aplicações |
 |---|---|
-| **G1** | **Até 4 m** para empurrar, puxar, elevar ou autoempurrar; linha reta, círculo, cone, X |
-| **G2** | **Até 8 m** para os deslocamentos de Ar; **Sufocar**, causando dano à Vida ou armadura; empurrar + derrubar com dano; linha reta, círculo, cone, X |
-| **G3** | Conjurar ao **final do turno dos aliados**; **até 12 m** para os deslocamentos de Ar; grandes áreas e múltiplos alvos, tornado/rajada, possíveis danos por queda; linha reta, círculo, cone, X |
+| G1 | Manifestação elemental. |
+| G2 | Puxar, empurrar, elevar e autoempurrar até 4 m; amortecer 4 m de queda, mesmo em falha. |
+| G3 | Deslocamentos até 8 m; sufocar, empurrar e derrubar com dano pertinente. |
+| G4 | Deslocamentos até 12 m; tornados e rajadas em área, múltiplos alvos. |
+| G5 | Mistura de propriedades por Maestria. |
 
-**Curvatura de Ar [DEFINIDO — v0.85]:** linhas quebradas, correntes em L/X e outros caminhos curvos são permitidos; a **soma da distância percorrida** por todos os trechos conta contra a metragem disponível para a magia no Grau usado (**4 m G1, 8 m G2 e 12 m G3**, revisão v0.157), sem benefício de alcance por curva, sem atravessar paredes e sem efeito automático. A distância não é calculada apenas entre início e fim. [SRD v0.85](srd-continuidade-v0.85.md).
+Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso real, não atravessar paredes. Elevação por ataque segue resultado válido e limite do efeito. Queda progride 8 m por turno. Ar reduz altura de impacto, não pontos de dano diretamente; em queda de 12 m, G2 reduz para 8 m mesmo em falha. Amortecimento G3/G4 de 8/12 m é proposta; geometria, sufocamento, Fôlego e interação com redução defensiva convencional ainda exigem fechamento.
 
-**Ar também pode recuperar Fôlego [DEFINIDO no efeito].** **PENDENTE:** em qual Grau, quanto Fôlego recupera, quem recebe e qual gatilho/custo; não confundir Fôlego com Coragem ou Vida.
-
-**Nome atualizado:** esta é a habilitação antes registrada como **Elemento: Vento**; as duas denominações correspondem ao **mesmo elemento**, não a duas compras. A ficha preserva o identificador antigo.
-
-**DEFINIDO — v0.157:** empurrar, puxar e elevar usam o limite do Grau. Ao elevar por ataque, a altura efetiva segue o resultado válido, limitado à metragem habilitada. Exemplo: G2 com resultado válido 5 em um acerto eleva 5 m, não 8 m. A queda segue o [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais). O ataque de Ar que eleva causa seu próprio dano no acerto da DE. O Narrador rola adicionalmente o dano da queda; o teste defensivo reduz exclusivamente a parcela da queda, mesmo quando alcança a DE do ataque. O alvo fica Caído após a resolução. O tipo de eventual dado adicional além da pilha de altura, mencionado pelo autor, não foi especificado; não o inventar.
-
-**PENDENTE:** duração e dano de Sufocar, detalhes ainda abertos da resolução de queda, áreas e largura dos formatos, ramificações e ações não ofensivas.
 
 ### Perícia em Elemento Água [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Água**. **DEFINIDO — atualização SRD v0.79:** a Perícia habilita **ativação-base gratuita** de efeitos G1/G2, preservando teste, DE e requisitos. **Perfurar G2** conserva sua condição/gatilho de crítico histórico, mas o pagamento alternativo de 1 Coragem como ativação-base foi **substituído pela nova gratuidade**; demais requisitos de aplicação ainda exigem revisão. Elevar efeitos a G3 custa **1 Coragem**.
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
 
-| Grau | Efeitos |
+| Grau | Aplicações |
 |---|---|
-| **G1** | **Congelar por 1 rodada**, **sem causar dano** na forma Leve; extrair água do ar, mover água, molhar ou limpar |
-| **G2** | **Perfurar**: gatilho histórico de **crítico nos dados**, ou ativação **sem custo-base de Coragem** com a Perícia e Grau habilitados, respeitando demais requisitos; causa dano à **Vida e armadura** |
-| **G3** | **Conjurar ao final do turno dos aliados**; efeitos **Empurrar, Perfurar e Congelar**, com dano à Vida e armadura e preservação das propriedades menores pertinentes |
+| G1 | Manifestação elemental. |
+| G2 | Congelar e imobilizar sem dano próprio do congelamento; descongelar, extrair água do ar, mover, molhar e limpar. |
+| G3 | Perfurar conforme gatilho habilitado, com dano pertinente. |
+| G4 | Empurrar, Perfurar, Congelar e causar dano conforme efeitos habilitados. |
+| G5 | Mistura por Maestria. |
 
-**DEFINIDO — SRD v0.79:** magia de Água pode **remover Congelamento** de um alvo. Congelar continua imobilizando e **não remove Sangrando** por si só. **DEFINIDO:** o conjurador realiza uma **rolagem contra a DE defensiva do alvo**; sucesso remove Congelamento e a imobilização causada por ele, falha mantém a condição. **DEFINIDO:** **Água G1** já permite essa remoção mediante o teste descrito; não exige G2. Não presumir custo adicional.
+Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. Preservar efeitos antigos; duração do congelamento e detalhes de Perfurar/alcance precisam conciliação.
 
-**Perfurar no crítico** conserva seu gatilho histórico, mas a **ativação-base G2 com a Perícia adquirida também é gratuita**; o antigo pagamento alternativo de 1 Coragem foi revogado quanto ao custo-base, sem inventar acionamento automático em falha nem outras propriedades. O congelamento G1 Leve, sozinho, não causa dano. A descrição atual não confirma a **Desvantagem** mencionada numa tabela histórica de Água; o modificador **não é acrescentado automaticamente** nesta Perícia sem nova aprovação.
-
-**Nome atualizado:** a antiga entrada **Elemento: Água** da ficha corresponde à mesma habilidade, agora denominada **Perícia em Elemento Água**, sem segunda compra nem exclusão de personagens anteriores.
-
-**PENDENTE:** condições mecânicas de Congelar e Perfurar, tempo/alcance, forma exata da conjuração após o turno dos aliados, danos à Vida/armadura e como se preservam ou acumulam efeitos menores no G3. Atos utilitários sem ataque carecem de procedimento específico.
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Terra**. **DEFINIDO — atualização SRD v0.79:** a ativação-base dos efeitos G1/G2 habilitados pela Perícia é **gratuita**, substituindo a cobrança genérica de 1 Coragem, sem dispensar teste, DE ou habilitações. Elevar o efeito a G3 exige **1 Coragem**.
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
 
-| Grau | Efeitos de Terra |
+| Grau | Aplicações |
 |---|---|
-| **G1** | **Desvantagem por 2 rodadas** (ex.: terra nos olhos); **emaranhar os pés** ou **derrubar**; mover pedras pequenas em alta velocidade; criar **plataformas de deslocamento**; **sentido sísmico em 18 × 18 m**, permitindo localizar **criaturas furtivas e armadilhas** |
-| **G2** | **Enredar e imobilizar**, aplicando **Desvantagem por 2 turnos**; **espinhos causando dano à armadura/proteção**; **sentido sísmico de 32 × 32** |
-| **G3** | **Conjurar ao final do turno dos aliados**; área de efeito **5 × 5**, linha, cone ou círculo **a partir do alvo**; **dano, empurrão e derrubada**; **sentido sísmico de 64 × 64** |
+| G1 | Manifestação elemental. |
+| G2 | Desvantagem, emaranhar pés, derrubar, pequenas pedras, plataformas, Sentido Sísmico. |
+| G3 | Enredar, imobilizar, espinhos, Cravar e Perfurar. |
+| G4 | Dano, empurrão e derrubada em área, linha, cone ou círculo a partir do alvo. |
+| G5 | Mistura por Maestria. |
 
-**Observação:** os períodos de **2 rodadas (G1)** e **2 turnos (G2)** foram informados de modo distinto e não foram equiparados. Apenas o sentido sísmico G1 especifica expressamente metros; as unidades das dimensões G2/G3 e da área de efeito 5 × 5 ainda são **PENDENTES**.
+Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
 
-**PENDENTE:** quantidade de dano de espinhos/ataques, testes resistidos, alcance das formas, detecção sísmica e suas limitações, definição geométrica de “a partir do alvo”, forma de aplicar os efeitos fora de ataques e procedimento de conjuração no fim do turno dos aliados. Os Graus G2 e G3 não ficam automaticamente disponíveis pela compra da Perícia G1.
-
-**Continuidade:** substitui a entrada antiga **Elemento: Terra** da ficha, conservando o identificador e personagens salvos. Não é necessário adquirir as duas versões.
 
 ### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
 
-**Custo: 1 XP. Requisitos: Disciplina 1 + Inteligência 1.** Habilita **magias elementais Leves de Fogo**. **DEFINIDO — atualização SRD v0.79:** possuir a Perícia permite ativar **gratuitamente o custo-base** de efeitos G1/G2 habilitados, substituindo o gasto genérico de 1 Coragem, sem dispensar acerto/DE e fontes de Fogo. A elevação do efeito de Fogo a **G3 exige 1 Coragem**, com ou sem foco. Em uma magia **G4 conjunta**, Fogo elevado a G3 exige **1 Coragem como seu componente**; quando ambos os elementos são elevados a G3, o custo pleno é **1A + 2 Coragens** (uma por elemento). **DEFINIDO — decisão posterior do autor:** Fogo G2 **não paga Coragem**, nem mesmo sem foco, desde que exista fonte elemental válida conforme as regras de ambiente; a antiga cobrança adicional específica foi revogada.
+**Requisitos vigentes:** Disciplina 1 + Inteligência 1. **Compra:** 1 XP.
 
-| Grau | Efeitos e manifestações de Fogo |
+| Grau | Aplicações |
 |---|---|
-| **G1** | **Disparo à distância** que **danifica armadura**, mas **não causa queimadura direta à Vida**; **iluminar** ou **conduzir chamas**. **Não produz fogo do nada**: exige chama/faísca, como lamparina a óleo, isqueiro ou foco pequeno encantado (ex.: luvas que produzem faísca ao estalar os dedos) |
-| **G2 — Queimar** | Ampliar a área para **4 × 4**, em **cone, linha ou círculo**. Em acerto, **cada Temor não anulado vale 1 dano à Integridade da armadura**, substituindo a contribuição comum de `⌊T/2⌋`: **E + T à Integridade**, sem dano direto adicional à Vida por Queimar. Excedente após a proteção segue regras usuais. **Sem foco**, ativar Fogo G2 continua **gratuito em Coragem** com a Perícia e o Grau habilitados, desde que haja fonte elemental pertinente |
-| **G3 — Derreter** | Ao acertar, causa o dano de **Queimar à Integridade (E + T)** e acrescenta **exatamente 1 ponto de dano direto à Vida**, sem duplicar o dano integral; este ponto fixo **não dobra no crítico**. Mantém **conjuração ao fim do turno dos aliados** e área **8 × 8**, em **círculo, cone ou linha** |
+| G1 | Manifestação elemental. |
+| G2 | Disparo convencional, conduzir e iluminar chamas. |
+| G3 | Queimar: E+T à Integridade, área 4×4. |
+| G4 | Derreter: E+T à Integridade e +1 Vida direta fixa, área 8×8. |
+| G5 | Mistura por Maestria, como Ácido. |
 
-**Interação de condições [DEFINIDO — SRD v0.79]:** aplicar **Queimar remove Sangrando e desfaz Congelamento**. Fogo G1 mesclado com Sagrado pode aplicar Queimar sem causar dano; Fogo G1 sem essa mescla mantém seu dano convencional à armadura. Uma magia de **Água G1** também pode remover Congelamento mediante **teste contra a DE defensiva do alvo**; não exige G2. Não confundir a remoção da condição com alteração do dano de G2/G3.
+Fogo exige fonte válida. Queimar substitui a contribuição convencional de Temor no dano à Integridade, não duplica. Derreter não multiplica o ponto fixo de Vida no crítico. Exemplo 3E+2T: Queimar 5 Integridade; Derreter 5 Integridade e 1 Vida direta, antes de proteções pertinentes. Queimar pode desfazer Congelamento e remover Sangrando conforme regra anterior; combinação com Sagrado sujeita à restrição de mistura em revisão.
 
-**Distinção [DEFINIDO — SRD v0.76]:** Queimar G2 danifica a **Integridade**, sem dano direto de propriedade à Vida; Derreter G3 mantém esse dano e adiciona **1 Vida direta fixa**. Uma rolagem com **3E e 2T** causa **5 à Integridade + 1 Vida direta** em G3; em G2, **5 à Integridade + 0 Vida direta**. Um crítico aplicável pode modificar o dano à Integridade, mas **não multiplica o +1 direto**. O efeito não é o dano integral à Vida exclusivo da Hemomancia. As imunidades elementais e custos já vigentes permanecem, sem automatizar um resultado contra barreiras pendentes.
-
-**Estratégia de um mago de Fogo:** produzir ou carregar **uma pequena faísca** e **ampliá-la magicamente** pode gerar grandes incêndios e devastação. Isso descreve o potencial narrativo do elemento; danos persistentes, propagação e duração dos incêndios **não recebem regras automáticas** sem aprovação.
-
-**Fogo G2 sem foco [DEFINIDO — revisão autoral de 17/11/2026]:** não há custo de ativação em Coragem para G1/G2 quando a Perícia e o Grau estão habilitados; a cobrança adicional histórica de G2 sem foco foi **revogada**. Isso não dispensa a existência da fonte de Fogo, as condições ambientais, o tempo de preparação, os testes e a DE. **Fogo G3 e sua contribuição numa G4 conjunta:** 1 Coragem pela elevação de Fogo; a G4 com dois G3 mantém 1A + 2 Coragens no total.
-
-**Continuidade:** a entrada antiga da ficha **Elemento: Fogo** foi renomeada **Perícia em Elemento Fogo**, preservando a compra existente. Não cria uma segunda habilidade de Fogo.
 
 ### Perícia em Elemento Sagrado [DEFINIDO / procedimentos PENDENTES]
 
-**Custo: 2 XP. Requisitos: Disciplina 2 + Inteligência 2.** Concede acesso aos efeitos iniciais de Sagrado e **magias Leves**. **DEFINIDO — atualização SRD v0.79:** o custo-base de ativar seus efeitos G1/G2 habilitados é **gratuito**, não o antigo gasto genérico de 1 Coragem. O gasto específico de **converter um Êxito em Coragem** continua sendo o próprio Êxito consumido, sem conceder Êxito adicional; elevação a G3, quando habilitada, exige **1 Coragem**.
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. **Compra:** 2 XP.
 
-**Grau 1:** acalmar, purificar, apoiar e recuperar Coragem. **Um Êxito da capacidade sagrada pode ser convertido em 1 Coragem para um participante, uma vez por conjuração/turno.** Esse **Êxito é consumido** e **não conta para atingir a DE nem para causar dano**. Não se concede um Êxito gratuito para financiar a conversão, nem se convertem vários Êxitos no mesmo turno/conjuração.
+| Grau | Aplicações |
+|---|---|
+| G1 | Dano convencional de natureza neutra sagrada. |
+| G2 | Recuperar Coragem, suporte e purificação. |
+| G3 | Bênção: superar DE de outro aliado e elevar um Atributo em E−T Graus se positivo. |
+| G4 | Dano normal e possibilidade de anular Temor. |
 
-**Graus 2 e 3:** são obtidos **a partir de combinações com outros elementos**. A compra de Sagrado isoladamente não fornece poderes G2/G3 prontos nem dispensa habilitações de combinação.
+Pode optar por causar apenas dano normal. Bênção dura uma ação do beneficiário. Recuperação G2 mantém efeito anterior, com divergência entre verbete e Livro do Jogador a conciliar. Quantidade e destino do Temor anulado, restrição de mistura e detalhes de suporte continuam pendentes.
 
-**PENDENTE:** procedimento de acalmar/purificar/apoiar sem ataque; momento da escolha de converter um Êxito e o que ocorre se o acerto deixar de alcançar a DE após o gasto; alcance/beneficiários e limites da recuperação de Coragem; exigência de pagamento de ativação (1 Coragem) para a conversão de Êxito em ações não ofensivas; quais combinações habilitam efeitos de Grau 2 e 3.
 
-**Continuidade:** substitui a antiga entrada **Magia Sagrada** (custo histórico 3 XP) por **Perícia em Elemento Sagrado** (**2 XP**), preservando a Perícia existente no cadastro de personagens.
+### Hemomancia e Transfusão Sanguinária
 
-### Hemomancia e Transfusão Sanguinária [DEFINIDO em custos / PENDENTE em dano direto]
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. Custo vigente não alterado.
 
-**Transfusão Sanguinária** é uma Perícia de origem exclusiva dos Luckers de Sangue, concedida gratuitamente na criação (SRD v0.132). É uma **conjuração ativa**, não uma cura gratuita passiva. Para cada **3 marcas elegíveis de sangue derivadas de dano direto à Vida**, pode-se recuperar **1 Vida**, até o máximo. Não há mais uma ação de Extração de Sangue nem reserva de sangue extraído separada. As 3 marcas devem estar disponíveis na reserva de **sangue derramado de inimigos**, após qualquer gasto anterior; não contar duas vezes a mesma perda de Vida.
+| Grau | Técnica | Aplicação |
+|---|---|---|
+| G1 | Manifestação | Dano convencional. |
+| G2 | Hemomancia | Dano direto à Vida de alvo Sangrando ou que já perdeu Vida, consumindo marcas. |
+| G3 | Elevação Sanguínea | 3 marcas: +1 Grau temporário de Atributo próprio OU pagar uma Perícia de custo 1 Coragem. |
+| G4 | Seir | 6 marcas OU 2 Vida própria: +2 Graus temporários de um Atributo próprio. |
+| G5 | Maestria com Sangue | Combinação habilitada; via extraordinária de amplificação para d20 em revisão. |
+
+Uma marca por Vida realmente perdida de inimigo por dano convencional; não gera marca por dano à Integridade, mero Sangramento ou sacrifício próprio. Hemomancia direta consome marcas e não as realimenta automaticamente; custo exato e eventual alternativa em Vida pendentes. Elevações próprias duram uma ação e podem acumular com outras elevações autorizadas. Pedra da Alma é foco de Sangue e não recarrega naturalmente. Seir substitui o nome provisório Hiperventilação Sanguínea. Nenhuma nova Perícia comprável é criada.
+
+**Transfusão Sanguinária** é uma Perícia de origem exclusiva dos Luckers de Sangue, concedida gratuitamente na criação (SRD v0.132). É uma **conjuração ativa**, não uma cura gratuita passiva. Para cada **3 marcas elegíveis de sangue decorrentes de Vida efetivamente perdida**, pode-se recuperar **1 Vida**, até o máximo. Não há mais uma ação de Extração de Sangue nem reserva de sangue extraído separada. As 3 marcas devem estar disponíveis na reserva de **sangue derramado de inimigos**, após qualquer gasto anterior; não contar duas vezes a mesma perda de Vida.
 
 
 **Exclusividade racial [DEFINIDO — SRD v0.132]:** Transfusão Sanguinária é recebida por Luckers de Sangue na criação, por 0 XP. Lucker Puro que conhece Sangue não obtém essa permissão. Não concede a Perícia Transfusão separadamente nem elimina os custos e condições de uso já definidos; a relação com a Perícia Transfusão prévia permanece pendente de esclarecimento.
 
-**Geração das marcas [DEFINIDO — SRD v0.72]:** para cada **1 ponto de dano direto aplicado à Vida**, registra-se **1 marca**. Um golpe que causa 3 de dano à Vida produz **3 marcas**, não apenas uma. Dano absorvido pela armadura e Sangramento sem dano não geram marcas. O protótipo registra apenas **sangue derramado de inimigos**; sacrifícios de Vida do próprio Hemomante **não** são automaticamente adicionados a essa reserva.
+A geração de novas marcas por dano direto da Hemomancia não é automática, conforme v0.186. A coleta e sua elegibilidade para Transfusão exigem validação. As demais regras específicas de Transfusão permanecem conforme o SRD v0.132.
 
-A ficha do Hemomante possui **uma reserva manual de sangue derramado de inimigos**. Permite registrar de uma só vez o número de pontos de Vida efetivamente perdidos pelos inimigos. Marcas antigas das duas reservas são unificadas uma única vez para migração e devem ter sua procedência conferida. A elegibilidade de fontes e o tratamento de custos de Vida, assim como os custos de conjuração, alcance, duração e coleta, permanecem **PENDENTES**; o registro na ficha serve ao playtest e pressupõe validação do Narrador. **Transfusão**, a Perícia pré-requisito, tem seus próprios custos de compra ainda pendentes, logo a compra da nova Perícia exige primeiro resolver a aquisição da anterior.
+**Compra:** 1 XP. **Requisitos:** Disciplina 1, Inteligência 1, Destreza 1. Passiva: +1A em ações pertinentes de Disciplina e Conjuração, cumulativo com Maestria conforme regra anterior. Ao gastar **1 Antecipar**, incorpore apenas um elemento adicional disponível, escolhendo substituir a natureza elemental do ataque ou combinar as duas naturezas na mesma ação. O elemento improvisado não ativa sua propriedade especial, não eleva o Grau da magia e não cria dano ou dados adicionais automaticamente. A mera mistura de naturezas é permitida mesmo em G1; não equivale à mistura de propriedades especiais do G5. Respeite a matriz de resistências, imunidades e vulnerabilidades elementais vigente, sem duplicar o dano. A aplicação em Escudo Arcano, armas e encantamentos é pertinente dentro de suas habilitações; a Perícia não concede por si fabricação, encantamento, escudo ou novas resistências defensivas. Exemplo: Água + Ar para adaptar o ataque a uma defesa elemental, sem obter gratuitamente Congelar e Empurrar simultaneamente. O gasto de 1A consome o símbolo uma única vez. Não alterar custos próprios das demais técnicas. PENDENTE: procedimento específico de combinação defensiva e de encantamentos persistentes, quando ainda não definido.
 
-**Consumo do Sangue [DEFINIDO]:** marcas de sangue **derramado de inimigos** usadas para conjurar são **consumidas no ato**, inclusive se a magia de Sangue causar apenas dano convencional contra a armadura. Converter a marca em efeito especial também a consome; uma marca gasta não pode ser usada novamente nem financiar Transfusão. A própria Transfusão consome três marcas para recuperar 1 Vida — não exigir uma quarta marca sem outra decisão. A geração de **uma marca por ponto de dano direto à Vida** está DEFINIDA (v0.72); permanecem **PENDENTES** as condições de coleta, quais fontes contam e a quantidade de marcas consumidas por técnicas ainda não detalhadas. A ficha oferece um botão de gasto manual sem efeitos mágicos automáticos.
+Preservar requisitos vigentes: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia elemental; para misturar propriedades, ambos os elementos devem estar habilitados. Preservar +1A cumulativo ao Improviso e custo de mistura 1A. Habilita a mistura de propriedades especiais G5 e a elevação de Inteligência correspondente, sem d20 comum. Diferentemente do Improviso, permite aplicar propriedades dos dois elementos habilitados na mesma conjuração. Custos específicos, piso de preparação e exceções ainda em revisão. Não alterar Invocação Elemental ou Conjuração Refinada por inferência.
 
-**Amplificação por Sangue [DEFINIDO — v0.73; limite reafirmado em v0.79, 17/11/2026]:** o Hemomante pode realizar **no máximo uma amplificação de Sangue por turno**, mesmo que possua recursos suficientes para outras. Uma vez por turno, escolher **uma** destas ações: (1) amplificar a magia, incluindo optar por dano direto à Vida apesar da armadura; (2) manter um dado adicional; ou (3) elevar um dado. O custo, **alternativo e não cumulativo**, é **perder 1 Vida do próprio Hemomante OU consumir 3 marcas de sangue já derramado por inimigos**. A ficha registra o pagamento e limita a uma ativação por turno, mas **não modifica o dano ou os dados automaticamente**. Para dano à Vida contornando a armadura, a quantidade de dano aplicável e a interação com barreiras ainda são PENDENTES; o pagamento não causa 1 dano ao alvo por si só.
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2. Custo vigente não alterado.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Manifestação sem efeito especial. |
+| G2–G4 | Mesmo efeito de Envenenar; elevação de Inteligência segue regra geral, sem propriedades novas por Grau. |
+| G5 | Combinações por Maestria, por exemplo Ácido. |
+
+No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Sem dano direto automático; imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
+
+**Requisitos vigentes:** Disciplina 2 + Inteligência 2. Custo vigente não alterado.
+
+| Grau | Aplicações |
+|---|---|
+| G1 | Dano convencional de natureza sombria. |
+| G2 | Amplificação Sinistra: +1T antes da DE. |
+| G3 | Divisão das Sombras: +2T e ataque múltiplo. |
+| G4 | Aflição: reduzir um Atributo inimigo em E−T Graus se positivo. |
+
+Pode optar por dano normal. Divisão usa uma rolagem contra DE individual de cada alvo, mantendo referência de dois alvos e distribuição/concentração de Temor sem duplicação; +2T substitui +1T. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão exata da proibição continua pendente.
 
 ### Transformação Elemental e Perícias de antimagia
 

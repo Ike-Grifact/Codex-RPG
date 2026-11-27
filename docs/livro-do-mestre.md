@@ -282,7 +282,7 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 **No turno do inimigo lançado**, ele pode realizar um teste de redução contra a **DE correspondente ao resultado do ataque do conjurador**. A queda é resolvida depois desse teste. O inimigo fica **Caído**, sem contra-atacar imediatamente. Os Temores gerados na resolução da queda provocada alimentam a **reserva pública de Pavor do Narrador**, respeitando seu teto, sem duplicação na reserva local.
 
-**Exemplo de rework — Ar:** uma magia G2 com limite de deslocamento de 8 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 8 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A escala vigente de deslocamento do Ar é **G1 4 m · G2 8 m · G3 12 m** (v0.157).
+**Exemplo de rework — Ar:** uma magia G2 com limite de deslocamento de 8 m, usada para elevar um inimigo, obtém 5 pontos válidos e acerta a defesa. O inimigo sobe **5 m**, e não 8 m. Não há aplicação imediata de dano de queda pelo conjurador. A composição de referência da altura é 1d20; no turno do inimigo, ele testa contra DE 5 antes da resolução do dano. A escala vigente de deslocamento do Ar é **G2 4 m · G3 8 m · G4 12 m** (v0.157).
 
 ### Empurrão de uma altura e superfície de impacto
 
@@ -522,7 +522,13 @@ O último Líder cai. Os sobreviventes ficam desorganizados e os jogadores ganha
 - Não invente custo de iniciativa pública de inimigo, critérios de desempate ou distribuição de Temor ainda pendentes, nem novos graus de Vantagem.
 
 
-## Atualização de Conjuração — novembro 2026
+## Conjuração — referência atual
+
+Ar Leve (G2) reduz 4 m da altura considerada para o dano mesmo em falha; recompor a pilha conforme a altura efetiva. A queda progride 8 m por turno. O efeito de Ar não subtrai diretamente dano; a relação com redução defensiva convencional e valores superiores está em revisão. Uma queda de 24 m permite conjurar G3 (2 turnos totais) antes do impacto.
+
+**Rework elemental v0.185–0.189 publicado:** as regras atuais de Graus, dados, focos e efeitos estão em [Conjuração, elementos e possibilidades](livro-do-jogador.md#conjuração-elementos-e-possibilidades). As notas datadas anteriores abaixo constituem histórico nos pontos substituídos; não usar seus antigos Graus, dados extras ou custos contraditórios. Automação ainda pendente.
+
+## Histórico de Conjuração — novembro 2026
 
 As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substituídas por **Criar Item de Foco e Magia** (1 XP, Disciplina 1 + Inteligência 1 + Artesão 1). **DEFINIDO — decisão autoral posterior (17/11/2026):** o jogador **cria e narra magias livremente durante a ação**, baseando-se no conceito e nas ativações/combinações dos elementos habilitados. Não existe memorização, pré-cadastro, spellslots, peso mental ou custo próprio de 2 Coragens por criação fora de combate. Os requisitos de Perícias/Graus, tempo de preparação da conjuração, focos, custos de ativação, rolagens e DE permanecem. Criar/fabricar um **item de foco** é uma atividade distinta e mantém suas regras próprias.
 
