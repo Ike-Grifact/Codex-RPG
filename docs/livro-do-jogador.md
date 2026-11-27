@@ -1032,6 +1032,23 @@ Furtividade permite controlar os ruídos, os movimentos e a exposição do perso
 > **Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para atravessar um depósito sem derrubar objetos.
 
 
+<a id="furtividade-pratica"></a>
+
+##### Furtividade em jogo — ocultação, fuga e busca ativa
+
+O personagem furtivo com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
+
+**Ocultação após deslocamento:** se o personagem furtivo **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
+
+**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o personagem furtivo está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o personagem furtivo manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
+
+**Exemplo:** se o personagem furtivo manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
+
+**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
+
+**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
+
+
 #### ⚔ Artesão
 
 *Transformar matéria em possibilidades.*
@@ -1627,19 +1644,7 @@ Armas de fogo dependem de **munição por calibre, carregador, disparos consumid
 
 ## Furtividade
 
-### Furtividade após deslocamento [DEFINIDO / procedimento específico PENDENTE]
-
-O Ladino com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
-
-**Nova decisão:** se o Ladino **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
-
-**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o Ladino está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o Ladino manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
-
-**Exemplo:** se o Ladino manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
-
-**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
-
-**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
+Consulte [Furtividade em jogo](#furtividade-pratica), junto à Prática Furtividade, para o procedimento completo.
 
 Exemplos documentados de Perícias (não necessariamente disponíveis no nível 1):
 
