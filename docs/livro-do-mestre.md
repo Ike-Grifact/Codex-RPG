@@ -222,6 +222,12 @@ Para o dano de queda, use todos os dados da pilha e os benefícios críticos amb
 
 ## Perigos ambientais
 
+### Teste para evitar ou reduzir o perigo
+
+Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo de Atletismo + Destreza aos personagens jogadores. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; cada Êxito e Temor válido do teste defensivo reduz esse dano em 1, até zero. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
+
+**Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 3. Se o Narrador rolar 5 de dano, restam apenas 2 antes das proteções aplicáveis.
+
 ### Intensidade e tipos de dano
 
 A mesma escala representa perigos ambientais, com intensidade (DE de referência) de **1 a 30**. O Narrador define a intensidade conforme a situação: um vulcão, terremoto, chuva de meteoros ou outra catástrofe pode alcançar a extremidade da escala. Intensidade 30 corresponde a **6d20**, pois cada d20 possui peso 5. Esse é o limite da escala de perigo ambiental, não uma nova DE defensiva dos personagens.
@@ -234,10 +240,11 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 
 ### Como conduzir o perigo
 
-1. Identifique os tipos de dano presentes e a intensidade de 1 a 30.
-2. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
-3. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável.
-4. Considere as proteções pertinentes. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
+1. Ao acionar o gatilho, identifique os tipos de dano e a intensidade de 1 a 30; informe a DE do teste defensivo.
+2. Solicite Atletismo + Destreza ao jogador. Se alcançar a DE, o personagem evita o dano; se falhar, prossiga com a rolagem de dano.
+3. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
+4. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável. A redução do teste defensivo é de 1 por Êxito ou Temor válido, até zero, sem alterar a pilha.
+5. Considere as proteções pertinentes e preserve os destinos dos símbolos. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
 
 **Exemplo de imunidade:** Em um perigo com três tipos de dano, imunidade a dois elimina dois terços do dano.
 

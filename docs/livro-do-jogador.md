@@ -723,9 +723,13 @@ Ataques que falham não desgastam a armadura. Com armadura equipada, resolva a I
 
 ##### Quedas e perigos ambientais
 
-Quedas, terremotos e outros perigos do ambiente também podem causar dano. O Narrador determina a intensidade e rola os dados correspondentes. Em uma queda involuntária, você pode tentar evitá-la ou reduzir o impacto; a Integridade disponível da armadura absorve o dano de queda antes da Vida.
+Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o Narrador informa a dificuldade (DE) e solicita um teste de **Atletismo + Destreza**.
 
-> **Exemplo:** Uma queda de 6 metros exige DE 6 em Destreza + Atletismo. Se você obtiver 2E + 1T válido, não evita a queda, mas reduz em 3 o dano que o Narrador rolar.
+Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano: cada Êxito e cada Temor válido do seu teste reduz esse dano em 1, até zero.
+
+> **Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 3. Se o Narrador rolar 5 de dano, restam apenas 2 antes das proteções aplicáveis.
+
+No caso de uma queda, a Integridade disponível da armadura absorve primeiro o dano restante, e o excedente atinge a Vida.
 
 Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/perigos-ambientais.html) nas Mecânicas, ou os procedimentos no [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
