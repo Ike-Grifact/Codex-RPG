@@ -1,6 +1,6 @@
 # Codex RPG
 
-**Continuidade editorial — 27/11/2026:** [v0.181](docs/srd-continuidade-v0.181.md), [v0.182](docs/srd-continuidade-v0.182.md) e [v0.183](docs/srd-continuidade-v0.183.md). Revisão das Partes I–II e diretrizes para edição física; capacidade elemental continua em estudo.
+**Continuidade editorial — 27/11/2026:** [v0.181](docs/srd-continuidade-v0.181.md), [v0.182](docs/srd-continuidade-v0.182.md), [v0.183](docs/srd-continuidade-v0.183.md) e [v0.184](docs/srd-continuidade-v0.184.md). Revisão das Partes I–II e diretrizes para edição física; capacidade elemental continua em estudo.
 
 **Referência editorial:** [Padrão editorial dos livros](docs/padrao-editorial-livros.md) · [Padrão editorial das Perícias](docs/padrao-editorial-pericias.md). Diretrizes de escrita e apresentação, sem precedência sobre regras vigentes.
 

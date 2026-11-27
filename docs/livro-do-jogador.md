@@ -707,9 +707,48 @@ Eldric tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones
 | 1/6 | □□ | □□ | □ | ■ | Inconsciente | −2E; +2T; 2 Coragens para agir |
 | 0/6 | □□ | □□ | □ | □ | Morto | Não pode agir |
 
+<a id="coragem-atributos"></a>
+
+#### Coragem
+
+Coragem representa sua capacidade de agir diante do perigo. Todo Aprendiz começa com 10 pontos de Coragem. Registre o valor atual e o máximo na ficha; desconte os gastos e acrescente as recuperações sem ultrapassar seu teto. A progressão neutra aumenta esse máximo nos níveis indicados.
+
+> **Coragem inicial: 10/10.** Dez pontos atuais de um máximo de dez.
+
+| Nível | Coragem máxima pela progressão |
+|---|---|
+| 1 | 10 |
+| 5 | 11 |
+| 10 | 12 |
+| 20 | 13 |
+
+##### Gastos e recuperação
+
+| Situação | Efeito |
+|---|---|
+| Manter um dado adicional | 1 Coragem; respeite o teto do Marco. |
+| Elevar uma fonte inteira | 1 Coragem antes de rolar; +1 Grau temporário até G6, conforme a regra geral. |
+| Ativar técnicas ou agir com Saúde comprometida | Pague o custo indicado na Perícia ou faixa de Saúde. |
+| Falha Arriscada | Perde 1 Coragem pelo resultado; Falha Limpa e Mista não retiram Coragem pelo resultado. |
+| Crítico convencional | Recupere 1 com dois dados críticos mantidos; 2 com três ou quatro, conforme a regra de crítico. |
+| Temor de ataque inimigo | Recupere 1 por Temor mantido não anulado no ataque dirigido a você, mesmo em falha. |
+| Descanso curto | 2 com Recobrar Coragem, respeitando suas condições; sem a Perícia não há recuperação natural. |
+| Descanso longo | Vigor + 1, se escolher recuperar Coragem em vez de reparar durante o descanso. |
+
+O teto absoluto é 15; a progressão neutra chega a 13 no nível 20. Efeitos específicos respeitam suas próprias condições. Consulte Coragem e seus usos e Crítico para as regras completas.
+
 <a id="dano-armadura-e-vida"></a>
 
 #### Resolvendo dano
+
+Defesa, Integridade e Vida são recursos diferentes. Resolva um ataque comum nesta ordem:
+
+1. **Defesa.** Compare o resultado válido à DE do alvo. Falha não causa dano de ataque nem desgaste da armadura.
+2. **Dano do acerto.** Calcule o dano e aplique as reduções e proteções pertinentes.
+3. **Integridade.** Desconte primeiro a Integridade disponível da armadura.
+4. **Vida.** Converta apenas o excedente pela tabela de dano à Vida; sem armadura, converta o dano restante.
+
+Efeitos de dano direto à Vida e procedimentos especiais seguem suas próprias regras.
 
 <a id="equipamentos-integridade-e-dano"></a>
 
@@ -740,35 +779,47 @@ Após acertar um ataque, o dano básico à Integridade da armadura é **E válid
 
 Para um ataque acertado, queda ou outro perigo ambiental, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
 
-| Dano | Vida perdida |
-|---:|---:|
+| Dano restante | Vida perdida |
+|---|---|
+| 0 | 0 |
 | 1–4 | 1 |
 | 5–8 | 2 |
-| 9 | 3 |
+| 9–17 | 3 |
+| 18–26 | 6 |
+| 27–35 | 9 |
+| 36–44 | 12 |
 
-Ao alcançar 9 de dano, a perda permanece em 3 Vida até atingir o próximo patamar. Para valores maiores, consulte o Livro do Mestre.
+A partir de 9 de dano inteiro, cada bloco completo de 9 causa 3 pontos de Vida; desconsidere o resto. Não há teto geral de 3 Vida. Exemplo: 18 causa 6 Vida; 26 também causa 6.
 
 Ataques que falham não desgastam a armadura. Após determinar o dano de um ataque, queda ou perigo ambiental e aplicar as reduções e demais proteções pertinentes, desconte primeiro o dano da Integridade disponível da armadura equipada. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Sem armadura, converta todo o dano restante pela mesma tabela. Efeitos de dano direto à Vida mantêm suas regras próprias.
 
-> **Exemplo:** Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
+> **Exemplo — Eldric recebe 8 de dano:** Eldric tem 6/6 de Vida e uma armadura Leve com 3/4 de Integridade. Após as proteções, recebe 8 de dano: a armadura perde seus 3 pontos restantes, chega a 0/4 e sobram 5 de dano. Pela tabela, perde 2 Vida e fica Ferido (4/6, −1A).
 
 ##### Quedas e perigos ambientais
 
-Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o Narrador informa a dificuldade (DE) e solicita um teste de **Atletismo + Destreza**.
+Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o Narrador informa a dificuldade (DE) e solicita um teste defensivo conforme a reação descrita.
+
+A combinação defensiva deve corresponder à reação descrita e respeitar as regras gerais de composição de Aptidões. Atletismo + Agilidade pode servir para saltar para um local seguro; Atletismo + Destreza, para agarrar um apoio com precisão; Atletismo + Força, para sustentar o corpo ao segurar uma borda. São exemplos, não uma lista fechada. O Narrador valida a pertinência das Aptidões.
 
 Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano: aplique a redução do seu teste. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano.
 
 > **Exemplo — Uma caverna instável**
 >
-> **Narrador:** Enquanto vocês atravessam a caverna, escutam um forte estalo vindo do teto. Pequenos fragmentos de pedra começam a cair. Eldric, faça um teste de Atletismo + Destreza contra DE 6.
+> **Narrador:** Enquanto vocês atravessam a caverna, escutam um forte estalo vindo do teto. Pequenos fragmentos de pedra começam a cair. Eldric, como você reage?
 >
-> **Eldric:** Vou tentar saltar para o lado! Tirei dois Êxitos e um Temor.
+> **Eldric:** Vou tentar saltar para o lado!
+>
+> **Narrador:** Faça um teste de Atletismo + Agilidade contra DE 6.
+>
+> **Eldric:** Tirei dois Êxitos e um Temor.
 >
 > **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, restando 3 de dano. Quanto de Integridade ainda possui sua armadura?
 >
 > **Eldric:** Minha armadura leve está danificada. Só tenho 2 de Integridade.
 >
 > **Narrador:** O impacto esgota a Integridade da sua armadura. Sobra 1 de dano, então você perde também 1 ponto de Vida.
+
+> **Resumo:** DE 6; teste 2E + 1T (falha); 5 de dano − 2 de redução = 3; 2 absorvidos pela Integridade; 1 excedente = 1 Vida perdida.
 
 Quedas e demais perigos ambientais utilizam a mesma regra de aplicação de dano dos ataques: a Integridade disponível da armadura absorve primeiro o dano restante, e somente o excedente é convertido pela tabela de dano à Vida.
 
@@ -827,9 +878,11 @@ Um cantil cheio e duas rações sustentam um personagem por dois dias e ocupam i
 | <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> Vida | 1 por dia; 2 com Recuperação Vigorosa |
 | <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> Coragem | Grau de Vigor + 1, ou optar pelo reparo durante o descanso |
 
-Incapacitado ou Inconsciente? Antes de recuperar Vida pelo descanso, receba tratamento com sucesso em Medicina. O tratamento pode envolver vários testes; não recupera Vida automaticamente.
+Se estiver Saudável ou Ferido, recupere Vida pelo descanso quando permitido. Se estiver Incapacitado ou Inconsciente, primeiro receba tratamento bem-sucedido em Medicina; o tratamento pode exigir vários testes e não recupera Vida automaticamente. A dificuldade, a quantidade e a duração dos testes ainda estão em estudo; não há uma regra fixa de tratamento para esses detalhes.
 
 A Vida é recuperada independentemente da escolha entre Coragem e reparo, quando permitida. Respeite os limites máximos dos recursos. Um reparo em uma pausa separada de 1 hora não exige descanso longo nem recupera Vida ou Coragem naturalmente.
+
+> **Resumo do descanso longo:** 8 horas, com pelo menos 6 horas de sono. Recupere Vida quando permitido e escolha entre recuperar Vigor + 1 Coragem ou reparar a armadura em 1 hora exclusiva, com materiais, ferramentas e teste.
 
 > **Exemplo:** Eldric, Ferido com 4/6 de Vida, recupera 1 e chega a 5/6. Com 2/6, Incapacitado, precisaria primeiro de tratamento.
 
@@ -856,6 +909,32 @@ Os materiais são consumidos mesmo na falha; as ferramentas não são consumidas
 O descanso longo renova Perseverança Humana. Escudo Rúnico mantém sua ativação gratuita diária. Antecipação e Concentração Refinada expiram se ainda estiverem ativas. Recobrar Coragem mantém suas condições.
 
 [Consultar detalhes e pendências no Livro do Mestre](livro-do-mestre.md#recuperação-e-tratamento).
+
+<a id="resumo-atributos-ficha"></a>
+
+#### Os Atributos na ficha
+
+**Eldric — exemplo parcial**
+
+| Atributo | Grau |
+|---|---|
+| Força | 2 |
+| Agilidade | 2 |
+| Destreza | 1 |
+| Inteligência | 0 |
+| Influência | 0 |
+| Vigor | 1 |
+
+| Recurso | Valor |
+|---|---|
+| Vida | 6/6 (2/2/1/1) |
+| Coragem | 10/10 |
+| DE natural | 3 |
+| Movimento | 9 m |
+| Carga corporal | 7 |
+| Mochila | 3 |
+
+Eldric, antes de completar a distribuição de XP e equipar-se, já pode calcular estas capacidades. A capacidade total é 10 Cargas. A DE final depende do equipamento. O exemplo é parcial, não uma ficha pronta para jogar.
 
 <a id="praticas-ficha"></a>
 
@@ -888,6 +967,14 @@ Treinamento para executar técnicas marciais e mágicas com controle, precisão 
 Cada arma possui dado, categoria de peso, alcance e características próprios. Armas Leves, Médias e Pesadas acrescentam, respectivamente, 1d6, 1d10 e 1d12 à pilha quando o personagem possui a Perícia correspondente. Sem essa Perícia, o dado cai um nível: 1d4, 1d6 e 1d10, respectivamente. A categoria da arma não muda, e suas características continuam exigindo as habilitações pertinentes. Armas de fogo e outras exceções mantêm suas regras específicas.
 
 Consulte [Armas, alcance e efeitos](#armas-alcance-e-efeitos) para os detalhes de combate.
+
+<a id="disciplina-elementos"></a>
+
+##### Conjuração e elementos
+
+Disciplina também é o treinamento que permite executar conjurações habilitadas. Ao combinar Disciplina e Inteligência, você usa as Perícias elementais e os recursos exigidos pela magia. Aprender Disciplina não habilita todos os elementos automaticamente. Elementos não são novas Práticas: suas Perícias, fontes, Graus e custos continuam seguindo as regras de conjuração. Psique é o elemento base ligado à Inteligência; conjurá-la exige Criar Item de Foco e Magia.
+
+Consulte Conjuração, elementos e possibilidades para aprofundar as possibilidades elementais. A capacidade elemental vinculada à Inteligência ainda está em estudo.
 
 #### ⚔ Atletismo
 

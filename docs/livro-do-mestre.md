@@ -267,7 +267,7 @@ Cada metro de altura equivale a **1 ponto de intensidade**. Alturas são inteira
 
 ### Queda involuntária
 
-O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. Jogadores e inimigos humanoides testam **Destreza + Atletismo**; com Atletismo Avançado, podem acrescentar uma terceira Aptidão pertinente. Monstros e criaturas testam **Agilidade + Destreza**.
+O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. Jogadores e inimigos humanoides escolhem Aptidões pertinentes à reação, validadas pelo Narrador, respeitando as regras gerais de combinação. Por exemplo, Atletismo + Agilidade para saltar a um local seguro, ou Atletismo + Destreza para agarrar um apoio. Com Atletismo Avançado, podem acrescentar uma terceira Aptidão pertinente quando habilitada. Monstros e criaturas testam **Agilidade + Destreza**.
 
 - Se alcançar a DE, evita a queda.
 - Se falhar, a queda acontece. O Narrador rola os dados correspondentes à altura original. O dano calculado do teste defensivo (E + 1 por par completo de T válidos) reduz o dano obtido, mesmo na falha.
@@ -286,7 +286,7 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 ### Empurrão de uma altura e superfície de impacto
 
-Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. O alvo precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade disponível absorve o dano e o excedente é convertido pela tabela de dano à Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
+Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão. Jogadores e humanoides resistem ao empurrão com Aptidões coerentes com a reação descrita, respeitando as regras gerais de combinação (por exemplo, Atletismo + Força para se firmar). Monstros e criaturas mantêm Agilidade + Destreza. O alvo precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade disponível absorve o dano e o excedente é convertido pela tabela de dano à Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
 
 **Exemplo: alvo com DE 4, empurrão com resultado válido 6. Resistência 7 ou mais evita a queda; 6 ou menos provoca a queda. Se a altura for 15 m e a superfície for comum, o Narrador rola 3d20 de dano, sem descontar a resistência.**
 
@@ -304,9 +304,9 @@ Para o dano de queda, use todos os dados da pilha e os benefícios críticos amb
 
 ### Teste para evitar ou reduzir o perigo
 
-Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo de Atletismo + Destreza aos personagens jogadores. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; aplique a redução do teste defensivo. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
+Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo com Aptidões pertinentes à reação descrita pelos jogadores, respeitando as regras gerais de combinação. A combinação defensiva deve corresponder à reação descrita e respeitar as regras gerais de composição de Aptidões. Atletismo + Agilidade pode servir para saltar para um local seguro; Atletismo + Destreza, para agarrar um apoio com precisão; Atletismo + Força, para sustentar o corpo ao segurar uma borda. São exemplos, não uma lista fechada. O Narrador valida a pertinência das Aptidões. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; aplique a redução do teste defensivo. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
 
-**Exemplo:** Ao atravessar uma caverna, Eldric aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de Atletismo + Destreza contra DE 6. Eldric obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2 (o Temor isolado não reduz dano). O Narrador rola 5 de dano; restam 3. Sem outras proteções aplicáveis, sua armadura leve, já danificada, perde os 2 pontos de Integridade restantes. Sobra 1 de dano, que causa a perda de 1 Vida pela tabela.
+**Exemplo:** Ao atravessar uma caverna, Eldric aciona um gatilho que faz uma estalactite se desprender do teto. Eldric tenta saltar para o lado; o Narrador solicita um teste de Atletismo + Agilidade contra DE 6. Eldric obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2 (o Temor isolado não reduz dano). O Narrador rola 5 de dano; restam 3. Sem outras proteções aplicáveis, sua armadura leve, já danificada, perde os 2 pontos de Integridade restantes. Sobra 1 de dano, que causa a perda de 1 Vida pela tabela.
 
 ### Intensidade e tipos de dano
 
@@ -321,7 +321,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 ### Como conduzir o perigo
 
 1. Ao acionar o gatilho, identifique os tipos de dano e a intensidade de 1 a 30; informe a DE do teste defensivo.
-2. Solicite Atletismo + Destreza ao jogador. Se alcançar a DE, o personagem evita o dano; se falhar, prossiga com a rolagem de dano.
+2. Valide as Aptidões propostas para a reação e solicite o teste ao jogador. Se alcançar a DE, o personagem evita o dano; se falhar, prossiga com a rolagem de dano.
 3. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
 4. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável. A redução do teste defensivo é igual aos Êxitos válidos mais 1 por par completo de Temores válidos não anulados, até zero, sem alterar a pilha.
 5. Considere as proteções pertinentes e aplique o dano restante pela regra geral: primeiro à Integridade da armadura, depois converta o excedente pela tabela de dano à Vida (sem armadura, converta todo o dano restante). Preserve os destinos dos símbolos. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
