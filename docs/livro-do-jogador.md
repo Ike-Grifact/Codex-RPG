@@ -504,72 +504,96 @@ Os Atributos são as capacidades físicas, mentais e sociais do personagem. Eles
 
 #### Como imaginar as capacidades do personagem
 
-Estas descrições ajudam a interpretar o personagem sem determinar automaticamente o resultado de uma ação.
+Estes termos são sugestões de interpretação, não condições, títulos obrigatórios ou bônus. Um Grau não determina automaticamente o resultado de uma ação.
 
 | Atributo | Grau 0 | Graus 1–2 | Graus 3–4 | Graus 5–6 |
 |---|---|---|---|---|
-| Força | Força comum | Potência desenvolvida | Força de destaque | Potência extraordinária |
-| Agilidade | Reflexos comuns | Movimentos treinados | Rapidez de destaque | Mobilidade extraordinária |
-| Destreza | Precisão comum | Coordenação desenvolvida | Precisão de destaque | Controle extraordinário |
-| Inteligência | Raciocínio cotidiano | Análise desenvolvida | Raciocínio de destaque | Compreensão extraordinária |
-| Influência | Presença cotidiana | Comunicação desenvolvida | Presença persuasiva | Liderança de destaque |
-| Vigor | Resistência comum | Fôlego desenvolvido | Resistência de destaque | Resistência extraordinária |
+| Força | Comum | Robusta | Poderosa | Colossal |
+| Agilidade | Comum | Ágil | Veloz | Extraordinária |
+| Destreza | Comum | Habilidosa | Precisa | Excepcional |
+| Inteligência | Comum | Perspicaz | Brilhante | Genial |
+| Influência | Comum | Carismática | Persuasiva | Magnética |
+| Vigor | Comum | Resistente | Incansável | Extraordinária |
 
 #### ◇ Força
 
-Potência física para vencer resistência, mover objetos pesados e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços ou carregar um companheiro ferido.
+*O poder de mover o mundo.*
+
+Nem todo obstáculo precisa ser contornado. A Força representa sua capacidade de exercer potência física, erguer objetos pesados e vencer resistências. Você pode usá-la para sustentar uma estrutura instável, remover destroços ou carregar um companheiro ferido.
 
 Cada dois Graus completos de Força aumentam sua <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida** em 1 ponto. Cada Grau acrescenta 1 à sua <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal**.
 
-**Em jogo:** Força + Atletismo para erguer uma viga; Força + Artesão para trabalhar uma peça pesada. O uso de armas continua sujeito às suas habilitações.
+> **Em jogo**
+>
+> **Força + Atletismo:** erguer uma viga para libertar um companheiro. **Força + Artesão:** trabalhar uma peça pesada na forja. O uso de armas continua sujeito às suas habilitações.
 
 #### ◇ Agilidade
 
-Rapidez de reação, mudança de direção e controle da posição. Favorece quem precisa alcançar um lugar seguro, aproveitar cobertura ou evitar um ataque.
+*Estar onde precisa, antes que seja tarde.*
+
+Agilidade representa sua rapidez de reação e o controle dos movimentos do corpo. Você pode mudar de direção, alcançar um lugar seguro antes que uma passagem se feche ou aproveitar a cobertura diante de um ataque.
 
 Junto de Vigor, Agilidade melhora sua <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa**; junto de Destreza, amplia seu <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento**.
 
-**Em jogo:** Agilidade + Atletismo para saltar entre plataformas; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição.
+> **Em jogo**
+>
+> **Agilidade + Atletismo:** saltar entre plataformas instáveis. **Agilidade + Furtividade:** mudar de cobertura sem revelar sua posição.
 
 #### ◇ Destreza
 
-Percepção, mira e precisão. Permite notar detalhes, acompanhar movimentos e coordenar mãos e ferramentas. Perceber uma marca não significa entender sua origem; para interpretá-la, pode ser necessário um Conhecimento.
+*Precisão no momento certo.*
+
+Destreza representa sua percepção, mira e precisão. Você pode notar detalhes, acompanhar movimentos e coordenar mãos e ferramentas em tarefas delicadas. Perceber uma marca não significa entender sua origem; para interpretá-la, pode ser necessário um Conhecimento.
 
 Em conjunto com Agilidade, Destreza amplia seu <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento**.
 
-**Em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para retirar um material frágil.
+> **Em jogo**
+>
+> **Destreza + Disciplina:** mirar com uma arma habilitada. **Destreza + Medicina:** realizar um procedimento delicado. **Destreza + Coleta:** retirar um material frágil.
 
 #### ◇ Inteligência
 
-Capacidade de raciocinar, aprender e relacionar informações. Inteligência ajuda a investigar fenômenos, elaborar estratégias e identificar fragilidades. É fundamental para a conjuração e, junto de Influência, para a liderança.
+*Perceber padrões e criar soluções.*
+
+Inteligência representa sua capacidade de raciocinar, aprender e relacionar informações. Você pode investigar fenômenos desconhecidos, compreender mecanismos, elaborar estratégias e identificar fragilidades. É fundamental para a conjuração e, junto de Influência, para a liderança.
 
 A partir do Grau 1, você domina sua própria Psique. A conjuração desse elemento exige Criar Item de Foco e Magia. [Consulte a capacidade elemental em estudo](#capacidade-elemental).
 
-**Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para interpretar pistas históricas.
+> **Em jogo**
+>
+> **Inteligência + Engenharia:** investigar uma máquina antiga. **Inteligência + Alquimia:** analisar uma mistura. **Inteligência + Erudição:** interpretar registros históricos.
 
 #### ◇ Influência
 
-Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Serve para negociar, persuadir, intimidar, inspirar, provocar e mediar disputas.
+*Mudar o rumo de uma cena sem sacar a arma.*
+
+Influência representa sua capacidade de transmitir intenções, conquistar confiança e despertar reações nos outros. Você pode negociar, persuadir, intimidar, inspirar, provocar ou mediar disputas. Uma conversa pode abrir caminhos que a força física não alcança.
 
 Enquanto Inteligência ajuda a elaborar estratégias, Influência ajuda a comunicá-las e mobilizar o grupo. A disposição e a compreensão do interlocutor importam; o Narrador determina se há teste e qual é a DE. Um teste não torna obediente uma criatura incapaz de compreender a proposta.
 
 Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
-**Em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais.
+> **Em jogo**
+>
+> **Influência + Apresentação:** conquistar a atenção de uma assembleia. **Influência + Erudição:** negociar com base nas tradições locais.
 
 #### ◇ Vigor
 
-Resistência física, fôlego e capacidade de continuar diante do desgaste. Enquanto Força ajuda a erguer algo pesado, Vigor ajuda a sustentar o esforço por mais tempo.
+*Continuar de pé quando tudo pesa.*
+
+Nem sempre superar um desafio significa ser mais forte ou mais rápido. Vigor representa sua resistência física, seu fôlego e sua capacidade de continuar diante do desgaste. Enquanto Força ajuda a erguer algo pesado, Vigor ajuda a sustentar o esforço por mais tempo.
 
 Cada Grau de Vigor acrescenta 1 ponto à sua <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida**, e cada dois Graus completos aumentam a <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal** em 1. Junto de Agilidade, Vigor melhora sua <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa**. Ao concluir um descanso longo válido, você pode recuperar <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> **Coragem** igual ao Grau de Vigor + 1, caso escolha recuperá-la.
 
-**Em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca desgastante. Vigor não elimina condições de Saúde nem custos de Coragem automaticamente.
+> **Em jogo**
+>
+> **Vigor + Atletismo:** completar uma marcha exaustiva. **Vigor + Coleta:** continuar procurando recursos apesar do desgaste físico. Vigor não elimina condições de Saúde nem custos de Coragem automaticamente.
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
 ### Do Atributo à ficha — recursos e capacidades
 
-Os Graus dos Atributos determinam as capacidades abaixo. O equipamento e as Perícias podem modificar alguns desses valores. Consulte os exemplos para calcular cada recurso da ficha.
+Os Graus dos Atributos determinam as capacidades abaixo. O equipamento e as Perícias podem modificar alguns desses valores. Primeiro, descubra quanto você pode carregar e qual é seu peso em combate; depois, calcule Defesa, Movimento e Vida. Os exemplos desta seção permitem preencher esses campos da ficha sem consultar outras partes do livro.
 
 #### Capacidade de carga
 
@@ -587,7 +611,15 @@ Itens Muito Leves guardados aparecem em Itens Pequenos na mochila e contam para 
 
 Todo personagem começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga.
 
-> **Exemplo — Força 2, Vigor 1:** 7 Cargas no corpo + 3 na mochila = **10 Cargas**.
+> **Exemplo — Força 2, Vigor 1:**
+>
+> | Compartimento | Inicial | Acréscimo | Total |
+> |---|---:|---:|---:|
+> | Corpo | 5 | +2 de Força | 7 |
+> | Mochila | 3 | — | 3 |
+> | Capacidade total | 8 | +2 | **10 Cargas** |
+>
+> Vigor 1 ainda não completa um par de Graus.
 
 Equipamentos vestidos, armas nas mãos e itens de acesso rápido dividem a capacidade corporal; não são espaços extras.
 
@@ -599,7 +631,7 @@ O peso na ficha serve para descobrir quais ataques têm **Vantagem ou Desvantage
 |---|---|---|
 | **Leve** | **Médio** | **Pesado** |
 
-Encher a mochila não transforma uma armadura Leve em Pesada. **Runa Espinhos são sempre Pesados.**
+Encher a mochila não transforma uma armadura Leve em Pesada. **Runa Espinhos são sempre Pesados.** Carga mede espaço ocupado; Peso indica a categoria usada nas afinidades de ataque.
 
 #### Sobrecarga
 

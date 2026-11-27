@@ -68,6 +68,17 @@ Se uma privação persistir por mais um dia, começa a prejudicar a Saúde. Pena
 
 [Consultar privações e penalidades de Saúde](../mecanicas/vantagens-e-desvantagens.html#privacoes).
 
+## Edição física e digital — diretriz permanente
+
+**DEFINIDO (27/11/2026):** o livro impresso deve ser autossuficiente. O Livro do Jogador ensina as regras necessárias para jogar; as páginas de Mecânicas são consultas complementares, não pré-requisito de leitura. Manter a mesma redação-base em HTML e Markdown e preservar a identidade editorial.
+
+- Introduzir conceitos em ordem de uso. Manter regra, tabela e exemplo juntos, preferencialmente na mesma página ou dupla de páginas; repetir uma informação essencial quando evitar uma consulta distante.
+- Referências cruzadas devem nomear a seção específica. No digital, usar âncora ou link; na edição física, resolver a referência para o título e o número de página na diagramação final (marcador editorial `p. XX` apenas nos originais de produção, nunca na publicação). Não inventar números nem referenciar somente URLs.
+- Prever índice remissivo e sumário paginados na edição física; preservar âncoras e índice navegável no site.
+- Diagramas, exemplos, tabelas, runas e ícones devem permanecer compreensíveis em papel, inclusive sem cor. Usar rótulos, valores e contornos reconhecíveis. Recursos interativos são opcionais e não substituem exemplos estáticos; omitir controles digitais ao imprimir.
+- Nos Atributos, separar o nome e a chamada narrativa, manter efeitos na prosa e destacar discretamente exemplos de combinação. A tabela de interpretação dos Graus é apenas sugestiva, não concede benefícios. Nos recursos da ficha, priorizar exemplos numéricos completos e próximos das fórmulas.
+- Daggerheart (p. 17) e Assimilação RPG (pp. 44–46) são referências de apresentação, redação e didática; não são fontes de regras, textos ou identidade visual do Codex RPG.
+
 ## Checklist antes de publicar
 
 - [ ] Regras, valores, requisitos, custos e exceções conferidos no SRD atual.
@@ -76,6 +87,7 @@ Se uma privação persistir por mais um dia, começa a prejudicar a Saúde. Pena
 - [ ] Tabelas, exemplos e ícones ajudam uma tarefa concreta.
 - [ ] HTML e Markdown sincronizados; links e âncoras preservados.
 - [ ] Verificação em tema claro/escuro e telas pequenas; testes pertinentes registrados.
+- [ ] Edição física autossuficiente: referências com destino identificado, numeração resolvida na diagramação, exemplos estáticos completos e controles digitais omitidos no impresso.
 - [ ] Pendências e divergências identificadas, sem preencher lacunas por suposição.
 
 Aplicar gradualmente; não presumir que capítulos antigos já estejam adequados. O padrão não autoriza alterações de mecânica.
