@@ -717,11 +717,80 @@ Quando um ataque acerta um alvo sem armadura equipada, converta o dano positivo 
 | 5–8 | 2 |
 | 9 | 3 |
 
+Ao alcançar 9 de dano, a perda permanece em 3 Vida até atingir o próximo patamar. Para valores maiores, consulte o Livro do Mestre.
+
 Ataques que falham não desgastam a armadura. Com armadura equipada, resolva a Integridade primeiro; a conversão do excedente de ataques comuns permanece pendente. Quedas e perigos ambientais conservam o procedimento próprio.
 
 ##### Quedas e perigos ambientais
 
-Antes de uma queda involuntária, teste **Destreza + Atletismo** contra a **DE igual à altura em metros**. Se alcançar a DE, evita a queda; se falhar, cada Êxito e Temor válido do teste reduz em 1 o dano rolado pelo Narrador. Atletismo Avançado permite uma terceira Aptidão pertinente. Inimigos humanoides usam a mesma combinação; monstros e criaturas usam Agilidade + Destreza. Arredonde a altura fracionária para baixo. Um ataque de Ar que eleva causa seu dano no acerto e, depois, dano adicional de queda rolado pelo Narrador. O alvo pode reduzir somente a parcela da queda em seu turno, mesmo que alcance a DE; depois fica Caído. Para empurrar um alvo de um precipício, teste contra a DE defensiva dele. Se acertar, o alvo precisa superar o resultado válido do empurrão para evitar a queda. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. Se igualar ou ficar abaixo, cai e sofre o dano integral, sem descontar o teste de resistência. A Integridade disponível da armadura absorve o dano de queda, e o excedente atinge a Vida. Temor não anulado do teste de queda do jogador vai à reserva pública de Pavor do Narrador; cada Temor não anulado da rolagem de dano de queda ou ambiental sofrido pelo jogador recupera 1 Coragem, respeitando os tetos. Todos os dados de dano ambiental são contabilizados; conte as faces críticas sem descartar dados. Quatro ou mais faces críticas concedem o benefício máximo de quatro dados (dano dobrado), sem bônus adicional acima disso e sem recuperação de Coragem pelo crítico. O Narrador pode ajustar a intensidade pela superfície de impacto (referência: −5 m se amortecer, +5 m se agravar). A resistência só reduz dano ambiental se abranger todos os tipos de dano presentes: cada Êxito vale 0,5 dano e cada Temor vale zero dano, sem apagar suas consequências. Resistência incompleta não reduz o dano. Imunidade é proporcional: de N tipos distintos, imunidade a I deles deixa (N − I)/N do dano. Imunidade a todos anula o dano; imunidade a dois de três elimina 2/3. Arredondamento de dano fracionário e combinação de imunidade parcial com resistência permanecem pendentes. Consulte [Quedas e perigos ambientais no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+**Evitar uma queda involuntária**
+
+Antes de cair, faça um teste contra uma DE igual à altura da queda em metros. Arredonde alturas fracionárias para baixo.
+
+| Personagem | Aptidões |
+| --- | --- |
+| Jogadores e humanoides | Destreza + Atletismo |
+| Monstros e criaturas | Agilidade + Destreza |
+
+- **Se alcançar a DE:** Você evita a queda.
+- **Se falhar:** O Narrador rola o dano da queda. Cada Êxito e Temor válido do seu teste reduz esse dano em 1.
+
+> **Exemplo:** Uma queda de 6 m exige DE 6. Se você obtiver 2E + 1T válido, falha, mas reduz em 3 o dano rolado pelo Narrador.
+
+Atletismo Avançado permite acrescentar uma terceira Aptidão pertinente.
+
+**Ser elevado por uma magia de Ar**
+
+O ataque de Ar causa seu próprio dano ao acertar. A queda é uma segunda fonte de dano, rolada pelo Narrador.
+
+- **No turno do alvo:** Faça o teste de redução contra a DE correspondente ao resultado válido do ataque de Ar.
+- **Redução:** Desconte os Êxitos e Temores válidos somente do dano de queda, mesmo se alcançar a DE. O dano original de Ar não é reduzido por esse teste.
+- **Após a resolução:** O alvo fica Caído.
+
+**Ser empurrado de um precipício**
+
+O atacante precisa acertar a DE defensiva do alvo. Se acertar, o alvo tenta resistir utilizando as mesmas Aptidões indicadas na tabela acima.
+
+- **Superar o resultado válido do empurrão:** Evita a queda.
+- **Igualar ou ficar abaixo:** Sofre o dano integral da queda, sem descontar o teste de resistência.
+
+> **Exemplo:** Se o empurrão obtiver 6 pontos válidos, a resistência precisa obter 7 ou mais. Um resultado de 6 não evita a queda.
+
+**Resolver o impacto**
+
+A Integridade disponível da armadura absorve primeiro o dano de queda. Se sobrar dano, o excedente atinge a Vida.
+
+O Narrador pode ajustar a intensidade do impacto conforme a superfície, sem alterar a altura real nem a DE.
+
+| Superfície | Ajuste recomendado de intensidade |
+| --- | --- |
+| Amortecedora (água, forragem ou inclinação favorável) | −5 m equivalentes |
+| Comum | Sem ajuste |
+| Perigosa (espinhos ou pedras pontiagudas) | +5 m equivalentes |
+
+**Temor, Coragem e críticos**
+
+| Origem do Temor não anulado | Consequência |
+| --- | --- |
+| Teste de queda do jogador | Vai para o Pavor público do Narrador. |
+| Rolagem de dano de queda ou ambiental sofrido pelo jogador | Cada Temor recupera 1 Coragem, respeitando o teto. |
+
+Nas rolagens de dano ambiental, todos os dados contam: não há descarte. Conte as faces críticas. Quatro ou mais concedem o benefício máximo (dano dobrado), sem bônus adicional acima de quatro e sem recuperar Coragem pelo crítico em si.
+
+**Resistências e imunidades ambientais**
+
+Um perigo ambiental pode combinar diferentes tipos de dano. Um terremoto, por exemplo, pode envolver Terra e dano Físico.
+
+- **Resistência a todos os tipos presentes:** Cada Êxito vale 0,5 de dano e cada Temor vale zero dano. O Temor mantém suas demais consequências.
+- **Resistência incompleta:** Não reduz o dano ambiental.
+- **Imunidade:** Elimina a parcela proporcional aos tipos de dano aos quais o alvo é imune. Se for imune a todos, não sofre dano.
+
+> **Exemplo:** Um perigo possui três tipos de dano. Se você é imune a dois deles, ignora dois terços do dano e recebe apenas um terço.
+
+O arredondamento de dano fracionário e a combinação de imunidade parcial com resistência ainda não estão definidos.
+
+[Consultar regras completas no Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
+
 
 #### Coragem
 
