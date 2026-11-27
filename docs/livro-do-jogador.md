@@ -713,7 +713,7 @@ Após acertar um ataque, o dano básico à Integridade da armadura é **E válid
 
 ##### Dano à Vida
 
-Quando um ataque acerta, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
+Para um ataque acertado, queda ou outro perigo ambiental, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
 
 | Dano | Vida perdida |
 |---:|---:|
@@ -723,7 +723,7 @@ Quando um ataque acerta, converta o dano positivo que atinge a Vida pela escala 
 
 Ao alcançar 9 de dano, a perda permanece em 3 Vida até atingir o próximo patamar. Para valores maiores, consulte o Livro do Mestre.
 
-Ataques que falham não desgastam a armadura. Com armadura equipada, desconte primeiro o dano da Integridade disponível. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Quedas e perigos ambientais conservam o procedimento próprio.
+Ataques que falham não desgastam a armadura. Após determinar o dano de um ataque, queda ou perigo ambiental e aplicar as reduções e demais proteções pertinentes, desconte primeiro o dano da Integridade disponível da armadura equipada. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Sem armadura, converta todo o dano restante pela mesma tabela. Efeitos de dano direto à Vida mantêm suas regras próprias.
 
 > **Exemplo:** Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
 
@@ -739,9 +739,13 @@ Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador
 >
 > **Eldric:** Vou tentar saltar para o lado! Tirei dois Êxitos e um Temor.
 >
-> **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, então você recebe 3 de dano antes das proteções.
+> **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, restando 3 de dano. Quanto de Integridade ainda possui sua armadura?
+>
+> **Eldric:** Minha armadura leve está danificada. Só tenho 2 de Integridade.
+>
+> **Narrador:** O impacto esgota a Integridade da sua armadura. Sobra 1 de dano, então você perde também 1 ponto de Vida.
 
-No caso de uma queda, a Integridade disponível da armadura absorve primeiro o dano restante, e o excedente atinge a Vida.
+Quedas e demais perigos ambientais utilizam a mesma regra de aplicação de dano dos ataques: a Integridade disponível da armadura absorve primeiro o dano restante, e somente o excedente é convertido pela tabela de dano à Vida.
 
 Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/perigos-ambientais.html) nas Mecânicas, ou os procedimentos no [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 

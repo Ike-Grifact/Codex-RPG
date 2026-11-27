@@ -136,7 +136,7 @@ Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Te
 
 Não existe teto geral de Êxitos por Perícia ou ação; respeite as condições, custos e tetos específicos. O critério de dano colossal de ao menos 3 × Vida máxima após proteção permanece inalterado.
 
-A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada ou para o excedente após esgotar a Integridade usa 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
+A escala de dano à Vida vale para ataques acertados, quedas e outros perigos ambientais: contra alvo sem armadura equipada ou para o excedente após esgotar a Integridade, use 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida mantêm seus procedimentos próprios. Quedas e perigos ambientais conservam seus procedimentos específicos de teste e cálculo, mas seguem a mesma aplicação de dano à Integridade e à Vida. Dano zero não retira Vida.
 
 | Dano | Vida perdida |
 |---:|---:|
@@ -147,9 +147,9 @@ A escala de dano à Vida para ataques acertados contra alvo sem armadura equipad
 | 27–35 | 9 |
 | 36–44 | 12 |
 
-**Excedente de Integridade — DEFINIDO:** Ataques que falham não desgastam a armadura. Com armadura equipada, desconte primeiro o dano da Integridade disponível. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Quedas e perigos ambientais conservam o procedimento próprio. Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
+**Excedente de Integridade — DEFINIDO:** Ataques que falham não desgastam a armadura. Após determinar o dano de um ataque, queda ou perigo ambiental e aplicar as reduções e demais proteções pertinentes, desconte primeiro o dano da Integridade disponível da armadura equipada. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Sem armadura, converta todo o dano restante pela mesma tabela. Efeitos de dano direto à Vida mantêm suas regras próprias. Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
 
-PENDENTE: confirmar a métrica para ataques contra alvos inicialmente sem armadura, em relação à contagem histórica de E + T válidos versus dano calculado (E + piso(T/2), após modificadores e proteções). Para o excedente após esgotar a Integridade, a métrica é o dano calculado que sobrou, conforme v0.171.
+PENDENTE: confirmar a métrica para ataques contra alvos inicialmente sem armadura, em relação à contagem histórica de E + T válidos versus dano calculado (E + piso(T/2), após modificadores e proteções). Para o excedente após esgotar a Integridade, a métrica é o dano calculado que sobrou, conforme v0.171 e v0.173. Para quedas e perigos ambientais sem armadura, use o dano restante calculado após as reduções pertinentes.
 
 [SRD v0.168](srd-continuidade-v0.168.md).
 
@@ -218,7 +218,7 @@ Uma ação que lança um inimigo para cima não aplica imediatamente o dano da f
 
 ### Empurrão de uma altura e superfície de impacto
 
-Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. O alvo precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade absorve o dano e o excedente atinge a Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
+Para empurrar alguém de um precipício ou de outra altura, o atacante testa contra a DE defensiva do alvo. Se acertar, o alvo tenta resistir ao empurrão. A resistência ao empurrão usa Atletismo + Destreza para jogadores e humanoides, e Agilidade + Destreza para monstros e criaturas. O alvo precisa superar o resultado válido do atacante para evitar a queda. Se igualar ou ficar abaixo, cai e sofre o dano integral da queda, sem descontar o resultado do teste de resistência. O Narrador determina a altura real conforme a cena e aplica os ajustes narrativos da superfície antes de rolar o dano. A Integridade disponível absorve o dano e o excedente é convertido pela tabela de dano à Vida. Este procedimento é distinto da redução de dano após elevação por Ar.
 
 **Exemplo: alvo com DE 4, empurrão com resultado válido 6. Resistência 7 ou mais evita a queda; 6 ou menos provoca a queda. Se a altura for 15 m e a superfície for comum, o Narrador rola 3d20 de dano, sem descontar a resistência.**
 
@@ -228,7 +228,7 @@ O Narrador considera a superfície de impacto: água, forragem ou inclinação f
 
 **Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
 
-Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, redução 2, dano restante 3. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
+Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. Quedas e outros perigos ambientais seguem a regra geral de aplicação de dano: após as reduções e demais proteções pertinentes, desconte primeiro o dano da Integridade disponível da armadura. Converta somente o excedente pela tabela de dano à Vida; sem armadura, converta todo o dano restante pela mesma tabela. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, redução 2, dano restante 3. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
 Para o dano de queda, use todos os dados da pilha e os benefícios críticos ambientais, sem recuperar Coragem ou Pavor pelo crítico em si. Consulte [Perigos ambientais](#perigos-ambientais) para os críticos e [Mecânicas — Quedas](../mecanicas/quedas.html) para a referência completa.
 
@@ -238,7 +238,7 @@ Para o dano de queda, use todos os dados da pilha e os benefícios críticos amb
 
 Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo de Atletismo + Destreza aos personagens jogadores. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; aplique a redução do teste defensivo. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
 
-**Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2: o Temor isolado não reduz dano. Se o Narrador rolar 5 de dano, restam 3 antes das proteções aplicáveis.
+**Exemplo:** Ao atravessar uma caverna, Eldric aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de Atletismo + Destreza contra DE 6. Eldric obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2 (o Temor isolado não reduz dano). O Narrador rola 5 de dano; restam 3. Sem outras proteções aplicáveis, sua armadura leve, já danificada, perde os 2 pontos de Integridade restantes. Sobra 1 de dano, que causa a perda de 1 Vida pela tabela.
 
 ### Intensidade e tipos de dano
 
@@ -256,7 +256,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 2. Solicite Atletismo + Destreza ao jogador. Se alcançar a DE, o personagem evita o dano; se falhar, prossiga com a rolagem de dano.
 3. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
 4. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável. A redução do teste defensivo é igual aos Êxitos válidos mais 1 por par completo de Temores válidos não anulados, até zero, sem alterar a pilha.
-5. Considere as proteções pertinentes e preserve os destinos dos símbolos. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
+5. Considere as proteções pertinentes e aplique o dano restante pela regra geral: primeiro à Integridade da armadura, depois converta o excedente pela tabela de dano à Vida (sem armadura, converta todo o dano restante). Preserve os destinos dos símbolos. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
 
 **Exemplo de imunidade:** Em um perigo com três tipos de dano, imunidade a dois elimina dois terços do dano.
 
