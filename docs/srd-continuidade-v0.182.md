@@ -21,3 +21,7 @@ A seleção de elementos disponíveis é distinta da aquisição de Perícias e 
 ## DEFINIDO — Fluidez dos verbetes de Atributos
 
 Por orientação autoral, retirar o bloco repetitivo “Na ficha” dos Atributos. Integrar seus efeitos à prosa, preservando os ícones, valores, exemplos e a distinção de proposta em estudo para Inteligência. O padrão editorial passa a privilegiar parágrafos naturais em vez de listas obrigatórias. Nenhuma alteração de regra ou automação.
+
+## DEFINIDO — Organização editorial da Inteligência
+
+Reduzir o verbete de Inteligência a conceito, contribuições essenciais e exemplos de Aptidões; encaminhar a proposta de capacidade elemental à seção Conjuração e elementos, com âncora `capacidade-elemental` e indicação explícita de estudo. Manter domínio de Psique em G1 e exigência da Perícia Criar Item de Foco e Magia para conjurar Psique. Preservar referência de liderança no verbete Influência. Nenhuma alteração de regra, nome definitivo, progressão proposta, requisitos ou automação.

@@ -541,21 +541,19 @@ Em conjunto com Agilidade, Destreza amplia seu <img src="../assets/icons/codex/s
 
 #### ◇ Inteligência
 
-Raciocínio, aprendizado e capacidade de relacionar informações. Ajuda a investigar causas, compreender fenômenos desconhecidos, elaborar estratégias e identificar fragilidades.
+Capacidade de raciocinar, aprender e relacionar informações. Inteligência ajuda a investigar fenômenos, elaborar estratégias e identificar fragilidades. É fundamental para a conjuração e, junto de Influência, para a liderança.
 
-É o Atributo fundamental da conjuração, que exige também Disciplina e as Perícias pertinentes. Em conjunto com Influência, orienta a liderança. Não substitui treinamento nem materiais. Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
+A partir do Grau 1, você domina sua própria Psique. A conjuração desse elemento exige Criar Item de Foco e Magia. [Consulte a capacidade elemental em estudo](#capacidade-elemental).
 
-**Em estudo:** A partir de Inteligência 1, o personagem domina sua própria Psique, o elemento base. Esse domínio representa sua capacidade mental; para conjurar magias de Psique, é necessário adquirir Criar Item de Foco e Magia. Inteligência também limita quantos outros elementos habilitados podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. A seleção pode ser alterada ao concluir um descanso longo.
-
-A progressão intermediária da capacidade elemental permanece em revisão. Os requisitos vigentes de conjuração continuam aplicáveis.
-
-**Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para relacionar pistas históricas.
+**Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para interpretar pistas históricas.
 
 #### ◇ Influência
 
 Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Serve para negociar, persuadir, intimidar, inspirar, provocar e mediar disputas.
 
 Enquanto Inteligência ajuda a elaborar estratégias, Influência ajuda a comunicá-las e mobilizar o grupo. A disposição e a compreensão do interlocutor importam; o Narrador determina se há teste e qual é a DE. Um teste não torna obediente uma criatura incapaz de compreender a proposta.
+
+Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
 **Em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais.
 
@@ -1529,6 +1527,12 @@ Não adicionar o **+1E gratuito por tempo de preparação**, hipótese substitu�
 As Perícias em **Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas e Veneno** não exigem adquirir **Criar Item de Foco e Magia**. Para Ar/Água/Terra/Fogo, os requisitos continuam **Disciplina 1 + Inteligência 1**; para Sagrado/Sangue/Trevas, **Disciplina 2 + Inteligência 2**; Veneno conserva **Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2**. Os custos individuais de compra em XP não foram alterados.
 
 Possuir Perícia elemental habilita usar **Disciplina em Conjuração** mesmo sem a Perícia Criar Foco, desde que haja fonte elemental válida e os efeitos/Graus sejam permitidos. Uma fonte válida pode ser ambiental, conforme o Narrador, ou foco apropriado quando utilizado. **Criar Item de Foco e Magia** permanece para **Psique e a confecção de focos**; Escudo Arcano, Maestria Elemental, Conjuração Refinada e Invocação Elemental conservam seus requisitos próprios de Foco; **Improviso Elemental não exige mais Foco** (SRD v0.82). Preparação em turnos, cargas, DE, Temor e ativação não mudaram. [SRD v0.81](srd-continuidade-v0.81.md).
+
+<a id="capacidade-elemental"></a>
+
+### Capacidade elemental — em estudo
+
+Inteligência 1 representa o domínio da própria Psique, o elemento base, sem habilitar sua conjuração. A proposta em estudo limita a quantidade de outros elementos habilitados que podem ficar disponíveis entre descansos longos, até quatro adicionais no Grau 6. Ao concluir um descanso longo, o personagem poderá trocar sua seleção dentre os elementos que aprendeu. A progressão intermediária ainda aguarda confirmação. Os requisitos vigentes de conjuração permanecem aplicáveis.
 
 ### Elementos individuais e seus efeitos [DEFINIDO conceitualmente / detalhes PENDENTES]
 

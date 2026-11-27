@@ -31,6 +31,8 @@ Descrever o que cada capacidade faz atualmente. Não repetir no verbete funçõe
 
 Nos verbetes de Aptidões, integrar efeitos mecânicos à prosa com ícones oficiais junto aos recursos mencionados. Evitar rótulos repetitivos como “Na ficha” e listas obrigatórias de efeitos quando duas frases naturais bastam. Reservar tabelas e listas para comparações ou procedimentos em que realmente facilitem a consulta.
 
+Em verbetes de Atributos, priorizar uma definição breve, exemplos de ações e efeitos essenciais. Remeter procedimentos de subsistemas (por exemplo, seleção elemental) à seção em que são utilizados. Evitar repetir requisitos completos, histórico e pendências técnicas no verbete; indicar claramente regras em estudo na referência. A extensão deve acompanhar a necessidade de explicação, não uma quantidade fixa de blocos.
+
 Modelo flexível: nem toda seção precisa de tabela, exemplo ou ícone. Preservar a narrativa e as ilustrações que apresentam o mundo. Preferir parágrafos curtos e títulos descritivos. Evitar histórico de alterações, nomes de funções, notas de implementação e justificativas de balanceamento no fluxo de leitura. Pendências não são regras: manter no SRD ou referência técnica, sem ocultar lacunas que impeçam jogar.
 
 ## Identidade visual
