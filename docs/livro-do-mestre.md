@@ -153,7 +153,9 @@ Inimigos recuperam Pavor no lugar da Coragem pela regra de proporção 1:1. Todo
 
 O crítico ambiental não concede Pavor ou Coragem como recompensa. O multiplicador de quatro críticos também vale para quatro d20, antes das proteções e sem ignorar as regras específicas de dano à Vida. Consulte [SRD v0.161](srd-continuidade-v0.161.md).
 
-## Quedas e perigos ambientais
+<a id="quedas-e-perigos-ambientais"></a>
+
+## Quedas
 
 ### Peso dos dados
 
@@ -210,7 +212,17 @@ Para empurrar alguém de um precipício ou de outra altura, o atacante testa con
 
 O Narrador considera a superfície de impacto: água, forragem ou inclinação favorável podem amortecer a queda; pedras pontiagudas, espinhos e outras superfícies perigosas podem agravá-la. Recomenda-se ajustar a intensidade de dano em −5 m ou +5 m equivalentes, conforme a cena, sem alterar a altura real ou a DE do teste. Não há intensidade negativa.
 
-### Danos ambientais
+### Resolução do dano
+
+**Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
+
+Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
+
+Para o dano de queda, use todos os dados da pilha e os benefícios críticos ambientais, sem recuperar Coragem ou Pavor pelo crítico em si. Consulte [Perigos ambientais](#perigos-ambientais) para os críticos e [Mecânicas — Quedas](../mecanicas/quedas.html) para a referência completa.
+
+## Perigos ambientais
+
+### Intensidade e tipos de dano
 
 A mesma escala representa perigos ambientais, com intensidade (DE de referência) de **1 a 30**. O Narrador define a intensidade conforme a situação: um vulcão, terremoto, chuva de meteoros ou outra catástrofe pode alcançar a extremidade da escala. Intensidade 30 corresponde a **6d20**, pois cada d20 possui peso 5. Esse é o limite da escala de perigo ambiental, não uma nova DE defensiva dos personagens.
 
@@ -220,11 +232,16 @@ A resistência só reduz dano ambiental se abranger todos os tipos de dano prese
 
 Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não há escolha de dados mantidos. Para determinar o benefício crítico ambiental, conte os dados que caíram em suas faces críticas: dois concedem o benefício de dois, três concedem o de três, e quatro ou mais concedem o de quatro (dano calculado dobrado antes das proteções). Dados não críticos não invalidam o crítico ambiental e continuam contribuindo com seus símbolos. Não existe categoria adicional acima de quatro críticos: cinco ou seis faces críticas não aumentam os benefícios nem multiplicam novamente o dano. O crítico ambiental não recupera Coragem nem gera Pavor como recompensa de crítico; preserva-se o destino normal dos Temores da rolagem de dano. Esta é uma exceção ambiental à exigência convencional de que todos os dados mantidos estejam em faces críticas.
 
-### Resolução do dano
+### Como conduzir o perigo
 
-**Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
+1. Identifique os tipos de dano presentes e a intensidade de 1 a 30.
+2. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
+3. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável.
+4. Considere as proteções pertinentes. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
 
-Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
+**Exemplo de imunidade:** Em um perigo com três tipos de dano, imunidade a dois elimina dois terços do dano.
+
+Consulte [Mecânicas — Perigos ambientais](../mecanicas/perigos-ambientais.html).
 
 **PENDENTE:** momento exato da resistência ao empurrão, arredondamento de dano fracionário, interação entre imunidade parcial e resistência e tipo de eventual dado adicional além da pilha de queda. Ver [SRD v0.162](srd-continuidade-v0.162.md).
 
