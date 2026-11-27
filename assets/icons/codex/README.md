@@ -71,3 +71,11 @@
 - `necessidade-comida.svg` — Alimentação — pão
 - `necessidade-agua.svg` — Hidratação — cantil
 Pictogramas editoriais independentes de elementos, Aptidões e Perícias. Ver [padrão editorial dos livros](../../../docs/padrao-editorial-livros.md).
+
+### GRAUS DE CONJURAÇÃO (prévia v0.191)
+- `magia-grau-1.svg` — Grau de magia 1
+- `magia-grau-2.svg` — Grau de magia 2
+- `magia-grau-3.svg` — Grau de magia 3
+- `magia-grau-4.svg` — Grau de magia 4
+- `magia-grau-5.svg` — Grau de magia 5
+Numerais e pontos identificam o Grau; não representam dados, recursos, turnos ou bônus.

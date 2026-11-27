@@ -1038,11 +1038,11 @@ Furtividade permite controlar os ruídos, os movimentos e a exposição do perso
 
 O personagem furtivo com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
 
-**Ocultação após deslocamento:** se o personagem furtivo **realizar Furtividade e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
+**Ocultação após deslocamento:** se o personagem furtivo **obtiver sucesso no teste de Furtividade contra a DE aplicável e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
 
-**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o personagem furtivo está durante a **própria rolagem do teste de ataque/dano**, precisando obter **as mesmas faces numéricas que o personagem furtivo manteve na Furtividade, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
+**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o personagem furtivo está durante a **própria rolagem do teste de ataque/dano**, precisando obter **faces simbolicamente idênticas às dos dados mantidos na Furtividade: mesmo tipo de dado, mesma quantidade de Êxitos, Antecipares e Temores, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
 
-**Exemplo:** se o personagem furtivo manteve **4 e 7**, o atacante precisa reproduzir **4 e 7**, não **4 e 4**. Encontrar essas faces não é dano automático: depois se resolve o ataque normalmente.
+**Exemplo:** O personagem manteve d12 com 3E e d10 com 1E + 1A. O inimigo precisa reproduzir essas duas faces nos mesmos tipos de dado. Um d20 com 3E não substitui o d12; um d10 com 2E ou 1E + 1A + 1T não corresponde ao d10 com 1E + 1A. A numeração interna da face é irrelevante. Encontrar a posição não dispensa resolver o ataque contra a DE defensiva.
 
 **PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
 
