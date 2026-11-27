@@ -649,7 +649,7 @@ Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem
 | Incapacitado | −1E, +1T; 1 Coragem para agir |
 | Inconsciente | −2E, +2T; 2 Coragens para agir |
 
-As penalidades de Saúde não se acumulam. Pagar Coragem permite agir, mas não remove a penalidade; o Temor de Saúde conta para a DE e mantém suas consequências. Sem a Coragem obrigatória, a ação não é permitida.
+As penalidades das diferentes faixas de Saúde não se acumulam entre si. A penalidade da faixa atual, porém, soma-se às Desvantagens de privação e demais condições pertinentes, independentemente do teto de −2E da escala de Desvantagens. Pagar Coragem permite agir, mas não remove a penalidade; o Temor de Saúde conta para a DE e mantém suas consequências. Sem a Coragem obrigatória, a ação não é permitida.
 
 ##### Como a Vida aparece na ficha
 
@@ -769,9 +769,11 @@ Um descanso longo é um período de 8 horas, com pelo menos 6 horas de sono, nec
 
 ##### Cansaço e fome
 
-Cansaço por falta de descanso e fome por falta de alimentação prejudicam o personagem. Considere essas condições em conjunto com as demais circunstâncias desfavoráveis: a condição resultante pode ser Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Golpe de Sorte (−2E, chamado Ação de Sorte na tabela de condições). Se a privação persistir por mais um dia, começa a prejudicar a Saúde.
+Cansaço por falta de descanso e fome por falta de alimentação prejudicam o personagem. Cada privação acrescenta um nível de Desvantagem, considerado com as demais circunstâncias desfavoráveis. Um nível causa Desvantagem (−1A); dois níveis, Desvantagem Absoluta (−1E); três ou mais níveis, Golpe de Sorte (−2E, chamado Ação de Sorte na tabela de condições). Os níveis substituem uns aos outros: a penalidade dessa escala não ultrapassa −2E. Se a privação persistir por mais um dia, começa a prejudicar a Saúde.
 
-PENDENTE: definir quando cada privação é registrada, a escala de acúmulo, os testes afetados, a forma de eliminar cada condição e a quantidade/frequência de perda de Vida. Não aplicar penalidades adicionais ou valores de dano ainda não definidos.
+As penalidades da faixa atual de Saúde são independentes da escala de Desvantagens e somam-se a ela, sem respeitar o teto de −2E dessa escala. As faixas de Saúde não se acumulam entre si. Exemplo: Ferido (−1A) com dois níveis de privação sofre −1A e −1E; Incapacitado (−1E, +1T) com três níveis sofre −3E e +1T, além de pagar 1 Coragem para agir.
+
+PENDENTE: definir quando cada privação é registrada ou renovada, quais testes são afetados, a remoção de cada condição e a quantidade/frequência de perda de Vida após mais um dia de privação. A escala de acúmulo e a separação de Saúde estão definidas.
 
 ##### Recuperação após descanso
 
@@ -787,13 +789,15 @@ Se estiver nas faixas inferiores de Saúde — Incapacitado ou Inconsciente —,
 
 Para tentar reparar uma armadura, tenha um kit de ferramentas de Artesão adequado ao material e ao tipo da peça e materiais de reparo compatíveis. Ferramentas e materiais são recursos distintos. As ferramentas podem ser de couraria (coureiro), ferraria (ferreiro), costura (costureiro), alquimia, pesca, encantamento, escrita (escriba), trabalho de madeira (lenhador), entre outros ofícios. Exemplos de ferramentas não constituem uma tabela definitiva de compatibilidade nem concedem dados extras.
 
-Cada tentativa consome materiais equivalentes à metade do valor da armadura reparada, em VT. Os materiais podem ser comprados ou recuperados de armaduras inimigas danificadas ou quebradas, criaturas e outras fontes compatíveis. Uma armadura danificada vale metade de seu valor original como referência de aproveitamento. A própria armadura que está sendo reparada não pode fornecer os materiais do seu reparo.
+Cada tentativa consome materiais equivalentes à metade do valor da armadura reparada, em VT, ainda que apenas uma pequena parte da Integridade esteja perdida. Os materiais podem ser comprados ou encontrados durante a exploração, desde que compatíveis com a peça. Uma armadura inimiga danificada ou quebrada vale metade de seu valor original como referência de aproveitamento de suas partes; não se trata de uma recompensa genérica de materiais por derrotar inimigos. Uma placa de aço nova pode servir como material de reposição, avaliada pelo seu próprio valor, sem ser tratada como sucata de armadura. Criaturas só fornecem materiais quando possuírem partes adequadas ao reparo. A própria armadura que está sendo reparada não pode fornecer os materiais do seu reparo.
 
-Role Destreza + Artesão e subtraia os Temores válidos não anulados dos Êxitos válidos (E − T). Se E − T for maior que zero, restaure toda a Integridade da armadura até o máximo. Se o resultado for zero ou negativo, o reparo falha e não restaura Integridade. Os materiais são gastos em cada tentativa, inclusive na falha. O kit é a ferramenta necessária, não o material consumido pelo teste.
+Role Destreza + Artesão e subtraia os Temores válidos não anulados dos Êxitos válidos (E − T). Se o resultado for positivo, restaure toda a Integridade da armadura até o máximo. Se for zero, o reparo falha sem restaurar Integridade. Se for negativo, o reparo falha e danifica ainda mais a armadura; a quantidade de Integridade perdida permanece pendente. Os materiais são gastos em cada tentativa, inclusive na falha. O kit é a ferramenta necessária, não o material consumido pelo teste.
 
-> Exemplo ilustrativo de preço: uma armadura pesada avaliada em 6 VT exige 3 VT em materiais por tentativa; uma armadura danificada compatível de mesmo valor original fornece essa referência de 3 VT. No catálogo atual, a Pesada G1 custa 12 VT, então exige 6 VT em materiais. Se estiver em 3/12 de Integridade e o teste obtiver 3E e 1T, E − T = 2: o reparo é bem-sucedido e ela retorna a 12/12. Com 2E e 2T, o resultado é zero e a tentativa falha.
+É possível tentar reparar a peça depois de um combate, quando houver condições para o reparo. A duração e o encaixe da tentativa no descanso ainda precisam ser definidos. O risco de perder materiais e danificar a peça faz parte da manutenção em campo: comprar uma armadura nova em uma loja pode ser mais barato e fácil do que repará-la no meio de uma caverna. Não há reembolso nem redução automática do custo em reparos pequenos.
 
-PENDENTE: duração da tentativa dentro do descanso, número de tentativas, compatibilidade específica de ferramentas e materiais por peça, arredondamento de valores fracionários em VT, efeito de interrupções, aproveitamento de materiais de criaturas e desgaste/vida útil das ferramentas. A regra não altera os preços do catálogo.
+> Exemplo ilustrativo de preço: uma armadura pesada avaliada em 6 VT exige 3 VT em materiais por tentativa; uma armadura danificada compatível de mesmo valor original fornece essa referência de 3 VT. No catálogo atual, a Pesada G1 custa 12 VT, então exige 6 VT em materiais. Se estiver em 3/12 de Integridade e o teste obtiver 3E e 1T, E − T = 2: o reparo é bem-sucedido e ela retorna a 12/12. Com 2E e 2T, o resultado é zero: a tentativa falha, gasta materiais e mantém a Integridade atual. Com 1E e 3T, o resultado é −2: a tentativa falha, gasta materiais e causa dano adicional à Integridade (quantidade pendente).
+
+PENDENTE: quantidade de dano à Integridade quando T supera E, duração da tentativa e encaixe no descanso, número de tentativas, compatibilidade específica de ferramentas e materiais por peça, arredondamento de valores fracionários em VT, efeito de interrupções, aproveitamento de materiais de criaturas e desgaste/vida útil das ferramentas. A regra não altera os preços do catálogo.
 
 ##### Outros efeitos do descanso
 
