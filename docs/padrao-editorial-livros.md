@@ -100,4 +100,6 @@ Usar ícones do atlas, exemplos de combinações destacados e diagramas estátic
 
 ## Navegação digital móvel
 
-Em telas até 720 px, o índice original é exibido em painel lateral retrátil por botão fixo Sumário, com seção atual, filtro de títulos, rolagem própria e fechamento ao escolher capítulo. Preservar âncoras e histórico nativo; sem JavaScript ou suporte a dialog, manter o índice original. Em desktop manter a coluna lateral e em impressão ocultar controles. Aplicar aos Livros do Jogador e do Mestre; sem alteração mecânica.
+Em telas até 720 px, o índice original é exibido em painel lateral retrátil por barra compacta Sumário abaixo do cabeçalho, presa ao topo durante a rolagem, com seção atual, filtro de títulos, rolagem própria e fechamento ao escolher capítulo. Preservar âncoras e histórico nativo; sem JavaScript ou suporte a dialog, manter o índice original. Em desktop manter a coluna lateral e em impressão ocultar controles. Aplicar aos Livros do Jogador e do Mestre; sem alteração mecânica.
+
+Nos cartões de armas, acompanhar cada quantidade de dados de sua geometria e cor oficial; manter o texto 1d4/1d6/1d10/1d12 legível sem cor. Em telas estreitas, separar categoria e comparação de dados em duas linhas para evitar aperto.

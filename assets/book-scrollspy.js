@@ -58,7 +58,10 @@
 
   function update() {
     queued = false;
-    const line = Math.min(96, Math.max(48, window.innerHeight * 0.12));
+    const mobileBar = document.querySelector(".book-mobile-toggle");
+    const barBox = mobileBar && mobileBar.getBoundingClientRect();
+    const mobileLine = barBox && barBox.height > 0 && barBox.top <= 1 ? barBox.bottom + 40 : 0;
+    const line = Math.max(mobileLine, Math.min(96, Math.max(48, window.innerHeight * 0.12)));
     let current = entries[0];
     for (const e of entries) {
       if (e.target.getBoundingClientRect().top <= line) current = e;

@@ -86,7 +86,10 @@
   window.addEventListener("beforeprint", hide);
   window.addEventListener("pageshow", sync);
   new MutationObserver(updateCurrent).observe(toc, {subtree:true, attributes:true, attributeFilter:["aria-current"]});
-  document.body.append(button, dialog);
+  const header = document.querySelector("body > .site-header");
+  if (header) header.after(button);
+  else document.body.prepend(button);
+  document.body.append(dialog);
   document.documentElement.classList.add("book-mobile-ready");
   updateCurrent();
 })();
