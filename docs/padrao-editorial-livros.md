@@ -27,6 +27,8 @@ Apresentar primeiro o universo, a fantasia de personagem e os caminhos profissio
 5. **Exemplo:** personagens recorrentes, como Eldric; intenção, resultado e consequência, com números compatíveis com o SRD.
 6. **Referência:** link descritivo ao verbete exato em Mecânicas ou Perícias. O leitor deve conseguir resolver situações comuns sem sair do capítulo.
 
+Descrever o que cada capacidade faz atualmente. Não repetir no verbete funções que ela deixou de exercer ou nunca exerceu (ex.: Destreza não aumenta DE). Restrições indispensáveis à resolução devem permanecer na regra pertinente; histórico de mudanças fica no SRD.
+
 Modelo flexível: nem toda seção precisa de tabela, exemplo ou ícone. Preservar a narrativa e as ilustrações que apresentam o mundo. Preferir parágrafos curtos e títulos descritivos. Evitar histórico de alterações, nomes de funções, notas de implementação e justificativas de balanceamento no fluxo de leitura. Pendências não são regras: manter no SRD ou referência técnica, sem ocultar lacunas que impeçam jogar.
 
 ## Identidade visual

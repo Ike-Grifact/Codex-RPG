@@ -545,8 +545,6 @@ Percepção, mira e precisão. Permite notar detalhes, acompanhar movimentos e c
 
 - <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento:** contribui junto de Agilidade.
 
-Destreza não aumenta a DE natural.
-
 **Em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para retirar um material frágil.
 
 #### ◇ Inteligência
@@ -554,6 +552,10 @@ Destreza não aumenta a DE natural.
 Raciocínio, aprendizado e capacidade de relacionar informações. Ajuda a investigar causas, compreender fenômenos desconhecidos, elaborar estratégias e identificar fragilidades.
 
 É o Atributo fundamental da conjuração, que exige também Disciplina e as Perícias pertinentes. Em conjunto com Influência, orienta a liderança. Não substitui treinamento nem materiais. Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
+
+**Na ficha — proposta em revisão:** Em estudo: a partir de Inteligência 1, Psique é o elemento base do personagem. Inteligência limita quantos outros elementos podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. O personagem pode trocar os elementos selecionados ao concluir um descanso longo, dentre aqueles para os quais possui habilitação. Aprender uma Perícia elemental não equivale a manter seu elemento disponível.
+
+A progressão intermediária e a habilitação para conjurar Psique ainda precisam de confirmação. Até lá, aplicam-se os requisitos vigentes.
 
 **Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para relacionar pistas históricas.
 
