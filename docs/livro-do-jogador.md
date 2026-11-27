@@ -553,9 +553,9 @@ Raciocínio, aprendizado e capacidade de relacionar informações. Ajuda a inves
 
 É o Atributo fundamental da conjuração, que exige também Disciplina e as Perícias pertinentes. Em conjunto com Influência, orienta a liderança. Não substitui treinamento nem materiais. Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
-**Na ficha — proposta em revisão:** Em estudo: a partir de Inteligência 1, Psique é o elemento base do personagem. Inteligência limita quantos outros elementos podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. O personagem pode trocar os elementos selecionados ao concluir um descanso longo, dentre aqueles para os quais possui habilitação. Aprender uma Perícia elemental não equivale a manter seu elemento disponível.
+**Na ficha — proposta em revisão:** A partir de Inteligência 1, o personagem domina sua própria Psique, o elemento base. Esse domínio representa sua capacidade mental; para conjurar magias de Psique, é necessário adquirir Criar Item de Foco e Magia. Inteligência também limita quantos outros elementos habilitados podem ficar disponíveis entre descansos longos, até quatro adicionais em G6. A seleção pode ser alterada ao concluir um descanso longo.
 
-A progressão intermediária e a habilitação para conjurar Psique ainda precisam de confirmação. Até lá, aplicam-se os requisitos vigentes.
+A progressão intermediária da capacidade elemental permanece em revisão. Os requisitos vigentes de conjuração continuam aplicáveis.
 
 **Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para relacionar pistas históricas.
 
