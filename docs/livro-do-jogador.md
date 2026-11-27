@@ -450,21 +450,23 @@ O uso de Coragem e técnicas continua sujeito a seus custos específicos; agir m
 
 ## Características de um personagem
 
-Antes de construir seu personagem, conheça as Aptidões, os Graus, os recursos e as capacidades que fazem parte de sua ficha. Depois, você poderá escolher sua identidade, sua linhagem, seus equipamentos e como investir seu XP.
+Sua profissão começa com uma ideia: o que seu personagem deseja fazer e em que pretende se especializar? A ficha traduz essa identidade em capacidades. Conheça primeiro as Aptidões e seus Graus; depois, os recursos que elas determinam. Na criação, você escolherá linhagem, equipamentos e como investir seu XP.
 
 <a id="graus-aptidoes"></a>
 
-**Aptidões, Graus e XP**
+### Aptidões, Graus e XP
 
 ### O que é um Grau?
 
-Grau é a medida de quanto você desenvolveu uma Aptidão, não o nível geral do personagem. Cada avanço melhora a pilha daquela capacidade: pode acrescentar um dado ou substituir um dado por outro mais potente. O Grau 0 já oferece um dado básico, sem gastar XP. O Grau 1 aprimora esse dado; os Graus 2 e 3 acrescentam dados do mesmo tipo; do Grau 4 ao 6, os três dados são aprimorados um de cada vez.
+O Grau indica quanto você desenvolveu uma Aptidão; não é o nível do personagem. No Grau 0, você já possui um dado básico sem gastar XP. O primeiro avanço melhora o dado, os Graus 2 e 3 acrescentam dados e os Graus 4 a 6 aprimoram os três dados, um de cada vez. A composição de cada Grau substitui a anterior.
 
 **Exemplo de Atributo:** Grau 0 (1d4) → Grau 1 (1d6) → Grau 2 (2d6) → Grau 3 (3d6) → Grau 4 (2d6 + 1d10) → Grau 5 (1d6 + 2d10) → Grau 6 (3d10).
 
-Conhecimentos e Práticas seguem a mesma lógica, começando com d6 e avançando para d10 e d12. A composição de dados de cada Grau substitui a anterior.
+Conhecimentos e Práticas seguem a mesma lógica, começando com d6 e avançando para d10 e d12.
 
-O XP do avanço é o preço para passar do Grau anterior ao seguinte. O XP acumulado é a soma de todos os avanços desde o Grau 0, considerando os custos normais; sua linhagem pode alterar esse investimento.
+XP de avanço é o preço para alcançar o Grau seguinte. XP acumulado é o investimento total desde o Grau 0, pelos custos normais. Sua linhagem pode alterar esse investimento.
+
+> **Exemplo:** Por exemplo, Força 1 fornece 1d6 e custou 1 XP. Para chegar a Força 2, pague mais 2 XP: você passa a rolar 2d6 e terá investido 3 XP ao todo, considerando os custos normais.
 
 ### O que os Graus representam na aventura?
 
@@ -484,13 +486,11 @@ O Grau 6 é o limite da progressão comum. O Grau 7 e suas formas de acesso ao d
 
 <a id="atributos-ficha"></a>
 
-### ◇ Atributos — as capacidades do seu Aprendiz
+### ◇ Atributos — as capacidades do personagem
 
-Os Atributos representam as capacidades físicas, mentais e sociais do seu Aprendiz. Desenvolvê-los abre novas maneiras de superar obstáculos: resistir ao perigo, alcançar lugares distantes, compreender o desconhecido ou inspirar outras pessoas. Alguns também ampliam sua Vida, capacidade de carga, deslocamento e defesa.
+Os Atributos são as capacidades físicas, mentais e sociais do personagem. Eles fornecem dados para os testes e alguns também modificam os recursos da ficha. Escolha quais desenvolver de acordo com a profissão e a abordagem que deseja construir.
 
 #### Progressão de Atributos — dados e XP
-
-O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP acumulado mostra quanto foi investido desde o Grau 0.
 
 | Grau desejado | Dados que terá | XP para subir do Grau anterior | XP acumulado |
 |---:|---|---:|---:|
@@ -502,7 +502,7 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 | 5 | 🎲 1d6 + 2d10 | 9 XP | 18 XP |
 | 6 | 🎲 3d10 | 14 XP | 32 XP |
 
-#### Como imaginar as capacidades do seu Aprendiz
+#### Como imaginar as capacidades do personagem
 
 Estas descrições ajudam a interpretar o personagem sem determinar automaticamente o resultado de uma ação.
 
@@ -517,74 +517,72 @@ Estas descrições ajudam a interpretar o personagem sem determinar automaticame
 
 #### ◇ Força
 
-Potência física para vencer resistência, deslocar massas e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços, transportar um companheiro ferido ou disputar espaço com um oponente. Sua utilidade vai além de atacar: em uma exploração, abrir caminho ou proteger a retirada do grupo pode ser a melhor contribuição.
+Potência física para vencer resistência, mover objetos pesados e aplicar força de maneira controlada. Um personagem forte pode sustentar uma estrutura instável, retirar destroços ou carregar um companheiro ferido.
 
-Quanto maior sua Força, mais resistente seu corpo se torna e mais peso você consegue transportar. A cada **2 Graus de Força**, sua Vida máxima aumenta em **1 ponto**.
+**Na ficha:**
 
-Cada Grau de Força aumenta a capacidade corporal em **1 Carga**, além do **5 Cargas iniciais**. Some metade de Vigor, arredondada para baixo. A mochila inicial oferece mais 3 Cargas.
+- <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida:** +1 por dois Graus completos de Força.
+- <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal:** +1 por Grau de Força.
 
-**Possibilidades em jogo:** Força + Atletismo para erguer uma viga e libertar um aliado; Força + Artesão para trabalhar uma peça pesada com ferramentas. Uma arma ainda depende de suas habilitações e regras de ataque.
+**Em jogo:** Força + Atletismo para erguer uma viga; Força + Artesão para trabalhar uma peça pesada. O uso de armas continua sujeito às suas habilitações.
 
 #### ◇ Agilidade
 
-Capacidade de reagir rapidamente, mudar de direção e controlar a própria posição. É importante quando o perigo se aproxima, uma passagem está prestes a fechar ou há pouco tempo para alcançar um ponto seguro. Em combate, favorece personagens que dependem de posicionamento, cobertura e mobilidade, em vez de apenas resistir a golpes.
+Rapidez de reação, mudança de direção e controle da posição. Favorece quem precisa alcançar um lugar seguro, aproveitar cobertura ou evitar um ataque.
 
-Investir em Agilidade ajuda você a percorrer distâncias maiores e dificulta que os inimigos acertem seu personagem. Ela contribui tanto para o movimento quanto para a defesa natural.
+**Na ficha:**
 
-**Possibilidades em jogo:** Agilidade + Atletismo para saltar entre plataformas instáveis; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição. Não torna o personagem imune a ataques.
+- <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa:** contribui junto de Vigor.
+- <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento:** contribui junto de Destreza.
+
+**Em jogo:** Agilidade + Atletismo para saltar entre plataformas; Agilidade + Furtividade para mudar de cobertura sem denunciar a posição.
 
 #### ◇ Destreza
 
-Reúne percepção, mira e precisão: notar detalhes do ambiente, acompanhar movimentos, identificar sinais de perigo e coordenar mãos e ferramentas. É a diferença entre executar uma tarefa com cuidado e realizá-la de modo grosseiro. Perceber uma marca não significa entender sua origem; para interpretar aquilo que viu, pode ser necessário outro Conhecimento.
+Percepção, mira e precisão. Permite notar detalhes, acompanhar movimentos e coordenar mãos e ferramentas. Perceber uma marca não significa entender sua origem; para interpretá-la, pode ser necessário um Conhecimento.
 
-Destreza não aumenta a DE natural; contribui para precisão, coordenação e deslocamento.
+**Na ficha:**
 
-**Possibilidades em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para localizar e retirar um material frágil.
+- <img src="../assets/icons/codex/status-movimento.svg" width="18" height="18" alt=""> **Movimento:** contribui junto de Agilidade.
+
+Destreza não aumenta a DE natural.
+
+**Em jogo:** Destreza + Disciplina para mirar com uma arma habilitada; Destreza + Medicina para um procedimento delicado; Destreza + Coleta para retirar um material frágil.
 
 #### ◇ Inteligência
 
-Capacidade de raciocinar, relacionar informações, aprender e elaborar soluções. Permite investigar causas, prever consequências e escolher um método em vez de depender apenas da tentativa e erro. É especialmente valiosa quando o grupo enfrenta algo desconhecido, como uma máquina antiga, uma substância estranha ou um fenômeno cuja lógica precisa ser descoberta.
+Raciocínio, aprendizado e capacidade de relacionar informações. Ajuda a investigar causas, compreender fenômenos desconhecidos, elaborar estratégias e identificar fragilidades.
 
-A Inteligência é o Atributo fundamental da conjuração: sem ela, o Aprendiz não consegue conjurar uma magia. A Disciplina e as Perícias pertinentes permitem transformar sua compreensão da magia em ação.
+É o Atributo fundamental da conjuração, que exige também Disciplina e as Perícias pertinentes. Em conjunto com Influência, orienta a liderança. Não substitui treinamento nem materiais. Para a oposição, consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
 
-Também é essencial para elaborar estratégias, avaliar riscos e identificar fragilidades.
-
-Junto à Influência, orienta a liderança: compreender o que precisa ser feito e conduzir o grupo nessa direção.
-
-Para os inimigos, esses Atributos ajudam o Narrador a caracterizar sua capacidade estratégica e sua liderança. Consulte [Liderança e coordenação no Guia do Narrador](../narrador.html#lideranca).
-
-**Possibilidades em jogo:** Inteligência + Engenharia para identificar uma falha mecânica; Inteligência + Alquimia para investigar uma mistura; Inteligência + Erudição para relacionar pistas históricas. Não substitui o treinamento ou os materiais necessários para executar a solução.
+**Em jogo:** Inteligência + Engenharia para investigar uma máquina; Inteligência + Alquimia para analisar uma mistura; Inteligência + Erudição para relacionar pistas históricas.
 
 #### ◇ Influência
 
-Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Pode servir para negociar, persuadir, intimidar, inspirar, provocar ou mediar uma disputa. Uma ameaça pode ser resolvida oferecendo uma saída aceitável ao adversário, descobrindo seus interesses ou convencendo-o de que lutar não vale a pena. É uma via de protagonismo tão relevante quanto a força física.
+Capacidade de transmitir intenções, conquistar confiança e alterar a disposição de outras pessoas. Serve para negociar, persuadir, intimidar, inspirar, provocar e mediar disputas.
 
-Liderar envolve conquistar a confiança dos aliados, transmitir intenções e inspirar decisões coletivas. Enquanto a Inteligência ajuda a elaborar a estratégia, a Influência permite comunicá-la e mobilizar o grupo. A disposição e a compreensão de quem ouve continuam importantes; o Narrador considera a situação para determinar se há teste e qual é a DE.
+Enquanto Inteligência ajuda a elaborar estratégias, Influência ajuda a comunicá-las e mobilizar o grupo. A disposição e a compreensão do interlocutor importam; o Narrador determina se há teste e qual é a DE. Um teste não torna obediente uma criatura incapaz de compreender a proposta.
 
-**Possibilidades em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais. O diálogo precisa fazer sentido para o interlocutor: criaturas incapazes de compreender a proposta não se tornam obedientes por causa de um teste.
+**Em jogo:** Influência + Apresentação para conquistar a atenção de uma assembleia; Influência + Erudição para negociar com base nas tradições locais.
 
 #### ◇ Vigor
 
-Resistência física, fôlego e capacidade de continuar diante do desgaste. Ajuda a enfrentar jornadas cansativas, esforços prolongados e ambientes hostis quando resistir é o objetivo da ação. Distingue-se de Força: erguer algo muito pesado exige potência; sustentar o esforço por muito tempo pode exigir Vigor.
+Resistência física, fôlego e capacidade de continuar diante do desgaste. Enquanto Força ajuda a erguer algo pesado, Vigor ajuda a sustentar o esforço por mais tempo.
 
-Quanto maior seu Vigor, mais desgaste você consegue suportar. Cada Grau de Vigor acrescenta **1 ponto à Vida máxima**.
+**Na ficha:**
 
-A cada **2 Graus completos de Vigor**, sua capacidade corporal aumenta em **1 Carga**.
+- <img src="../assets/icons/codex/status-vida.svg" width="18" height="18" alt=""> **Vida:** +1 por Grau de Vigor.
+- <img src="../assets/icons/codex/status-peso.svg" width="18" height="18" alt=""> **Carga corporal:** +1 por dois Graus completos de Vigor.
+- <img src="../assets/icons/codex/status-de.svg" width="18" height="18" alt=""> **Defesa:** contribui junto de Agilidade.
+- <img src="../assets/icons/codex/status-coragem.svg" width="18" height="18" alt=""> **Coragem:** Grau de Vigor + 1 no descanso longo válido, se escolher recuperá-la.
 
-A cada **2 Graus somados de Agilidade e Vigor**, sua DE defensiva natural recebe **+1**, respeitando seus limites.
-
-Após um descanso longo válido, sua recuperação de Coragem é igual a Vigor + 1, caso escolha recuperá-la.
-
-**Possibilidades em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca fisicamente desgastante. Não elimina automaticamente condições de saúde, dano ou custos de Coragem.
-
-**Como calcular sua defesa:** comece com 2, some +1 por par completo de Graus de Agilidade e Vigor. Teto natural 11. **Sua Vida:** começa com 4 pontos, ganha +1 por Grau de Vigor e +1 a cada 2 Graus de Força.
+**Em jogo:** Vigor + Atletismo para completar uma marcha exaustiva; Vigor + Coleta para prosseguir uma busca desgastante. Vigor não elimina condições de Saúde nem custos de Coragem automaticamente.
 
 Toda rolagem inclui pelo menos um dado de Atributo entre os **rolados**, mesmo que ele não seja mantido.
 
-
 ### Do Atributo à ficha — recursos e capacidades
 
-Os Graus dos Atributos determinam suas capacidades básicas. O equipamento e as Perícias podem modificar alguns desses valores.
+Os Graus dos Atributos determinam as capacidades abaixo. O equipamento e as Perícias podem modificar alguns desses valores. Consulte os exemplos para calcular cada recurso da ficha.
 
 #### Capacidade de carga
 
@@ -600,7 +598,7 @@ A capacidade de carga diz quanto equipamento você consegue levar na aventura. C
 
 Itens Muito Leves guardados aparecem em Itens Pequenos na mochila e contam para sua capacidade. Dois ocupam 1 Carga. A carga não altera a categoria de peso em combate.
 
-Todo Aprendiz começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga.
+Todo personagem começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga.
 
 > **Exemplo — Força 2, Vigor 1:** 7 Cargas no corpo + 3 na mochila = **10 Cargas**.
 
@@ -624,7 +622,7 @@ Ao atingir **100% ou mais da capacidade total**, você fica sobrecarregado: **�
 
 #### Defesa
 
-Sua DE indica o quanto é difícil acertar você. Todo Aprendiz começa com **DE natural 2**. A cada **dois Graus de Agilidade e Vigor somados, ganhe mais 1 DE**, até o **máximo natural de 8**. A armadura pode reduzir esse valor, e **Maestria em Escudos pode acrescentar 1 DE** com um escudo físico equipado. A DE final fica **entre 0 e 9**.
+Sua DE indica o quanto é difícil acertar você. Todo personagem começa com **DE natural 2**. A cada **dois Graus de Agilidade e Vigor somados, ganhe mais 1 DE**, até o **máximo natural de 8**. A armadura pode reduzir esse valor, e **Maestria em Escudos pode acrescentar 1 DE** com um escudo físico equipado. A DE final fica **entre 0 e 9**.
 
 > **Exemplo — Agilidade 2, Vigor 2**
 >
@@ -632,7 +630,7 @@ Sua DE indica o quanto é difícil acertar você. Todo Aprendiz começa com **DE
 
 #### Movimento
 
-Seu movimento indica quantos metros você pode percorrer em um deslocamento. Todo Aprendiz começa com **8 metros**. A cada **dois Graus que você tiver em Agilidade e Destreza somados, ganhe mais 1 metro de movimento**.
+Seu movimento indica quantos metros você pode percorrer em um deslocamento. Todo personagem começa com **8 metros**. A cada **dois Graus que você tiver em Agilidade e Destreza somados, ganhe mais 1 metro de movimento**.
 
 **Agilidade e Destreza têm o mesmo valor para o movimento.**
 
@@ -646,7 +644,7 @@ Atletismo ajuda quando você precisa saltar, escalar ou superar outros obstácul
 
 #### Vida e Saúde
 
-A Vida representa quanto desgaste físico o Aprendiz ainda consegue suportar. Todo Aprendiz parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
+A Vida representa quanto desgaste físico o personagem ainda consegue suportar. Todo personagem parte de 4 pontos de Vida: um em cada faixa de Saúde. Some 1 ponto por Grau de Vigor e 1 a cada 2 Graus completos de Força. Distribua os pontos adicionais alternadamente entre Saudável e Ferido, começando por Saudável.
 
 Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem se encontra. Incapacitado corresponde a 2 pontos restantes, Inconsciente a 1, e 0 significa morte.
 

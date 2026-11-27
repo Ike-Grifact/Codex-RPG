@@ -11,3 +11,7 @@ Chamada narrativa aprovada para a seção Construa sua própria profissão: “D
 ## DEFINIDO — Continuidade conferida
 
 A nomenclatura Temor (T) e os seis resultados seguem a v0.129; a perda de Coragem e os destinos dos símbolos seguem a v0.130; a Falha Limpa e continuidade condicionada do protagonismo seguem a v0.131, que substitui a redação anterior da v0.120. Atualizar apenas a nomenclatura desatualizada no trecho de turnos do índice de Mecânicas. Preservar chaves internas, nomes de arquivos, histórico e demais regras. Pendências operacionais das versões anteriores permanecem; não houve auditoria integral de todas as automações.
+
+## DEFINIDO — Continuação editorial da Parte II (primeiro bloco)
+
+Revisar a abertura de Características de um personagem, Graus, XP e Atributos, ligando a identidade profissional às capacidades da ficha. Padronizar descrições em capacidade, efeitos na ficha (ícones oficiais) e exemplos de aplicação, evitando repetir cálculos completos que já constam em Recursos e capacidades. Preservar diagramas de progressão e todas as tabelas existentes. Exemplo de XP normal: Força G1 = 1 XP; G2 exige mais 2 XP, total 3. Corrigir resumo antigo de teto natural de DE 11 no Markdown, substituído pela referência à fórmula vigente na seção Defesa (v0.150: min(8; 2 + piso((Agilidade + Vigor)/2)), teto final 9). Movimento v0.153 e Carga v0.154 preservados; manter Vida, Saúde, descanso, dano e demais regras. Não alterar automações. A revisão não abrange ainda Práticas, Conhecimentos nem criação de personagem.
