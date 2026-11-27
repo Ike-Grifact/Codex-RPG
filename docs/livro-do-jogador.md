@@ -942,7 +942,7 @@ Eldric, antes de completar a distribuição de XP e equipar-se, já pode calcula
 
 ### ⚔ Práticas — treinamento para agir
 
-Práticas representam atividades treinadas e ajudam a transformar intenções em ações. **Disciplina** é uma única Prática para aplicações marciais e mágicas conforme as Perícias habilitadoras.
+Práticas representam o que você aprendeu a executar por meio do treinamento. Elas permitem transformar uma intenção em ação, do manejo de armas à travessia de um obstáculo, da fabricação de um objeto à interpretação diante de uma plateia. As Perícias aprofundam essas capacidades sem determinar uma profissão obrigatória.
 
 #### Progressão de Práticas — dados e XP
 
@@ -960,55 +960,103 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 
 #### ⚔ Disciplina
 
-Treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Abrange o uso de armas, o domínio de movimentos de combate e, junto à Inteligência, a execução de conjurações habilitadas. Disciplina é uma única Prática: você pode se especializar em armas, magia ou combinar ambas sem comprar a mesma Aptidão duas vezes. Equipamentos e Perícias determinam as técnicas disponíveis, inclusive o uso especializado dos punhos.
+*O domínio da técnica.*
 
-**Possibilidades em jogo:** Disciplina + Força para aplicar potência a um golpe com arma habilitada; Disciplina + Destreza para mirar; Disciplina + Inteligência para executar uma conjuração permitida. A Especialização em Disciplina permite acrescentar uma terceira Aptidão quando Disciplina é a principal, sem dispensar as habilitações específicas.
+Disciplina representa o treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Ela reúne o manejo de armas, o combate desarmado e a conjuração. Você pode desenvolver uma dessas aplicações ou combiná-las na mesma profissão: Disciplina é uma única Prática. Equipamentos, Atributos e Perícias determinam as técnicas que você consegue executar.
 
-##### Uso de armas
+> **Possibilidades em jogo:** Disciplina + Força para executar um golpe potente; Disciplina + Destreza para mirar; Disciplina + Inteligência para conjurar. Com Especialização em Disciplina (Disciplina Avançada), você pode acrescentar uma terceira Aptidão pertinente quando Disciplina é a principal.
 
-Cada arma possui dado, categoria de peso, alcance e características próprios. Armas Leves, Médias e Pesadas acrescentam, respectivamente, 1d6, 1d10 e 1d12 à pilha quando o personagem possui a Perícia correspondente. Sem essa Perícia, o dado cai um nível: 1d4, 1d6 e 1d10, respectivamente. A categoria da arma não muda, e suas características continuam exigindo as habilitações pertinentes. Armas de fogo e outras exceções mantêm suas regras específicas.
+##### Aplicações marciais — armas
 
-Consulte [Armas, alcance e efeitos](#armas-alcance-e-efeitos) para os detalhes de combate.
+As armas oferecem diferentes maneiras de enfrentar um adversário. Escolha a arma conforme o alcance, a categoria de ataque e as características que deseja explorar. Uma arma acrescenta seu dado à pilha, além dos dados das Aptidões. A Perícia de manejo correspondente permite utilizar o dado pleno e habilita características conforme suas regras.
+
+| Categoria de ataque | Com Perícia | Sem Perícia |
+|---|---|---|
+| Leve | 1d6 | 1d4 |
+| Média | 1d10 | 1d6 |
+| Pesada | 1d12 | 1d10 |
+
+Sem a Perícia, o dado da arma diminui um passo, mas sua categoria de ataque, alcance e carga física não mudam. Armas de fogo e outras exceções seguem suas regras específicas. Cortante, Perfurante e Cravar são exemplos de características: possuir uma arma não ativa automaticamente essas propriedades. Combate desarmado e escudos têm habilitações próprias.
+
+Leia Armas, alcance e efeitos para aprender a resolver ataques e características.
 
 <a id="disciplina-elementos"></a>
 
-##### Conjuração e elementos
+##### Aplicações mágicas — conjuração e elementos
 
-Disciplina também é o treinamento que permite executar conjurações habilitadas. Ao combinar Disciplina e Inteligência, você usa as Perícias elementais e os recursos exigidos pela magia. Aprender Disciplina não habilita todos os elementos automaticamente. Elementos não são novas Práticas: suas Perícias, fontes, Graus e custos continuam seguindo as regras de conjuração. Psique é o elemento base ligado à Inteligência; conjurá-la exige Criar Item de Foco e Magia.
+A conjuração utiliza Disciplina para executar a técnica e Inteligência para organizar e moldar a magia. Você descreve a manifestação na hora, respeitando as habilitações, a fonte elemental e os limites da magia. Não é preciso memorizar feitiços. Aprender uma Perícia elemental habilita os primeiros efeitos especiais no Grau 2; Psique é habilitada por Criar Item de Foco e Magia.
 
-Consulte Conjuração, elementos e possibilidades para aprofundar as possibilidades elementais. A capacidade elemental vinculada à Inteligência ainda está em estudo.
+| Grau | Possibilidades | Inteligência | Preparação total sem foco |
+|---|---|---|---|
+| G1 | Manifestação elemental | Sem elevação | Imediato |
+| G2 | Primeiros efeitos | Sem elevação | Imediato |
+| G3 | Efeitos superiores | +1 passo | 2 turnos |
+| G4 | Efeitos avançados | +2 passos | 3 turnos |
+| G5 | Mistura de propriedades por Maestria | +3 passos | 4 turnos |
+
+O Grau da magia determina suas propriedades, a elevação temporária dos dados de Inteligência e o tempo de conjuração; não é o Grau permanente de Disciplina. Improviso Elemental gasta 1A para acrescentar um elemento disponível, alterando ou combinando a natureza da manifestação sem ativar a propriedade especial improvisada. Maestria Elemental permite a combinação de propriedades especiais habilitadas em G5. Focos aceleram a preparação com suas cargas, não fornecem dados próprios. Magias mentais de Psique exigem Disciplina Avançada e a combinação Disciplina + Inteligência + Influência.
+
+<a id="disciplina-nove-elementos"></a>
+
+##### Os nove elementos
+
+| Elemento | Identidade e aplicações |
+|---|---|
+| Psique | Manipular objetos e interagir com a mente. |
+| Ar | Deslocar, controlar correntes e amortecer quedas. |
+| Água | Congelar, conter e perfurar. |
+| Terra | Moldar terreno, detectar vibrações e comprometer proteções. |
+| Fogo | Conduzir chamas, queimar armaduras e derreter proteções. |
+| Veneno | Acumular condições e explorar combinações. |
+| Sagrado | Recuperar Coragem, fortalecer aliados e purificar. |
+| Trevas | Manipular Temor e enfraquecer adversários. |
+| Sangue | Consumir sangue para amplificar a si mesmo e atacar a Vida. |
+
+Leia Conjuração, elementos e possibilidades para os efeitos por Grau, custos, focos e procedimentos. A capacidade elemental de Inteligência continua em estudo. As descrições são exemplos das possibilidades habilitadas, não concessões gratuitas de efeitos.
 
 #### ⚔ Atletismo
 
-Treinamento do corpo para deslocar-se e superar obstáculos de maneira eficiente. Inclui corrida, salto, escalada, equilíbrio e esforço coordenado. Diferentemente de Força, que mede potência, Atletismo representa a técnica para utilizar o corpo. Um personagem atlético pode abrir rotas para o grupo, alcançar posições vantajosas ou atravessar terrenos difíceis.
+*O corpo em movimento.*
 
-O treino permite executar ações físicas com técnica, como escalada, corrida, salto e natação. Não aumenta diretamente o movimento ou a capacidade de carga.
+Atletismo é o treinamento que permite correr, saltar, escalar, nadar e manter o equilíbrio. Você aprende a empregar o corpo com eficiência, seja para atravessar uma ravina, alcançar uma posição elevada ou ajudar o grupo a superar um obstáculo. A Prática não aumenta diretamente seu Movimento ou sua Carga.
 
-**Possibilidades em jogo:** Atletismo + Agilidade para cruzar plataformas; Atletismo + Força para escalar carregando equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
+> **Possibilidades em jogo:** Atletismo + Agilidade para saltar entre plataformas; Atletismo + Força para escalar com equipamento; Atletismo + Vigor para sustentar uma corrida prolongada.
+
 
 #### ⚔ Furtividade
 
-Treinamento para controlar ruídos, movimentos e exposição, aproveitando cobertura, sombras e distrações. Serve para observar sem anunciar presença, aproximar-se discretamente e evitar confrontos desnecessários. Não é invisibilidade: o ambiente, a atenção de quem observa e as regras de localização em combate continuam relevantes.
+*A arte de não ser percebido.*
 
-**Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para passar por objetos que poderiam denunciar a presença. Perícias de Furtividade habilitam efeitos específicos; a Prática sozinha não os concede automaticamente.
+Furtividade permite controlar os ruídos, os movimentos e a exposição do personagem. Você aprende a aproveitar sombras, coberturas e distrações para observar, aproximar-se ou passar despercebido. O ambiente e a atenção dos observadores determinam o que é possível; técnicas especiais dependem das Perícias correspondentes.
+
+> **Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para atravessar um depósito sem derrubar objetos.
+
 
 #### ⚔ Artesão
 
-Treinamento manual para transformar materiais em objetos úteis, montar componentes, reparar danos e trabalhar com ferramentas. Um artesão sabe aplicar procedimentos concretos: cortar, ajustar, encaixar e dar acabamento. Distingue-se de Engenharia, que estuda por que uma estrutura ou mecanismo funciona. É uma base para personagens inventores, fabricantes de equipamento e criadores de itens de foco.
+*Transformar matéria em possibilidades.*
 
-**Possibilidades em jogo:** Artesão + Destreza para ajustar uma peça delicada; Artesão + Força para trabalhar um componente pesado; Artesão + Inteligência para executar um projeto. Criar Item de Foco e Magia exige Artesão 1, Disciplina 1 e Inteligência 1, além da aquisição da Perícia.
+Artesão representa a habilidade de trabalhar materiais com ferramentas, fabricar objetos, montar componentes e reparar equipamentos. Enquanto Engenharia explica como uma estrutura funciona, Artesão permite executar o trabalho. A fabricação depende de materiais, ferramentas e das habilitações exigidas; Criar Item de Foco e Magia requer Artesão 1, Disciplina 1 e Inteligência 1.
+
+> **Possibilidades em jogo:** Artesão + Destreza para ajustar uma peça delicada; Artesão + Força para trabalhar um componente pesado; Artesão + Inteligência para executar um projeto.
+
 
 #### ⚔ Apresentação
 
-Treinamento de voz, expressão corporal, interpretação e comunicação diante de outras pessoas. Permite organizar um discurso, representar um papel, contar uma história ou conduzir uma performance. Influência mede a capacidade de afetar o interlocutor; Apresentação fornece a técnica para transmitir a mensagem de forma convincente. Pode servir tanto a artistas quanto a negociadores e líderes.
+*Dar forma à sua expressão.*
 
-**Possibilidades em jogo:** Apresentação + Influência para defender uma proposta em público; Apresentação + Destreza para uma performance que exige coordenação. Uma atuação pode distrair observadores quando a situação permitir, mas não garante que deixem de perceber outros personagens.
+Apresentação é o treinamento da voz, da expressão corporal e da atuação. Você aprende a transmitir ideias, representar personagens, conduzir performances e organizar discursos. Influência representa sua capacidade de afetar os outros; Apresentação é a técnica que dá forma à mensagem. Uma atuação pode distrair observadores quando a situação permitir, sem garantir que ignorem outras pessoas.
+
+> **Possibilidades em jogo:** Apresentação + Influência para defender uma proposta diante de uma assembleia; Apresentação + Destreza para uma performance de movimentos coordenados.
+
 
 #### ⚔ Coleta
 
-Treinamento para procurar, reconhecer, extrair e preservar recursos encontrados no ambiente. Inclui escolher onde buscar, separar materiais aproveitáveis e evitar desperdício durante a retirada. Pode sustentar expedições, fornecer matéria-prima para trabalhos e ajudar o grupo a aproveitar regiões desconhecidas. O recurso precisa existir e ser acessível; uma rolagem não cria materiais do nada.
+*Reconhecer e aproveitar os recursos do mundo.*
 
-**Possibilidades em jogo:** Coleta + Destreza para retirar um material delicado; Coleta + Força para desprender um recurso resistente; Coleta + Inteligência para organizar uma busca a partir de indícios.
+Coleta permite procurar, selecionar, extrair e preservar recursos existentes no ambiente. Você aprende onde buscar matéria-prima, como retirá-la e como evitar desperdícios, ajudando a sustentar expedições e a abastecer os trabalhos do grupo. Um teste não cria recursos inexistentes nem torna um material inacessível automaticamente disponível.
+
+> **Possibilidades em jogo:** Coleta + Destreza para retirar um material delicado; Coleta + Força para desprender um recurso resistente; Coleta + Inteligência para organizar uma busca a partir de indícios.
 
 
 <a id="conhecimentos-ficha"></a>
@@ -1033,39 +1081,56 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 
 #### ✦ Proteção
 
-Conhecimento sobre segurança, vulnerabilidades, barreiras e métodos defensivos. Ajuda a entender por onde uma ameaça pode passar, quais posições estão expostas e como proteger pessoas ou objetos. Pode orientar tanto a preparação de uma expedição quanto a análise de defesas durante um conflito. Não equivale à DE defensiva nem aumenta automaticamente a Integridade de equipamentos.
+*Compreender as ameaças e suas defesas.*
 
-**Possibilidades em jogo:** Proteção + Inteligência para analisar pontos frágeis de uma fortificação; Proteção + Destreza para examinar um mecanismo defensivo. A Perícia em Armadilha utiliza Proteção como Conhecimento pertinente e concede seu benefício conforme o verbete.
+Proteção estuda vulnerabilidades, barreiras, armadilhas e métodos defensivos. Você aprende a reconhecer posições expostas, avaliar fortificações e encontrar maneiras de proteger pessoas ou objetos. Esse Conhecimento não aumenta por si só a DE defensiva nem a Integridade de equipamentos; habilitações específicas, como a Perícia em Armadilha, seguem suas próprias regras.
+
+> **Possibilidades em jogo:** Proteção + Inteligência para identificar a entrada menos protegida de uma fortificação; Proteção + Destreza para examinar um mecanismo defensivo.
+
 
 #### ✦ Astronomia
 
-Estudo dos astros, ciclos celestes e fenômenos observáveis no céu. Permite relacionar posições e movimentos aparentes a orientação, passagem do tempo e planejamento de viagens. Pode ajudar a interpretar registros de observações antigas e distinguir um fenômeno esperado de algo incomum. Seu valor está em extrair informação do céu, não em conceder previsão infalível ou magia automática.
+*Orientar-se pelos céus.*
 
-**Possibilidades em jogo:** Astronomia + Inteligência para interpretar um calendário celeste ou reconstruir uma observação; Astronomia + Destreza para localizar uma referência no céu. Nuvens, ausência de referências e instrumentos disponíveis podem afetar a viabilidade do teste.
+Astronomia estuda os astros, os ciclos celestes e os fenômenos do céu. Você aprende a interpretar observações, estimar a passagem do tempo e utilizar referências celestes para orientar viagens. As condições de observação, os instrumentos e as referências disponíveis importam; o Conhecimento não concede previsão infalível ou magia automática.
+
+> **Possibilidades em jogo:** Astronomia + Inteligência para interpretar um calendário celeste; Astronomia + Destreza para localizar uma referência no céu.
+
 
 #### ✦ Medicina
 
-Conhecimento sobre o funcionamento do corpo, ferimentos, enfermidades e procedimentos de atendimento. Ajuda a reconhecer sinais de perigo, distinguir problemas semelhantes e escolher cuidados adequados. Em uma aventura, o médico pode avaliar quem precisa de ajuda primeiro e planejar um tratamento; durante um conflito, seus conhecimentos podem ser essenciais para manter aliados capazes de agir.
+*Compreender o corpo e cuidar da vida.*
 
-**Possibilidades em jogo:** Medicina + Inteligência para avaliar a causa de sintomas; Medicina + Destreza para executar um cuidado delicado. A Medicina Avançada habilita a tentativa de remover Sangrando conforme suas regras; possuir Medicina não concede cura automática.
+Medicina estuda o funcionamento do corpo, os ferimentos, as enfermidades e os procedimentos de atendimento. Você aprende a reconhecer sintomas, avaliar a gravidade de lesões e escolher cuidados pertinentes. Tratar um personagem depende das regras de Saúde e das habilitações específicas; Medicina Avançada permite tentar remover Sangrando conforme suas regras.
+
+> **Possibilidades em jogo:** Medicina + Inteligência para investigar a causa de sintomas; Medicina + Destreza para executar um cuidado delicado.
+
 
 #### ✦ Alquimia
 
-Estudo das propriedades das substâncias, misturas e transformações. Permite investigar materiais desconhecidos, avaliar possíveis reações e compreender como diferentes componentes podem produzir novos resultados. É uma base para personagens dedicados a preparações, pesquisa e criação alquímica, inclusive especializações associadas à magia. Saber como uma substância funciona não significa possuir os reagentes ou ter concluído sua fabricação.
+*Compreender a transformação da matéria.*
 
-**Possibilidades em jogo:** Alquimia + Inteligência para investigar um líquido estranho; Alquimia + Destreza para manipular uma preparação delicada. A Perícia em Veneno exige Alquimia 2 e Medicina 2, além de Disciplina 2 e Inteligência 2; os efeitos específicos dependem da Perícia.
+Alquimia estuda as propriedades das substâncias, as misturas e suas transformações. Você aprende a analisar componentes desconhecidos e investigar suas reações, preparando-se para criar substâncias e aplicações especializadas. A fabricação exige os reagentes e procedimentos pertinentes. Perícia em Elemento Veneno exige Alquimia 2 e Medicina 2, além de Disciplina 2 e Inteligência 2.
+
+> **Possibilidades em jogo:** Alquimia + Inteligência para investigar um líquido estranho; Alquimia + Destreza para manipular uma preparação delicada.
+
 
 #### ✦ Engenharia
 
-Conhecimento de estruturas, mecanismos, máquinas e soluções técnicas. Ajuda a identificar como componentes trabalham juntos, por que algo falhou e o que precisa mudar para que um projeto funcione. Em exploração, pode revelar formas de contornar obstáculos; em conflitos, pode orientar o uso do ambiente. A execução material de um projeto pode depender de Artesão, ferramentas e recursos.
+*Entender como as coisas funcionam.*
 
-**Possibilidades em jogo:** Engenharia + Inteligência para diagnosticar uma máquina ou avaliar uma ponte; Engenharia + Destreza para examinar o alinhamento de um mecanismo. Compreender um projeto não produz automaticamente uma construção pronta.
+Engenharia estuda mecanismos, estruturas e máquinas. Você aprende a compreender como os componentes se relacionam, por que uma estrutura falha e como planejar uma solução. O conhecimento orienta a execução, mas a fabricação ou reparação pode exigir Artesão, ferramentas e materiais.
+
+> **Possibilidades em jogo:** Engenharia + Inteligência para diagnosticar uma máquina ou avaliar uma ponte; Engenharia + Destreza para examinar o alinhamento de um mecanismo.
+
 
 #### ✦ Erudição
 
-Conhecimento de história, culturas, tradições, registros escritos e saberes especializados. Permite conectar informações que parecem isoladas, compreender referências antigas e avaliar relatos à luz de outros conhecimentos. Ajuda a explorar ruínas, interpretar documentos e negociar com povos cujos costumes seriam desconhecidos para o grupo. Diferentemente de Inteligência, que representa a capacidade de raciocinar, Erudição oferece o repertório sobre o qual esse raciocínio opera.
+*O conhecimento acumulado através das eras.*
 
-**Possibilidades em jogo:** Erudição + Inteligência para comparar crônicas e interpretar inscrições; Erudição + Influência para construir um argumento baseado em costumes ou precedentes. O personagem não conhece automaticamente todos os segredos do cenário.
+Erudição reúne o estudo de história, culturas, tradições, documentos e saberes especializados. Você aprende a conectar informações, interpretar inscrições e compreender costumes que poderiam ser desconhecidos pelo grupo. Inteligência permite raciocinar; Erudição oferece o repertório sobre o qual esse raciocínio opera.
+
+> **Possibilidades em jogo:** Erudição + Inteligência para comparar crônicas e interpretar inscrições; Erudição + Influência para construir um argumento fundamentado em costumes ou precedentes.
 
 
 **Importante:** os exemplos não dispensam testes, equipamentos nem Perícias exigidos pelas regras.

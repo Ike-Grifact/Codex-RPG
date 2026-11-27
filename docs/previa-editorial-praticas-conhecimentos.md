@@ -1,0 +1,3 @@
+# Prévia editorial — Práticas, Conhecimentos e Disciplina
+
+Proposta baseada na main v0.190, 27/11/2026. Não é alteração de regra. Parte II apresenta Aptidões e identidade das aplicações marciais/mágicas com exemplos; Parte III mantém procedimentos completos de combate e conjuração; Parte IV mantém requisitos e benefícios de Perícias. Não criar custos, dados ou requisitos. Tabelas de XP e dados preservadas. A edição física terá referências por título e página após a diagramação; exemplos estáticos independem de interação. A revisão não altera automações. A descrição de cada elemento é introdutória; efeitos completos permanecem em Conjuração e elementos.
