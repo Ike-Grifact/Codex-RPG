@@ -6,6 +6,18 @@ Descubra um mundo de fantasia sombria e tecnomagia, construa seu Aprendiz e apre
 
 ### Bem-vindo ao Codex RPG
 
+### Como acontece uma partida?
+
+Em uma partida, o Narrador apresenta a situação e você descreve o que seu Aprendiz pretende fazer. Se o resultado for incerto, o grupo recorre aos dados. O Narrador interpreta o resultado e descreve como o mundo reage.
+
+> **Narrador:** A passagem está bloqueada por uma grade enferrujada.
+>
+> **Eldric:** Quero erguê-la para que meus companheiros passem.
+>
+> **Narrador:** Vamos testar Força + Atletismo. A dificuldade é 3.
+
+Você não precisa conhecer todas as Perícias para começar. Aprenda primeiro a escolher Aptidões, rolar, manter dados e interpretar os símbolos. As especializações ficam para quando forem úteis ao seu personagem.
+
 ### O mundo que você ainda não conhece
 
 Codex RPG é um jogo de interpretação e aventura em um universo de fantasia sombria, marcado pela exploração do desconhecido, por ruínas antigas e pelo encontro entre magia e tecnologia. Inspirado pela atmosfera de Dark Fantasy e Shadowdark, o cenário convida você a descobrir um mundo tão fascinante quanto perigoso. O mundo conhecido nasceu das ruínas de um grande colapso, mas ninguém sabe ao certo o que aconteceu com o velho mundo — ou o que ainda está por vir.
@@ -71,7 +83,7 @@ Uma face pode mostrar uma ou várias runas. Uma face com dois Êxitos contém 2E
 
 **Exemplo:** ᛋ + ᚨ + ᚦ (E+A+T) oferece um Êxito, um Antecipar e um Temor. Se gastar A para anular T, sobra 1E; se preservar T, há dois símbolos que contam para a dificuldade.
 
-### Faces de referência — d4, d6, d10 e d12 DEFINIDOS; d20 reforçado G DEFINIDO
+### Faces de referência — d4, d6, d10, d12 e d20
 
 A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica a quantidade de símbolos. Esta tabela inclui a distribuição **d20 reforçado G consolidada pelo autor em 9/11/2026**, substituindo o protótipo experimental anterior.
 
@@ -102,97 +114,6 @@ A numeração da face **não se soma à Dificuldade de Êxito (DE)**: identifica
 
 **★ = face crítica (dourada na versão do site).** O teto de DE permanece 30.
 
-## Coragem e seus recursos
-
-Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recurso que permite ampliar suas possibilidades. A pilha é o conjunto de dados rolados; os mantidos produzem os símbolos.
-
-### Coragem e seus usos [DEFINIDO]
-
-**Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
-- **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
-- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados. O Grau 7 está em estudo.
-- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falha Arriscada retira 1 Coragem; Falha Limpa e Falha Mista não retiram esse recurso pelo resultado.** Custos já pagos para realizar a ação continuam gastos.
-- **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
-
-**Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
-
-## Rolando os dados — Roll and Keep
-
-Quando uma ação tem resultado incerto, o Codex utiliza um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. A pilha é o conjunto de dados que você reúne para a ação. Você rola a pilha inteira e depois escolhe quais dados deseja manter, dentro do seu limite de retenção. Apenas os dados mantidos produzem símbolos; os descartados não têm efeito.
-
-### Quando precisamos rolar?
-
-Você pode propor qualquer ação coerente com a história. Descreva sua intenção e como pretende realizá-la; o Narrador considera a situação, os recursos e as capacidades envolvidas.
-
-Nem toda ação exige uma rolagem. Quando o personagem consegue realizar uma tarefa sem incerteza relevante, sem risco de falhar e sem Temor capaz de alterar a cena, simplesmente narre o resultado. O fato de uma tarefa demorar não torna necessário um teste.
-
-Peça um teste quando houver possibilidade de falha com consequências relevantes, quando a qualidade do resultado importar para a aventura ou quando o Temor puder trazer uma complicação significativa, mesmo fora de um conflito. Não é necessário que o personagem sinta medo literalmente: Temor também representa o risco e a incerteza que escapam ao seu controle.
-
-Se o objetivo for inviável nas condições atuais, não exija uma rolagem inútil. Explique o obstáculo e permita que o grupo procure outra abordagem, ferramentas, preparação ou cooperação.
-
-#### Ações fora de conflitos
-
-Fora de um conflito, o teste pode representar uma tentativa de poucos segundos, horas ou dias. Por exemplo, consertar um mecanismo antigo com peças improvisadas pode exigir Inteligência + Engenharia ou Destreza + Artesão, conforme a abordagem. Se houver condições seguras, ferramentas adequadas e nenhuma incerteza relevante, o Narrador pode simplesmente permitir o reparo.
-
-#### Conflitos e combates
-
-Um conflito é uma situação de risco, urgência ou disputa em que importa acompanhar as ações e as oportunidades dos envolvidos. Um combate é um tipo de conflito em que há confronto direto, mas nem todo conflito é um combate.
-
-A oposição pode ser uma criatura viva, um grupo rival ou uma ameaça sem vida própria, como o fogo que consome uma casa, uma enchente ou um mecanismo prestes a desabar. Quando for pertinente, o Narrador pode representar a ameaça com DE e resistências adequadas à sua natureza, sem precisar tratá-la como um inimigo que luta.
-
-Imagine um resgate em uma casa em chamas: enquanto alguns Aprendizes tentam conter o incêndio, outros procuram sobreviventes ou liberam uma saída. O objetivo não é matar um inimigo, mas salvar pessoas antes que o fogo avance. Use turnos, protagonismo e rodadas quando o risco, o tempo ou a oposição exigirem acompanhar as ações.
-
-O jogador declara o objetivo e a abordagem, sugere as Aptidões e o Narrador confirma se a combinação faz sentido. Se for necessário testar, o Narrador estabelece a DE ou utiliza a defesa já existente. A rolagem decide o resultado e o risco: o jogador escolhe quais dados manter e como gastar Antecipar; o Narrador descreve as consequências coerentes com os símbolos finais.
-
-### Exemplo: role três dados, mantenha dois
-
-Imagine um Aprendiz que rolou três dados e pode manter dois. O primeiro d10 caiu na face 8, o segundo d10 na face 10 e o d6 na face 6. Observe como a escolha dos dados altera o resultado.
-
-| Dado | Face | Runas | Símbolos |
-|---|---:|---|---|
-| Primeiro d10 | 8 | ᛋ + ᚨ | 1E + 1A |
-| Segundo d10 | 10 | ᛋᛋ + ᚦ | 2E + 1T |
-| d6 | 6 ★ | ᛋ | 1E |
-
-| Escolha | Dados mantidos | Resultado | Consequência |
-|---|---|---|---|
-| Sem Temor | Primeiro e terceiro | ᛋᛋ + ᚨ (2E + 1A) | Menos risco e 1 Antecipar disponível. |
-| Com Temor | Segundo e terceiro | ᛋᛋᛋ + ᚦ (3E + 1T) | Mais símbolos para alcançar a DE, mas com risco. |
-
-Rolar mais dados oferece mais possibilidades de escolha, não significa somar todos os resultados. O limite geral é de 9 dados rolados e 4 dados mantidos, respeitando a retenção do personagem e os recursos disponíveis.
-
-### Passo a passo de uma rolagem
-
-Agora que você conhece os dados, as runas e a Coragem, veja como aplicar essas escolhas em jogo. Os capítulos seguintes detalham a pilha e a interpretação do resultado.
-
-1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
-2. Antes de rolar, decida se vai gastar Coragem para elevar a fonte, conforme as regras aplicáveis. Role até nove dados pertinentes das fontes habilitadas, incluindo **ao menos um dado de Atributo na pilha**.
-3. Escolha livremente os dados a manter dentro do limite do Marco: **não é necessário manter dados de Atributo**.
-4. Leia Êxitos, Antecipar e Temor **apenas dos dados mantidos**.
-5. Use Antecipar: **ᚨ 1A anula ᚦ 1T**, **ᚨ 2A viram ᛋ 1E** ou **ᚨ Antecipar passa a ação a um aliado pelo custo progressivo** sem anular o Temor. Outras aplicações específicas requerem Perícias.
-6. Compare Êxitos mais Temor não anulado à DE. Classifique o risco e, se houver acerto ofensivo, calcule o dano.
-
-Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular T.
-
-**Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
-
-
-### Progressão de níveis e Marcos — o que muda?
-
-Os níveis representam a evolução do personagem durante a campanha. Os Marcos de progressão são momentos em que novos limites ou possibilidades de aquisição são liberados. O nível não concede XP, dados, equipamentos nem Perícias automaticamente: as compras e requisitos continuam necessários.
-
-| Níveis | Dados mantidos naturalmente | Com 1 Coragem | Teto natural de Coragem | O que muda |
-|---|---:|---:|---:|---|
-| 1–4 | 2 | 3 | 10 | Grau 1; criação do Aprendiz e desenvolvimento de Aptidões e Perícias. |
-| 5–9 | 2 | 3 | 11 | Grau 2; +1 ao teto de Coragem. |
-| 10–19 | 3 | 4 | 12 | Grau 3; +1 ao teto de Coragem; possibilidade de acesso extraordinário ao d20 mediante requisitos. |
-| 20 | 3 | 4 | 13 | Grau 4; +1 ao teto de Coragem. O limite de retenção não aumenta novamente. |
-
-Os Graus da tabela indicam o acesso por nível aos equipamentos sujeitos a essa progressão, não um limite geral de Grau das Aptidões. O teto absoluto de Coragem é 15, quando benefícios específicos o permitirem. O limite geral continua em 9 dados rolados e 4 mantidos. A curva de XP de referência é apresentada em Evolução e XP.
-
-
-Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6 pela regra comum. O Grau 7 está em estudo. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
-
 ## Montando sua pilha e combinando Aptidões
 
 Na ficha, você encontra três grupos de **Aptidões**. Cada um tem seu próprio ícone, para ajudar a reconhecer rapidamente o que está escolhendo:
@@ -222,49 +143,97 @@ Você pode começar a escolha por qualquer um dos grupos. O que importa é expli
 
 Consulte as tabelas completas de Aptidões em Características de um personagem e as combinações avançadas no aprofundamento das Perícias.
 
-## Crítico
+## Coragem e seus recursos
 
-Depois de conhecer a rolagem e os dados mantidos, aprenda a reconhecer as faces críticas. Elas não são necessariamente a face de maior número; um crítico depende da sua escolha de dados, pode modificar símbolos e recuperar Coragem.
+Coragem é a capacidade de agir apesar do Temor. Antes de rolar, conheça o recurso que permite ampliar suas possibilidades. A pilha é o conjunto de dados rolados; os mantidos produzem os símbolos.
 
-### Crítico — quando os dados mostram seu melhor resultado
+### Coragem e seus usos
 
-Às vezes, seus dados caem em faces especiais chamadas **faces críticas**. Elas são fáceis de reconhecer pelos símbolos destacados em dourado. Cada tipo de dado tem sua própria face crítica:
+**Coragem** é um recurso de decisão. A reserva normal tem teto **10**, e o personagem pode utilizá-la para:
+- **Gastar 1 Coragem** para manter um dado adicional à sua retenção natural, até o teto do Marco.
+- **Gastar 1 Coragem** para elevar **uma fonte inteira em 1 Grau temporário** antes de rolar, usando os dados completos do Grau seguinte: 2d6 → 3d6, 2d10 → 3d10, 3d10 → 2d10 + 1d12. Válido para Atributo, Conhecimento ou Prática participante, inclusive complemento habilitado, até G6. Não se aplica a dado isolado de equipamento; não altera XP permanente. Um uso comum por rolagem, preservando os limites de dados. O Grau 7 está em estudo.
+- Pagar custos de técnicas e de Saúde quando a regra específica permitir. **Falha Arriscada retira 1 Coragem; Falha Limpa e Falha Mista não retiram esse recurso pelo resultado.** Custos já pagos para realizar a ação continuam gastos.
+- **DEFINIDO — rework:** a antiga Perícia em Coragem que convertia recursos foi revogada como mecanismo ativo. No nível 5, o personagem recebe **+1 ao teto de Coragem** pela progressão neutra; não existe conversão entre duas reservas.
 
-| Dado | Face crítica | Símbolos da face |
-|---|---:|---|
-| d4 | **4 ★** | **1 Êxito (1E)** — ᛋ |
-| d6 | **6 ★** | **1 Êxito (1E)** — ᛋ |
-| d10 | **7 ★** | **2 Êxitos (2E)** — ᛋᛋ |
-| d12 | **12 ★** | **3 Êxitos (3E)** — ᛋᛋᛋ |
-| d20 | **20 ★** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
+**Não é necessário gastar Coragem para passar voluntariamente a ação depois de um acerto limpo.** A progressão neutra concede +1 ao teto no nível 5, +1 no nível 10 e +1 no nível 20, sempre limitada ao teto absoluto 15.
 
-**Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
+## Rolando os dados — Roll and Keep
 
-Você consegue um **crítico** quando mantém **pelo menos dois dados** e **todos os dados mantidos estão em suas respectivas faces críticas**. Se você rolou outros dados que não são críticos, pode descartá-los. Também pode escolher manter menos dados do que seu limite. O importante é que **nenhum dado mantido fique fora de sua face crítica**.
+Quando uma ação tem resultado incerto, o Codex utiliza um sistema chamado **Roll and Keep**, expressão em inglês que significa **rolar e manter**. A pilha é o conjunto de dados que você reúne para a ação. Você rola a pilha inteira e depois escolhe quais dados deseja manter, dentro do seu limite de retenção. Apenas os dados mantidos produzem símbolos; os descartados não têm efeito.
 
-Você ainda precisa incluir um dado de **Atributo na pilha que rolou**, mas não precisa mantê-lo. E lembre-se: dados descartados não fornecem Êxito, Antecipar nem Temor.
+### Quando precisamos rolar?
 
-### O que você ganha com um crítico?
+Declare sua intenção e como pretende agir. O Narrador considera a situação, seus recursos e suas Aptidões.
 
-Quanto mais dados críticos você mantiver, maior será a recompensa:
+| Situação | Como resolver |
+| --- | --- |
+| Sem incerteza relevante ou risco | Narre o resultado. A duração da tarefa, por si só, não exige teste. |
+| Falha, qualidade ou Temor podem alterar a cena | Faça um teste, mesmo fora de combate. |
+| Objetivo inviável nas condições atuais | Explique o obstáculo e procure outra abordagem, preparação, ferramentas ou cooperação. |
 
-| Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
-|---|:---:|:---:|:---:|
-| Trocar até **ᚦ 1 Temor seu por ᛋ 1 Êxito** | Sim | Sim | Sim |
-| Ganhar **ᛋ +1 Êxito** | — | Sim | Sim |
-| Ganhar **ᚨ +1 Antecipar** | — | Sim | Sim |
-| Recuperar **Coragem** | **1** | **2** | **2** |
-| **Dobrar o dano** | — | — | Sim |
+#### Ações fora de conflitos
 
-Os benefícios **se somam**: com três dados críticos, você também pode trocar 1 Temor por 1 Êxito; com quatro, recebe tudo o que aparece na última coluna. Se não tiver Temor para trocar, simplesmente não ganha o Êxito dessa troca. Você continua recebendo os outros benefícios.
+Um teste pode representar segundos, horas ou dias. Reparar um mecanismo antigo pode exigir Inteligência + Engenharia ou Destreza + Artesão, conforme a abordagem. Se houver segurança, ferramentas adequadas e nenhuma incerteza relevante, o Narrador pode permitir o reparo sem teste.
 
-**Exemplo:** você mantém um **d6 na face 6 (ᛋ, 1E)** e um **d10 na face 7 (ᛋᛋ, 2E)**. Como os dois estão em suas faces críticas, você fez um crítico com **3 Êxitos** e recupera **1 Coragem**, até seu limite. Como não há Temor nesse resultado, não há nada para converter em Êxito. Você ainda precisa alcançar a **Dificuldade de Êxito (DE)** para realizar a ação.
+#### Conflitos e combates
 
-**E o dano dobrado?** Se conseguir manter **quatro dados críticos** em um ataque, o dano calculado com sua rolagem é dobrado **antes de passar pelas proteções do alvo**. Imagine que seu ataque causaria **6 de dano**: com esse crítico, ele passa a causar **12**. Se uma proteção absorver **5**, sobram **7** para resolver contra as demais defesas ou a Vida, conforme as regras de dano. Esse bônus não dobra automaticamente efeitos que causam uma quantidade fixa de dano direto à Vida; por exemplo, um efeito de **+1 Vida direta** continua causando **+1**. O crítico também não aumenta os limites de dano à Vida.
+Um conflito é uma situação de risco, urgência ou disputa que exige acompanhar ações e oportunidades. Combate é um confronto direto, mas nem todo conflito é combate. Uma criatura, um grupo rival, um incêndio, uma enchente ou um mecanismo prestes a desabar podem ser a oposição.
 
-**Fique de olho nos símbolos dourados:** eles mostram que um dado caiu em sua face crítica, mas o crítico da ação só acontece depois que você escolhe os dados mantidos.
+> **Exemplo:** em uma casa em chamas, alguns Aprendizes contêm o fogo enquanto outros resgatam sobreviventes. O Narrador pode atribuir DE e resistências à ameaça conforme sua natureza, sem tratá-la como um inimigo que luta.
 
-**Coragem recuperada:** você não pode ultrapassar seu limite de Coragem. O limite começa em **10** e pode aumentar com a progressão e as Maestrias, até o máximo absoluto de **15**.
+Use turnos e rodadas quando for necessário acompanhar o tempo e a oposição.
+
+### Exemplo: role três dados, mantenha dois
+
+Imagine um Aprendiz que rolou três dados e pode manter dois. O primeiro d10 caiu na face 8, o segundo d10 na face 10 e o d6 na face 6. Observe como a escolha dos dados altera o resultado.
+
+| Dado | Face | Runas | Símbolos |
+|---|---:|---|---|
+| Primeiro d10 | 8 | ᛋ + ᚨ | 1E + 1A |
+| Segundo d10 | 10 | ᛋᛋ + ᚦ | 2E + 1T |
+| d6 | 6 ★ | ᛋ | 1E |
+
+| Escolha | Dados mantidos | Resultado | Consequência |
+|---|---|---|---|
+| Sem Temor | Primeiro e terceiro | ᛋᛋ + ᚨ (2E + 1A) | Menos risco e 1 Antecipar disponível. |
+| Com Temor | Segundo e terceiro | ᛋᛋᛋ + ᚦ (3E + 1T) | Mais símbolos para alcançar a DE, mas com risco. |
+| Com opção de anular Temor | Primeiro e segundo | ᛋ 3E + ᚨ 1A + ᚦ 1T | Você pode escolher entre manter o risco ou gastar Antecipar para anulá-lo. |
+
+> **Escolhendo conforme a dificuldade:** Em uma DE 3, manter os dois d10 permite gastar 1A para anular 1T e terminar com 3E: Acerto Limpo. Em uma DE 4, essa mesma anulação faria o teste falhar; deixar o Temor permite alcançar 4 símbolos, com risco.
+
+Rolar mais dados oferece mais possibilidades de escolha, não significa somar todos os resultados. O limite geral é de 9 dados rolados e 4 dados mantidos, respeitando a retenção do personagem e os recursos disponíveis.
+
+### Passo a passo de uma rolagem
+
+Use esta sequência como referência durante a partida. Os próximos capítulos explicam como interpretar a dificuldade e o resultado.
+
+1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
+2. Antes de rolar, decida se vai gastar Coragem para elevar a fonte, conforme as regras aplicáveis. Role até nove dados pertinentes das fontes habilitadas, incluindo **ao menos um dado de Atributo na pilha**.
+3. Escolha livremente os dados a manter dentro do limite do Marco: **não é necessário manter dados de Atributo**.
+4. Leia Êxitos, Antecipar e Temor **apenas dos dados mantidos**. Se todos os dados mantidos forem críticos (ao menos dois), aplique os benefícios do crítico antes de resolver a dificuldade.
+5. Use Antecipar: **ᚨ 1A anula ᚦ 1T**, **ᚨ 2A viram ᛋ 1E** ou **ᚨ Antecipar passa a ação a um aliado pelo custo progressivo** sem anular o Temor. Outras aplicações específicas requerem Perícias.
+6. Compare Êxitos mais Temor não anulado à DE. Classifique o risco e, se houver acerto ofensivo, calcule o dano.
+
+Não se pode gastar o mesmo A duas vezes. A transferência de oportunidade por A não equivale a anular T.
+
+**Custos de ativação:** técnicas e Perícias usam Coragem conforme o próprio verbete. O custo em XP de aquisição, requisitos e gatilhos permanecem. Ativações-base elementais G1/G2 habilitadas continuam gratuitas.
+
+
+### Progressão de níveis e Marcos — o que muda?
+
+Os níveis representam a evolução do personagem durante a campanha. Os Marcos de progressão são momentos em que novos limites ou possibilidades de aquisição são liberados. O nível não concede XP, dados, equipamentos nem Perícias automaticamente: as compras e requisitos continuam necessários.
+
+| Níveis | Dados mantidos naturalmente | Com 1 Coragem | Teto natural de Coragem | O que muda |
+|---|---:|---:|---:|---|
+| 1–4 | 2 | 3 | 10 | Grau 1; criação do Aprendiz e desenvolvimento de Aptidões e Perícias. |
+| 5–9 | 2 | 3 | 11 | Grau 2; +1 ao teto de Coragem. |
+| 10–19 | 3 | 4 | 12 | Grau 3; +1 ao teto de Coragem; possibilidade de acesso extraordinário ao d20 mediante requisitos. |
+| 20 | 3 | 4 | 13 | Grau 4; +1 ao teto de Coragem. O limite de retenção não aumenta novamente. |
+
+Os Graus da tabela indicam o acesso por nível aos equipamentos sujeitos a essa progressão, não um limite geral de Grau das Aptidões. O teto absoluto de Coragem é 15, quando benefícios específicos o permitirem. O limite geral continua em 9 dados rolados e 4 mantidos. A curva de XP de referência é apresentada em Evolução e XP.
+
+
+Gastar Coragem para **manter mais um dado** não cria novo dado. **DEFINIDO — revisão de 19/11/2026:** gastar **1 Coragem para Elevar dado** escolhe uma **fonte (Atributo, Conhecimento ou Prática)** e aplica temporariamente a composição de dados de seu **próximo Grau**. Ex.: 2d6 → 3d6; 2d10 → 3d10; 3d10 → 2d10 + 1d12. Essa elevação pode aumentar a pilha, mas nunca ultrapassa **9 dados rolados** e o teto de retenção. O Grau da ficha não muda, não gasta XP nem se aplicam esses passos a equipamento isolado ou a fonte no G6 pela regra comum. O Grau 7 está em estudo. **Substitui a conversão histórica d4→d6→d10→d12 para uma face individual.** A transformação Druídica tem procedimento próprio.
 
 ## Dificuldade de Êxito
 
@@ -356,9 +325,53 @@ Cada símbolo Antecipar pode ser gasto uma única vez. Você não pode usar o me
 
 O fluxo de oportunidades segue as regras de turnos, rodadas e protagonismo. A Falha Limpa pode preservar o protagonismo do grupo, conforme as condições de continuidade da sequência. Resultados com Temor seguem as regras de intervenção e de passagem por Antecipar. Consulte o [Guia do Narrador](../narrador.html) e o [SRD v0.41](srd-continuidade-v0.41.md).
 
+## Crítico
+
+Depois de conhecer a rolagem e os dados mantidos, aprenda a reconhecer as faces críticas. Elas não são necessariamente a face de maior número; um crítico depende da sua escolha de dados, pode modificar símbolos e recuperar Coragem.
+
+### Crítico — quando os dados mostram seu melhor resultado
+
+Às vezes, seus dados caem em faces especiais chamadas **faces críticas**. Elas são fáceis de reconhecer pelos símbolos destacados em dourado. Cada tipo de dado tem sua própria face crítica:
+
+| Dado | Face crítica | Símbolos da face |
+|---|---:|---|
+| d4 | **4 ★** | **1 Êxito (1E)** — ᛋ |
+| d6 | **6 ★** | **1 Êxito (1E)** — ᛋ |
+| d10 | **7 ★** | **2 Êxitos (2E)** — ᛋᛋ |
+| d12 | **12 ★** | **3 Êxitos (3E)** — ᛋᛋᛋ |
+| d20 | **20 ★** | **6 Êxitos (6E) + 2 Antecipar (2A)** — ᛋᛋᛋᛋᛋᛋ + ᚨᚨ |
+
+**Como conseguir um crítico?** Depois de rolar, escolha os dados que vai **manter**. Normalmente, vale a pena manter um dado que caiu na face crítica, pois ele traz um ótimo resultado. Mas a escolha continua sendo sua: **um dado crítico não é mantido automaticamente**.
+
+Você consegue um **crítico** quando mantém **pelo menos dois dados** e **todos os dados mantidos estão em suas respectivas faces críticas**. Se você rolou outros dados que não são críticos, pode descartá-los. Também pode escolher manter menos dados do que seu limite. O importante é que **nenhum dado mantido fique fora de sua face crítica**.
+
+Você ainda precisa incluir um dado de **Atributo na pilha que rolou**, mas não precisa mantê-lo. E lembre-se: dados descartados não fornecem Êxito, Antecipar nem Temor.
+
+### O que você ganha com um crítico?
+
+Quanto mais dados críticos você mantiver, maior será a recompensa:
+
+| Benefício | 2 dados críticos | 3 dados críticos | 4 dados críticos |
+|---|:---:|:---:|:---:|
+| Trocar até **ᚦ 1 Temor seu por ᛋ 1 Êxito** | Sim | Sim | Sim |
+| Ganhar **ᛋ +1 Êxito** | — | Sim | Sim |
+| Ganhar **ᚨ +1 Antecipar** | — | Sim | Sim |
+| Recuperar **Coragem** | **1** | **2** | **2** |
+| **Dobrar o dano** | — | — | Sim |
+
+Os benefícios **se somam**: com três dados críticos, você também pode trocar 1 Temor por 1 Êxito; com quatro, recebe tudo o que aparece na última coluna. Se não tiver Temor para trocar, simplesmente não ganha o Êxito dessa troca. Você continua recebendo os outros benefícios.
+
+**Exemplo:** você mantém um **d6 na face 6 (ᛋ, 1E)** e um **d10 na face 7 (ᛋᛋ, 2E)**. Como os dois estão em suas faces críticas, você fez um crítico com **3 Êxitos** e recupera **1 Coragem**, até seu limite. Como não há Temor nesse resultado, não há nada para converter em Êxito. Você ainda precisa alcançar a **Dificuldade de Êxito (DE)** para realizar a ação.
+
+**E o dano dobrado?** Se conseguir manter **quatro dados críticos** em um ataque, o dano calculado com sua rolagem é dobrado **antes de passar pelas proteções do alvo**. Imagine que seu ataque causaria **6 de dano**: com esse crítico, ele passa a causar **12**. Se uma proteção absorver **5**, sobram **7** para resolver contra as demais defesas ou a Vida, conforme as regras de dano. Esse bônus não dobra automaticamente efeitos que causam uma quantidade fixa de dano direto à Vida; por exemplo, um efeito de **+1 Vida direta** continua causando **+1**. O crítico também não aumenta os limites de dano à Vida.
+
+**Fique de olho nos símbolos dourados:** eles mostram que um dado caiu em sua face crítica, mas o crítico da ação só acontece depois que você escolhe os dados mantidos.
+
+**Coragem recuperada:** você não pode ultrapassar seu limite de Coragem. O limite começa em **10** e pode aumentar com a progressão e as Maestrias, até o máximo absoluto de **15**.
+
 ## Turnos e rodadas
 
-### Turnos, rodadas e protagonismo [DEFINIDO — SRD v0.120]
+### Turnos, rodadas e protagonismo
 
 Um **turno** corresponde a uma ação de personagem jogador ou inimigo. Uma **rodada** corresponde à passagem de tantos turnos quanto o total de combatentes presentes na cena. Com 3 PJs e 3 inimigos, são 6 turnos por rodada, independentemente de quem age ou da ordem. A rodada mede o tempo do conflito; não é uma fila de iniciativa.
 
@@ -415,18 +428,7 @@ Quando dois ou três personagens realizam uma ação em conjunto, cada um contri
 
 **Quando os custos reiniciam?** Quando um adversário age, a sequência do grupo termina e os custos de antecipação são reiniciados. O fim de uma rodada, ou a simples transferência de oportunidade sem ação efetiva do adversário, não reinicia esses custos. Passar a oportunidade não elimina o Temor restante.
 
-#### Exemplo: cinco jogadores cooperando
-
-Os jogadores 1, 2, 3, 4 e 5 enfrentam uma ameaça. Veja como três ações conjuntas podem acontecer na mesma sequência, sem que a oposição tenha agido entre elas.
-
-| Formação | Convocação e resolução | Turnos acumulados |
-|---|---|---:|
-| 1, 2 e 3 | Começam a sequência com uma ação conjunta. Obtêm ᚨ 2A e convocam 4 e 5, por ᚨ 1A cada. | 3 |
-| 4 e 5 → 1, 4 e 5 | 4 e 5 rolam e gastam ᚨ 2A para chamar 1, que já participou uma vez. O jogador 1 rola; os três resolvem uma única ação em conjunto. | 6 |
-| 1, 4 e 5 → 2 e 3 | O trio obtém ᚨ 4A e convoca 2 e 3, por ᚨ 2A cada. Os dois começam a rolar; a nova ação ainda não foi concluída. | 6 |
-| 2 e 3 → 1, 2 e 3 | 2 e 3 gastam outros ᚨ 4A para chamar 1, que já participou duas vezes. O jogador 1 rola; o trio resolve a terceira ação conjunta. | 9 |
-
-Observe que chamar novamente um aliado fica mais caro. Para voltar a formar 1, 2 e 3, foram gastos ᚨ 8A em duas etapas: ᚨ 4A para convocar 2 e 3 e ᚨ 4A para incorporar 1. A dupla 2 e 3 poderia chamar 4 ou 5 por ᚨ 2A, mas não os dois na mesma ação, pois o limite do ataque conjunto é de três participantes.
+[Consultar o exemplo completo de cinco jogadores cooperando e a convocação em etapas](../mecanicas/index.html#turnos-rodadas).
 
 #### Como os inimigos agem?
 
