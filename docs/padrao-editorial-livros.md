@@ -14,6 +14,10 @@
 
 Consultar o SRD de maior versão e decisões posteriores antes de editar. Não importar regras de outros RPGs. Modelo próprio: [Recuperando Vida e Armadura](../livro.html#descansos), especialmente [Privações](../mecanicas/vantagens-e-desvantagens.html#privacoes).
 
+## Abertura do Livro do Jogador
+
+Apresentar primeiro o universo, a fantasia de personagem e os caminhos profissionais que o leitor pode imaginar. Aprendiz é uma etapa de desenvolvimento, não uma classe nem uma identidade genérica. O personagem pode iniciar com uma vocação ou profissão narrativa; Aptidões e Perícias definem suas capacidades e especializações, sem classes fixas, benefícios automáticos ou restrições de progressão por profissão. Introduzir procedimentos, testes e exemplos numéricos nos capítulos de mecânica correspondentes, não antes da apresentação do mundo. Manter a ambientação e a voz autoral.
+
 ## Modelo de escrita
 
 1. **Título claro:** nome reconhecível no índice e na ficha.

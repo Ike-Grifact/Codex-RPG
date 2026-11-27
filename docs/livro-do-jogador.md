@@ -6,20 +6,6 @@ Descubra um mundo de fantasia sombria e tecnomagia, construa seu Aprendiz e apre
 
 ### Bem-vindo ao Codex RPG
 
-### Como acontece uma partida?
-
-Em uma partida, o Narrador apresenta a situação e você descreve o que seu Aprendiz pretende fazer. Se o resultado for incerto, o grupo recorre aos dados. O Narrador interpreta o resultado e descreve como o mundo reage.
-
-> **Narrador:** A passagem está bloqueada por uma grade enferrujada.
->
-> **Eldric:** Quero erguê-la para que meus companheiros passem.
->
-> **Narrador:** Vamos testar Força + Atletismo. A dificuldade é 3.
-
-A Dificuldade de Êxito (DE) é o valor que os símbolos precisam alcançar. Você aprenderá a resolver esse teste nos próximos capítulos.
-
-Você não precisa conhecer todas as Perícias para começar. Aprenda primeiro a escolher Aptidões, rolar, manter dados e interpretar os símbolos. As especializações ficam para quando forem úteis ao seu personagem.
-
 ### O mundo que você ainda não conhece
 
 Codex RPG é um jogo de interpretação e aventura em um universo de fantasia sombria, marcado pela exploração do desconhecido, por ruínas antigas e pelo encontro entre magia e tecnologia. Inspirado pela atmosfera de Dark Fantasy e Shadowdark, o cenário convida você a descobrir um mundo tão fascinante quanto perigoso. O mundo conhecido nasceu das ruínas de um grande colapso, mas ninguém sabe ao certo o que aconteceu com o velho mundo — ou o que ainda está por vir.
@@ -36,11 +22,15 @@ Marcados pelo Infortúnio, os Luckers de Sangue carregam uma existência que nã
 
 Entre cidades e ruínas, você poderá encontrar seres de aparência angelical, elementais, golens e monstros terríveis. Há expedições em busca de cristais, caçadas, resgates e lugares que permanecem desconhecidos. Neste mundo, a origem de um personagem não determina o lado que ele escolherá, e cada descoberta pode mudar aquilo que acreditava saber.
 
-### Uma profissão é uma descoberta
+### Construa sua própria profissão
 
-Todo personagem começa como **Aprendiz**. Em vez de escolher uma classe obrigatória na criação, você desenvolve Atributos, Conhecimentos, Práticas e Perícias que dão forma à sua profissão ao longo da aventura. Codex RPG foi concebido para favorecer a construção de personagens híbridos: um guerreiro pode aprender magia, um estudioso pode se tornar um combatente e um artesão pode desenvolver técnicas de cura. Esses caminhos não são classes que concedem benefícios automáticos; são possibilidades que você constrói com suas escolhas.
+No Codex RPG, você não precisa escolher uma classe predefinida para começar sua aventura. Você pode criar um guerreiro em formação, um aprendiz de conjuração, um engenheiro, um artesão ou alguém que combine diferentes vocações. Desde o início, seu personagem pode ter uma profissão, uma identidade e um caminho que deseja seguir.
 
-Você pode aprofundar uma especialidade ou cruzar diferentes ramos para criar algo próprio. Cada investimento abre novas maneiras de agir, respeitando os custos e requisitos de cada capacidade. O importante não é encontrar uma classe que descreva seu personagem, mas desenvolver as capacidades que expressem quem ele é e o que pretende se tornar.
+**Ser Aprendiz representa o começo dessa trajetória, não uma classe.** Ao desenvolver suas Aptidões — Atributos, Conhecimentos e Práticas — e adquirir Perícias, você constrói as capacidades que definem sua especialização e dão forma à sua classe ou profissão.
+
+Um guerreiro pode aprender a conjurar magia, um engenheiro pode se especializar na criação de armas e um artesão pode desenvolver técnicas de cura. Você pode aprofundar sua especialidade ou combinar diferentes ramos, sem precisar abandonar o caminho que já construiu.
+
+Essas profissões não concedem benefícios automáticos: suas capacidades dependem das escolhas que você faz, respeitando os custos e requisitos de cada Aptidão e Perícia. Você decide quem deseja ser; suas escolhas determinam o que é capaz de fazer.
 
 ### Uma aventura, diferentes maneiras de jogar
 
@@ -172,6 +162,18 @@ Declare sua intenção e como pretende agir. O Narrador considera a situação, 
 | Sem incerteza relevante ou risco | Narre o resultado. A duração da tarefa, por si só, não exige teste. |
 | Falha, qualidade ou Temor podem alterar a cena | Faça um teste, mesmo fora de combate. |
 | Objetivo inviável nas condições atuais | Explique o obstáculo e procure outra abordagem, preparação, ferramentas ou cooperação. |
+
+#### Como acontece um teste?
+
+O Narrador apresenta a situação, você descreve o que seu personagem pretende fazer e, quando o resultado é incerto e relevante, os dados ajudam a resolver a ação.
+
+> **Narrador:** A passagem está bloqueada por uma grade enferrujada.
+>
+> **Eldric:** Quero erguê-la para que meus companheiros passem.
+>
+> **Narrador:** Vamos testar Força + Atletismo. A dificuldade é 3.
+
+A Dificuldade de Êxito (DE) é o valor que os símbolos válidos precisam alcançar. Você aprenderá a interpretar o resultado na seção Dificuldade de Êxito.
 
 #### Ações fora de conflitos
 
