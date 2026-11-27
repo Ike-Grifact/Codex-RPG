@@ -65,3 +65,9 @@
 - `status-integridade.svg` — Integridade da armadura
 - `status-antecipar.svg` — Antecipar — Ansuz ᚨ
 - `status-de.svg` — Dificuldade de Êxito — Sowilo, Ansuz e Thurisaz fundidas
+
+### NECESSIDADES DIÁRIAS (v0.180)
+- `necessidade-sono.svg` — Sono
+- `necessidade-comida.svg` — Alimentação — pão
+- `necessidade-agua.svg` — Hidratação — cantil
+Pictogramas editoriais independentes de elementos, Aptidões e Perícias. Ver [padrão editorial dos livros](../../../docs/padrao-editorial-livros.md).
