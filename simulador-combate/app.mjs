@@ -1,9 +1,9 @@
 /* Codex RPG — Comparador de combate sem tabuleiro, com dados das fichas e alterações locais. */
 import {normalizeCombatant,listBrowserSheets,combatantSheetData,combatHealth,boostCombatSource,rollProvenance,selectedActiveSkill,canChangePunchWeight,planMartialAttack,MARTIAL_MANOEUVRES,combatManoeuvreOutcome,applyCombatManoeuvres,standFromProne,escapeGrapple,proneAttackPenalty,hasCombatFocus,focusCombatStatus,hasSmallCompanion,applyFulminanteToPool,validFulminanteForWeapon,markCondition,activeWeaponProperties,weaponActivationSkill,weaponMasteryFor,canUseWeaponMastery,planWeaponEffects,declareWeaponEffects,resolveDeclaredWeaponEffects,planCourageDeclaration,planColossalTargets,colossalOutcomes,weaponEffectOutcome,criticalFaces,bestKeepSelection,defense,armorOf,equippedWeapons,equipmentPosition,weaponHands,isHandEquipment,heldHands,hasQuickDraw,drawModeFor,planDraw,disarmTransfer,normalizeEquipment,weightAffinity,manejoPerfeitoBonus,isPoisonOnlyWeapon,projectileFamily,shotChoices,planShot,carryingCapacity,backpackCapacity,bodyUsage,quickUsage,lifeAtFive,transferPavor,updateResource,weightUsed}
  from "./comparador-logic.mjs?v=20261126-v0162-armas";
-import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261126-v0161-critico";
+import {ATTRIBUTES,KNOWLEDGES,PRACTICES,isHumanoidKind,stats,SKILLS} from "../criar-conflito/rules.mjs?v=20261127-v0194-magia";
 import {composeActionPool,rollCreatureFaces,previewHumanoidRoll,previewCreatureRoll} from "../criar-conflito/roll-engine.mjs?v=20261126-v0161-critico";
-import {resolveRoll,keepLimit,MAGIC_GRADE_DICE,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0162-armas";
+import {resolveRoll,keepLimit,maxCourage,monsterCap,narratorCap,faceSymbols,isCriticalFace} from "../criar-conflito/codex-rules.mjs?v=20261126-v0162-armas";
 
 const SAVE="codex-rpg-comparador-v1",MAX=36,$=key=>document.getElementById(key);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
@@ -461,7 +461,7 @@ function evaluate(a,rolled,kept,opts){
  const companion=!!(hasSmallCompanion(a)&&pending?.activations?.some(x=>x.id==="domar-criatura-pequena"));
  const noisy=!!(weapon?.properties||[]).includes("Barulhenta");
  const pronePenalty=proneAttackPenalty(a,opts.situation);
- const conf={...opts,drawMode:pending?.draw?.mode||"none",weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty,bonusP:health.p+Number(noisy),
+ const conf={...opts,drawMode:pending?.draw?.mode||"none",weight,bonusA:health.a+Number(stealth)+Number(companion)+pronePenalty+Number(pending?.baseKey==="armas_conjuracao"&&a.skills?.includes("mestre")),bonusP:health.p+Number(noisy)+Number(pending?.magicTrevas||0),
   skillBonusE:health.e+manejo.bonusE+Number(pending?.colossal?.cost||0),stepDieId:pending?.boosted||""};
  let pre;
  if(a.kind==="monstro")pre=previewCreatureRoll(a,rolled,kept,conf);
@@ -478,6 +478,7 @@ function evaluate(a,rolled,kept,opts){
 }
 function preview(opts=options(),selectedIds=pending?.kept){
  if(!pending)return {ok:false,error:"Não existem dados rolados."};
+ if(pending.mode==="conjuracao"&&pending.magicRules!==194)return {ok:false,error:"Rolagem mágica legada: descarte e declare novamente conforme v0.194."};
  const a=byId(pending.actor),t=byId(pending.target);
  if(!a||!t)return {ok:false,error:"Atacante ou alvo não encontrado."};
  const pre=evaluate(a,pending.rolled,selectedIds,{...opts,...pending.declarationOptions});
@@ -680,9 +681,28 @@ function roll(){
   if(!changed.ok)return notice(changed.error);
   pool.pool=changed.pool;fulminanteId=fulminants[0].id;
  }
- let grade=null;
+ let grade=null,magicCost=0,magicElement="",magicTrevas=0;
  if(human&&mode==="conjuracao"){
-  return notice("Conjuração v0.194: use a rolagem atualizada na ficha do personagem. O comparador ainda não resolve Graus, focos, custos ou efeitos mágicos; não serão usados dados mágicos antigos.");
+  if(key!=="armas_conjuracao"||attribute!=="inteligencia")return notice("Conjuração exige Disciplina + Inteligência.");
+  if(!hasCombatFocus(a))return notice("Conjuração exige Criar Item de Foco e Magia.");
+  if(a.side==="inimigos")return notice("Custos mágicos locais do Narrador ainda não reconciliados; resolva esta conjuração manualmente.");
+  grade=Number($("spell-grade").value);
+  if(![1,2,3,4].includes(grade))return notice("G5 exige resolução manual.");
+  const elems=[["psiquico","Psique"],["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["veneno","Veneno"],["sangue","Sangue"],["trevas","Trevas"]];
+  const known=elems.filter(([id])=>id==="psiquico"||a.skills.includes(id)),choices=grade===1&&a.skills.includes("improviso")?elems:known;
+  const answer=prompt("Declare elemento:\n"+choices.map(([id,name],i)=>(i+1)+". "+name+(known.some(([k])=>k===id)?"":" (Extração, 1 Coragem)")).join("\n"),"1");
+  if(answer===null)return;
+  magicElement=choices[Number(answer)-1]?.[0];if(!magicElement)return notice("Elemento inválido.");
+  const extracted=!known.some(([id])=>id===magicElement);
+  magicCost=Number(grade>=3)+Number(extracted);
+  if(declared.skills.some(x=>["improviso","mestre","fogo","agua","vento","terra","sagrado","veneno","sangue","trevas","criar-item-foco-magia","invocacao-elemental"].includes(x.id)))return notice("Declare a conjuração pelo Grau e elemento, sem duplicar o custo nas Perícias ativas.");
+  if(!confirm("G"+grade+" · "+magicCost+" Coragem. Confirme elemento, fonte real, preparação (sem foco: "+Math.max(1,grade-1)+" turno[s]), cargas, alcance, desvantagens de posicionamento e efeitos com o Narrador. O simulador compara somente o ataque convencional a um alvo; efeitos especiais e gasto de foco são manuais."))return;
+  const intGrade=Number((boosted?.unit||a).attributes?.inteligencia||0);
+  const dice=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][Math.min(9,intGrade+Math.max(0,grade-2))];
+  pool.pool=pool.pool.filter(x=>!(x.group==="attribute"&&x.key==="inteligencia"));
+  pool.pool.push(...dice.map((sides,i)=>({id:"attribute.inteligencia."+i,group:"attribute",key:"inteligencia",sides,baseSides:sides})));
+  if(pool.pool.length>9)return notice("Máximo de 9 dados rolados.");
+  if(magicElement==="trevas"&&[2,3].includes(grade)&&confirm("Ativar "+(grade===2?"Amplificação Sinistra (+1T)":"Divisão das Sombras (+2T; segundo alvo manual)")+"?"))magicTrevas=grade===2?1:2;
  }
  const martial=martialDeclaration();
  if(!martial.ok)return notice(martial.error);
@@ -717,7 +737,7 @@ function roll(){
  if(!hostile&&declarationOptions.extraKeep&&keepLimit(a.level,false,false)>=keepLimit(a.level,true,false))return notice("O Marco já alcançou o teto de dados mantidos.");
  let prepaidCourage;
  if(!hostile){
-  const payment=planCourageDeclaration(a,{activations:paidActivations,weaponCost:weaponDeclaration.cost,martialCost,extraKeep:declarationOptions.extraKeep,step:!!selected,healthCost:health.coragem||0});
+  const payment=planCourageDeclaration(a,{activations:paidActivations,weaponCost:weaponDeclaration.cost,martialCost:martialCost+magicCost,extraKeep:declarationOptions.extraKeep,step:!!selected,healthCost:health.coragem||0});
   if(!payment.ok)return notice(payment.error);
   prepaidCourage=payment.total;Object.assign(a,payment.actor);
   log("declaração",a.name+" pagou "+prepaidCourage+" Coragem antes de rolar. "+paidActivations.map(x=>x.name+" "+x.cost).join("; ")+". Características: "+weaponDeclaration.cost+"; retenção: "+Number(declarationOptions.extraKeep)+"; elevação: "+Number(!!selected)+"; marcial: "+martialCost+".",{actor:a.id,prepaidCourage,weaponEffects,activations:paidActivations.map(x=>({id:x.id,cost:x.cost}))});
@@ -730,7 +750,7 @@ function roll(){
  $("round-budget").textContent=hostile?"Pavor local restante: "+a.pavorLocal:"Turno · Coragem gasta "+a.courageRoundSpent+"/5 · restante "+Math.max(0,5-a.courageRoundSpent);
  const rolled=rollCreatureFaces(pool.pool);
  pending={actor:a.id,target:t.id,rolled,kept:rolled.slice(0,Math.min(2,rolled.length)).map(x=>x.id),
-  mode,baseGroup:group,baseKey:key,spellGrade:grade,weapon:w?.name||"",
+  mode,baseGroup:group,baseKey:key,spellGrade:grade,magicRules:194,magicCost,magicElement,magicTrevas,weapon:w?.name||"",
   weaponId:w?.id||"",boosted:selected,fulminanteId,activations:declared.skills,thrown,
   weaponEffects,weaponDeclaration,martial,draw,weaponSnapshot:w,prepaidCourage,declarationOptions,colossal,shot:shot.shot,shotEffect};
  persist();

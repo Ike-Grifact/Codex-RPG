@@ -29,7 +29,7 @@ export const SITUATIONS={
 export const XP_ATTRIBUTE=[0,1,3,7,15,31,55];
 export const XP_TRAINING=[0,2,8,20,38,66,102];
 export const MAGIC_GRADE_DIE={1:6,2:10,3:12}; // Compatibilidade com G1-G3.
-export const MAGIC_GRADE_DICE={1:[6],2:[10],3:[12],4:[12,12]}; // SRD v0.89: G4 com dois d12.
+export const MAGIC_GRADE_DICE={1:[],2:[],3:[],4:[]}; // compatibilidade de importação: v0.194 não fornece dados independentes.
 export const CREATION_REFERENCE={attributes:15,training:15,skills:15,total:15}; // SRD v0.89: 15 XP compartilhados, sem reservas por categoria.
 export const CRITICAL_FACES=Object.freeze({4:4,6:6,10:7,12:12,20:20});
 export function isCriticalFace(sides,face){return CRITICAL_FACES[sides]===face&&Number.isInteger(face);}
@@ -126,24 +126,21 @@ export function buildPool(system,selection,{mode="normal",contextApproved=false,
   const skills=system.skills||[];
   const armed=["armas-leves","armas-medias","armas-pesadas","armas-longo-alcance","armas-fogo","pugilismo","arremesso","manejo-duplo"];
   if(mode==="armas"&&!armed.some(id=>skills.includes(id)))errors.push("Disciplina armada exige Perícia correspondente.");
-  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia")&&!["fogo","agua","vento","terra","sagrado","veneno","sangue","trevas"].some(id=>skills.includes(id)))errors.push("Conjuração exige Perícia elemental ou Criar Item de Foco e Magia (Psique).");
+  if(mode==="conjuracao"&&!skills.includes("criar-item-foco-magia"))errors.push("Conjuração exige Criar Item de Foco e Magia.");
   if(mode!=="armas"&&mode!=="conjuracao")errors.push("Escolha Armas ou Conjuração.");
  }
  if(!errors.length){
   for(const src of [b,a,...(c?[c]:[])])for(const [i,sides] of sourceDice(src.group,src.key,system).entries())
     pool.push({id:src.group+"."+src.key+"."+i,group:src.group,key:src.key,sides,baseSides:sides});
   if(mode==="conjuracao"){
-   const dice=MAGIC_GRADE_DICE[Number(magicGrade)]||[];
-   if(!dice.length)errors.push("Grau mágico inválido ou sem dado definido.");
-   else if(Number(magicGrade)===4){
-    const learned=system.skills||[];
-    const habilitado=(id)=>id==="psiquico"?learned.includes("criar-item-foco-magia"):learned.includes(id);
-    if(!magicElement||!magicSecondElement||magicElement===magicSecondElement||
-       !habilitado(magicElement)||!habilitado(magicSecondElement))
-     errors.push("G4 exige dois elementos diferentes, cada qual com Perícia G3 habilitada, e confirmação do Narrador.");
-   }
-   dice.forEach((sides,i)=>pool.push({id:"magic.grade."+magicGrade+"."+i,group:"magic",
-    key:"Grau "+magicGrade+" · dado "+(i+1),sides,baseSides:sides}));
+   const grade=Number(magicGrade),learned=system.skills||[];
+   if(b?.key!=="armas_conjuracao"||a?.key!=="inteligencia"||!learned.includes("criar-item-foco-magia"))errors.push("Conjuração exige Disciplina, Inteligência e Criar Item de Foco e Magia.");
+   if(![1,2,3,4].includes(grade)||magicSecondElement)errors.push("Grau inválido; G5 e mistura exigem resolução manual.");
+   if(magicElement&&magicElement!=="psiquico"&&!learned.includes(magicElement)&&!(grade===1&&learned.includes("improviso")))errors.push("Elemento não habilitado.");
+   const intGrade=Number(system.attributes?.inteligencia||0);
+   const dice=[[4],[6],[6,6],[6,6,6],[6,6,10],[6,10,10],[10,10,10],[10,10,12],[10,12,12],[12,12,12]][Math.min(9,intGrade+Math.max(0,grade-2))]||[];
+   for(let i=pool.length-1;i>=0;i--)if(pool[i].group==="attribute"&&pool[i].key==="inteligencia")pool.splice(i,1);
+   dice.forEach((sides,i)=>pool.push({id:"attribute.inteligencia."+i,group:"attribute",key:"inteligencia",sides,baseSides:sides}));
   }
   if(equipmentDie&&mode!=="conjuracao"){
    if(![4,6,10,12].includes(Number(equipmentDie)))errors.push("Dado de equipamento inválido.");

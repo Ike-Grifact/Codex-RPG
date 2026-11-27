@@ -73,7 +73,7 @@ const SKILLS=[
   "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",1
  ],
  [
-  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
+  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Extração Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
  ],
  [
   "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
@@ -140,7 +140,7 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativação-base G1/G2 Psíquica gratuita com a Perícia e o Grau habilitados; foco por Artesão recarrega em N rodadas no Grau N. Magias são criadas e narradas livremente na própria ação, conforme conceitos dos elementos, Perícias adquiridas, Graus, fontes e combinações habilitadas. Não há magias memorizadas, spellslots, peso mental, desconto de −1 por Criar Magia nem custo de 2 Coragens por criação fora de combate. Preparação G2/G3/G4 é tempo de conjuração em cena, não memorização, mantendo custos, DE, Pavor, focos e outros requisitos publicados.",
+  "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
   1
  ],
  [
@@ -157,14 +157,14 @@ const SKILLS=[
  ],
  [
   "improviso",
-  "Improviso Elemental",
-  "Requisitos Disciplina 1, Inteligência 1 e Destreza 1, sem Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
+  "Extração Elemental",
+  "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
   1
  ],
  [
   "cancelar-magia",
   "Cancelar Magia",
-  "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
+  "1 XP. Requer Criar Item de Foco e Magia, Extração Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
   1
  ],
  [
@@ -188,55 +188,55 @@ const SKILLS=[
  [
   "mestre",
   "Maestria Elemental",
-  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. A mistura consciente do segundo elemento custa 1A; o custo próprio histórico da Maestria para ativar duas propriedades especiais está PENDENTE de reconciliação, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
+  "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
   1
  ],
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
+  "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, a ativação-base de um efeito G1/G2 habilitado é gratuita. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: até 4 m para empurrar, puxar, elevar ou autoempurrar; linha, círculo, cone, X. G2: até 8 m para esses deslocamentos; sufocar com dano à Vida ou armadura, empurrar + derrubar com dano. G3: até 12 m para esses deslocamentos; conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada. Elevação por ataque segue a altura efetiva do resultado válido e as regras de queda; trajetórias curvas somam seus trechos dentro do limite do Grau. Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "1 XP · Disciplina 1 + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base gratuita em G1/G2 quando habilitada. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
   2
  ],
  [
   "veneno",
   "Perícia em Elemento Veneno",
-  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, aplica gratuitamente 1 acúmulo G1/G2 habilitado por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
+  "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
   2
  ],
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Rework v0.74: Sangue puro atinge proteção normalmente. Quando uma magia de Sangue acerta e foi amplificada para dano direto, TODO o dano calculado atinge a Vida sem passar pela Integridade da armadura; não soma bônus nem desgasta a armadura em paralelo. Custo: 1 Vida própria OU 3 marcas inimigas, uma vez por turno, em alternativa a manter ou elevar dado. O Pavor continua gerando risco. Extração como técnica segue revogada. Cada Vida de inimigo realmente perdida gera 1 marca.",
+  "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
   2
  ],
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base G1/G2 gratuita com Perícia e Grau habilitados, respeitando gatilhos. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
+  "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
   2
  ],
  [
@@ -494,7 +494,7 @@ const SKILLS=[
  [
   "ferreiro-elemental",
   "Ferreiro Elemental",
-  "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
+  "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Extração Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
   1
  ],
  [
@@ -546,7 +546,7 @@ const SKILLS=[
  [
   "invocacao-elemental",
   "Invocação Elemental",
-  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Uma ficha de invocação pode conter várias criaturas reais; três zumbis Médios podem compartilhar uma ficha Grande sem multiplicar Vida mecânica, ações ou XP. Dados da invocação: Pequena rola um dado de Atributo e mantém até 1; Média rola dois dados, um por parte, mantém até 2; Grande rola três dados, um por parte, mantém até 3. Registrar resultados das partes separadamente, sem conceder turnos extras. O jogador escolhe os dados de Atributo e quais manter. A invocação age sozinha ou ajuda um ÚNICO personagem (o conjurador ou um aliado) em ação conjunta normal, passando TODOS os dados mantidos para esse mesmo personagem (até 3 dados na Grande). Não distribuir entre dois personagens nem multiplicar ações, dados, Pavor ou símbolos. Uma única ficha e um único turno antecipável; limites individuais e regras normais da ação conjunta aplicam-se. Em Psique, a mente é projetada e o corpo do conjurador permanece parado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem e exigem Improviso Elemental + Maestria Elemental adquiridos, além das habilitações de ambos os elementos; Maestria Elemental na invocação custa +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; pode projetar a mente com corpo parado. Separar tokens divide XP/Vida e mantém a DE da invocação. Dano de área é normal. Apenas um turno antecipável para uma ficha, mesmo com vários tokens: agir sozinho ou ajudar conjurador/aliado em ação conjunta. Não automatizar possessão e divisões inexatas.",
+  "1 Coragem para invocar; Criar Item de Foco e Magia, Domar Pequena e elemento habilitado. Pequena em ataque conjunto concede apenas +1A; separada, 4 Vida (uma por faixa), sem armadura. Média/Grande mantêm 2/3 dados, apoio a um único aliado, ficha com XP do invocador. Uma invocação ativa; imunidade ao elemento; dissipa se conjurador Incapacitado/Inconsciente. Imbuir domesticada concede resistência. Dois elementos exigem Extração + Maestria e habilitações, +1 Coragem; efeitos especiais +1 Coragem. Psique projeta mente com corpo parado. Duração, ataque independente Pequena e divisão inexata pendentes.",
   1
  ],
  [
@@ -558,7 +558,7 @@ const SKILLS=[
  [
   "sentido-elemental",
   "Sentido Elemental",
-  "1 XP. Requer Inteligência 3 e Improviso Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
+  "1 XP. Requer Inteligência 3 e Extração Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
   1
  ],
  [
@@ -615,7 +615,7 @@ function skillReq(id,s){
     !["vento","agua","terra","fogo","sagrado","trevas","veneno"].some(has)||!has("domar-criatura-media")))
     return"Requer Alquimia 3, Inteligência 3, Destreza 3, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia elemental (diferente de Sangue) e Domar Criatura Média.";
   if(id==="pesquisa-avancada-pocoes"&&(alch<3||!has("improviso")||art<3||dex<2))
-    return"Requer Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2.";
+    return"Requer Alquimia 3, Extração Elemental, Artesão 3 e Destreza 2.";
   if(id==="corpo-fechado"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
   if(id==="invocar-esfera-espiritual"&&(!has("criar-item-foco-magia")||dex<4||intelligence<3||vig<3))
     return"Requer Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3.";
@@ -646,7 +646,7 @@ function skillReq(id,s){
   if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Especialização.";
   if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Especialização.";
  if(id==="ferreiro"&&(art<3||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
- if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
+ if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Extração Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
  if(id==="resistencia-a-fogo"&&(!has("ferreiro-elemental")||!has("fogo")||vig<2))return"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2."; 
  if(id==="encantar-com-elemento"&&(!has("criar-item-foco-magia")||!["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"].some(has)))return"Requer Criar Item de Foco e Magia e pelo menos uma Perícia Elemental adquirida (Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas ou Veneno).";
@@ -666,13 +666,13 @@ function skillReq(id,s){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")))return"Requer Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
- if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
+ if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Extração Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
   if(id==="mudanca-elemental"&&(!has("transformacao-elemental")||intelligence<4||dex<4))return"Requer Transformação Elemental, Inteligência 4 e Destreza 4.";
   if(id==="desencantar"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="espelho-magico"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
-  if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
+  if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Extração Elemental.";
   if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
@@ -686,7 +686,7 @@ function skillReq(id,s){
  if(id==="pericia-montaria")return"Custo XP de Perícia em Montaria PENDENTE: compra indisponível até a definição autoral.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.";
- if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
+ if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Extração Elemental e uma Perícia elemental.";
  if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";

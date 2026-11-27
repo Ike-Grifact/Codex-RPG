@@ -3237,7 +3237,7 @@ function alignMagicDraft(){
  const focus=magicSelectedFocus();if(!focus||magicExtracted())draft.magicFocusId="";
  const cap=draft.magicGrade>=3&&focus?Math.min(draft.magicGrade-2,focus.focusCharges??0):0;
  draft.magicCharges=Math.min(cap,Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
- if(draft.magicGrade<2)draft.trevas=false;
+ if(draft.magicElement!=="trevas"||![2,3].includes(draft.magicGrade))draft.trevas=false;
  if(draft.mode==="conjuracao"&&draft.magicElement)draft.equipmentId="";
 }
 
@@ -3259,7 +3259,7 @@ function prepareMagic(element=""){
  const compatible=magicCompatibleFoci(chosen);
  draft.magicFocusId=focusId||(previous.mode!=="conjuracao"&&compatible.length===1?compatible[0].id:"");
  draft.magicSecondFocusId=secondFocusId;
- draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=confirmed;
+ draft.magicCharges=charges;draft.magicAmplify=amplify;draft.magicGradeConfirmed=chosen===previous.magicElement&&confirmed;
  draft.magicTimeConfirmed=chosen===previous.magicElement&&!!timeConfirmed;
  alignMagicDraft();sheetPage="play";render();
  $("composer-content")?.scrollIntoView?.({behavior:"smooth",block:"nearest"});
@@ -3385,8 +3385,8 @@ function renderHemomancy(){
   "Usado neste turno: "+(kinds[h.boostKind]||"amplificação")+" · "+(h.boostPayment==="life"?"−1 Vida":"−3 Sangue inimigo"):
   "Disponível · 1 ativação por turno";
  const lifePay=$("hemo-amplify-life"),bloodPay=$("hemo-amplify-blood");
- if(lifePay)lifePay.disabled=h.usedThisTurn||state.life<1||!!state.pending;
- if(bloodPay)bloodPay.disabled=h.usedThisTurn||h.spilled<3||!!state.pending;
+ if(lifePay)lifePay.disabled=true;
+ if(bloodPay)bloodPay.disabled=true;
  $("hemo-transfusion-potential").textContent=String(Math.floor(h.spilled/3));
  const transfusion=$("hemo-transfusion-record");
  transfusion.disabled=!ownsSkill("transfusao-sanguinaria")||h.spilled<3||state.life<=0||state.life>=maxLife()||!!state.pending;
@@ -4771,7 +4771,8 @@ function score(){
   (critTier&&properties.includes("Precisa")?1:0)+(p.opts.potionResearch?1:0));
  const stealthUsed=[p.base,p.third].some(x=>x?.group==="practice"&&x.key==="furtividade");
  const stealthBonus=stealthUsed&&ownsSkill("furtividade")?1:0;
- const aPool=Math.max(0,raw[1]+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+Number(!!p.opts.domarActivate)+(critTier>=3?1:0)+
+ const maestriaBonus=p.base?.group==="practice"&&p.base.key==="armas_conjuracao"&&ownsSkill("mestre")&&!skillReq("mestre")?1:0;
+ const aPool=Math.max(0,raw[1]+maestriaBonus+situation[2]+(manejoPerfeitoActive?0:w)+stealthBonus+Number(!!p.opts.domarActivate)+(critTier>=3?1:0)+
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
@@ -4887,7 +4888,7 @@ function score(){
  const fireDirectLifeDamage=fireValid&&fireMode==="derreter"?(success?1:0):null;
  // v0.74: somente UMA rolagem de magia de Sangue, vinculada a um pagamento já realizado.
  const hemomancy=state.hemomancy||{};
- const mayHemomancyDirectLife=ownsSkill("sangue")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
+ const mayHemomancyDirectLife=p.opts.magicRules!==194&&ownsSkill("sangue")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
   p.base.key==="armas_conjuracao"&&hemomancy.usedThisTurn&&
   hemomancy.boostKind==="direct-life"&&!hemomancy.directLifeResolved&&
   // Foco explicitamente de outro elemento impede vincular dano direto de Sangue.
@@ -5030,8 +5031,7 @@ function finalize(){
  const usedFocus=p.opts.magicFocusId?state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"):null;
  if(usedFocus&&p.opts.magicCharges)usedFocus.focusCharges=Math.max(0,(usedFocus.focusCharges??usedFocus.grade)-p.opts.magicCharges);
  const secondUsedFocus=p.opts.magicSecondFocusId?state.items.find(it=>it.id===p.opts.magicSecondFocusId&&it.type==="foco"):null;
- if(Number(p.opts.magicGrade)===4&&secondUsedFocus&&p.opts.magicCharges)
-  secondUsedFocus.focusCharges=Math.max(0,(secondUsedFocus.focusCharges??secondUsedFocus.grade)-p.opts.magicCharges);
+ // G4 is no longer mixed; G5 is manual.
  const baseName=p.base.group==="practice"&&p.base.key==="armas_conjuracao"?"Disciplina ("+(p.mode==="conjuracao"?"Conjuração":"Armas")+")":label(p.base.group,p.base.key);
  const name=(p.opts.asura?"Punho Supremo de Asura · ":p.opts.maosLeves?"Mãos Leves · ":p.shieldThrowId?"Escudo Bumerangue · ":p.cravarRemovalShieldId?"Retirar Cravar · ":"")+baseName+" + "+label(p.attribute.group,p.attribute.key)+(p.third?" + "+label(p.third.group,p.third.key):"");
  const removalShield=p.cravarRemovalShieldId?state.items.find(it=>it.id===p.cravarRemovalShieldId&&it.type==="escudo"&&it.embeddedWeapon):null;
@@ -5050,7 +5050,7 @@ function finalize(){
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicSecondElement:p.opts.magicSecondElement||"",magicSecondFocusName:secondUsedFocus?.name||"",
-  magicSecondChargesSpent:Number(p.opts.magicGrade)===4?(p.opts.magicCharges||0):0,magicG4MixASpent:0,
+  magicSecondChargesSpent:0,magicG4MixASpent:0,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId,!!p.opts.magicSecondFocusId):0,
   cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
    manejoPerfeitoActive:!!s.manejoPerfeitoActive,golpeCertoTriggered:!!s.manejoPerfeitoGolpeCerto,
@@ -5291,7 +5291,7 @@ function renderInventory(){
  closeHandTooltip();clearInventoryDrag();
  const focusSelector=$("focus-test-model");
  if(focusSelector){
-  const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1);
+  const previous=focusSelector.value,models=CATALOG.filter(x=>x.kind==="focus"&&x.grade===1&&!x.properties?.includes("Muito Leve"));
   focusSelector.innerHTML=models.map(x=>'<option value="'+esc(x.name)+'">'+esc(x.name)+'</option>').join("");
   if(models.some(x=>x.name===previous))focusSelector.value=previous;
  }
@@ -5532,7 +5532,28 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const bought=purchaseItems[0],didEquip=equipAfter&&handItem(bought)&&setItemPosition(bought,"hands");
  render();save();toast(item.name+" adquirido por "+price+" VT."+(didEquip?" Equipado nas mãos.":equipAfter?" Guardado; não foi possível empunhar agora.":ammo&&!item.kitContainer?" Transfira a reposição para um recipiente compatível no inventário.":" Equipe no inventário."));
 }
-function addTestFocus(){toast("Focos físicos devem ser comprados. Preços e fabricação ainda exigem validação da mesa.");}
+function addTestFocus(){
+ if(state.pending)return toast("Finalize a rolagem pendente.");
+ if(state.items.length>=150)return toast("Inventário cheio.");
+ const row=CATALOG.find(x=>x.kind==="focus"&&x.name===$("focus-test-model")?.value);
+ if(!row||!["leve","medio","pesado"].includes(row.category)||row.properties?.includes("Muito Leve"))return toast("Escolha foco Leve, Médio ou Pesado. Capacidade Muito Leve ainda pendente.");
+ const elementInput=prompt("Elemento do foco (Psique, Fogo, Água, Ar, Terra, Veneno, Sagrado, Trevas ou Sangue):",row.element==="psiquico"?"Psique":"");
+ if(elementInput===null)return;
+ const element=magicElementId(elementInput);if(!element)return toast("Elemento inválido.");
+ if(element==="sangue")return toast("Pedra da Alma exige procedimento e preço específicos; não use compra comum.");
+ const raw=prompt("Preço TOTAL do foco em VT, aprovado pelo Narrador. Classificação e composição dos preços ainda pendentes:","");
+ if(raw===null)return;const price=Number(raw);
+ if(!Number.isSafeInteger(price)||price<1||price>walletValue())return toast("Preço inválido ou saldo insuficiente.");
+ const item=normalizedCatalogItem({...row,priceVT:price,element});
+ item.name=row.name+" · "+(element==="psiquico"?"Psique":ELEMENT_SKILLS.find(([id])=>id===element)?.[1]||element);
+ item.focusCharges=focusCapacity(item);
+ if(!confirm("Comprar "+item.name+" por "+price+" VT? Preço da mesa, não oficial. Cargas: "+item.focusCharges+". Registre a carga física no inventário."))return;
+ const res={...state.trade.resources},preferred=$("shop-preferred")?.value;
+ let due=price;
+ for(const k of [preferred,...RESOURCES.map(([id])=>id)].filter((x,i,a)=>a.indexOf(x)===i)){if(!Object.hasOwn(res,k))continue;const used=Math.min(res[k],due);res[k]-=used;due-=used;}
+ if(due)return toast("Saldo inconsistente; compra cancelada.");
+ state.trade.resources=res;state.trade.purchases.push({name:item.name,price});state.items.push(item);render();save();toast(item.name+" adquirido por "+price+" VT.");
+}
 function collectResources(){
  const k=$("collect-type")?.value,n=Math.floor(Number($("collect-amount")?.value||0));
  if(!RESOURCES.some(x=>x[0]===k)||!Number.isSafeInteger(n)||n<1||n>999){toast("Informe quantidade válida de 1 a 999.");return;}

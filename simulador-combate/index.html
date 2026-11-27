@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./styles.css?v=20261122-weapon-status-crit-v2">
 <script src="../assets/site.js?v=20261123-mecanicas-v097" defer></script>
 <script src="../prototipo-ficha/catalog.js?v=20261126-v0154-carga" defer></script>
-<script type="module" src="./app.mjs?v=20261127-v0194-magia"></script>
+<script type="module" src="./app.mjs?v=20261127-v0194-magia2"></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -88,7 +88,7 @@
     <label>Arma para atacar <select id="weapon-source"><option value="">Sem dado de arma</option></select></label>
     <div id="draw-controls" hidden><label>Guardar para liberar mãos (se necessário; seleção múltipla) <select id="draw-stow" multiple size="3"></select></label><p id="draw-info" class="cc-help"></p></div>
     <label class="cc-check-throw"><input type="checkbox" id="attack-thrown"> Ataque de arremesso com a arma selecionada (exige Perícia de Arremesso)</label>
-    <label>Grau da magia (conjuração habilitada) <select id="spell-grade"><option value="1">G1 · +1d6, sem dano ofensivo automático</option><option value="2">G2 · +1d10</option><option value="3">G3 · +1d12</option><option value="4">G4 · +2d12</option></select></label>
+    <label>Grau da magia (conjuração habilitada) <select id="spell-grade"><option value="1">G1 · imediato</option><option value="2">G2 · imediato</option><option value="3">G3 · Inteligência +1 passo · 1 Coragem</option><option value="4">G4 · Inteligência +2 passos · 1 Coragem</option></select></label>
     <label>Condição situacional <select id="situation"><option value="neutral">Normal</option><option value="advantage">Vantagem (+1A)</option><option value="disadvantage">Desvantagem (−1A)</option><option value="superior">Vantagem absoluta (+1E)</option><option value="inferior">Desvantagem absoluta (−1E)</option></select></label>
     <label>Dificuldade de Êxito (DE) <input id="difficulty" type="number" min="0" max="30" value="1"></label>
    </div>
