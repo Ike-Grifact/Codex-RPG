@@ -124,6 +124,22 @@ Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Te
 
 **DEFINIDO — SRD v0.162:** arma Leve adiciona 1d6, Média 1d10 e Pesada 1d12 com a Perícia correspondente. Sem a Perícia, ainda adiciona um dado, reduzido para 1d4, 1d6 ou 1d10, respectivamente. A categoria, peso físico, alcance e propriedades não mudam; características continuam exigindo habilitações aplicáveis. Preservar regras especiais de munição, armas de fogo e demais exceções até revisão específica.
 
+## Dano à Vida — escala de referência do Narrador
+
+A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada usa 1–4 de dano para 1 Vida, 5–8 para 2 Vida e 9 para 3 Vida. Para múltiplos de 9, somam-se os blocos: 18 de dano causa 6 Vida e 36 causa 12 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
+
+| Dano | Vida perdida |
+|---:|---:|
+| 1–4 | 1 |
+| 5–8 | 2 |
+| 9 | 3 |
+| 18 | 6 |
+| 36 | 12 |
+
+PENDENTE: confirmar a aplicação exata dos restos acima de 9 (por exemplo, 10–17), a conversão do excedente de Integridade em Vida nos ataques comuns e a relação entre a contagem anterior de E + T válidos e o dano calculado (E + piso(T/2), após modificadores e proteções). A redação usa dano positivo que atinge a Vida, conforme a decisão autoral, sem automatizar essa interpretação.
+
+[SRD v0.167](srd-continuidade-v0.167.md).
+
 ## Críticos de inimigos e monstros
 
 Inimigos recuperam Pavor no lugar da Coragem pela regra de proporção 1:1. Todos os dados mantidos devem estar em suas faces críticas, com mínimo de dois. O Pavor gerado preenche primeiro a reserva local; o excedente vai à reserva pública, respeitando os tetos, sem duplicação.
