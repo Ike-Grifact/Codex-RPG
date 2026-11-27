@@ -126,19 +126,20 @@ Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Te
 
 ## Dano à Vida — escala de referência do Narrador
 
-A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada usa 1–4 de dano para 1 Vida, 5–8 para 2 Vida e 9 para 3 Vida. Para múltiplos de 9, somam-se os blocos: 18 de dano causa 6 Vida e 36 causa 12 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
+A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada usa 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
 
 | Dano | Vida perdida |
 |---:|---:|
 | 1–4 | 1 |
 | 5–8 | 2 |
-| 9 | 3 |
-| 18 | 6 |
-| 36 | 12 |
+| 9–17 | 3 |
+| 18–26 | 6 |
+| 27–35 | 9 |
+| 36–44 | 12 |
 
-PENDENTE: confirmar a aplicação exata dos restos acima de 9 (por exemplo, 10–17), a conversão do excedente de Integridade em Vida nos ataques comuns e a relação entre a contagem anterior de E + T válidos e o dano calculado (E + piso(T/2), após modificadores e proteções). A redação usa dano positivo que atinge a Vida, conforme a decisão autoral, sem automatizar essa interpretação.
+PENDENTE: conversão do excedente de Integridade em Vida nos ataques comuns e relação entre a contagem anterior de E + T válidos e o dano calculado (E + piso(T/2), após modificadores e proteções). A redação usa dano positivo que atinge a Vida, sem automatizar essa interpretação.
 
-[SRD v0.167](srd-continuidade-v0.167.md).
+[SRD v0.168](srd-continuidade-v0.168.md).
 
 ## Críticos de inimigos e monstros
 
