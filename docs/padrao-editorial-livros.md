@@ -96,3 +96,8 @@ Aplicar gradualmente; não presumir que capítulos antigos já estejam adequados
 ## Aplicações visuais das Aptidões (v0.192)
 
 Usar ícones do atlas, exemplos de combinações destacados e diagramas estáticos funcionais. Disciplina apresenta armas e elementos lado a lado; o procedimento completo permanece em combate e conjuração. Identificar Graus de magia por constelações de uma a cinco estrelas e rótulo G1–G5, com tempo total e adicional ao lado. Estrelas não representam turnos ou recursos. Furtividade mantém o procedimento completo junto à Prática; exemplificar correspondência pelo tipo de dado e runas, não pela numeração interna. Preservar equivalência entre edição física e digital, sem depender de interatividade.
+
+
+## Navegação digital móvel
+
+Em telas até 720 px, o índice original é exibido em painel lateral retrátil por botão fixo Sumário, com seção atual, filtro de títulos, rolagem própria e fechamento ao escolher capítulo. Preservar âncoras e histórico nativo; sem JavaScript ou suporte a dialog, manter o índice original. Em desktop manter a coluna lateral e em impressão ocultar controles. Aplicar aos Livros do Jogador e do Mestre; sem alteração mecânica.
