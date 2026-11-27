@@ -709,7 +709,7 @@ Após acertar um ataque, o dano básico à Integridade da armadura é **E válid
 
 ##### Dano à Vida
 
-Quando um ataque acerta um alvo sem armadura equipada, converta o dano positivo que atinge a Vida pela escala abaixo. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
+Quando um ataque acerta, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
 
 | Dano | Vida perdida |
 |---:|---:|
@@ -719,15 +719,17 @@ Quando um ataque acerta um alvo sem armadura equipada, converta o dano positivo 
 
 Ao alcançar 9 de dano, a perda permanece em 3 Vida até atingir o próximo patamar. Para valores maiores, consulte o Livro do Mestre.
 
-Ataques que falham não desgastam a armadura. Com armadura equipada, resolva a Integridade primeiro; a conversão do excedente de ataques comuns permanece pendente. Quedas e perigos ambientais conservam o procedimento próprio.
+Ataques que falham não desgastam a armadura. Com armadura equipada, desconte primeiro o dano da Integridade disponível. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Quedas e perigos ambientais conservam o procedimento próprio.
+
+> **Exemplo:** Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
 
 ##### Quedas e perigos ambientais
 
 Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o Narrador informa a dificuldade (DE) e solicita um teste de **Atletismo + Destreza**.
 
-Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano: cada Êxito e cada Temor válido do seu teste reduz esse dano em 1, até zero.
+Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano: aplique a redução do seu teste. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano.
 
-> **Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 3. Se o Narrador rolar 5 de dano, restam apenas 2 antes das proteções aplicáveis.
+> **Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2: o Temor isolado não reduz dano. Se o Narrador rolar 5 de dano, restam 3 antes das proteções aplicáveis.
 
 No caso de uma queda, a Integridade disponível da armadura absorve primeiro o dano restante, e o excedente atinge a Vida.
 
@@ -1278,14 +1280,14 @@ O peso de combate depende da armadura, não da mochila. Runa Espinhos contam com
 
 ## Dano, armadura e Vida
 
-> **DEFINIDO — SRD v0.167:** a escala de dano à Vida para alvos sem armadura é apresentada em [Resolvendo dano](#dano-à-vida). Ela substitui a escala provisória do adendo de 22/11/2026. O desgaste de Integridade é calculado separadamente; os procedimentos de efeitos especiais e de excedente de ataques comuns não são definidos por esta atualização.
+> **DEFINIDO — SRD v0.167:** a escala de dano à Vida para alvos sem armadura é apresentada em [Resolvendo dano](#dano-à-vida). Ela substitui a escala provisória do adendo de 22/11/2026. O desgaste de Integridade é calculado separadamente; o excedente de ataques comuns segue a escala de Vida (v0.171); efeitos especiais mantêm suas regras próprias.
 
 
 **Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
 
 **DEFINIDO — SRD v0.149:** não há teto geral de Êxitos por Perícia nem por ação. Aplique os efeitos, requisitos e custos específicos de cada Perícia; Êxitos valem para DE e dano, salvo efeito explicitamente exclusivo de dano. Golpe Colossal mantém +1E por Coragem e o teto de 5 Coragens por turno.
 
-Armadura equipada possui **integridade**, que absorve primeiro o dano; excedentes podem alcançar Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O antigo teto de 3 Vida para golpes não colossais é substituído pela escala de dano à Vida da v0.167. O critério de dano colossal de ao menos **3 × Vida máxima** após proteção permanece inalterado.
+Armadura equipada possui **integridade**, que absorve primeiro o dano; depois de esgotada, converta o excedente pela tabela de dano à Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O antigo teto de 3 Vida para golpes não colossais é substituído pela escala de dano à Vida da v0.167. O critério de dano colossal de ao menos **3 × Vida máxima** após proteção permanece inalterado.
 
 
 ### Levantar Escudo físico [DEFINIDO — 16/11/2026]

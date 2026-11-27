@@ -126,7 +126,7 @@ Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Te
 
 ## Dano à Vida — escala de referência do Narrador
 
-A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada usa 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
+A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada ou para o excedente após esgotar a Integridade usa 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
 
 | Dano | Vida perdida |
 |---:|---:|
@@ -137,7 +137,9 @@ A escala de dano à Vida para ataques acertados contra alvo sem armadura equipad
 | 27–35 | 9 |
 | 36–44 | 12 |
 
-PENDENTE: conversão do excedente de Integridade em Vida nos ataques comuns e relação entre a contagem anterior de E + T válidos e o dano calculado (E + piso(T/2), após modificadores e proteções). A redação usa dano positivo que atinge a Vida, sem automatizar essa interpretação.
+**Excedente de Integridade — DEFINIDO:** Ataques que falham não desgastam a armadura. Com armadura equipada, desconte primeiro o dano da Integridade disponível. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Quedas e perigos ambientais conservam o procedimento próprio. Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
+
+PENDENTE: confirmar a métrica para ataques contra alvos inicialmente sem armadura, em relação à contagem histórica de E + T válidos versus dano calculado (E + piso(T/2), após modificadores e proteções). Para o excedente após esgotar a Integridade, a métrica é o dano calculado que sobrou, conforme v0.171.
 
 [SRD v0.168](srd-continuidade-v0.168.md).
 
@@ -190,11 +192,11 @@ Cada metro de altura equivale a **1 ponto de intensidade**. Alturas são inteira
 O Narrador determina a **DE igual à altura da queda, em metros**, antes de rolar qualquer dano. Jogadores e inimigos humanoides testam **Destreza + Atletismo**; com Atletismo Avançado, podem acrescentar uma terceira Aptidão pertinente. Monstros e criaturas testam **Agilidade + Destreza**.
 
 - Se alcançar a DE, evita a queda.
-- Se falhar, a queda acontece. O Narrador rola os dados correspondentes à altura original. O resultado do teste do jogador reduz o dano obtido, mesmo na falha.
+- Se falhar, a queda acontece. O Narrador rola os dados correspondentes à altura original. O dano calculado do teste defensivo (E + 1 por par completo de T válidos) reduz o dano obtido, mesmo na falha.
 
 Na queda ou no dano ambiental sofrido por um jogador, cada Temor não anulado da rolagem de dano do Narrador recupera 1 Coragem do jogador atingido, até seu teto. Os Temores não anulados do teste do jogador para evitar ou reduzir a queda vão à reserva pública de Pavor do Narrador, até o teto, sem duplicação na reserva local. Críticos da rolagem de dano não recuperam Coragem.
 
-**Exemplo:** risco de cair 8 m, DE 8. O jogador não alcança a DE. O Narrador rola 1d20 + 1d10 e calcula o dano bruto. O resultado anterior do teste reduz esse dano, não a altura nem a composição de dados.
+**Exemplo:** risco de cair 8 m, DE 8. O jogador não alcança a DE. O Narrador rola 1d20 + 1d10 e calcula o dano bruto. O dano calculado do teste defensivo reduz esse dano, não a altura nem a composição de dados.
 
 ### Queda provocada por elevação de um ataque
 
@@ -216,7 +218,7 @@ O Narrador considera a superfície de impacto: água, forragem ou inclinação f
 
 **Dano bruto = Êxitos + 1 por par completo de Temores não anulados.** A mesma fórmula vale para queda e perigo ambiental. Exemplo: 4E + 2T = 5 de dano bruto.
 
-Cada Êxito e cada Temor válido (não anulado) do teste reduz o dano em 1, até zero. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, dano restante 2. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
+Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. A armadura absorve primeiro o dano de queda com sua Integridade disponível; o excedente é descontado da Vida. Sem armadura, o dano restante atinge a Vida. Exemplo: teste com 2E + 1T falha contra DE 8; dano bruto 5, redução 2, dano restante 3. Não reduzir a altura com o resultado do teste. O ajuste de superfície é separado, aplicado antes da rolagem de dano.
 
 Para o dano de queda, use todos os dados da pilha e os benefícios críticos ambientais, sem recuperar Coragem ou Pavor pelo crítico em si. Consulte [Perigos ambientais](#perigos-ambientais) para os críticos e [Mecânicas — Quedas](../mecanicas/quedas.html) para a referência completa.
 
@@ -224,9 +226,9 @@ Para o dano de queda, use todos os dados da pilha e os benefícios críticos amb
 
 ### Teste para evitar ou reduzir o perigo
 
-Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo de Atletismo + Destreza aos personagens jogadores. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; cada Êxito e Temor válido do teste defensivo reduz esse dano em 1, até zero. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
+Quando o gatilho de um perigo ambiental for acionado, o Narrador informa a DE e solicita um teste defensivo de Atletismo + Destreza aos personagens jogadores. Se alcançar a DE, o personagem evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano ambiental; aplique a redução do teste defensivo. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano. O resultado não altera a intensidade nem a pilha de dano. Em quedas involuntárias, a DE continua igual à altura em metros (frações arredondadas para baixo); para outros perigos ambientais, o Narrador informa a DE conforme a situação. Elevação por Ar e empurrões de precipício mantêm seus procedimentos próprios.
 
-**Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 3. Se o Narrador rolar 5 de dano, restam apenas 2 antes das proteções aplicáveis.
+**Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2: o Temor isolado não reduz dano. Se o Narrador rolar 5 de dano, restam 3 antes das proteções aplicáveis.
 
 ### Intensidade e tipos de dano
 
@@ -243,7 +245,7 @@ Todos os dados da pilha de dano ambiental ou de queda são contabilizados: não 
 1. Ao acionar o gatilho, identifique os tipos de dano e a intensidade de 1 a 30; informe a DE do teste defensivo.
 2. Solicite Atletismo + Destreza ao jogador. Se alcançar a DE, o personagem evita o dano; se falhar, prossiga com a rolagem de dano.
 3. Monte a pilha usando o maior dado que caiba no valor restante. Intensidade 12 = 2d20 + 1d6.
-4. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável. A redução do teste defensivo é de 1 por Êxito ou Temor válido, até zero, sem alterar a pilha.
+4. Role todos os dados, conte as faces críticas e calcule o dano: Êxitos + 1 por par completo de Temores não anulados, salvo resistência ou imunidade aplicável. A redução do teste defensivo é igual aos Êxitos válidos mais 1 por par completo de Temores válidos não anulados, até zero, sem alterar a pilha.
 5. Considere as proteções pertinentes e preserve os destinos dos símbolos. Cada Temor não anulado da rolagem de dano sofrido por jogador recupera 1 Coragem para ele, até o teto; não conceda recurso pelo crítico em si.
 
 **Exemplo de imunidade:** Em um perigo com três tipos de dano, imunidade a dois elimina dois terços do dano.
