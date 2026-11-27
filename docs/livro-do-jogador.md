@@ -16,6 +16,8 @@ Em uma partida, o Narrador apresenta a situação e você descreve o que seu Apr
 >
 > **Narrador:** Vamos testar Força + Atletismo. A dificuldade é 3.
 
+A Dificuldade de Êxito (DE) é o valor que os símbolos precisam alcançar. Você aprenderá a resolver esse teste nos próximos capítulos.
+
 Você não precisa conhecer todas as Perícias para começar. Aprenda primeiro a escolher Aptidões, rolar, manter dados e interpretar os símbolos. As especializações ficam para quando forem úteis ao seu personagem.
 
 ### O mundo que você ainda não conhece
@@ -207,7 +209,7 @@ Rolar mais dados oferece mais possibilidades de escolha, não significa somar to
 
 Use esta sequência como referência durante a partida. Os próximos capítulos explicam como interpretar a dificuldade e o resultado.
 
-1. Declare o objetivo, a abordagem e as fontes pertinentes. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
+1. Declare o objetivo e a abordagem; sugira as Aptidões e o Narrador confirma se a combinação faz sentido. O Narrador indica a **Dificuldade de Êxito (DE)**. Se houver uma DE defensiva na ficha do alvo, utilize-a.
 2. Antes de rolar, decida se vai gastar Coragem para elevar a fonte, conforme as regras aplicáveis. Role até nove dados pertinentes das fontes habilitadas, incluindo **ao menos um dado de Atributo na pilha**.
 3. Escolha livremente os dados a manter dentro do limite do Marco: **não é necessário manter dados de Atributo**.
 4. Leia Êxitos, Antecipar e Temor **apenas dos dados mantidos**. Se todos os dados mantidos forem críticos (ao menos dois), aplique os benefícios do crítico antes de resolver a dificuldade.
