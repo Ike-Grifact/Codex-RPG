@@ -649,6 +649,8 @@ Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem
 | Incapacitado | −1E, +1T; 1 Coragem para agir |
 | Inconsciente | −2E, +2T; 2 Coragens para agir |
 
+As penalidades de Saúde não se acumulam. Pagar Coragem permite agir, mas não remove a penalidade; o Temor de Saúde conta para a DE e mantém suas consequências. Sem a Coragem obrigatória, a ação não é permitida.
+
 ##### Como a Vida aparece na ficha
 
 Cada ícone representa 1 ponto de Vida. No site, o ícone oficial de Vida mantém o traçado original sem preenchimento, com contorno verde (Saudável), azul (Ferido), vermelho (Incapacitado) e roxo (Inconsciente); contorno neutro indica um ponto perdido. A tabela Markdown usa ■ e □ como representação textual. O nível do personagem, por si só, não acrescenta Vida: o que importa são os Graus de Vigor e Força. Os exemplos mostram a Vida máxima, com as faixas na ordem Saudável / Ferido / Incapacitado / Inconsciente.
@@ -680,6 +682,8 @@ Eldric tem Vigor 1 e Força 2, totalizando 6 pontos (2/2/1/1). Apague os ícones
 | 1/6 | □□ | □□ | □ | ■ | Inconsciente | −2E; +2T; 2 Coragens para agir |
 | 0/6 | □□ | □□ | □ | □ | Morto | Não pode agir |
 
+<a id="dano-armadura-e-vida"></a>
+
 #### Resolvendo dano
 
 <a id="equipamentos-integridade-e-dano"></a>
@@ -697,7 +701,7 @@ A armadura equipada modifica a DE e possui Integridade própria. A DE indica a d
 
 Exemplo: com todos os Atributos no Grau 0, a DE natural é 2. Sem armadura ou com Leve, continua 2; com Média, fica 1; com Pesada ou Muito Pesada, fica 0.
 
-Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum.
+Armaduras Muito Pesadas exigem **Vigor 6 e Atletismo 6** e possuem imunidade física natural; não são uma escolha inicial comum. Consulte [Escudos e armaduras](../mecanicas/escudos-e-armaduras.html) para proteções especiais e acesso por Grau.
 
 Após acertar um ataque, o dano básico à Integridade da armadura é **E válidos + 1 por par completo de T não anulados**, salvo efeitos específicos.
 
@@ -729,52 +733,55 @@ Quando você corre o risco de cair ou aciona o gatilho de um perigo ambiental, o
 
 Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador rola o dano: aplique a redução do seu teste. Cada Êxito válido reduz 1 de dano; cada par completo de Temores válidos e não anulados reduz mais 1, até zero. Um Temor isolado não reduz dano.
 
-> **Exemplo:** Ao atravessar uma caverna, você aciona um gatilho que faz uma estalactite se desprender do teto. O Narrador solicita um teste de DE 6. Você obtém 2E + 1T válido: não evita o impacto, mas reduz o dano em 2: o Temor isolado não reduz dano. Se o Narrador rolar 5 de dano, restam 3 antes das proteções aplicáveis.
+> **Exemplo — Uma caverna instável**
+>
+> **Narrador:** Enquanto vocês atravessam a caverna, escutam um forte estalo vindo do teto. Pequenos fragmentos de pedra começam a cair. Eldric, faça um teste de Atletismo + Destreza contra DE 6.
+>
+> **Eldric:** Vou tentar saltar para o lado! Tirei dois Êxitos e um Temor.
+>
+> **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, então você recebe 3 de dano antes das proteções.
 
 No caso de uma queda, a Integridade disponível da armadura absorve primeiro o dano restante, e o excedente atinge a Vida.
 
 Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/perigos-ambientais.html) nas Mecânicas, ou os procedimentos no [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
-#### Coragem
+<a id="descansos"></a>
+<a id="descanso-curto-e-descanso-longo"></a>
 
-Coragem é o recurso que você investe para melhorar suas chances de agir ou ativar Perícias. No nível 1, seu limite é de **10 Coragens**.
+#### Recuperando Vida e Armadura
 
-Antes de rolar, você pode gastar 1 Coragem para elevar temporariamente uma Aptidão em um Grau (até G6 pela regra comum) ou manter um dado adicional, respeitando os limites da rolagem. Algumas Perícias e condições de Saúde também exigem Coragem. Consulte [Coragem](#coragem) para os demais usos e limites.
+Um descanso curto dura 1 hora. Não recupera Vida nem Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
 
-#### Descanso curto e descanso longo
+Um descanso longo dura 8 horas, com pelo menos 6 horas de sono.
 
-O **descanso curto** dura 1 hora. Não recupera Vida ou Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
+##### Recuperando Vida
 
-O **descanso longo** dura 8 horas, com pelo menos 6 horas de sono. Ao concluí-lo, recupere 1 ponto de Vida por dia, sem ultrapassar a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1.
+Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
 
-Além da recuperação de Vida, escolha **uma** das duas opções:
+Se estiver nas faixas inferiores de Saúde — Incapacitado ou Inconsciente —, o descanso por si só não recupera Vida. É necessário receber tratamento e obter sucesso em um teste de Medicina antes de recuperar Vida pelo descanso. O tratamento pode envolver vários testes, conforme a situação e os cuidados necessários. O teste habilita a recuperação; não concede automaticamente pontos de Vida extras.
 
-- **Recuperar Coragem:** recupere uma quantidade igual ao seu Grau de Vigor + 1, até o limite da reserva.
-- **Reparar a armadura:** use um kit de reparo adequado à peça. Nesse descanso, você não recupera Coragem pela regra de Vigor.
+> **Exemplo:** Eldric tem 6 de Vida máxima e está Ferido com 4 de Vida. Após o descanso longo, recupera 1 Vida e chega a 5/6. Se estivesse Incapacitado com 2/6, precisaria primeiro passar pelo tratamento de Medicina para recuperar Vida.
 
-Exemplo: Eldric tem Vigor 1, 5/10 Coragens, 4/6 de Vida e uma armadura Leve com 1/4 de Integridade. Após um descanso longo válido, fica com 5/6 de Vida. Se escolher recuperar Coragem, fica com 7/10 e mantém a Integridade 1/4. Se escolher reparar, fica com 5/10 Coragens e restaura a Integridade para 4/4.
+##### Recuperando Coragem ou reparando a armadura
 
-##### Reparando a armadura
+Além da recuperação de Vida, quando permitida, escolha recuperar Coragem ou reparar a armadura.
 
-Um **kit de reparo custa 3 VT**, valor correspondente ao material necessário para reparar a armadura. O material deve ser adequado à peça.
+- **Recuperar Coragem:** Recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva. Se escolher reparar a armadura, não recupere Coragem por esta regra.
+- **Reparar a armadura:** Use um kit de reparo adequado à peça (3 VT). Recupere metade da Integridade máxima + 1, sem ultrapassar o máximo da armadura.
 
-| Tipo de armadura | Integridade recuperada |
-|---|---|
-| Todas as armaduras | Metade da Integridade máxima + 1, sem ultrapassar o máximo da peça. |
+| Armadura G1 | Integridade recuperada por reparo |
+|---|---:|
+| Leve | Até 3 |
+| Média | Até 5 |
+| Pesada | Até 7 |
 
-**SRD v0.151 — DEFINIDO:** Leve G1 recupera até 3, Média até 5 e Pesada até 7 pontos por reparo. Não há mais recuperação integral automática para armaduras Leves.
-
-Exemplo: uma armadura Pesada com 3/12 de Integridade recupera 7 pontos, chegando a 10/12.
+> **Exemplo:** Uma armadura Pesada com 3/12 de Integridade recupera 7 pontos e chega a 10/12.
 
 ##### Outros efeitos do descanso
 
-O descanso longo renova a utilização de Perseverança Humana. Escudo Rúnico mantém sua ativação gratuita diária. Símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram no descanso longo, caso ainda estejam ativos.
+O descanso longo renova Perseverança Humana. Escudo Rúnico mantém sua ativação gratuita diária. Símbolos guardados por Antecipação e benefícios de Concentração Refinada expiram se ainda estiverem ativos. Recobrar Coragem mantém suas próprias condições; o acúmulo com a recuperação natural e a recuperação geral de cargas de foco ainda não estão definidos.
 
-Recobrar Coragem também possui aplicação em descanso longo conforme seu verbete, mas o acúmulo com a recuperação natural permanece pendente. Não há recuperação geral definida de cargas de foco por descanso.
-
-**PENDENTE:** consumo do kit, arredondamento de metade da Integridade para máximos ímpares, necessidade de teste de reparo, interrupções, tratamento de estados graves e recuperação de cargas de foco. O preço de 3 VT está definido; peso e inclusão no catálogo ainda precisam ser resolvidos.
-
-Consulte [Recobrar Coragem](../pericias/recobrar-coragem.html) e [SRD v0.134](srd-continuidade-v0.134.md).
+Consulte [Recobrar Coragem](../pericias/recobrar-coragem.html) e [Livro do Mestre](livro-do-mestre.md#recuperação-e-tratamento).
 
 <a id="praticas-ficha"></a>
 
@@ -1228,13 +1235,12 @@ A DE indica o quanto é difícil acertar o personagem. A Integridade indica quan
 
 | Tipo de armadura | DE | Integridade G1 (playtest) |
 |---|---:|---:|
-| Muito Leve (incluindo Roupas Simples) | 0 | 2 |
-| Leve | 0 | 5 |
+| Leve | 0 | 4 |
 | Média | −1 | 8 |
 | Pesada | −2 | 12 |
 | Muito Pesada (quando permitida) | −3 | Pendente |
 
-A armadura Muito Pesada exige Vigor 6 e Atletismo 6 e possui imunidade natural ao dano físico comum; sua Integridade quantitativa ainda está pendente. A Integridade dos Graus superiores também não tem uma escala geral definida. O Grau permite propriedades adicionais conforme o tipo, sem alterar automaticamente o modificador de DE. A Vida e a Integridade são contabilizadas separadamente; consulte as regras de dano e proteção para resolver um ataque.
+A armadura Muito Pesada exige Vigor 6 e Atletismo 6 e possui imunidade natural ao dano físico comum; sua Integridade quantitativa ainda está pendente. A Integridade dos Graus superiores também não tem uma escala geral definida. O Grau permite propriedades adicionais conforme o tipo, sem alterar automaticamente o modificador de DE. A Vida e a Integridade são contabilizadas separadamente; consulte [Resolvendo dano](#resolvendo-dano) e [Escudos e armaduras](../mecanicas/escudos-e-armaduras.html).
 
 ### Defesas especiais e em conjunto
 
@@ -1277,49 +1283,6 @@ O peso de combate depende da armadura, não da mochila. Runa Espinhos contam com
 **No conflito**, um ataque leve pode explorar passagem estreita, um ataque pesado pode tentar deslocar um obstáculo, e o grupo pode combinar Força + Atletismo, Inteligência + Engenharia ou outros recursos pertinentes para atingir o objetivo. Uma terceira fonte depende da Perícia habilitadora.
 
 **Fora do conflito**, a mesma lógica permite construir proteções, investigar ruínas, negociar, atravessar terreno, improvisar ferramentas ou resgatar um aliado. **Nenhum exemplo concede bônus automático**; o Narrador avalia a Dificuldade de Êxito, a posição, as fontes e as consequências. O peso pode ser uma vantagem real para um objetivo e um inconveniente para outro.
-
-## Dano, armadura e Vida
-
-> **DEFINIDO — SRD v0.167:** a escala de dano à Vida para alvos sem armadura é apresentada em [Resolvendo dano](#dano-à-vida). Ela substitui a escala provisória do adendo de 22/11/2026. O desgaste de Integridade é calculado separadamente; o excedente de ataques comuns segue a escala de Vida (v0.171); efeitos especiais mantêm suas regras próprias.
-
-
-**Dano básico após alcançar a Dificuldade de Êxito:** total de **Êxitos válidos + piso(Temor mantido não anulado ÷ 2)**, salvo efeitos específicos. Cada **par completo de Temor** acrescenta 1 ao dano básico; os símbolos residuais ainda podem gerar intervenção. Esta redação substitui a abreviação ambígua `T/2` sem mudar a matemática.
-
-**DEFINIDO — SRD v0.149:** não há teto geral de Êxitos por Perícia nem por ação. Aplique os efeitos, requisitos e custos específicos de cada Perícia; Êxitos valem para DE e dano, salvo efeito explicitamente exclusivo de dano. Golpe Colossal mantém +1E por Coragem e o teto de 5 Coragens por turno.
-
-Armadura equipada possui **integridade**, que absorve primeiro o dano; depois de esgotada, converta o excedente pela tabela de dano à Vida. **Ataques que falham não desgastam integridade.** **Perfurante físico habilitado não ignora mais a armadura:** o ataque acertado causa **E válidos + 1 dano por Temor mantido não anulado** à Integridade, **em substituição** à contribuição padrão de `⌊T/2⌋` nesse efeito. Se Perfurante for neutralizado por Escudo Arcano Psíquico ativo ou Levantar Escudo físico frontal, resta o dano básico normal (`E + ⌊T/2⌋`), sujeito às proteções. Sem armadura, a propriedade não concede dano extra direto à Vida. O antigo teto de 3 Vida para golpes não colossais é substituído pela escala de dano à Vida da v0.167. O critério de dano colossal de ao menos **3 × Vida máxima** após proteção permanece inalterado.
-
-
-### Levantar Escudo físico [DEFINIDO — 16/11/2026]
-
-Levantar Escudo **consome uma ação**; o defensor realiza um **teste de Disciplina** e escolhe os dados mantidos dentro dos limites normais. A Integridade simbólica extra é **E + T válidos dos dados mantidos**. O desgaste usa as equivalências já definidas: **1E do ataque anula 1E do escudo ou 2T; 1T anula 1T; 2T anulam 1E**. Antecipar não concede Integridade automaticamente. **Não é reação**.
-
-O escudo físico bloqueia **somente pela frente**. Pode-se mover normalmente sem abaixá-lo; **atacar encerra o bloqueio**. A postura protege contra **o primeiro ataque frontal recebido** e termina **depois da resolução desse ataque**, inclusive se ele não atingir. Se houver dano excedente, aplica-se à **armadura** e, depois, à **Vida**. Enquanto protege, anula a característica **Perfurante de armas físicas**, mas não o **Perfurar de Água**. **Cravar [DEFINIDO — SRD v0.115]:** uma arma **Média ou Pesada com a característica Cravar** pode ficar presa ao escudo físico quando o ataque **alcançar a DE** e a característica tiver sido ativada pela **Perícia de Armas correspondente**, mesmo no crítico. Declare e pague o custo antes de rolar, conforme a Perícia ou Especialização. Escudo físico **Pesado** só pode ser cravado por **arma Pesada**. **Cravar cumulativo [DEFINIDO — SRD v0.79, 17/11/2026]:** cada arma cravada no mesmo escudo impõe **−1E em Levantar Escudo**, acumulando-se por arma (2 armas = −2E; 3 = −3E). A retirada de uma arma elimina o −1E dessa arma, mas preserva as penalidades das demais. Não reduzir Temor/Antecipar nem penalizar outras ações por Cravar. O peso de cada arma acompanha a carga do escudo enquanto estiver presa. O registro do alvo permanece manual no protótipo.
-
-**PENDENTE:** interação com Integridade/Durabilidade material do escudo, cobertura precisa, ataque vindo de trás e ataques múltiplos, coexistência com Escudo Arcano e detalhes do efeito Perfurar de Água. Os valores materiais G1 6/9/12 continuam PROPOSTOS e não são somados automaticamente ao resultado rolado.
-
-### Armaduras: cinco tipos independentes do Grau [DEFINIDO]
-
-**Tipo** determina categoria, Integridade, DE e proteção natural. **Grau** determina acesso a propriedades adicionais. Uma armadura Muito Leve de Grau 4 **continua Muito Leve**; uma Muito Pesada de Grau 1 já tem imunidade física natural.
-
-| Tipo | Integridade | DE | Progressão elemental |
-|---|---|---|---|
-| **Leve** | **G1: 4 de Integridade (playtest)** | **0 DE** | **Grau 3+:** pode ter resistência elemental |
-| **Média** | **G1: 8 de Integridade (playtest)** | **−1 DE** | **Grau 2+:** pode receber resistências específicas |
-| **Pesada** | **G1: 12 de Integridade (playtest)** | **−2 DE** | **Grau 2:** resistência; **Grau 3:** pode ter duas resistências diferentes |
-| **Muito Pesada** | Valor **PENDENTE** | **−3 DE** | **Qualquer Grau:** imunidade física; **Grau 2:** resistência elemental; **Grau 4:** **imunidade elemental adicional que se soma à resistência anterior** |
-
-**Acesso por Grau [DEFINIDO]:** Grau 1 pode ser usado desde o início, conforme requisitos do tipo; Grau 2 requer **nível 5**; Grau 3 requer **nível 10**; Grau 4 requer **nível 20**. O peso não aumenta obrigatoriamente com o Grau.
-
-**Muito Pesada [DEFINIDO]:** exige **Vigor 6 e Atletismo 6** independentemente do Grau. Concede **imunidade natural a todo dano físico comum**, sem perda de Integridade nem Vida decorrente desse dano. A penalidade é de **−3 DE**, e não benefício de Grau 4. Sua resistência elemental de Grau 2 **é conservada** ao obter imunidade elemental adicional de Grau 4; as propriedades são fixas na peça comprada ou fabricada. Ex.: imunidade física + resistência a Fogo + imunidade a Gelo, se presentes no modelo.
-
-**Modificadores gerais de armadura:** Leve 0, Média −1, Pesada −2, Muito Pesada −3 em todas as defesas. Calcule a DE natural com teto 8, aplique uma única armadura válida e +1 de Maestria em Escudos quando pertinente. DE final entre 0 e 9. Não duplicar modificadores. Integridade é recurso separado.
-
-**Imunidade física não protege contra Psíquico**, que é elemento neutro. Também não cancela Temor ou efeitos habilitados como derrubar/afastar/Sangramento superficial. Perfuração excepcional habilitada segue seus gatilhos; a arma Perfurante comum não atravessa imunidade gratuitamente.
-
-**Integridade quantitativa:** os quatro valores de Grau 1 da tabela acima são os vigentes no catálogo de playtest. A escala geral dos Graus superiores e o valor da Muito Pesada permanecem **PENDENTES**. Não criar números adicionais. Custos/catálogo de peças, equipamento simultâneo e resolução de dano misto/colossal também aguardam decisão.
-
-**Capacidade de carga:** Todo Aprendiz começa com 5 Cargas no corpo e 3 na mochila. Cada Grau de Força acrescenta 1 Carga ao corpo; a cada dois Graus de Vigor, ganhe mais 1 Carga. Tudo o que você transporta conta para a carga, inclusive recursos de troca. Consulte [Capacidade de Carga](../mecanicas/capacidade-de-carga.html) para os exemplos, limites e efeitos da sobrecarga.
 
 ## Combate Coordenado
 
