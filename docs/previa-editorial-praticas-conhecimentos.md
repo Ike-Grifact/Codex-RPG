@@ -10,3 +10,7 @@ Mantida a redação; diagramas estáticos da ramificação de Disciplina, catego
 ## Correção autoral v0.191
 
 Furtividade exige sucesso contra a DE aplicável e deslocamento. Localização compara tipo de dado e composição simbólica exata das faces mantidas, não índices numéricos. Exemplo d12 3E e d10 1E+1A conferido no código. Mantida pendência de dados rolados ou mantidos do atacante. Cinco pictogramas de Graus de magia adicionados ao atlas. A correção mecânica está no SRD v0.191 (prévia).
+
+## Constelações e tempo de conjuração
+
+Substituídos os círculos numerados por cinco constelações douradas de uma a cinco estrelas, mantendo os caminhos SVG e os rótulos G1–G5. Tempo visível em cada Grau: G1/G2 instantâneos, G3/G4/G5 inicial + 1/2/3 turnos (2/3/4 totais), sem aceleração. Referência à seção completa de conjuração. Sem alteração mecânica.

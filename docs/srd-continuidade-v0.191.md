@@ -12,4 +12,4 @@ Durante sua própria rolagem de ataque/dano, o inimigo precisa reproduzir as fac
 
 ## Editorial
 
-Cinco ícones de Graus de magia, numerados e com pontos, sem significado mecânico adicional. Furtividade junto à Prática, referência na Parte III. Preservar tabelas de progressão e âncoras.
+Cinco ícones de Graus de magia, em constelações de uma a cinco estrelas, sem significado mecânico adicional. A referência de tempo junto a cada Grau inclui o turno inicial e distingue a preparação adicional; mantém os tempos definidos na v0.185. Furtividade junto à Prática, referência na Parte III. Preservar tabelas de progressão e âncoras.

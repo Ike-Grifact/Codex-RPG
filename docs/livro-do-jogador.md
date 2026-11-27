@@ -986,13 +986,15 @@ Leia Armas, alcance e efeitos para aprender a resolver ataques e característica
 
 A conjuração utiliza Disciplina para executar a técnica e Inteligência para organizar e moldar a magia. Você descreve a manifestação na hora, respeitando as habilitações, a fonte elemental e os limites da magia. Não é preciso memorizar feitiços. Aprender uma Perícia elemental habilita os primeiros efeitos especiais no Grau 2; Psique é habilitada por Criar Item de Foco e Magia.
 
-| Grau | Possibilidades | Inteligência | Preparação total sem foco |
+| Grau | Possibilidades | Inteligência | Tempo de conjuração sem aceleração |
 |---|---|---|---|
-| G1 | Manifestação elemental | Sem elevação | Imediato |
-| G2 | Primeiros efeitos | Sem elevação | Imediato |
-| G3 | Efeitos superiores | +1 passo | 2 turnos |
-| G4 | Efeitos avançados | +2 passos | 3 turnos |
-| G5 | Mistura de propriedades por Maestria | +3 passos | 4 turnos |
+| G1 | Manifestação elemental | Sem elevação | Instantânea — ação inicial |
+| G2 | Primeiros efeitos | Sem elevação | Instantânea — ação inicial |
+| G3 | Efeitos superiores | +1 passo | 2 turnos — inicial + 1 |
+| G4 | Efeitos avançados | +2 passos | 3 turnos — inicial + 2 |
+| G5 | Mistura de propriedades por Maestria | +3 passos | 4 turnos — inicial + 3 |
+
+No livro digital, o número de estrelas da constelação identifica o Grau, não a quantidade de turnos. Consulte Conjuração e elementos para os procedimentos de preparação e aceleração por focos.
 
 O Grau da magia determina suas propriedades, a elevação temporária dos dados de Inteligência e o tempo de conjuração; não é o Grau permanente de Disciplina. Improviso Elemental gasta 1A para acrescentar um elemento disponível, alterando ou combinando a natureza da manifestação sem ativar a propriedade especial improvisada. Maestria Elemental permite a combinação de propriedades especiais habilitadas em G5. Focos aceleram a preparação com suas cargas, não fornecem dados próprios. Magias mentais de Psique exigem Disciplina Avançada e a combinação Disciplina + Inteligência + Influência.
 

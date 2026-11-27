@@ -78,4 +78,4 @@ Pictogramas editoriais independentes de elementos, Aptidões e Perícias. Ver [p
 - `magia-grau-3.svg` — Grau de magia 3
 - `magia-grau-4.svg` — Grau de magia 4
 - `magia-grau-5.svg` — Grau de magia 5
-Numerais e pontos identificam o Grau; não representam dados, recursos, turnos ou bônus.
+Constelações de uma a cinco estrelas conectadas identificam os Graus. O número de estrelas não representa dados, recursos, turnos ou bônus. A indicação textual G1–G5 acompanha os símbolos no livro.
