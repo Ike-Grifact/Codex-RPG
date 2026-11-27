@@ -2201,6 +2201,8 @@ Pode optar por dano normal. Divisão usa uma rolagem contra DE individual de cad
 
 ## Atualização das Perícias — 12/11/2026
 
+> A referência consolidada de conjuração está no capítulo Conjuração e elementos. Textos anteriores de atualização são históricos nos pontos substituídos pelo rework v0.185–0.190. A resolução automatizada ainda não foi migrada.
+
 **Precedência:** as decisões autorais desta seção substituem entradas históricas incompatíveis sobre Espalhar Golpe, Maestria em Arremesso, Maestria em Manejo Duplo, Disparo Múltiplo, Armas de Fogo e Veneno. Não misturar tabelas antigas. Os IDs internos das Perícias renomeadas são mantidos para preservar fichas antigas.
 
 ### Ladino e Furtividade [DEFINIDO]
