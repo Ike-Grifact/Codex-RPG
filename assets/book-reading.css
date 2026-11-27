@@ -1,0 +1,24 @@
+/* Livro digital — separação editorial; escopo exclusivo dos livros. */
+.reading-edition > section{padding:clamp(28px,4vw,54px) 0 clamp(38px,5vw,70px);scroll-margin-top:24px}
+.reading-edition > section + section{border-top:3px double var(--line);padding-top:clamp(32px,5vw,64px)}
+.reading-edition > .reading-part{margin:clamp(24px,5vw,60px) 0 0;padding:clamp(24px,4vw,44px) 0;border-block:3px double var(--line);text-align:center}
+.reading-edition > .reading-part:first-child{margin-top:0}
+.reading-part span{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:750;margin-bottom:.65rem}
+.reading-part strong{display:block;color:var(--ink);font-size:clamp(1.6rem,3.5vw,2.6rem);line-height:1.2}
+.reading-edition > section > h2{margin-top:.45rem;margin-bottom:1.25rem}
+.reading-edition :is(#recursos-atributos,#resolvendo-dano,#descansos,#recuperacao-tratamento,#escala-vida){border-top:2px solid var(--line);padding-top:1.6rem;margin-top:2.8rem;scroll-margin-top:24px;font-size:clamp(1.35rem,2.5vw,1.7rem);line-height:1.3}
+.reading-rest{margin-top:1.1rem;min-width:0}
+.reading-rest-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
+.reading-unit{min-width:0;padding:1.25rem 0;border-bottom:1px solid var(--line)}
+.reading-unit:last-child{border-bottom:0}
+.reading-rest-pair .reading-unit{border:1px solid var(--line);border-radius:8px;padding:1rem}
+.reading-unit :is(h4,h5){font-family:inherit;font-size:clamp(1.1rem,2vw,1.3rem);line-height:1.35;color:var(--ink);margin:0 0 .7rem}
+.reading-unit p{margin:.55rem 0 .8rem}
+.reading-unit ul{margin:.6rem 0;padding-left:1.25rem}
+.reading-unit li{margin-bottom:.4rem}
+.reading-unit .table-scroll{margin:.8rem 0;max-width:100%;overflow-x:auto}
+.reading-unit table{width:100%;min-width:0;table-layout:auto}
+.reading-unit :is(td,th){white-space:normal;overflow-wrap:break-word}
+.reading-kicker{display:block;font-size:.8rem;font-weight:750;color:var(--accent);letter-spacing:.04em;margin-bottom:.35rem}
+@media(max-width:640px){.reading-rest-pair{grid-template-columns:1fr}.reading-edition > section{padding-bottom:32px}.reading-edition > .reading-part{padding:24px 0}.reading-unit{padding:1rem 0}}
+@media print{.reading-edition > .reading-part:not(:first-child){break-before:page}.reading-edition > section{padding:12px 0}.reading-unit :is(h4,h5){break-after:avoid}.reading-rest-pair{display:block}.reading-rest-pair .reading-unit{margin-bottom:.5rem}}
