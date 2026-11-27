@@ -98,7 +98,15 @@ Prevalece o [SRD v0.48](srd-continuidade-v0.48.md). Domar Pequena/Média/Grande 
 
 Armadura Muito Leve G1 agora tem 3 de Integridade; demais armaduras G1 continuam 7/12/17. Dano prévio do druida reduz ponto por ponto a Vida atual inicial da forma animal. Pavor de ação sem alvo de ataque alimenta reserva pública; excedente permite intervenção da ameaça mais próxima do último jogador ativo, desempate por DE e Vida, salvo circunstância da cena. Múltiplos excedentes e custo exato ainda pendentes.
 
-Recuperação natural vigente (SRD v0.134): 1 Vida por dia, ou 2 com Recuperação Vigorosa, após descanso longo válido de 8 horas com pelo menos 6 horas de sono. Escolha recuperar Coragem (Vigor + 1) ou reparar armadura com kit; a Vida é recuperada independentemente da escolha. O kit recupera toda a Integridade perdida de armaduras Muito Leves e Leves. Nas armaduras Médias, Pesadas e Muito Pesadas, recupera metade da Integridade máxima, sem ultrapassar o máximo da peça. Consumo do kit, arredondamento da metade da Integridade quando o máximo for ímpar, necessidade de teste, interrupções e tratamento de estados graves permanecem pendentes.
+## Recuperação e tratamento
+
+Um descanso longo dura 8 horas, com pelo menos 6 horas de sono. Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
+
+Se estiver nas faixas inferiores de Saúde — Incapacitado ou Inconsciente —, o descanso por si só não recupera Vida. É necessário receber tratamento e obter sucesso em um teste de Medicina antes de recuperar Vida pelo descanso. O tratamento pode envolver vários testes, conforme a situação e os cuidados necessários. O teste habilita a recuperação; não concede automaticamente pontos de Vida extras.
+
+Além da recuperação de Vida, quando permitida, escolha recuperar Coragem ou reparar a armadura. Recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva. Se escolher reparar a armadura, não recupere Coragem por esta regra. Use um kit de reparo adequado à peça (3 VT). Recupere metade da Integridade máxima + 1, sem ultrapassar o máximo da armadura.
+
+PENDENTE: DE, Aptidões complementares, número e duração dos testes, frequência de tratamento e se o sucesso precisa ser renovado a cada descanso. A aplicação às duas faixas inferiores (Incapacitado e Inconsciente) preserva a recuperação natural em Ferido; confirmar se Ferido também deve exigir tratamento. Consumo do kit, arredondamento em máximos ímpares, necessidade de teste de reparo, interrupções, peso e inclusão do kit no catálogo permanecem pendentes.
 
 **Capítulo inicial | 11 de novembro de 2026 | referência normativa atualizada em 14/11/2026: SRD v0.43**
 
@@ -125,6 +133,8 @@ Fora de conflitos, solicite testes quando a falha, o grau de eficiência ou o Te
 **DEFINIDO — SRD v0.162:** arma Leve adiciona 1d6, Média 1d10 e Pesada 1d12 com a Perícia correspondente. Sem a Perícia, ainda adiciona um dado, reduzido para 1d4, 1d6 ou 1d10, respectivamente. A categoria, peso físico, alcance e propriedades não mudam; características continuam exigindo habilitações aplicáveis. Preservar regras especiais de munição, armas de fogo e demais exceções até revisão específica.
 
 ## Dano à Vida — escala de referência do Narrador
+
+Não existe teto geral de Êxitos por Perícia ou ação; respeite as condições, custos e tetos específicos. O critério de dano colossal de ao menos 3 × Vida máxima após proteção permanece inalterado.
 
 A escala de dano à Vida para ataques acertados contra alvo sem armadura equipada ou para o excedente após esgotar a Integridade usa 1–4 de dano para 1 Vida e 5–8 para 2 Vida. A partir de 9, cada bloco completo de 9 dano causa 3 Vida. Desconsidere o resto: 10 a 17 ainda causam 3 Vida; 18 a 26 causam 6 Vida. Não há teto geral de 3 Vida nessa escala. O dano básico e o desgaste de Integridade continuam sendo calculados pelas regras vigentes; efeitos que causem dano direto à Vida e a resolução de quedas e perigos ambientais mantêm seus procedimentos próprios. Dano zero não retira Vida.
 
