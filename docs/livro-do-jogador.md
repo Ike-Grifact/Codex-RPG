@@ -649,7 +649,7 @@ Ao sofrer dano à Vida, marque a perda e identifique a faixa em que o personagem
 | Incapacitado | −1E, +1T; 1 Coragem para agir |
 | Inconsciente | −2E, +2T; 2 Coragens para agir |
 
-As penalidades de Saúde não se acumulam. Pagar Coragem permite agir, mas não remove a penalidade; o Temor de Saúde conta para a DE e mantém suas consequências. Sem a Coragem obrigatória, a ação não é permitida.
+As penalidades das diferentes faixas de Saúde não se acumulam entre si. A penalidade da faixa atual, porém, soma-se às Desvantagens de privação e demais condições pertinentes, independentemente do teto de −2E da escala de Desvantagens. Pagar Coragem permite agir, mas não remove a penalidade; o Temor de Saúde conta para a DE e mantém suas consequências. Sem a Coragem obrigatória, a ação não é permitida.
 
 ##### Como a Vida aparece na ficha
 
@@ -713,7 +713,7 @@ Após acertar um ataque, o dano básico à Integridade da armadura é **E válid
 
 ##### Dano à Vida
 
-Quando um ataque acerta, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
+Para um ataque acertado, queda ou outro perigo ambiental, converta o dano positivo que atinge a Vida pela escala abaixo, seja contra um alvo sem armadura equipada ou após esgotar a Integridade. Dano zero não retira Vida. Efeitos que causam dano direto à Vida seguem suas próprias regras.
 
 | Dano | Vida perdida |
 |---:|---:|
@@ -723,7 +723,7 @@ Quando um ataque acerta, converta o dano positivo que atinge a Vida pela escala 
 
 Ao alcançar 9 de dano, a perda permanece em 3 Vida até atingir o próximo patamar. Para valores maiores, consulte o Livro do Mestre.
 
-Ataques que falham não desgastam a armadura. Com armadura equipada, desconte primeiro o dano da Integridade disponível. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Quedas e perigos ambientais conservam o procedimento próprio.
+Ataques que falham não desgastam a armadura. Após determinar o dano de um ataque, queda ou perigo ambiental e aplicar as reduções e demais proteções pertinentes, desconte primeiro o dano da Integridade disponível da armadura equipada. Se a Integridade chegar a zero e sobrar dano, converta somente o excedente pela tabela de dano à Vida. Sem armadura, converta todo o dano restante pela mesma tabela. Efeitos de dano direto à Vida mantêm suas regras próprias.
 
 > **Exemplo:** Um ataque causa 8 de dano contra uma armadura com 3 de Integridade restante. A armadura perde 3 de Integridade e sobram 5 de dano, que causam 2 de Vida pela tabela.
 
@@ -739,9 +739,13 @@ Se alcançar a DE, você evita o perigo e não sofre dano. Se falhar, o Narrador
 >
 > **Eldric:** Vou tentar saltar para o lado! Tirei dois Êxitos e um Temor.
 >
-> **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, então você recebe 3 de dano antes das proteções.
+> **Narrador:** Você tenta se esquivar, mas uma estalactite se desprende do teto e atinge seu ombro. Rolei 5 de dano. Seu teste reduz 2, restando 3 de dano. Quanto de Integridade ainda possui sua armadura?
+>
+> **Eldric:** Minha armadura leve está danificada. Só tenho 2 de Integridade.
+>
+> **Narrador:** O impacto esgota a Integridade da sua armadura. Sobra 1 de dano, então você perde também 1 ponto de Vida.
 
-No caso de uma queda, a Integridade disponível da armadura absorve primeiro o dano restante, e o excedente atinge a Vida.
+Quedas e demais perigos ambientais utilizam a mesma regra de aplicação de dano dos ataques: a Integridade disponível da armadura absorve primeiro o dano restante, e somente o excedente é convertido pela tabela de dano à Vida.
 
 Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/perigos-ambientais.html) nas Mecânicas, ou os procedimentos no [Livro do Mestre](livro-do-mestre.md#quedas-e-perigos-ambientais).
 
@@ -750,32 +754,52 @@ Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/
 
 #### Recuperando Vida e Armadura
 
-Um descanso curto dura 1 hora. Não recupera Vida nem Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
+##### Descanso curto
 
-Um descanso longo dura 8 horas, com pelo menos 6 horas de sono.
+Um descanso curto é uma pausa de 1 hora durante a qual os personagens interrompem as atividades exaustivas, podem comer, beber água, conversar e se preparar para continuar a jornada. Também podem dedicar toda essa hora exclusivamente a uma tentativa de reparo de armadura. Não recupera Vida nem Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente, respeitando suas condições.
 
-##### Recuperando Vida
+##### Descanso longo
 
-Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
+Um descanso longo é um período de 8 horas, com pelo menos 6 horas de sono, necessário à recuperação física e mental. Fora de casa ou de um ambiente seguro, o grupo pode montar um acampamento e distribuir as atividades entre seus integrantes. Organize as atividades sem comprometer o mínimo de sono de cada personagem.
+
+- **Dormir:** descansar e combater o cansaço.
+- **Comer:** atender às necessidades de alimentação e hidratação.
+- **Fazer a guarda:** vigiar o acampamento enquanto os demais descansam.
+- **Reparar a armadura:** dedicar 1 hora exclusivamente ao reparo, com ferramentas e materiais adequados.
+
+##### Cansaço e fome
+
+As três necessidades básicas são sono, alimentação e hidratação. Verifique-as diariamente, tomando o descanso longo como referência: dormir menos de 6 horas gera Fadiga; não consumir 1 unidade de comida por dia gera Fome; não consumir 1 unidade de água por dia gera Sede. Cada necessidade não atendida acrescenta um nível de Desvantagem, considerado com as demais circunstâncias desfavoráveis. Um nível causa Desvantagem (−1A); dois níveis, Desvantagem Absoluta (−1E); três ou mais níveis, Golpe de Sorte (−2E, chamado Ação de Sorte na tabela de condições). Os níveis substituem uns aos outros: a penalidade dessa escala não ultrapassa −2E. Se a privação persistir por mais um dia, começa a prejudicar a Saúde. Não é necessário esperar um descanso longo válido para verificar as necessidades do dia.
+
+Cada personagem consome 1 unidade de água e 1 unidade de comida por dia. Um cantil é sempre Leve (1 Carga no inventário), esteja cheio, parcialmente cheio ou vazio. Possui capacidade para 2 cargas de água (2 usos), sem alterar sua carga de inventário ao consumir ou reabastecer. Após os dois usos, deve ser reabastecido em uma fonte apropriada. Uma ração de viagem ocupa 1 item Leve (1 Carga) e fornece 1 unidade de comida, consumida no uso. Um cantil cheio e duas rações ocupam inicialmente 3 Cargas e atendem às necessidades de água e comida de um personagem por dois dias.
+
+As penalidades da faixa atual de Saúde são independentes da escala de Desvantagens e somam-se a ela, sem respeitar o teto de −2E dessa escala. As faixas de Saúde não se acumulam entre si. Exemplo: Ferido (−1A) com dois níveis de privação sofre −1A e −1E; Incapacitado (−1E, +1T) com três níveis sofre −3E e +1T, além de pagar 1 Coragem para agir.
+
+PENDENTE: condições exatas de remoção de cada privação e recuperação de privação prolongada, quais testes são afetados e quantidade/frequência de perda de Vida após mais um dia de privação. A avaliação diária, os mínimos de sono, água e comida, as três necessidades e a escala de Desvantagens estão definidos.
+
+##### Recuperação após descanso
+
+**Vida:** Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
 
 Se estiver nas faixas inferiores de Saúde — Incapacitado ou Inconsciente —, o descanso por si só não recupera Vida. É necessário receber tratamento e obter sucesso em um teste de Medicina antes de recuperar Vida pelo descanso. O tratamento pode envolver vários testes, conforme a situação e os cuidados necessários. O teste habilita a recuperação; não concede automaticamente pontos de Vida extras.
 
 > **Exemplo:** Eldric tem 6 de Vida máxima e está Ferido com 4 de Vida. Após o descanso longo, recupera 1 Vida e chega a 5/6. Se estivesse Incapacitado com 2/6, precisaria primeiro passar pelo tratamento de Medicina para recuperar Vida.
 
-##### Recuperando Coragem ou reparando a armadura
+**Coragem ou reparo:** Ao concluir um descanso longo válido, além da recuperação de Vida quando permitida, recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva, ou opte por reparar a armadura durante esse descanso em vez da recuperação natural de Coragem. Uma tentativa de reparo em uma pausa separada de 1 hora não exige descanso longo e não concede recuperação natural de Vida ou Coragem.
 
-Além da recuperação de Vida, quando permitida, escolha recuperar Coragem ou reparar a armadura.
+##### Reparando armaduras
 
-- **Recuperar Coragem:** Recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva. Se escolher reparar a armadura, não recupere Coragem por esta regra.
-- **Reparar a armadura:** Use um kit de reparo adequado à peça (3 VT). Recupere metade da Integridade máxima + 1, sem ultrapassar o máximo da armadura.
+Para tentar reparar uma armadura, tenha um kit de ferramentas de Artesão adequado ao material e ao tipo da peça e materiais de reparo compatíveis. Ferramentas e materiais são recursos distintos. As ferramentas podem ser de couraria (coureiro), ferraria (ferreiro), costura (costureiro), alquimia, pesca, encantamento, escrita (escriba), trabalho de madeira (lenhador), entre outros ofícios. Exemplos de ferramentas não constituem uma tabela definitiva de compatibilidade nem concedem dados extras.
 
-| Armadura G1 | Integridade recuperada por reparo |
-|---|---:|
-| Leve | Até 3 |
-| Média | Até 5 |
-| Pesada | Até 7 |
+Cada tentativa consome materiais equivalentes à metade do valor da armadura reparada, em VT, ainda que apenas uma pequena parte da Integridade esteja perdida. Os materiais podem ser comprados ou encontrados durante a exploração, desde que compatíveis com a peça. Uma armadura inimiga danificada ou quebrada vale metade de seu valor original como referência de aproveitamento de suas partes; não se trata de uma recompensa genérica de materiais por derrotar inimigos. Uma placa de aço nova pode servir como material de reposição, avaliada pelo seu próprio valor, sem ser tratada como sucata de armadura. Criaturas só fornecem materiais quando possuírem partes adequadas ao reparo. A própria armadura que está sendo reparada não pode fornecer os materiais do seu reparo.
 
-> **Exemplo:** Uma armadura Pesada com 3/12 de Integridade recupera 7 pontos e chega a 10/12.
+Role Destreza + Artesão e subtraia os Temores válidos não anulados dos Êxitos válidos (E − T). Se o resultado for positivo, restaure toda a Integridade da armadura até o máximo. Se for zero, o reparo falha sem alterar a Integridade. Se for negativo, o reparo falha e a armadura perde Integridade igual a T − E, até o mínimo de zero. Os materiais são gastos em cada tentativa, inclusive na falha. O kit é a ferramenta necessária, não o material consumido pelo teste.
+
+Cada tentativa de reparo exige 1 hora de dedicação exclusiva, equivalente ao período de um descanso curto. Pode ser realizada depois de um combate, durante uma pausa na exploração ou em uma hora acordada do descanso longo, sem comprometer as 6 horas mínimas de sono. O personagem não pode dormir, fazer a guarda ou realizar outra atividade simultânea durante essa hora. O risco de perder materiais e danificar a peça faz parte da manutenção em campo: comprar uma armadura nova em uma loja pode ser mais barato e fácil do que repará-la no meio de uma caverna. Não há reembolso nem redução automática do custo em reparos pequenos.
+
+> Exemplo ilustrativo de preço: uma armadura pesada avaliada em 6 VT exige 3 VT em materiais por tentativa; uma armadura danificada compatível de mesmo valor original fornece essa referência de 3 VT. No catálogo atual, a Pesada G1 custa 12 VT, então exige 6 VT em materiais. Se estiver em 3/12 de Integridade e o teste obtiver 3E e 1T, E − T = 2: o reparo é bem-sucedido e ela retorna a 12/12. Com 2E e 2T, o resultado é zero: a tentativa falha, gasta materiais e mantém a Integridade atual. Com 1E e 3T, o resultado é −2: a tentativa falha, gasta materiais e a armadura perde 2 de Integridade, passando de 3/12 para 1/12.
+
+PENDENTE: eventual limite adicional de tentativas além do tempo e dos materiais disponíveis, compatibilidade específica de ferramentas e materiais por peça, arredondamento de valores fracionários em VT, efeito de interrupções, aproveitamento de materiais de criaturas e desgaste/vida útil das ferramentas. A regra não altera os preços do catálogo.
 
 ##### Outros efeitos do descanso
 
@@ -1070,7 +1094,7 @@ Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas
 
 ### 6. Dano e Integridade
 
-Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 4/4 para 2/4; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 4/4 em vez de recuperar Coragem.
+Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 4/4 para 2/4; a Vida permanece 6/6. Após dedicar 1 hora exclusivamente ao reparo, se possuir as ferramentas adequadas, gastar materiais equivalentes à metade do valor da peça e obtiver E − T > 0 no teste de Destreza + Artesão, a armadura Leve volta a 4/4.
 
 
 ## Equipamentos, compras e inventário
