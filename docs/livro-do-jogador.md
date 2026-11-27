@@ -754,32 +754,46 @@ Consulte [Quedas](../mecanicas/quedas.html) e [Perigos ambientais](../mecanicas/
 
 #### Recuperando Vida e Armadura
 
-Um descanso curto dura 1 hora. Não recupera Vida nem Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
+##### Descanso curto
 
-Um descanso longo dura 8 horas, com pelo menos 6 horas de sono.
+Um descanso curto é uma pausa de 1 hora durante a qual os personagens interrompem as atividades exaustivas, podem comer, conversar e se preparar para continuar a jornada. Não recupera Vida nem Coragem naturalmente. A Perícia Recobrar Coragem permite recuperar 2 Coragens após o descanso e uma cena narrativa pertinente.
 
-##### Recuperando Vida
+##### Descanso longo
 
-Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
+Um descanso longo é um período de 8 horas, com pelo menos 6 horas de sono, necessário à recuperação física e mental. Fora de casa ou de um ambiente seguro, o grupo pode montar um acampamento e distribuir as atividades entre seus integrantes. Organize as atividades sem comprometer o mínimo de sono de cada personagem.
+
+- **Dormir:** descansar e combater o cansaço.
+- **Comer:** atender às necessidades de alimentação.
+- **Fazer a guarda:** vigiar o acampamento enquanto os demais descansam.
+- **Reparar a armadura:** utilizar ferramentas e materiais adequados durante o período de descanso longo.
+
+##### Cansaço e fome
+
+Cansaço por falta de descanso e fome por falta de alimentação prejudicam o personagem. Considere essas condições em conjunto com as demais circunstâncias desfavoráveis: a condição resultante pode ser Desvantagem (−1A), Desvantagem Absoluta (−1E) ou Golpe de Sorte (−2E, chamado Ação de Sorte na tabela de condições). Se a privação persistir por mais um dia, começa a prejudicar a Saúde.
+
+PENDENTE: definir quando cada privação é registrada, a escala de acúmulo, os testes afetados, a forma de eliminar cada condição e a quantidade/frequência de perda de Vida. Não aplicar penalidades adicionais ou valores de dano ainda não definidos.
+
+##### Recuperação após descanso
+
+**Vida:** Ao concluir um descanso longo válido, recupere 1 Vida por dia, até a Vida máxima. Com Recuperação Vigorosa, recupere 2 em vez de 1, respeitando a necessidade de tratamento quando aplicável.
 
 Se estiver nas faixas inferiores de Saúde — Incapacitado ou Inconsciente —, o descanso por si só não recupera Vida. É necessário receber tratamento e obter sucesso em um teste de Medicina antes de recuperar Vida pelo descanso. O tratamento pode envolver vários testes, conforme a situação e os cuidados necessários. O teste habilita a recuperação; não concede automaticamente pontos de Vida extras.
 
 > **Exemplo:** Eldric tem 6 de Vida máxima e está Ferido com 4 de Vida. Após o descanso longo, recupera 1 Vida e chega a 5/6. Se estivesse Incapacitado com 2/6, precisaria primeiro passar pelo tratamento de Medicina para recuperar Vida.
 
-##### Recuperando Coragem ou reparando a armadura
+**Coragem ou reparo:** Além da recuperação de Vida, quando permitida, escolha recuperar Coragem ou tentar reparar a armadura. Se escolher recuperar Coragem, recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva. Se escolher o reparo, não recupere Coragem por esta regra.
 
-Além da recuperação de Vida, quando permitida, escolha recuperar Coragem ou reparar a armadura.
+##### Reparando armaduras
 
-- **Recuperar Coragem:** Recupere seu Grau de Vigor + 1 em Coragem, até o limite da reserva. Se escolher reparar a armadura, não recupere Coragem por esta regra.
-- **Reparar a armadura:** Use um kit de reparo adequado à peça (3 VT). Recupere metade da Integridade máxima + 1, sem ultrapassar o máximo da armadura.
+Para tentar reparar uma armadura, tenha um kit de ferramentas de Artesão adequado ao material e ao tipo da peça e materiais de reparo compatíveis. Ferramentas e materiais são recursos distintos. As ferramentas podem ser de couraria (coureiro), ferraria (ferreiro), costura (costureiro), alquimia, pesca, encantamento, escrita (escriba), trabalho de madeira (lenhador), entre outros ofícios. Exemplos de ferramentas não constituem uma tabela definitiva de compatibilidade nem concedem dados extras.
 
-| Armadura G1 | Integridade recuperada por reparo |
-|---|---:|
-| Leve | Até 3 |
-| Média | Até 5 |
-| Pesada | Até 7 |
+Cada tentativa consome materiais equivalentes à metade do valor da armadura reparada, em VT. Os materiais podem ser comprados ou recuperados de armaduras inimigas danificadas ou quebradas, criaturas e outras fontes compatíveis. Uma armadura danificada vale metade de seu valor original como referência de aproveitamento. A própria armadura que está sendo reparada não pode fornecer os materiais do seu reparo.
 
-> **Exemplo:** Uma armadura Pesada com 3/12 de Integridade recupera 7 pontos e chega a 10/12.
+Role Destreza + Artesão e subtraia os Temores válidos não anulados dos Êxitos válidos (E − T). Se E − T for maior que zero, restaure toda a Integridade da armadura até o máximo. Se o resultado for zero ou negativo, o reparo falha e não restaura Integridade. Os materiais são gastos em cada tentativa, inclusive na falha. O kit é a ferramenta necessária, não o material consumido pelo teste.
+
+> Exemplo ilustrativo de preço: uma armadura pesada avaliada em 6 VT exige 3 VT em materiais por tentativa; uma armadura danificada compatível de mesmo valor original fornece essa referência de 3 VT. No catálogo atual, a Pesada G1 custa 12 VT, então exige 6 VT em materiais. Se estiver em 3/12 de Integridade e o teste obtiver 3E e 1T, E − T = 2: o reparo é bem-sucedido e ela retorna a 12/12. Com 2E e 2T, o resultado é zero e a tentativa falha.
+
+PENDENTE: duração da tentativa dentro do descanso, número de tentativas, compatibilidade específica de ferramentas e materiais por peça, arredondamento de valores fracionários em VT, efeito de interrupções, aproveitamento de materiais de criaturas e desgaste/vida útil das ferramentas. A regra não altera os preços do catálogo.
 
 ##### Outros efeitos do descanso
 
@@ -1074,7 +1088,7 @@ Aplicando as regras apresentadas após os Atributos: Eldric tem Vida 6/6 (faixas
 
 ### 6. Dano e Integridade
 
-Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 4/4 para 2/4; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo kit de reparo, a armadura Leve volta a 4/4 em vez de recuperar Coragem.
+Em um acerto comum de 1E e 2T não anulados, Eldric sofre 2 de dano à Integridade. Registre a armadura de 4/4 para 2/4; a Vida permanece 6/6. Após um descanso longo válido, se optar pelo reparo em vez de recuperar Coragem, possuir as ferramentas adequadas, gastar materiais equivalentes à metade do valor da peça e obtiver E − T > 0 no teste de Destreza + Artesão, a armadura Leve volta a 4/4.
 
 
 ## Equipamentos, compras e inventário
