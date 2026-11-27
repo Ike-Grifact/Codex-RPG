@@ -101,7 +101,7 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 | Lampião | 3 VT | Leve |
 | Óleo para Lampião (1 carga) | 1 VT | Leve |
 | Pederneira | 1 VT | Leve |
-| Cantil | 2 VT (proposto) | 2 Cargas quando cheio; 2 usos de água |
+| Cantil | 2 VT (proposto) | Leve — 1 Carga fixa; 2 cargas de água |
 | Ração de Viagem (1 dia) | 1 VT (proposto) | Leve — 1 Carga; 1 uso |
 | Saco de Dormir | 3 VT | Médio |
 | Tenda | 6 VT | Médio |
@@ -196,5 +196,5 @@ O tipo concreto é escolhido ao adquirir o instrumento; não há bônus automát
 
 ## Atualização de suprimentos — v0.177 [DEFINIDO]
 
-Cada personagem consome 1 unidade de água e 1 unidade de comida por dia. Um cantil cheio ocupa o equivalente a 2 itens Leves (2 Cargas) e contém 2 usos de água; após os dois usos, deve ser reabastecido em uma fonte apropriada. Uma ração de viagem ocupa 1 item Leve (1 Carga) e fornece 1 unidade de comida, consumida no uso. Um cantil cheio e duas rações ocupam inicialmente 4 Cargas e atendem às necessidades de água e comida de um personagem por dois dias. A carga do cantil parcialmente cheio ou vazio permanece pendente.
-Os preços anteriores permanecem propostos. A implementação do catálogo e o consumo automático ainda precisam ser sincronizados.
+Cada personagem consome 1 unidade de água e 1 unidade de comida por dia. Um cantil é sempre Leve (1 Carga no inventário), esteja cheio, parcialmente cheio ou vazio. Possui capacidade para 2 cargas de água (2 usos), sem alterar sua carga de inventário ao consumir ou reabastecer. Após os dois usos, deve ser reabastecido em uma fonte apropriada. Uma ração de viagem ocupa 1 item Leve (1 Carga) e fornece 1 unidade de comida, consumida no uso. Um cantil cheio e duas rações ocupam inicialmente 3 Cargas e atendem às necessidades de água e comida de um personagem por dois dias.
+Os preços anteriores permanecem propostos. Os catálogos já classificam o cantil como Leve; o consumo e o reabastecimento automáticos permanecem pendentes.
