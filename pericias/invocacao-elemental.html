@@ -7,7 +7,7 @@
 <header class="site-header"><a class="brand" href="../index.html"><img class="brand-logo" src="../assets/codex-logo.svg" width="64" height="58" alt=""><span class="brand-text">CODEX <strong>RPG</strong></span></a><nav class="site-nav"><a href="../index.html">Início</a><a href="../livro.html">Livro do Jogador</a><a class="active" href="./">Perícias</a><a href="../prototipo-ficha/">Ficha</a><a href="../criar-conflito/">Criar Conflito</a></nav><button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu">Menu</button></header>
 <main id="conteudo" class="skill-shell"><nav class="skill-breadcrumbs"><a href="./">Perícias</a><span>›</span><span>Invocação Elemental</span></nav>
 <section class="skill-hero"><p class="skill-eyebrow">Magia · Invocação Elemental</p><span class="skill-badge pending">DEFINIDO / PENDENTE</span><h1>Invocação Elemental</h1><p class="skill-description">Invoque uma criatura elemental para agir por você ou ajudar um aliado. Escolha seu elemento, porte e dados, e controle a criatura como uma única ficha.</p></section>
-<dl class="skill-stats"><div class="skill-stat"><dt>Custo de aquisição</dt><dd>1 XP, compra única</dd></div><div class="skill-stat"><dt>Requisitos</dt><dd>Criar Item de Foco e Magia + Domar Criatura Pequena; outros elementos e portes exigem suas Perícias</dd></div><div class="skill-stat"><dt>Ativação</dt><dd>1 Coragem</dd></div><div class="skill-stat"><dt>Ficha da invocação</dt><dd>XP total igual ao XP total do invocador</dd></div></dl>
+<dl class="skill-stats"><div class="skill-stat"><dt>Custo de aquisição</dt><dd>1 XP, compra única</dd></div><div class="skill-stat"><dt>Requisitos</dt><dd>Criar Item de Foco e Magia + Domar Criatura Pequena; outros elementos e portes exigem suas Perícias</dd></div><div class="skill-stat"><dt>Ativação</dt><dd>1 Coragem</dd></div><div class="skill-stat"><dt>Ficha da invocação</dt><dd>Média/Grande: XP igual ao invocador; Pequena: Saúde específica</dd></div></dl>
 <article class="skill-article">
 <h2>O que esta magia faz?</h2>
 <p>Você dá forma a uma criatura feita de um elemento que domina. Ela pode lutar ao seu lado, agir na cena ou <strong>ajudar você ou outro personagem em uma ação conjunta</strong>. Também pode usar sua magia para <strong>imbuir uma criatura que já domesticou</strong> com resistência elemental.</p>
@@ -25,7 +25,7 @@
 <ol>
 <li><strong>Escolha o elemento e o porte</strong> que suas Perícias permitem.</li>
 <li><strong>Pague 1 Coragem</strong> para invocar.</li>
-<li><strong>Prepare uma ficha para a criatura</strong> com XP total igual ao XP total do seu personagem. É uma reserva da invocação; não transfere XP para você.</li>
+<li>Para Média/Grande, prepare uma ficha com XP igual ao seu. Pequena usa regra própria.</li>
 <li><strong>Coloque a criatura na cena.</strong> Ela é imune ao elemento de sua invocação e causa dano desse elemento quando seu ataque causar dano.</li>
 </ol>
 <p>A criatura é <strong>temporária</strong>. Se você ficar <strong>Incapacitado</strong> ou <strong>Inconsciente</strong>, ela se dissipa. A duração normal e os detalhes de deslocamento/controle ainda não foram definidos.</p>
@@ -33,12 +33,12 @@
 <h2>Como a criatura age e rola dados?</h2>
 <p>O porte determina quantos dados de <strong>Atributo</strong> a invocação pode rolar e manter:</p>
 <table><thead><tr><th>Porte</th><th>Rola</th><th>Mantém</th></tr></thead><tbody>
-<tr><td>Pequena</td><td>1 dado</td><td>Até 1</td></tr>
+<tr><td>Pequena</td><td>+1A em ataque conjunto</td><td>Não transfere dado</td></tr>
 <tr><td>Média</td><td>2 dados</td><td>Até 2</td></tr>
 <tr><td>Grande</td><td>3 dados</td><td>Até 3</td></tr>
 </tbody></table>
-<p>Você escolhe <strong>quais dados de Atributo da ficha usar</strong> e, depois de rolar, <strong>quais manter</strong>. Cada dado corresponde a uma parte da invocação. Registre normalmente a face, os Êxitos, os Antecipares e os Pavores. Se apenas uma parte age sozinha, ela usa somente seu dado.</p>
-<p><strong>Escolha uma atuação:</strong> a invocação pode agir por conta própria <em>ou</em> ajudar <strong>um único personagem</strong> em uma ação conjunta. Se ajudar, passa <strong>todos os dados mantidos destinados ao apoio</strong> para esse mesmo personagem, de acordo com as regras normais de ação conjunta. Uma invocação Grande pode passar <strong>até três dados</strong> a uma única pessoa; não pode repartir esses dados entre aliados diferentes.</p>
+<p><strong>Para Média e Grande:</strong> você escolhe <strong>quais dados de Atributo da ficha usar</strong> e, depois de rolar, <strong>quais manter</strong>. Cada dado corresponde a uma parte da invocação. Registre normalmente a face, os Êxitos, os Antecipares e os Pavores. Se apenas uma parte age sozinha, ela usa somente seu dado.</p>
+<p>Invocação Pequena: em ataque conjunto concede apenas +1A, sem transferir dado inteiro. Separada da ficha do conjurador, possui quatro unidades de Vida, uma por faixa de Saúde, sem armadura; perder 1 Vida já a deixa Ferida. Conversão de dano bruto e ataque independente ainda em revisão. Média e Grande conservam as regras anteriores.</p><p><strong>Escolha uma atuação:</strong> a invocação pode agir por conta própria <em>ou</em> ajudar <strong>um único personagem</strong> em uma ação conjunta. Se Média ou Grande ajudar, passa <strong>todos os dados mantidos destinados ao apoio</strong> para esse mesmo personagem, de acordo com as regras normais de ação conjunta. Uma invocação Grande pode passar <strong>até três dados</strong> a uma única pessoa; não pode repartir esses dados entre aliados diferentes.</p>
 <p>O conjurador pode <strong>Antecipar somente um turno de sua invocação</strong>, mesmo que ela tenha vários corpos. Uma ficha Grande com três dados <strong>não recebe três turnos ou três ataques</strong>.</p>
 
 <h2>Exemplo: três zumbis ajudando um aliado</h2>
@@ -54,7 +54,7 @@
 <p>Em vez de criar uma invocação, você pode imbuir uma criatura que já domesticou com um elemento habilitado. Ela recebe <strong>resistência</strong> àquele elemento, <strong>não imunidade</strong>. A redução de dano, duração e eventual custo adicional dessa opção ainda precisam ser estabelecidos.</p>
 
 <h3>Invocar com dois elementos</h3>
-<p>Para misturar dois elementos, você precisa ter <strong>os dois elementos habilitados</strong>, além de <a href="improviso-elemental.html">Improviso Elemental</a> e <a href="maestria-elemental.html">Maestria Elemental</a>. Ao invocar, gaste <strong>+1 Coragem</strong> além do custo normal de 1 Coragem.</p>
+<p>Para misturar dois elementos, você precisa ter <strong>os dois elementos habilitados</strong>, além de <a href="improviso-elemental.html">Extração Elemental</a> e <a href="maestria-elemental.html">Maestria Elemental</a>. Ao invocar, gaste <strong>+1 Coragem</strong> além do custo normal de 1 Coragem.</p>
 <p>Para habilitar <strong>efeitos elementais especiais</strong> na criatura com Maestria, pague <strong>+1 Coragem</strong> adicional e respeite os gatilhos normais desses efeitos. Você não compra uma terceira Perícia chamada “Combinar Magia Elemental”.</p>
 
 <h3>Necromancia: Sangue e Trevas</h3>

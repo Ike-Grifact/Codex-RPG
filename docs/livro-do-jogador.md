@@ -984,7 +984,7 @@ Leia Armas, alcance e efeitos para aprender a resolver ataques e característica
 
 ##### Aplicações mágicas — conjuração e elementos
 
-A conjuração utiliza Disciplina para executar a técnica e Inteligência para organizar e moldar a magia. Você descreve a manifestação na hora, respeitando as habilitações, a fonte elemental e os limites da magia. Não é preciso memorizar feitiços. Aprender uma Perícia elemental habilita os primeiros efeitos especiais no Grau 2; Psique é habilitada por Criar Item de Foco e Magia.
+A conjuração utiliza Disciplina para executar a técnica e Inteligência para organizar e moldar a magia. Você descreve a manifestação na hora, respeitando as habilitações, a fonte elemental e os limites da magia. Não é preciso memorizar feitiços. Criar Item de Foco e Magia é obrigatória para conjurar qualquer elemento. A Perícia elemental pode ser adquirida independentemente e representa domínio do elemento para aplicações pertinentes, como Artesão e forja, sem habilitar por si a conjuração.
 
 | Grau | Possibilidades | Inteligência | Tempo de conjuração sem aceleração |
 |---|---|---|---|
@@ -996,7 +996,7 @@ A conjuração utiliza Disciplina para executar a técnica e Inteligência para 
 
 No livro digital, o número de estrelas da constelação identifica o Grau, não a quantidade de turnos. Consulte Conjuração e elementos para os procedimentos de preparação e aceleração por focos.
 
-O Grau da magia determina suas propriedades, a elevação temporária dos dados de Inteligência e o tempo de conjuração; não é o Grau permanente de Disciplina. Improviso Elemental gasta 1A para acrescentar um elemento disponível, alterando ou combinando a natureza da manifestação sem ativar a propriedade especial improvisada. Maestria Elemental permite a combinação de propriedades especiais habilitadas em G5. Focos aceleram a preparação com suas cargas, não fornecem dados próprios. Magias mentais de Psique exigem Disciplina Avançada e a combinação Disciplina + Inteligência + Influência.
+O Grau da magia determina suas propriedades, a elevação temporária dos dados de Inteligência e o tempo de conjuração; não é o Grau permanente de Disciplina. Extração Elemental gasta 1 Coragem para extrair um elemento da cena. G1/G2 têm custo-base de 0 Coragem; conjurar G3 ou G4 custa 1 Coragem por conjuração, não por passo. Pagar na declaração; cargas de foco reduzem tempo, não custo. Custos específicos permanecem distintos. G5 ainda está em revisão. Maestria Elemental permite a combinação de propriedades especiais habilitadas em G5. Focos aceleram a preparação com suas cargas, não fornecem dados próprios. Magias mentais de Psique exigem Disciplina Avançada e a combinação Disciplina + Inteligência + Influência.
 
 <a id="disciplina-nove-elementos"></a>
 
@@ -1661,7 +1661,7 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; G2 controle e Sentido Sísmico 18 × 18 m; G3 Cravar/Perfurar; G4 área. |
 | **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G3 Queimar E + T à Integridade; G4 Derreter acrescenta 1 Vida direta fixa. |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
-| Improviso Mágico | 1 | Elemento disponível no ambiente |
+| Extração Elemental | 1 | Elemento disponível no ambiente |
 | Mestre Elementalista | 5 | Segundo elemento criado conscientemente e +1A |
 | Conjuração Elemental (elemento básico) | 1 cada | Elemento adicional |
 | **Perícia em Elemento Sagrado** | **2** | Disciplina 2 + Inteligência 2; G2 recuperar Coragem, G3 Bênção, G4 anulação de Temor. |
@@ -1681,21 +1681,21 @@ A lista completa ainda será desenhada pelo autor. A ferramenta de criação exp
 
 ## Conjuração, elementos e possibilidades
 
-A conjuração combina normalmente Disciplina + Inteligência. Aprender uma Perícia elemental habilita os primeiros efeitos de G2, sem exigir Criar Item de Foco e Magia; Psique e a fabricação de focos continuam exigindo essa Perícia. Magias são descritas na hora, sem lista fechada, memorização ou slots. A descrição não concede efeitos, alcance ou habilitações adicionais.
+A conjuração combina normalmente Disciplina + Inteligência. Criar Item de Foco e Magia é obrigatória para conjurar qualquer elemento. A Perícia elemental pode ser adquirida independentemente e representa domínio do elemento para aplicações pertinentes, como Artesão e forja, sem habilitar por si a conjuração. Magias são descritas na hora, sem lista fechada, memorização ou slots. A descrição não concede efeitos, alcance ou habilitações adicionais.
 
-Regras de referência: SRD v0.185–0.189. As regras novas substituem os dados mágicos adicionais, os antigos Graus elementais e os tempos anteriores. As automações da ficha e do simulador ainda utilizam regras anteriores; resolva manualmente os novos procedimentos. Onde há pendência, não invente valores ou benefícios.
+Regras de referência: SRD v0.185–0.194; prevalecem v0.193–0.194 nos pontos substituídos. As regras novas substituem os dados mágicos adicionais, os antigos Graus elementais e os tempos anteriores. As automações da ficha e do simulador ainda utilizam regras anteriores; resolva manualmente os novos procedimentos. Onde há pendência, não invente valores ou benefícios.
 
 ### Graus de conjuração
 
 | Grau | Efeito geral | Inteligência | Turnos totais sem foco |
 |---|---|---|---:|
-| 1 | Manifestar a natureza do elemento, sem efeito especial; Improviso permite mescla apenas de natureza elemental por 1A, e Psique conserva suas aplicações simples | Inalterada | 1 |
+| 1 | Manifestar a natureza do elemento, sem efeito especial; Extração permite obter um elemento da cena por 1 Coragem, e Psique conserva suas aplicações simples | Inalterada | 1 |
 | 2 | Primeiros efeitos especiais do elemento habilitado | Inalterada | 1 |
 | 3 | Efeitos superiores | +1 Grau temporário | 2 |
 | 4 | Efeitos avançados | +2 Graus temporários | 3 |
 | 5 | Mistura de propriedades especiais habilitada por Maestria Elemental | +3 Graus temporários | 4 |
 
-A elevação usa a pilha inteira de Inteligência; não somar antigos dados mágicos extras. O d20 não pertence à Maestria comum. Respeitar fontes, DE, limites, custos e preparação. Inimigo próximo em G3/G4/G5: −1A/−1E/−2E; aliado na trajetória soma um nível apenas em ataque de alvo único. Condições gerais acumulam conforme a escala. Efeitos temporários de elevação e redução duram uma ação do beneficiário/alvo, salvo regras específicas (Veneno, Cravar). Acesso exato a efeitos, custos de elevação e lacunas de resolução devem ser fechados antes de automação.
+A elevação usa a pilha inteira de Inteligência; não somar antigos dados mágicos extras. O d20 não pertence à Maestria comum. Respeitar fontes, DE, limites, custos e preparação. Inimigo próximo em G3/G4/G5: −1A/−1E/−2E; aliado na trajetória soma um nível apenas em ataque de alvo único. Condições gerais acumulam conforme a escala. Efeitos temporários de elevação e redução duram uma ação do beneficiário/alvo, salvo regras específicas (Veneno, Cravar). Acesso exato a efeitos e outras lacunas de resolução devem ser fechados antes de automação.
 
 ### Progressão temporária de Inteligência
 
@@ -1721,17 +1721,17 @@ O foco do elemento habilitado pode permanecer no inventário; não precisa estar
 | Médio | 2 | 2 |
 | Pesado | 3 | 3 |
 
-Cargas do foco são vinculadas ao seu elemento. Em G3 e G4, a aceleração segue a lógica de uma carga compatível por turno reduzido, até a conjuração instantânea; em G5, uma carga de cada um dos dois elementos por turno reduzido, com piso mínimo ainda em revisão. O peso físico não diminui ao gastar cargas. Após esgotar, um foco comum recupera uma carga ao fim da rodada, e uma ao fim de cada rodada seguinte, até o máximo. Pedra da Alma não recarrega naturalmente; Fixar Alma ainda está em desenvolvimento.
+Cargas do foco são vinculadas ao seu elemento. Em G3 e G4, a aceleração segue a lógica de uma carga compatível por turno reduzido, até a conjuração instantânea; em G5, uma carga de cada um dos dois elementos por turno reduzido, com piso mínimo ainda em revisão. O peso físico não diminui ao gastar cargas. Um foco comum recupera uma carga a cada dois turnos próprios do conjurador, até o máximo. O início exato da contagem ainda está em revisão. Pedra da Alma não recarrega naturalmente. Fixar Alma ainda está em desenvolvimento.
 
 **Comércio:** valores unitários informados: foco inicial Leve 10 VT, outros elementos 30 VT, Pedra da Alma de Sangue 10.000 VT; valor proporcional ao peso (Pedra da Alma Pesada 30.000 VT). A classificação de focos básicos/elementais/raros e a separação entre suporte e pedra ainda precisam de confirmação. Não alterar comércio automático. A Pedra da Alma continua indisponível para compra na criação de nível 1.
 
-Role quando declarar a magia, escolha os mantidos e aplique Antecipar; conclua o efeito após a preparação. Temor não anulado permite que a oposição tente interferir conforme as oportunidades e recursos vigentes. Custos gerais de elevação e interrupção ainda precisam de conciliação. G1 e G2 são instantâneos; G3/G4/G5 levam respectivamente 2/3/4 turnos totais sem aceleração. Não somar dados extras por Grau. Elevação por Coragem pode acumular, respeitando o teto de cinco Coragens gastas por turno e os limites de dados.
+Role quando declarar a magia, escolha os mantidos e aplique Antecipar; conclua o efeito após a preparação. Temor não anulado permite que a oposição tente interferir conforme as oportunidades e recursos vigentes. G1/G2 têm custo-base de 0 Coragem; conjurar G3 ou G4 custa 1 Coragem por conjuração, não por passo. Pagar na declaração; cargas de foco reduzem tempo, não custo. Custos específicos permanecem distintos. G5 ainda está em revisão. Interrupção ainda em revisão. G1 e G2 são instantâneos; G3/G4/G5 levam respectivamente 2/3/4 turnos totais sem aceleração. Não somar dados extras por Grau. Elevação por Coragem pode acumular, respeitando o teto de cinco Coragens gastas por turno e os limites de dados.
 
-### Improviso e Maestria
+### Extração e Maestria
 
-**Compra:** 1 XP. **Requisitos:** Disciplina 1, Inteligência 1, Destreza 1. Passiva: +1A em ações pertinentes de Disciplina e Conjuração, cumulativo com Maestria conforme regra anterior. Ao gastar **1 Antecipar**, incorpore apenas um elemento adicional disponível, escolhendo substituir a natureza elemental do ataque ou combinar as duas naturezas na mesma ação. O elemento improvisado não ativa sua propriedade especial, não eleva o Grau da magia e não cria dano ou dados adicionais automaticamente. A mera mistura de naturezas é permitida mesmo em G1; não equivale à mistura de propriedades especiais do G5. Respeite a matriz de resistências, imunidades e vulnerabilidades elementais vigente, sem duplicar o dano. A aplicação em Escudo Arcano, armas e encantamentos é pertinente dentro de suas habilitações; a Perícia não concede por si fabricação, encantamento, escudo ou novas resistências defensivas. Exemplo: Água + Ar para adaptar o ataque a uma defesa elemental, sem obter gratuitamente Congelar e Empurrar simultaneamente. O gasto de 1A consome o símbolo uma única vez. Não alterar custos próprios das demais técnicas. PENDENTE: procedimento específico de combinação defensiva e de encantamentos persistentes, quando ainda não definido.
+Perícia ativa. Compra: 1 XP. Requisitos: Disciplina 1 + Inteligência 1 + Destreza 1. Gaste 1 Coragem para extrair um elemento realmente disponível na cena para a conjuração. Para conjurar, é obrigatório possuir Criar Item de Foco e Magia. O elemento extraído não concede sua propriedade especial, dados extras, bônus passivo de Antecipar ou elevação automática do Grau. A antiga mescla de naturezas permanece em revisão.
 
-Preservar requisitos vigentes: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia elemental; para misturar propriedades, ambos os elementos devem estar habilitados. Preservar +1A cumulativo ao Improviso e custo de mistura 1A. Habilita a mistura de propriedades especiais G5 e a elevação de Inteligência correspondente, sem d20 comum. Diferentemente do Improviso, permite aplicar propriedades dos dois elementos habilitados na mesma conjuração. Custos específicos, piso de preparação e exceções ainda em revisão. Não alterar Invocação Elemental ou Conjuração Refinada por inferência.
+Requisitos: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Extração Elemental e pelo menos uma Perícia elemental. Para misturar propriedades, ambos os elementos devem estar habilitados. Maestria conserva seu próprio +1A e o custo de mistura 1A, sem acumular o bônus revogado de Improviso. Habilita G5, sem d20 comum. Custo próprio e piso de preparação G5 permanecem em revisão.
 
 <a id="capacidade-elemental"></a>
 
@@ -1834,7 +1834,7 @@ No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renova
 | G3 | Bênção: superar DE de outro aliado e elevar um Atributo em E−T Graus se positivo. |
 | G4 | Dano normal e possibilidade de anular Temor. |
 
-Pode optar por causar apenas dano normal. Bênção dura uma ação do beneficiário. Recuperação G2 mantém efeito anterior, com divergência entre verbete e Livro do Jogador a conciliar. Quantidade e destino do Temor anulado, restrição de mistura e detalhes de suporte continuam pendentes.
+Pode optar por causar dano normal. Recuperar Coragem em G2 exige ativação de 1 Coragem do conjurador; o cálculo do retorno e limites por beneficiário ainda estão em revisão. Bênção dura uma ação do beneficiário. Anulação de Temor, restrição de mistura e detalhes de suporte continuam pendentes.
 
 ### Trevas — enfraquecimento e Temor
 
@@ -1847,7 +1847,7 @@ Pode optar por causar apenas dano normal. Bênção dura uma ação do benefici�
 | G3 | Divisão das Sombras: +2T e ataque múltiplo. |
 | G4 | Aflição: reduzir um Atributo inimigo em E−T Graus se positivo. |
 
-Pode optar por dano normal. Divisão usa uma rolagem contra DE individual de cada alvo, mantendo referência de dois alvos e distribuição/concentração de Temor sem duplicação; +2T substitui +1T. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão exata da proibição continua pendente.
+Pode optar por dano normal. Divisão das Sombras usa uma rolagem contra a DE individual de até dois alvos. Cada alvo cuja DE for alcançada recebe o mesmo dano integral calculado antes de suas próprias proteções. Não dividir dano nem somar DEs. +2T é fixo, não escala com nível e substitui +1T de G2. Não duplicar automaticamente o Temor transferido; alocação em revisão. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão da proibição pendente.
 
 ### Sangue — sacrifício e amplificação
 
@@ -1976,7 +1976,7 @@ O Aprendiz pode investir o **saldo livre de XP** em Perícias, desde que cumpra 
 
 **Resistência a Fogo [DEFINIDO — 20/11/2026]:** **1 XP**, exige **Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2**. O portador sofre **metade do dano de ataques de Fogo que alcançaria a Vida**, sem proteção à Integridade da armadura. O dano direto à Vida de **Derreter G3 é 0** contra ele (o +1 fixo é anulado); **Derreter/Queimar continuam aplicando E + T à Integridade** normalmente. Não é imunidade e não há segunda redução cumulativa ao dano à Vida. Temor mantém seus riscos, outros elementos não recebem redução e não se alteram equipamentos. **PENDENTE:** arredondamento de frações na Vida e interações com outras resistências.
 
-**Ferreiro Elemental [DEFINIDO / PENDENTE — 20/11/2026]:** custa **1 XP** e exige **Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento**. A denominação «Criar magia + item de foco» foi interpretada como a Perícia vigente **Criar Item de Foco e Magia**, sem criar uma habilitação extra. A nova Perícia habilita **criar armas elementais e pedras elementais**, sem definir receita, Grau, custo, DE, propriedade ou bônus adicional por conta própria. **Encantar com Elemento já está cadastrada** (1 XP, uma Perícia Elemental + Criar Item de Foco e Magia), mas continua pré-requisito obrigatório, não concedido por Ferreiro Elemental. O +1E de Ferreiro não vira +1E genérico em qualquer criação elemental.
+**Ferreiro Elemental [DEFINIDO / PENDENTE — 20/11/2026]:** custa **1 XP** e exige **Ferreiro + Inteligência 2 + Destreza 2 + Extração Elemental + Criar Item de Foco e Magia + Encantar com Elemento**. A denominação «Criar magia + item de foco» foi interpretada como a Perícia vigente **Criar Item de Foco e Magia**, sem criar uma habilitação extra. A nova Perícia habilita **criar armas elementais e pedras elementais**, sem definir receita, Grau, custo, DE, propriedade ou bônus adicional por conta própria. **Encantar com Elemento já está cadastrada** (1 XP, uma Perícia Elemental + Criar Item de Foco e Magia), mas continua pré-requisito obrigatório, não concedido por Ferreiro Elemental. O +1E de Ferreiro não vira +1E genérico em qualquer criação elemental.
 
 **Ferreiro [DEFINIDO — 20/11/2026]:** 1 XP; requisitos **Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado** (que agora exige Artesão 3). Habilita criar armas e armaduras Médias e Pesadas Grau 1; consertar e modificar armas; preparar minérios e metais. Concede **+1 Êxito (E) somente nos testes de Forja**. Não transforma testes gerais de Artesão em Forja. Materiais, tempo, DE, resultados específicos de conserto/modificação e automação permanecem pendentes; comprar a Perícia não gera um item pronto.
 
@@ -2102,9 +2102,9 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **Compra:** 1 XP (Lucker Puro conserva compra gratuita após requisitos). **Requisitos:** Disciplina 1, Inteligência 1 e Artesão 1.
 
-Habilita Psique e fabricação de itens de foco. Crie e descreva magias livremente no momento da conjuração, dentro das habilitações. Não exige memorização. Não é pré-requisito geral para aprender outros elementos. Um foco válido permite conjurar seu elemento habilitado sem depender de sua presença no ambiente e pode acelerar a preparação. O foco não fornece dados próprios.
+Criar Item de Foco e Magia é obrigatória para conjurar qualquer elemento. A Perícia elemental pode ser adquirida independentemente e representa domínio do elemento para aplicações pertinentes, como Artesão e forja, sem habilitar por si a conjuração. Habilita Psique e fabricação de itens de foco. Crie e descreva magias livremente no momento da conjuração, dentro das habilitações. Não exige memorização. Não é pré-requisito geral para aprender outros elementos. Um foco válido permite conjurar seu elemento habilitado sem depender de sua presença no ambiente e pode acelerar a preparação. O foco não fornece dados próprios.
 
-Fabricação com Artesão. Capacidade e carga física: Leve 1, Médio 2, Pesado 3. Cargas vinculadas ao elemento; consumir carga não reduz peso físico. Recarga comum gradual após esgotamento; Pedra da Alma não recarrega naturalmente. Preços e pendências na v0.188. Preservar Cristal Elemental inicial e demais benefícios vigentes.
+Fabricação com Artesão. Capacidade e carga física: Leve 1, Médio 2, Pesado 3. Cargas vinculadas ao elemento; consumir carga não reduz peso físico. Um foco comum recupera uma carga a cada dois turnos próprios do conjurador, até o máximo. O início exato da contagem ainda está em revisão. Pedra da Alma não recarrega naturalmente. Preços e pendências na v0.188. Sem foco ou cristal físico gratuito na criação; compre o item. A concessão racial da Perícia permanece.
 
 Habilitação: Criar Item de Foco e Magia.
 
@@ -2210,7 +2210,7 @@ Fogo exige fonte válida. Queimar substitui a contribuição convencional de Tem
 | G3 | Bênção: superar DE de outro aliado e elevar um Atributo em E−T Graus se positivo. |
 | G4 | Dano normal e possibilidade de anular Temor. |
 
-Pode optar por causar apenas dano normal. Bênção dura uma ação do beneficiário. Recuperação G2 mantém efeito anterior, com divergência entre verbete e Livro do Jogador a conciliar. Quantidade e destino do Temor anulado, restrição de mistura e detalhes de suporte continuam pendentes.
+Pode optar por causar dano normal. Recuperar Coragem em G2 exige ativação de 1 Coragem do conjurador; o cálculo do retorno e limites por beneficiário ainda estão em revisão. Bênção dura uma ação do beneficiário. Anulação de Temor, restrição de mistura e detalhes de suporte continuam pendentes.
 
 
 ### Hemomancia e Transfusão Sanguinária
@@ -2234,9 +2234,9 @@ Uma marca por Vida realmente perdida de inimigo por dano convencional; não gera
 
 A geração de novas marcas por dano direto da Hemomancia não é automática, conforme v0.186. A coleta e sua elegibilidade para Transfusão exigem validação. As demais regras específicas de Transfusão permanecem conforme o SRD v0.132.
 
-**Compra:** 1 XP. **Requisitos:** Disciplina 1, Inteligência 1, Destreza 1. Passiva: +1A em ações pertinentes de Disciplina e Conjuração, cumulativo com Maestria conforme regra anterior. Ao gastar **1 Antecipar**, incorpore apenas um elemento adicional disponível, escolhendo substituir a natureza elemental do ataque ou combinar as duas naturezas na mesma ação. O elemento improvisado não ativa sua propriedade especial, não eleva o Grau da magia e não cria dano ou dados adicionais automaticamente. A mera mistura de naturezas é permitida mesmo em G1; não equivale à mistura de propriedades especiais do G5. Respeite a matriz de resistências, imunidades e vulnerabilidades elementais vigente, sem duplicar o dano. A aplicação em Escudo Arcano, armas e encantamentos é pertinente dentro de suas habilitações; a Perícia não concede por si fabricação, encantamento, escudo ou novas resistências defensivas. Exemplo: Água + Ar para adaptar o ataque a uma defesa elemental, sem obter gratuitamente Congelar e Empurrar simultaneamente. O gasto de 1A consome o símbolo uma única vez. Não alterar custos próprios das demais técnicas. PENDENTE: procedimento específico de combinação defensiva e de encantamentos persistentes, quando ainda não definido.
+Perícia ativa. Compra: 1 XP. Requisitos: Disciplina 1 + Inteligência 1 + Destreza 1. Gaste 1 Coragem para extrair um elemento realmente disponível na cena para a conjuração. Para conjurar, é obrigatório possuir Criar Item de Foco e Magia. O elemento extraído não concede sua propriedade especial, dados extras, bônus passivo de Antecipar ou elevação automática do Grau. A antiga mescla de naturezas permanece em revisão.
 
-Preservar requisitos vigentes: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia elemental; para misturar propriedades, ambos os elementos devem estar habilitados. Preservar +1A cumulativo ao Improviso e custo de mistura 1A. Habilita a mistura de propriedades especiais G5 e a elevação de Inteligência correspondente, sem d20 comum. Diferentemente do Improviso, permite aplicar propriedades dos dois elementos habilitados na mesma conjuração. Custos específicos, piso de preparação e exceções ainda em revisão. Não alterar Invocação Elemental ou Conjuração Refinada por inferência.
+Requisitos: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Extração Elemental e pelo menos uma Perícia elemental. Para misturar propriedades, ambos os elementos devem estar habilitados. Maestria conserva seu próprio +1A e o custo de mistura 1A, sem acumular o bônus revogado de Improviso. Habilita G5, sem d20 comum. Custo próprio e piso de preparação G5 permanecem em revisão.
 
 **Requisitos vigentes:** Disciplina 2 + Inteligência 2 + Alquimia 2 + Medicina 2. Custo vigente não alterado.
 
@@ -2257,13 +2257,13 @@ No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renova
 | G3 | Divisão das Sombras: +2T e ataque múltiplo. |
 | G4 | Aflição: reduzir um Atributo inimigo em E−T Graus se positivo. |
 
-Pode optar por dano normal. Divisão usa uma rolagem contra DE individual de cada alvo, mantendo referência de dois alvos e distribuição/concentração de Temor sem duplicação; +2T substitui +1T. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão exata da proibição continua pendente.
+Pode optar por dano normal. Divisão das Sombras usa uma rolagem contra a DE individual de até dois alvos. Cada alvo cuja DE for alcançada recebe o mesmo dano integral calculado antes de suas próprias proteções. Não dividir dano nem somar DEs. +2T é fixo, não escala com nível e substitui +1T de G2. Não duplicar automaticamente o Temor transferido; alocação em revisão. Aflição termina após uma ação do alvo. Sagrado e Trevas não se misturam; extensão da proibição pendente.
 
 ### Transformação Elemental e Perícias de antimagia
 
 **Aura Sagrada** não é uma Perícia adicional a comprar. Ao realizar uma **Transformação Elemental em Sagrado**, as pessoas a até **3 metros** recebem **1 Coragem**, respeitando seus tetos. O benefício ocorre pela transformação, não a cada turno de permanência na aura.
 
-**Cancelar Magia (1 XP):** requer Criar Item de Foco e Magia, Improviso Elemental e Inteligência, Agilidade e Destreza **grau 4**. Se perceber a conjuração inimiga a até **8 metros**, com **Temor mantido** pelo conjurador, pode gastar **1 Coragem** e tentar anular a magia com a Perícia do elemento apropriado. O resultado deve ser **igual ou maior** que a DE da conjuração adversária: **Empate cancela**. A comparação e a interrupção seguem o procedimento definido pelo Narrador quando houver lacunas.
+**Cancelar Magia (1 XP):** requer Criar Item de Foco e Magia, Extração Elemental e Inteligência, Agilidade e Destreza **grau 4**. Se perceber a conjuração inimiga a até **8 metros**, com **Temor mantido** pelo conjurador, pode gastar **1 Coragem** e tentar anular a magia com a Perícia do elemento apropriado. O resultado deve ser **igual ou maior** que a DE da conjuração adversária: **Empate cancela**. A comparação e a interrupção seguem o procedimento definido pelo Narrador quando houver lacunas.
 
 **Mudança Elemental (1 XP):** com Transformação Elemental e Destreza 4 + Inteligência 4, permite alterar o elemento de uma criatura, armadura ou ambiente a até **8 metros**, para um elemento habilitado. A duração calculada é **E − T**, exigindo **E − T > 0**. Unidade temporal e custos não informados continuam pendentes.
 
