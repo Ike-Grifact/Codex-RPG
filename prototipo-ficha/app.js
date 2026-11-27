@@ -192,7 +192,7 @@ const SKILLS=[
   "bioetica","Bioética","1 XP. Requisitos: Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média. Permite criar homúnculos: criaturas elementais de carne formadas pela mistura do DNA de duas outras criaturas. Destreza 3 confirmada. O homúnculo usa ficha própria, separada da ficha do criador, com XP próprio igual ao XP total atual do criador, seguindo as regras e tabelas de Atributos das criaturas domadas conforme porte. A criação exige sangue e tecidos vivos. Porte e quantidades de materiais permanecem pendentes.",1
  ],
  [
-  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
+  "pesquisa-avancada-pocoes","Pesquisa Avançada em Poções","1 XP. Requisitos: Alquimia 3 + Extração Elemental + Artesão 3 + Destreza 2. Concede +1 Êxito (E) aos testes de criação de poções e habilita a criação de poções elementais. Receitas, custo de materiais, graus e efeitos específicos não foram definidos.",1
  ],
  [
   "corpo-fechado","Corpo Fechado","1 XP. Requisitos: Vigor 4 + Artista Marcial. Gasta 1 Coragem para não sofrer efeitos nem dano de golpes de armas físicas em sua Vitalidade por 1 rodada. Não protege automaticamente Integridade da armadura nem concede imunidade a magia; resolução do tempo de rodada pelo Narrador.",1
@@ -259,7 +259,7 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "1 XP · Disciplina 1 + Inteligência 1 + Artesão 1. SUBSTITUI Aprendiz de Conjurador e Magia Única. Ativação-base G1/G2 Psíquica gratuita com a Perícia e o Grau habilitados; foco por Artesão recarrega em N rodadas no Grau N. Magias são criadas e narradas livremente na própria ação, conforme conceitos dos elementos, Perícias adquiridas, Graus, fontes e combinações habilitadas. Não há magias memorizadas, spellslots, peso mental, desconto de −1 por Criar Magia nem custo de 2 Coragens por criação fora de combate. Preparação G2/G3/G4 é tempo de conjuração em cena, não memorização, mantendo custos, DE, Pavor, focos e outros requisitos publicados.",
+  "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
   1
  ],
  [
@@ -276,14 +276,14 @@ const SKILLS=[
  ],
  [
   "improviso",
-  "Improviso Elemental",
-  "Requisitos Disciplina 1, Inteligência 1 e Destreza 1, sem Criar Item de Foco e Magia. Passiva: +1A em Disciplina e Conjuração, adicionando um elemento realmente presente na cena para vantagens elementais e dano de impacto, sem ativar sua propriedade especial. Acumula com Maestria Elemental.",
+  "Extração Elemental",
+  "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
   1
  ],
  [
   "cancelar-magia",
   "Cancelar Magia",
-  "1 XP. Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
+  "1 XP. Requer Criar Item de Foco e Magia, Extração Elemental, Inteligência 4, Agilidade 4 e Destreza 4. Ao perceber magia em conjuração até 8 m cuja rolagem manteve Pavor, pode gastar 1 Coragem para tentar cancelá-la; o resultado de cancelamento deve IGUALAR OU SUPERAR (≥) a DE da magia lançada, considerando todos os valores mantidos conforme a declaração do Narrador. Empate cancela a magia. Exige possuir a Perícia do elemento que pretende cancelar. Sem resolução automática do lançamento inimigo.",
   1
  ],
  [
@@ -307,55 +307,55 @@ const SKILLS=[
  [
   "mestre",
   "Maestria Elemental",
-  "Requisitos Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e pelo menos uma Perícia em Ar, Sangue, Água, Fogo, Terra, Veneno, Sagrado ou Trevas. +1A cumulativo ao Improviso em Disciplina e Conjuração. A mistura consciente do segundo elemento custa 1A; o custo próprio histórico da Maestria para ativar duas propriedades especiais está PENDENTE de reconciliação, exigindo adquirir a Perícia de ambos. ID legado mestre preservado.",
+  "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
   1
  ],
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "1 XP · Disciplina 1 + Inteligência 1. G1: disparo de Fogo, iluminação e conduzir chamas existentes, sem dano direto extra à Vida. G2 QUEIMAR: em acerto, E válidos + 1 dano por Pavor não anulado à Integridade da armadura, substituindo a parcela padrão de Pavor, área 4×4 em cone/linha/círculo, sem dano direto adicional à Vida. G1/G2 com Perícia e Grau habilitados: ativação-base gratuita, inclusive sem foco se a fonte elemental estiver disponível no ambiente; não há adicional de Coragem em G2. G3: 1 Coragem para elevar o efeito. Na G4 conjunta: 1 Coragem pela elevação de Fogo a G3, respeitando o custo separado do outro elemento e 1 Antecipar da mistura. G3 DERRETER: mesmo dano de Queimar à armadura + exatamente 1 Vida direta fixa (não dobrada por crítico); área 8×8, conjurar ao final do turno dos aliados. Graus superiores e procedimento contra imunidade/barreiras exigem confirmação do Narrador.",
+  "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Água. Em ataque acertado, mesmo sem crítico, a ativação-base de um efeito G1/G2 habilitado é gratuita. G1: Congelar por 1 rodada sem dano no estado Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar no CRÍTICO ou por ativação paga; dano à Vida e à armadura. G3: conjurar no final do turno dos aliados; Empurrar, Perfurar, Congelar e dano à Vida e à armadura, mantendo propriedades menores pertinentes. Resolução e efeitos exatos não automatizados.",
+  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "1 XP · Disciplina 1 + Inteligência 1. Habilita magias Leves de Ar. No acerto, mesmo sem crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: até 4 m para empurrar, puxar, elevar ou autoempurrar; linha, círculo, cone, X. G2: até 8 m para esses deslocamentos; sufocar com dano à Vida ou armadura, empurrar + derrubar com dano. G3: até 12 m para esses deslocamentos; conjurar no final do turno dos aliados, área grande e múltiplos alvos, tornado/rajada. Elevação por ataque segue a altura efetiva do resultado válido e as regras de queda; trajetórias curvas somam seus trechos dentro do limite do Grau. Formas: linha, círculo, cone, X. TAMBÉM pode recuperar Fôlego (Grau, quantidade e gatilho pendentes). Efeitos não automatizados.",
+  "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "1 XP · Disciplina 1 + Inteligência 1. Conjuração elemental Leve de Terra. Ao acertar ataque, inclusive não crítico, escolha gratuitamente UM efeito G1/G2 habilitado. G1: Desvantagem 2 RODADAS (terra nos olhos), emaranhar pés, derrubar, lançar pequenas pedras, criar plataformas de deslocamento, sentido sísmico 18×18 m para detectar furtivos e armadilhas. G2: enredar e imobilizar, Desvantagem 2 TURNOS, espinhos danificam armadura/proteção, sentido sísmico 32×32. G3: conjurar ao final do turno dos aliados, área 5×5, linha/cone/círculo A PARTIR DO ALVO, dano, empurrão e derrubada, sentido sísmico 64×64. Unidades não informadas e efeitos adicionais não automatizados.",
+  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base gratuita em G1/G2 quando habilitada. Suporte em si ou aliado próximo exige alcançar a DE do beneficiário. Cada E excedente recupera 1 Coragem, cada P não anulado cancela um E destinado a recuperação (não reaproveitado como dano). Em área, todos os aliados beneficiados recuperam igualmente; E excedentes podem causar dano aos inimigos cujas DEs foram alcançadas. Conjurador escolhe enfoque em dano, suporte ou combinação. Aliados não sofrem dano sagrado de suporte. G2/G3 por combinação elemental.",
+  "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
   2
  ],
  [
   "veneno",
   "Perícia em Elemento Veneno",
-  "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, aplica gratuitamente 1 acúmulo G1/G2 habilitado por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamente 2 de Vida atual OU atingir 12 acúmulos ativos, Inconsciente. Não causa dano direto à Vida; criaturas biologicamente incompatíveis podem ser imunes. Graus 2 e 3 exigem combinação elemental.",
+  "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
   2
  ],
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Rework v0.74: Sangue puro atinge proteção normalmente. Quando uma magia de Sangue acerta e foi amplificada para dano direto, TODO o dano calculado atinge a Vida sem passar pela Integridade da armadura; não soma bônus nem desgasta a armadura em paralelo. Custo: 1 Vida própria OU 3 marcas inimigas, uma vez por turno, em alternativa a manter ou elevar dado. O Pavor continua gerando risco. Extração como técnica segue revogada. Cada Vida de inimigo realmente perdida gera 1 marca.",
+  "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
   2
  ],
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Requisitos Disciplina 2 e Inteligência 2; magias Leves. Ativação-base G1/G2 gratuita com Perícia e Grau habilitados, respeitando gatilhos. Escurecimento, Pavor e maldições. Técnica especializada usa uma única rolagem contra um ou dois alvos e soma +2P ANTES da DE, contando para acerto, dano e risco. Pavor não anulado é dividido entre os dois alvos de modo equilibrado ou focado em um, sem duplicar; um só alvo é permitido. G2/G3 exigem mescla.",
+  "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
   2
  ],
  [
@@ -613,7 +613,7 @@ const SKILLS=[
  [
   "ferreiro-elemental",
   "Ferreiro Elemental",
-  "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
+  "1 XP. Requisitos: Ferreiro + Inteligência 2 + Destreza 2 + Extração Elemental + Criar Item de Foco e Magia + Encantar com Elemento. Permite criar armas elementais e pedras elementais. Encantar com Elemento ainda não possui aquisição definida: compra bloqueada até existir a Perícia. Receitas e efeitos dos itens pendentes.",
   1
  ],
  [
@@ -665,7 +665,7 @@ const SKILLS=[
  [
   "invocacao-elemental",
   "Invocação Elemental",
-  "1 XP; exige Criar Item de Foco e Magia, Domar Criatura Pequena e elemento habilitado. Criar Item de Foco e Magia já habilita Psique; outros elementos exigem Perícia própria. Invoca por 1 Coragem; tamanho Pequeno/Médio/Grande limitado às Perícias Domar adquiridas; elemento precisa estar habilitado. Uma ficha de invocação pode conter várias criaturas reais; três zumbis Médios podem compartilhar uma ficha Grande sem multiplicar Vida mecânica, ações ou XP. Dados da invocação: Pequena rola um dado de Atributo e mantém até 1; Média rola dois dados, um por parte, mantém até 2; Grande rola três dados, um por parte, mantém até 3. Registrar resultados das partes separadamente, sem conceder turnos extras. O jogador escolhe os dados de Atributo e quais manter. A invocação age sozinha ou ajuda um ÚNICO personagem (o conjurador ou um aliado) em ação conjunta normal, passando TODOS os dados mantidos para esse mesmo personagem (até 3 dados na Grande). Não distribuir entre dois personagens nem multiplicar ações, dados, Pavor ou símbolos. Uma única ficha e um único turno antecipável; limites individuais e regras normais da ação conjunta aplicam-se. Em Psique, a mente é projetada e o corpo do conjurador permanece parado. Ficha da invocação com XP total do conjurador, imunidade ao elemento e dano elemental; dissipa quando conjurador fica Incapacitado ou Inconsciente. Imbuir criatura domada concede resistência elemental. Dois elementos custam +1 Coragem e exigem Improviso Elemental + Maestria Elemental adquiridos, além das habilitações de ambos os elementos; Maestria Elemental na invocação custa +1 Coragem para habilitar efeitos especiais. Necromancia Sangue/Trevas: Vida não regenera, imune a Trevas, corpo reinvocável até destruição por Fogo/Sagrado à Vida zero. Psique: fantasmas imunes a neutro e sem dano neutro, Maestria permite assombrar/possuir com Desvantagem Absoluta; Psique+Trevas assombrações, Psique+Sagrado seres angelicais/fantásticos. Psique é habilitada por Criar Item de Foco e Magia; pode projetar a mente com corpo parado. Separar tokens divide XP/Vida e mantém a DE da invocação. Dano de área é normal. Apenas um turno antecipável para uma ficha, mesmo com vários tokens: agir sozinho ou ajudar conjurador/aliado em ação conjunta. Não automatizar possessão e divisões inexatas.",
+  "1 Coragem para invocar; Criar Item de Foco e Magia, Domar Pequena e elemento habilitado. Pequena em ataque conjunto concede apenas +1A; separada, 4 Vida (uma por faixa), sem armadura. Média/Grande mantêm 2/3 dados, apoio a um único aliado, ficha com XP do invocador. Uma invocação ativa; imunidade ao elemento; dissipa se conjurador Incapacitado/Inconsciente. Imbuir domesticada concede resistência. Dois elementos exigem Extração + Maestria e habilitações, +1 Coragem; efeitos especiais +1 Coragem. Psique projeta mente com corpo parado. Duração, ataque independente Pequena e divisão inexata pendentes.",
   1
  ],
  [
@@ -677,7 +677,7 @@ const SKILLS=[
  [
   "sentido-elemental",
   "Sentido Elemental",
-  "1 XP. Requer Inteligência 3 e Improviso Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
+  "1 XP. Requer Inteligência 3 e Extração Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
   1
  ],
  [
@@ -1288,7 +1288,7 @@ const CARD_REQUIREMENTS={
  "pericia-armadilha":"Artesão 1 + Disciplina 1 + Engenharia 1 + Destreza 1 + Inteligência 1 + Proteção 2 + Furtividade 1",
  "golpe-furtivo":"Disciplina 2 + Furtividade 2",
  "bioetica":"Alquimia 3 + Inteligência 3 + Destreza 3 + Perícia em Sangue + Criar Item de Foco e Magia + outra Perícia Elemental + Domar Criatura Média",
- "pesquisa-avancada-pocoes":"Alquimia 3 + Improviso Elemental + Artesão 3 + Destreza 2",
+ "pesquisa-avancada-pocoes":"Alquimia 3 + Extração Elemental + Artesão 3 + Destreza 2",
  "corpo-fechado":"Vigor 4 + Artista Marcial",
  "invocar-esfera-espiritual":"Criar Item de Foco e Magia + Destreza 4 + Inteligência 3 + Vigor 3",
  "passo-etereo":"Invocar Esfera Espiritual",
@@ -1298,8 +1298,8 @@ const CARD_REQUIREMENTS={
  "impacto-psiquico":"Criar Item de Foco e Magia + Artista Marcial",
  "sacrificio-heroico":"Vigor 4",
  "escudo-refletor":"Maestria em Escudos",
- "sentido-elemental":"Inteligência 3 + Improviso Elemental",
- "cancelar-magia":"Criar Item de Foco e Magia + Improviso Elemental + Inteligência 4 + Agilidade 4 + Destreza 4",
+ "sentido-elemental":"Inteligência 3 + Extração Elemental",
+ "cancelar-magia":"Criar Item de Foco e Magia + Extração Elemental + Inteligência 4 + Agilidade 4 + Destreza 4",
  "mudanca-elemental":"Transformação Elemental + Destreza 4 + Inteligência 4",
  "desencantar":"Cancelar Magia",
  "espelho-magico":"Cancelar Magia",
@@ -1319,7 +1319,7 @@ const CARD_REQUIREMENTS={
  "escudo-arcano": "Inteligência 2, Vigor 1, Criar Foco",
  "conjuracao-equilibrada": "Disciplina 2, Inteligência 2, Destreza 2, Criar Foco",
  "improviso": "Disciplina 1, Inteligência 1 e Destreza 1",
- "mestre": "Disciplina 3, Inteligência 3, Destreza 3, Improviso, Criar Foco, Elemento",
+ "mestre": "Disciplina 3, Inteligência 3, Destreza 3, Extração, Criar Foco, Elemento",
  "fogo": "Disciplina 1, Inteligência 1",
  "agua": "Disciplina 1, Inteligência 1",
  "vento": "Disciplina 1, Inteligência 1",
@@ -1366,7 +1366,7 @@ const CARD_REQUIREMENTS={
  "maestria-longo-alcance":"1 XP; requisitos de compra PENDENTES. Ativação exige habilitação correspondente.",
  "maestria-armas-fogo":"Origem Humano: 0 XP por concessão racial (nominal 1 XP); Perícia em Armas de Fogo para ativar.",
  "ferreiro": "Artesão 1 + Força 1 + Destreza 1 + Inteligência 1 + Artesão Avançado (exige Artesão 3)",
- "ferreiro-elemental": "Ferreiro + Inteligência 2 + Destreza 2 + Improviso Elemental + Criar Item de Foco e Magia + Encantar com Elemento",
+ "ferreiro-elemental": "Ferreiro + Inteligência 2 + Destreza 2 + Extração Elemental + Criar Item de Foco e Magia + Encantar com Elemento",
  "resistencia-a-fogo": "Ferreiro Elemental + Perícia em Elemento Fogo + Vigor 2",
  "encantar-com-elemento": "Uma Perícia Elemental + Criar Item de Foco e Magia",
  "apresentacao-avancada": "Apresentação 3",
@@ -1398,25 +1398,25 @@ const CARD_EFFECTS={
  "escudo-bumerangue": "Ataque com Disciplina + Atributo(s) a 8 m. Acerto (mesmo com Pavor): escudo volta no mesmo turno. Falha: cai no caminho ou perto do alvo, conforme Pavor e regras de Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal no acerto e características existentes do escudo conforme seus custos, sem dado adicional.",
  "montar": "Vantagem em testes com montaria; NÃO concede +1A automaticamente.",
  "pericia-montaria": "+1 Antecipar (A) aos testes com montaria, sem Vantagem e sem dado extra. Custo XP pendente; aplicação contextual manual.",
- "invocacao-elemental":"Uma ficha ativa por conjurador; pode dividir criaturas em tokens com XP/Vida repartidos e DE preservada. Dano de área é normal. Apenas um turno antecipável, para agir sozinho ou ajudar conjurador/aliado em ação conjunta. Dois elementos exigem Improviso + Maestria; Psique projeta a mente e deixa o corpo parado. Divisão inexata pendente.",
+ "invocacao-elemental":"1 Coragem para invocar; Criar Item de Foco e Magia, Domar Pequena e elemento habilitado. Pequena em ataque conjunto concede apenas +1A; separada, 4 Vida (uma por faixa), sem armadura. Média/Grande mantêm 2/3 dados, apoio a um único aliado, ficha com XP do invocador. Uma invocação ativa; imunidade ao elemento; dissipa se conjurador Incapacitado/Inconsciente. Imbuir domesticada concede resistência. Dois elementos exigem Extração + Maestria e habilitações, +1 Coragem; efeitos especiais +1 Coragem. Psique projeta mente com corpo parado. Duração, ataque independente Pequena e divisão inexata pendentes.",
  "domar-criatura-media":"Uma companheira Média por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-grande":"Uma companheira Grande por personagem; ficha própria e +1 Vida ao domador.",
  "domar-criatura-pequena": "Companheiro Pequeno domesticado presente: +1 Vida máxima ao domador. Por 1 Coragem, atua como auxílio no turno (+1A em combate); serpente pode aplicar Envenenado a alvo em Sangramento, sem dano periódico definido. Possui Vida própria inicial 1.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
- "criar-item-foco-magia": "Prepara magias, focos e efeito Psíquico inicial.",
+ "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
  "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
- "improviso": "+1A e elemento disponível na cena sem efeito especial.",
- "mestre": "+1A cumulativo e dois efeitos de elementos habilitados.",
- "fogo": "G2 Queimar: E + P à Integridade; G3 Derreter: E + P à Integridade e 1 Vida direta fixa.",
- "agua": "Água leve, congelamento e manipulação.",
- "vento": "Ar leve, movimento e deslocamento.",
- "terra": "Terra leve, terreno e percepção sísmica.",
- "sagrado": "Êxitos excedentes recuperam Coragem; P anula recuperação.",
- "veneno": "Magia de Veneno: 1 acúmulo em alvo com Sangramento; limiares por Vida atual",
- "sangue": "Magia de Sangue amplificada: TODO o dano calculado à Vida, sem atingir Integridade. Custo: 1 Vida própria OU 3 marcas inimigas; 1 vez/turno.",
- "trevas": "Até dois alvos; +2P válidos para DE, dano e risco; dividir ou concentrar Pavor.",
+ "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
+ "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
+ "fogo": "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
+ "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
+ "vento": "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
+ "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
+ "sagrado": "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
+ "veneno": "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
+ "sangue": "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
+ "trevas": "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
  "criar-veneno": "Produz venenos; 1 dose por arma e 1 acúmulo por efeito ativado",
  "criar-antidoto": "Fabrica Antídoto; cada dose não diluída remove 1 acúmulo de Envenenamento",
  "transfusao": "Transfere 1 Vida ou aplica Antídoto à distância.",
@@ -1477,8 +1477,8 @@ const CARD_BRIEFS={
  "impacto-psiquico":"1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
  "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
  "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
- "sentido-elemental":"1 XP; Inteligência 3 e Improviso Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
- "cancelar-magia":"1 XP; Criar Item de Foco e Magia, Improviso Elemental, Inteligência/Agilidade/Destreza 4. Reage a magia até 8 m com Pavor mantido; 1 Coragem; resultado ≥ DE adversária, empate cancela; Perícia do mesmo elemento.",
+ "sentido-elemental":"1 XP; Inteligência 3 e Extração Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
+ "cancelar-magia":"1 XP; Criar Item de Foco e Magia, Extração Elemental, Inteligência/Agilidade/Destreza 4. Reage a magia até 8 m com Pavor mantido; 1 Coragem; resultado ≥ DE adversária, empate cancela; Perícia do mesmo elemento.",
  "mudanca-elemental":"1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente até 8 m para elemento habilitado; duração E − P, exigindo resultado positivo.",
  "desencantar":"1 XP; Cancelar Magia. Remove elementos ou imunidades em 8 m, exceto elemento natural constituinte de criatura elemental; teste e ativação pendentes.",
  "espelho-magico":"1 XP; Cancelar Magia. Passivo; reflete dano mágico por Pavor mantido antes da armadura absorver ou anular, mesmo se a Vida não for atingida; somente magia.",
@@ -1486,29 +1486,29 @@ const CARD_BRIEFS={
  "escudo-bumerangue": "1 XP, Destreza 2, Força 3, Arremesso de Armas e Maestria em Escudos. Disciplina + Atributos; até 8 m; retorna no mesmo turno APENAS se acertar a DE. Falha segue queda de Arremesso de Armas; lançar custa 1 Coragem e o dano é físico normal, com características próprias do escudo quando habilitadas.",
  "montar": "2 XP, Influência 2. Vantagem nos testes com montaria; não confundir com +1A da Perícia em Montaria.",
  "pericia-montaria": "Requisitos Influência 1 + Destreza 2; +1A nos testes com montaria, NÃO Vantagem. Custo de XP PENDENTE; compra bloqueada.",
- "invocacao-elemental":"Compra 1 XP; Criar Item de Foco e Magia habilita Psique e Domar Pequena dá o porte inicial. Outros elementos exigem Perícia própria. Invocar: 1 Coragem.",
+ "invocacao-elemental":"1 Coragem para invocar; Criar Item de Foco e Magia, Domar Pequena e elemento habilitado. Pequena em ataque conjunto concede apenas +1A; separada, 4 Vida (uma por faixa), sem armadura. Média/Grande mantêm 2/3 dados, apoio a um único aliado, ficha com XP do invocador. Uma invocação ativa; imunidade ao elemento; dissipa se conjurador Incapacitado/Inconsciente. Imbuir domesticada concede resistência. Dois elementos exigem Extração + Maestria e habilitações, +1 Coragem; efeitos especiais +1 Coragem. Psique projeta mente com corpo parado. Duração, ataque independente Pequena e divisão inexata pendentes.",
  "domar-criatura-media":"1 XP. Influência 3, Apresentação 1, Inteligência 1 e Domar Criatura Pequena.",
  "domar-criatura-grande":"1 XP. Influência 4, Apresentação 2, Inteligência 1, Domar Criatura Pequena e Domar Criatura Média.",
  "domar-criatura-pequena": "1 XP e requisitos Influência 2 e Inteligência 1, sem Apresentação como requisito de compra. Domar consome 1 Coragem; o teste publicado de Influência + Apresentação não foi alterado. Compra não é domesticação.",
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
- "criar-item-foco-magia": "Inicia a conjuração Psíquica, permite preparar magias e fabricar focos. Efeitos especiais requerem acerto e ativação.",
+ "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
  "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
- "improviso": "Adiciona +1 Antecipar e um elemento presente na cena. O elemento ajuda no impacto e afinidades, mas não ativa sua propriedade especial.",
- "mestre": "Mescla dois elementos em uma conjuração; aplica as propriedades de ambos se as duas Perícias tiverem sido adquiridas. +1A acumula com Improviso.",
- "sagrado": "Recupera Coragem por Êxitos excedentes depois da DE. Pavor cancela recuperação sem voltar a virar dano. Em área, aliados recuperam igualmente.",
- "trevas": "Uma rolagem contra até dois alvos; +2P antes da DE, válidos para dano e transferência. Repartir Pavor igualmente ou concentrar em um alvo; nunca duplicar.",
- "sangue": "Rework v0.74: Sangue puro atinge armadura normalmente. Após pagar 1 Vida própria OU 3 marcas inimigas, uma magia de Sangue que acerte pode aplicar TODO o dano calculado diretamente à Vida, sem desgaste simultâneo de armadura. Exclusivo desta build, sem bônus gratuito. Compete com manter ou elevar dado, no limite de uma vez por turno.",
- "veneno": "Conjuração distinta da alquimia Criar Veneno. No acerto em alvo com Sangramento, gasta 1 Coragem para aplicar 1 acúmulo por 2 rodadas sem renovar os anteriores. A partir de 2/3 da Vida atual, Ferido; se acúmulos alcançam Vida atual, Incapacitado. Se estiver Envenenado com exatamen…",
+ "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
+ "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
+ "sagrado": "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
+ "trevas": "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
+ "sangue": "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
+ "veneno": "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
  "criar-antidoto": "Criado de materiais venenosos coletados. Cada Antídoto criado vale uma dose; remove um acúmulo ao ser ingerido ou aplicado em alvo em Sangramento. Remover dois acúmulos exige duas doses não diluídas; diluição não multiplica eficácia. Pode ser enviado por Transfusão quando seus requisitos f…",
  "criar-veneno": "Não concede conjuração elemental. Usa materiais venenosos coletados para produzir doses não diluídas. 1 dose ingerida = 1 acúmulo. Só UMA dose em cada arma; para aplicar por golpe, o alvo deve estar em Sangramento (estado que ignora armadura, sem causar dano à Vida). Aplicação por magia de Sangue foi autorizada conceitualmente, mas entrega, custos e habilitações permanecem pendentes. Duas adagas envenenadas usadas com Manejo Duplo podem aplicar 2 acúmulos se…",
  "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue. 1 XP; exige Transfusão + Elemento Sangue. Conjuração ativa; 3 marcas inimigas por 1 Vida; compra prévia de Transfusão pendente.",
- "fogo": "SRD v0.76: G1 disparo convencional; G2 Queimar causa E+P à Integridade; G3 Derreter mantém esse dano e acrescenta só 1 Vida direta, não dobrada no crítico. Áreas e custos mantidos; validação dos Graus pelo Narrador.",
- "agua": "Manipula água, produz congelamento leve e abre efeitos de perfuração nos Graus superiores, com os custos pertinentes.",
- "vento": "Manipula deslocamento e correntes de ar, incluindo autoempurrão, formas em L e X e outras curvas por caminhos abertos para tirar alvos de cobertura; alcance, DE e procedimentos pendentes.",
- "terra": "Manipula terreno, dificulta movimentação e ajuda a detectar ameaças pelo sentido sísmico.",
+ "fogo": "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
+ "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
+ "vento": "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
+ "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
  "armas-longo-alcance": "Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.",
  "golpe-fulminante": "1 Coragem antes de rolar; eleva um dado de arma corpo a corpo e cada Pavor válido causa 1 dano no acerto, sem impedir sua transferência aos inimigos.",
  "espalhar-golpe": "Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+P válidos devem alcançar a soma das DE do principal e dos adicionais (cada formação coordenada conta uma vez); se não alcançar a soma, apenas o principal pode ser atingido se alcançar a DE que o protege. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Pavor. Raio fixo; teto de 5 Coragens por turno.",
@@ -1543,7 +1543,7 @@ const CARD_BRIEFS={
  "maestria-longo-alcance":"1 XP; compra bloqueada enquanto requisitos pendentes. Efeito: acerto 1 grátis; crítico 2 grátis e terceira por 1 Coragem.",
  "maestria-armas-fogo":"Concedida ao Humano (0 XP racial; nominal 1 XP). Acerto: 1 grátis; crítico: 2 grátis + terceira por 1 Coragem.",
  "ferreiro": "1 XP; requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3). +1E somente em teste de Forja; armas e armaduras Médias/Pesadas G1, conserto/modificação de armas e preparação de minérios/metais. Fabricação automática pendente.",
- "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
+ "ferreiro-elemental": "1 XP; requer Ferreiro, Inteligência 2, Destreza 2, Extração Elemental, Criar Item de Foco e Magia e Encantar com Elemento. Cria armas elementais e pedras elementais; receitas e automação pendentes.",
  "resistencia-a-fogo": "1 XP. Exige Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2. O portador reduz à metade o dano de Fogo à Vida, sem proteger a armadura. O +1 de Vida direta de Derreter é 0, enquanto E+P à Integridade permanece normal. Frações e interações pendentes.",
  "encantar-com-elemento": "1 XP. Exige uma Perícia Elemental + Criar Item de Foco e Magia. Armaduras e escudos: 1 Coragem por resistência elemental; armas tornam-se do elemento habilitado. Mesma duração E-P>0 para todos. Custo da arma e unidade temporal pendentes.",
  "apresentacao-avancada": "1 XP; requisito Apresentação 3. Com Apresentação como fonte principal, permite uma terceira fonte pertinente, até três no total. Efeitos específicos diferentes desse benefício não definidos.",
@@ -1576,25 +1576,25 @@ const CARD_ACTIVATIONS={
  "escudo-bumerangue": "Arremesso de escudo: Disciplina + Atributo(s), 8 m; acerto retorna no mesmo turno, falha cai conforme Arremesso de Armas. Custa 1 Coragem para lançar; dano físico normal e características registradas na peça conforme habilitação",
  "montar": "Vantagem nos testes com montaria; não é +1A",
  "pericia-montaria": "+1A em testes com montaria; não é Vantagem; aquisição PENDENTE",
- "invocacao-elemental":"1 Coragem; segundo elemento +1 Coragem (Improviso + Maestria); efeitos especiais +1 Coragem",
+ "invocacao-elemental":"1 Coragem; custos específicos à parte.",
  "domar-criatura-media":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-grande":"1 Coragem + teste de Influência + Apresentação",
  "domar-criatura-pequena": "1 Coragem + teste de Influência + Apresentação",
  "pericia-druidica": "Pequena: 0 Coragem; Média e Grande: 1 Coragem",
  "transformacao-elemental": "1 Coragem. Ambiente favorável: 3 turnos. Duração = E-P (>0); unidade, fontes, DE e amplificação pendentes.",
- "criar-item-foco-magia": "G1/G2 Psíquico: ativação-base gratuita",
+ "criar-item-foco-magia": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
  "escudo-arcano": "1 Coragem (+ custo por expansão)",
  "conjuracao-equilibrada": "PENDENTE",
- "improviso": "Passiva",
- "mestre": "Mistura: 1A; custo próprio da Maestria PENDENTE",
- "fogo": "G1/G2: gratuito com Perícia e Grau habilitados, com ou sem foco se houver fonte elemental; G3: 1 Coragem; G4: 1 Coragem pela elevação de Fogo (2 no total se os dois elementos chegam a G3)",
- "agua": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
- "vento": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
- "terra": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
- "sagrado": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
- "veneno": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
- "sangue": "1 Vida própria OU 3 Sangues de inimigos · 1 uso/turno",
- "trevas": "G1/G2: ativação-base gratuita; G3: +1 Coragem quando habilitado",
+ "improviso": "Ativa: 1 Coragem",
+ "mestre": "G5: custo em revisão; mistura 1A.",
+ "fogo": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "agua": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "vento": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "terra": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "sagrado": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "veneno": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "sangue": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
+ "trevas": "G1/G2 custo-base 0; G3/G4 1 Coragem; técnicas específicas à parte.",
  "criar-veneno": "Preparação alquímica; ativação conforme arma",
  "criar-antidoto": "1 dose remove 1 acúmulo",
  "transfusao": "Custo de Vida; custo de ativação PENDENTE",
@@ -2467,7 +2467,7 @@ function normalize(v){
    .map(x=>({name:x.name.slice(0,90),price:clamp(Math.floor(x.price||0),0,99999)})):[];
  }
  s.elementalCrystal={element:String(v.elementalCrystal?.element||"").slice(0,30),
-  quantity:clamp(Math.floor(v.elementalCrystal?.quantity??(ownsSkill("criar-item-foco-magia",s)?1:0)),0,1)};
+  quantity:clamp(Math.floor(v.elementalCrystal?.quantity??0),0,1)};
  for(const item of s.items)if(item.equipped&&item.type==="armadura"&&!canEquipArmor(s,item))item.equipped=false;
  s.history=Array.isArray(v.history)?v.history.slice(0,20):[];
  // SRD v0.73: unificar sangue inimigo. Importações antigas mantêm as duas parcelas existentes
@@ -2592,7 +2592,7 @@ function normalizeItem(it={}){
   priceVT:clamp(Math.floor(it.priceVT||0),0,10000),
   properties:Array.isArray(it.properties)?it.properties.filter(x=>typeof x==="string").slice(0,6):[],
   firearm:!!it.firearm,element:String(it.element||"").slice(0,40),
-  focusCharges:type==="foco"?clamp(Math.floor(it.focusCharges??grade),0,grade):0,
+  focusCharges:type==="foco"?clamp(Math.floor(it.focusCharges??focusCapacity({weight})),0,focusCapacity({weight})):0,
   durability:clamp(Math.floor(it.durability||0),0,999),durabilityMax:clamp(Math.floor(it.durabilityMax||0),0,999),
   packSize:clamp(Math.floor(it.packSize||0),0,99),ammoRemaining:clamp(Math.floor(it.ammoRemaining??it.packSize??0),0,99),
   ammoRole:["container","supply"].includes(it.ammoRole)?it.ammoRole:"",ammoFamily:String(it.ammoFamily||"").slice(0,40),ammoTypes:it.ammoRole?ammoTypesFor(it.ammoFamily):[],ammoLotWeight:[.0125,.125].includes(Number(it.ammoLotWeight))?Number(it.ammoLotWeight):0,ammoMix:it.ammoRole?normalizeAmmoMix(it.ammoMix,it.ammoFamily):null,
@@ -2739,7 +2739,7 @@ function skillReq(id,s=state){
     !["vento","agua","terra","fogo","sagrado","trevas","veneno"].some(has)||!has("domar-criatura-media")))
     return"Requer Alquimia 3, Inteligência 3, Destreza 3, Perícia em Sangue, Criar Item de Foco e Magia, outra Perícia elemental (diferente de Sangue) e Domar Criatura Média.";
   if(id==="pesquisa-avancada-pocoes"&&(alch<3||!has("improviso")||art<3||dex<2))
-    return"Requer Alquimia 3, Improviso Elemental, Artesão 3 e Destreza 2.";
+    return"Requer Alquimia 3, Extração Elemental, Artesão 3 e Destreza 2.";
   if(id==="corpo-fechado"&&(vig<4||!has("artista-marcial")))return"Requer Vigor 4 e Artista Marcial (Artes Marciais).";
   if(id==="invocar-esfera-espiritual"&&(!has("criar-item-foco-magia")||dex<4||intelligence<3||vig<3))
     return"Requer Criar Item de Foco e Magia, Destreza 4, Inteligência 3 e Vigor 3.";
@@ -2770,7 +2770,7 @@ function skillReq(id,s=state){
   if(id==="maestria-hastes"&&(strength<2||agi<1||dex<1))return"Requer Força 2, Agilidade 1 e Destreza 1. Perícia em Armas do peso exigida somente para ativar a Especialização.";
   if(id==="maestria-espadas"&&(strength<2||dex<2))return"Requer Força 2 e Destreza 2. Perícia em Armas do peso exigida somente para ativar a Especialização.";
  if(id==="ferreiro"&&(art<3||strength<1||dex<1||intelligence<1||!has("artesao-avancado")))return"Requer Artesão 1, Força 1, Destreza 1, Inteligência 1 e Artesão Avançado (que exige Artesão 3).";
- if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Improviso Elemental e Criar Item de Foco e Magia.";
+ if(id==="ferreiro-elemental"&&(!has("ferreiro")||intelligence<2||dex<2||!has("improviso")||!has("criar-item-foco-magia")))return"Requer Ferreiro, Inteligência 2, Destreza 2, Extração Elemental e Criar Item de Foco e Magia.";
  if(id==="ferreiro-elemental"&&!has("encantar-com-elemento"))return"Requer comprar Encantar com Elemento antes de Ferreiro Elemental.";
  if(id==="resistencia-a-fogo"&&(!has("ferreiro-elemental")||!has("fogo")||vig<2))return"Requer Ferreiro Elemental, Perícia em Elemento Fogo e Vigor 2."; 
  if(id==="encantar-com-elemento"&&(!has("criar-item-foco-magia")||!["vento","agua","terra","fogo","sagrado","sangue","trevas","veneno"].some(has)))return"Requer Criar Item de Foco e Magia e pelo menos uma Perícia Elemental adquirida (Ar, Água, Terra, Fogo, Sagrado, Sangue, Trevas ou Veneno).";
@@ -2790,13 +2790,13 @@ function skillReq(id,s=state){
  if(id==="espalhar-golpe"&&(disc<2||dex<1||agi<1||!has("golpe-fulminante")))return"Requer Golpe Fulminante, Disciplina 2, Agilidade 1 e Destreza 1.";
  if(id==="pugilismo"&&(disc<1||strength<2||dex<1))return"Requer Disciplina 1, Força 2 e Destreza 1.";
  if(id==="artista-marcial"&&(disc<2||dex<2||(s.practices.atletismo||0)<1||!has("pugilismo")))return"Requer Disciplina 2, Destreza 2, Atletismo 1 e Pugilismo.";
- if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Improviso Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
+ if(id==="cancelar-magia"&&(!has("criar-item-foco-magia")||!has("improviso")||intelligence<4||agi<4||dex<4))return"Requer Criar Item de Foco e Magia, Extração Elemental, Inteligência 4, Agilidade 4 e Destreza 4.";
   if(id==="mudanca-elemental"&&(!has("transformacao-elemental")||intelligence<4||dex<4))return"Requer Transformação Elemental, Inteligência 4 e Destreza 4.";
   if(id==="desencantar"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="espelho-magico"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
-  if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Improviso Elemental.";
+  if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Extração Elemental.";
   if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
@@ -2810,7 +2810,7 @@ function skillReq(id,s=state){
  if(id==="pericia-montaria")return"Custo XP de Perícia em Montaria PENDENTE: compra indisponível até a definição autoral.";
  if(id==="provocacao-sofisticada"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="improviso"&&(disc<1||(s.attributes.inteligencia||0)<1||dex<1))return"Requer Disciplina 1, Inteligência 1 e Destreza 1. Criar Foco não é requisito.";
- if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Improviso Elemental e uma Perícia elemental.";
+ if(id==="mestre"&&(disc<3||(s.attributes.inteligencia||0)<3||dex<3||!has("criar-item-foco-magia")||!has("improviso")||!["vento","sangue","agua","fogo","terra","veneno","sagrado","trevas"].some(has)))return"Requer Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magia, Extração Elemental e uma Perícia elemental.";
  if(["sangue","trevas"].includes(id)&&(disc<2||(s.attributes.inteligencia||0)<2))return"Requer Disciplina 2 e Inteligência 2. Criar Foco é opcional.";
  if(id==="veneno"&&(disc<2||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2))return"Requer Disciplina 2, Inteligência 2, Alquimia 2 e Medicina 2.";
  if(id==="criar-antidoto"&&((s.practices.artesao||0)<1||(s.attributes.inteligencia||0)<2||(s.knowledges.alquimia||0)<2||(s.knowledges.medicina||0)<2||!has("criar-veneno")))return"Requer Artesão 1, Inteligência 2, Alquimia 2, Medicina 2 e Criar Veneno.";
@@ -3123,7 +3123,7 @@ function changeRace(id){
  wizardStarterAttribute="";wizardStarterPurchased="";wizardStarterTraining="";
  wizardStarterPhase="attr";wizardStep=0;wizardReached=0;
  if(ownsSkill("criar-item-foco-magia")){
-  if(!state.elementalCrystal.quantity){state.elementalCrystal.quantity=1;state.elementalCrystal.element="";}
+  // v0.194: nenhuma concessão de cristal físico.
  }else if(old==="lucker_puro"||old==="runa_espinhos"){
   state.elementalCrystal.quantity=0;state.elementalCrystal.element="";
  }
@@ -3204,9 +3204,16 @@ function magicElementId(value){
  return ({ar:"vento",vento:"vento",psique:"psiquico",psiquico:"psiquico",agua:"agua",fogo:"fogo",terra:"terra",sagrado:"sagrado",sangue:"sangue",trevas:"trevas",veneno:"veneno"})[raw]||"";
 }
 function magicKnownElements(){
- return [...(ownsSkill("criar-item-foco-magia")?[["psiquico","Psíquico"]]:[]),
-  ...ELEMENT_SKILLS.filter(([id])=>ownsSkill(id))];
+ if(!ownsSkill("criar-item-foco-magia")||skillReq("criar-item-foco-magia"))return [];
+ return [["psiquico","Psique"],...ELEMENT_SKILLS.filter(([id])=>ownsSkill(id)&&!skillReq(id))];
 }
+function magicElementChoices(){
+ const known=magicKnownElements();if(!known.length||!ownsSkill("improviso")||skillReq("improviso"))return known;
+ return [...known,...ELEMENT_SKILLS.filter(([id])=>!known.some(([k])=>id===k)).map(([id,name])=>[id,name+" · Extração"])];
+}
+function magicExtracted(plan=draft){return !!plan.magicElement&&!magicKnownElements().some(([id])=>id===plan.magicElement);}
+function focusCapacity(item){return ({leve:1,medio:2,alto:3})[item?.weight]||0;}
+function magicIntDice(grade,steps){return [...[...DICE_ATTR,[10,10,12],[10,12,12],[12,12,12]][Math.min(9,Math.max(0,grade+steps))]];}
 function magicCompatibleFoci(element){
  return state.items.filter(item=>item.type==="foco"&&
   magicElementId(item.element||"psiquico")===element);
@@ -3217,41 +3224,28 @@ function magicSelectedFocus(plan=draft){
 function magicSelectedSecondFocus(plan=draft){
  return magicCompatibleFoci(plan.magicSecondElement).find(item=>item.id===plan.magicSecondFocusId)||null;
 }
-function magicPreparationTurns(grade,charges,hasFocus=false,hasSecondFocus=false){
- if(grade===1)return 1;
- if(grade===2)return hasFocus&&charges>=1?1:2;
- if(grade===3)return Math.max(1,3-(hasFocus?Math.min(2,charges):0));
- if(grade===4)return Math.max(3,6-(hasFocus&&hasSecondFocus?Math.min(3,charges):0));
- return 1;
+function magicPreparationTurns(grade,charges,hasFocus=false){
+ return grade<=2?1:grade===3||grade===4?Math.max(1,grade-1-(hasFocus?Math.min(grade-2,charges):0)):4;
 }
-function magicCourageCost(plan=draft){
- return (plan.magicGrade===4?2:plan.magicGrade===3?1:0)+(plan.magicAmplify?1:0);
-}
+function magicCourageCost(plan=draft){return (plan.magicGrade>=3?1:0)+Number(magicExtracted(plan));}
 function alignMagicDraft(){
- const known=magicKnownElements();
+ const known=magicElementChoices();
  if(!known.some(([id])=>id===draft.magicElement))draft.magicElement=known[0]?.[0]||"";
  draft.magicGrade=[1,2,3,4].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
- if(draft.magicGrade!==4){
-  draft.magicSecondElement="";draft.magicSecondFocusId="";
- }else if(!known.some(([id])=>id===draft.magicSecondElement&&id!==draft.magicElement)){
-  draft.magicSecondElement="";draft.magicSecondFocusId="";
- }
- const focus=magicSelectedFocus(),second=magicSelectedSecondFocus();
- if(!focus){draft.magicFocusId="";draft.magicAmplify=false;}
- if(!second)draft.magicSecondFocusId="";
- const cap=draft.magicGrade===4?(focus&&second?Math.min(3,focus.focusCharges??0,second.focusCharges??0):0):
-  draft.magicGrade===3?(focus?Math.min(2,focus.focusCharges??0):0):
-  draft.magicGrade===2?(focus?Math.min(1,focus.focusCharges??0):0):0;
+ if(magicExtracted())draft.magicGrade=1;
+ draft.magicSecondElement="";draft.magicSecondFocusId="";draft.magicAmplify=false;
+ const focus=magicSelectedFocus();if(!focus||magicExtracted())draft.magicFocusId="";
+ const cap=draft.magicGrade>=3&&focus?Math.min(draft.magicGrade-2,focus.focusCharges??0):0;
  draft.magicCharges=Math.min(cap,Math.max(0,Math.floor(Number(draft.magicCharges)||0)));
- if(draft.magicGrade===1)draft.magicGradeConfirmed=false;
+ if(draft.magicGrade<2)draft.trevas=false;
  if(draft.mode==="conjuracao"&&draft.magicElement)draft.equipmentId="";
 }
 
 function prepareMagic(element=""){
  if(state.pending){toast("Finalize a rolagem pendente antes de preparar uma conjuração.");return;}
  if(editMode){toast("Encerre a edição da ficha antes de conjurar.");return;}
- const known=magicKnownElements(),chosen=element||draft.magicElement||known[0]?.[0];
- if(!known.some(([id])=>id===chosen)){toast("Adquira uma Perícia elemental ou Criar Item de Foco e Magia para conjurar Psíquico.");return;}
+ const known=magicElementChoices(),chosen=element||draft.magicElement||known[0]?.[0];
+ if(!known.some(([id])=>id===chosen)){toast("Conjuração exige Criar Item de Foco e Magia e elemento habilitado ou Extração.");return;}
  const previous=draft,grade=previous.magicGrade,focusId=previous.magicFocusId,secondFocusId=previous.magicSecondFocusId,secondElement=previous.magicSecondElement;
  const charges=previous.magicCharges,amplify=previous.magicAmplify,confirmed=previous.magicGradeConfirmed,timeConfirmed=previous.magicTimeConfirmed;
  const de=Number.isInteger(previous.de)?previous.de:1;
@@ -3274,7 +3268,7 @@ function prepareMagic(element=""){
 function renderMagicActions(){
  const root=$("magic-actions"),elementsRoot=$("owned-elements");
  if(!root||!elementsRoot)return;
- const elements=magicKnownElements();
+ const elements=magicElementChoices();
  if(!elements.length){
   root.innerHTML='<span class="fp-owned-empty">Nenhuma magia habilitada</span>';
   elementsRoot.innerHTML="";return;
@@ -3288,42 +3282,17 @@ function renderMagicActions(){
 }
 function magicComposerFields(){
  if(draft.mode!=="conjuracao"||!draft.magicElement)return "";
- const chosen=draft.magicElement,grade=[1,2,3,4].includes(Number(draft.magicGrade))?Number(draft.magicGrade):1;
- const foci=magicCompatibleFoci(chosen),focus=magicSelectedFocus(),secondFocus=magicSelectedSecondFocus(),
-  charges=grade===4?Math.min(3,focus?.focusCharges??0,secondFocus?.focusCharges??0):grade===3?Math.min(2,focus?.focusCharges??0):grade===2?Math.min(1,focus?.focusCharges??0):0;
+ const chosen=draft.magicElement,grade=draft.magicGrade,extracted=magicExtracted(),focus=magicSelectedFocus();
  const options=(choices,current)=>choices.map(([value,caption])=>'<option value="'+esc(value)+'"'+(String(value)===String(current)?" selected":"")+'>'+esc(caption)+'</option>').join("");
- const chosenName=magicKnownElements().find(([id])=>id===chosen)?.[1]||chosen;
- const time=magicPreparationTurns(grade,draft.magicCharges,!!focus,!!secondFocus);
- const tacticalHint=chosen==="vento"?
- "Ar: correntes em L/X ou trajetórias curvas usam a soma dos trechos dentro da metragem do Grau (G1 4 m, G2 8 m, G3 12 m); sem alcance extra por curva, atravessar paredes ou efeito automático. DE e demais requisitos normais.":
- chosen==="fogo"&&ownsSkill("veneno")?
- (ownsSkill("mestre")?
- "Ácido: Fogo + Veneno, em acerto com Queimar aplica 1 acúmulo de Veneno por 2 rodadas (sem Sangramento), somente na mistura com Maestria Elemental e habilitações válidas. Misturar custa 1A e a elevação G3 segue a regra comum (+1 Coragem por elemento G3). Sem dano duplicado; registro manual.":
- "Ácido: Fogo + Veneno exige Maestria Elemental para ativar juntos Queimar e Veneno. Improviso Elemental só adapta o tipo de dano, sem transmitir Veneno. A mistura normal custa 1A e respeita Graus; registro manual."):
- "";
- const focusOptions=[["","Sem foco"],...foci.map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+"/"+item.grade+" cargas · sem dado adicional"])];
- return '<div class="fp-magic-composer"><strong class="fp-magic-heading"><span class="fp-element-icon">'+codexSkillIcon(chosen)+'</span><span>Conjurar '+esc(chosenName)+'</span></strong>'+
-  '<div class="fp-magic-config">'+
-  '<label>Grau da magia<select data-magic-field="magicGrade">'+options([[1,"G1 · +1d6 · imediato"],[2,"G2 · +1d10 · 2 turnos / 1 carga = 1 turno"],[3,"G3 · +1d12 · até 2 cargas"],[4,"G4 · +2d12 · dois elementos G3 · mínimo 3 turnos"]],grade)+'</select></label>'+
-  '<label>Foco elemental principal<select data-magic-field="magicFocusId">'+options(focusOptions,focus?.id||"")+'</select></label>'+
-  (grade===4?'<label>Segundo elemento G3<select data-magic-field="magicSecondElement">'+options(
-    [["","Escolha outro elemento habilitado"],...magicKnownElements().filter(([id])=>id!==chosen)],draft.magicSecondElement)+'</select></label>'+
-   '<label>Foco do segundo elemento<select data-magic-field="magicSecondFocusId">'+options(
-    [["","Sem foco"],...magicCompatibleFoci(draft.magicSecondElement).map(item=>[item.id,item.name+" · "+(item.focusCharges??item.grade)+" carga(s)"])],
-    secondFocus?.id||"")+'</select></label>':"")+
-  (grade>=2&&focus&&grade!==4?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+
-   options(Array.from({length:charges+1},(_,n)=>[n,n+" carga(s) · "+magicPreparationTurns(grade,n,true)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
-  (grade===4&&focus&&secondFocus?'<label>Pares de cargas (um de cada foco)<select data-magic-field="magicCharges">'+
-   options(Array.from({length:charges+1},(_,n)=>[n,n+" par(es) de cargas · "+(6-n)+" turno(s)"]),Math.min(charges,draft.magicCharges||0))+'</select></label>':"")+
-  (grade>1?'<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+
-   '> Grau e efeito habilitados (confirmado com Narrador)</label>':"")+
-  (grade===4?'<p class="fp-magic-note">G4 plena exige dois elementos G3 diferentes, 1A + 2 Coragens e 6 turnos, reduzidos até 3 com pares de cargas: uma de cada foco. Habilitação e efeitos confirmados com Narrador.</p>':"")+
-  '<p class="fp-magic-note">Role AGORA, ao declarar. Se houver espera, os dados ficam visíveis enquanto o inimigo pode reagir ao Pavor.</p>'+
-  '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicAmplify"'+(draft.magicAmplify&&focus?" checked":"")+(focus?"":" disabled")+
-  '> Amplificar (+1 Coragem, dentro do limite permitido)</label></div>'+
-  (tacticalHint?'<p class="fp-magic-note">'+esc(tacticalHint)+'</p>':'')+
-  '<small class="fp-magic-note">Dados mágicos: '+(grade===4?'+2d12':'+1d'+({1:6,2:10,3:12}[grade]))+' (pelo Grau, nunca pelo foco) · Preparação: '+time+' turno(s) · Magia: '+magicCourageCost()+
-  ' Coragem · '+draft.magicCharges+' carga(s). Intervenções do inimigo conforme Narrador.</small></div>';
+ const foci=magicCompatibleFoci(chosen),charges=grade>=3?Math.min(grade-2,focus?.focusCharges??0):0;
+ const time=magicPreparationTurns(grade,draft.magicCharges,!!focus);
+ return '<div class="fp-magic-composer"><strong class="fp-magic-heading">Conjurar '+esc(magicElementChoices().find(([id])=>id===chosen)?.[1]||chosen)+'</strong>'+
+ '<div class="fp-magic-config"><label>Elemento<select data-magic-field="magicElement">'+options(magicElementChoices(),chosen)+'</select></label>'+
+ '<label>Grau<select data-magic-field="magicGrade">'+options(extracted?[[1,"G1 · Extração 1 Coragem"]]:[[1,"G1 · imediato"],[2,"G2 · imediato"],[3,"G3 · +1 passo de Inteligência · 1 Coragem"],[4,"G4 · +2 passos de Inteligência · 1 Coragem"]],grade)+'</select></label>'+
+ (!extracted?'<label>Foco<select data-magic-field="magicFocusId">'+options([["","Sem foco"],...foci.map(it=>[it.id,it.name+" · "+it.focusCharges+"/"+focusCapacity(it)+" cargas"])],focus?.id||"")+'</select></label>':"")+
+ (charges?'<label>Cargas para acelerar<select data-magic-field="magicCharges">'+options(Array.from({length:charges+1},(_,i)=>[i,i+" carga(s)"]),draft.magicCharges)+'</select></label>':"")+
+ '<label class="fp-magic-check"><input type="checkbox" data-magic-field="magicGradeConfirmed"'+(draft.magicGradeConfirmed?" checked":"")+'> Confirmo fonte disponível, Grau e efeito com Narrador'+(extracted?" (Extração: elemento realmente presente na cena)":"")+'</label></div>'+
+ '<p class="fp-magic-note">Preparação: '+time+' turno(s) · '+magicCourageCost()+' Coragem · '+draft.magicCharges+' carga(s). Sem dados mágicos extras. Aplique desvantagens de posicionamento manualmente. G5, efeitos mentais, suporte Sagrado, Sangue e ataques múltiplos: resolver conforme SRD v0.194, sem automação dos efeitos pendentes.</p></div>';
 }
 
 let inventoryPane="bag";
@@ -4445,24 +4414,15 @@ function buildPool(){
   // A pertinência do complemento é combinada verbalmente com o Narrador; sem checkbox obrigatório.
  }
  if(!canUseShared())errors.push("Conjuração exige Perícia elemental habilitada ou Criar Item de Foco e Magia para Psíquico.");
- if(draft.mode==="conjuracao"&&draft.magicElement){
-  const known=magicKnownElements().some(([id])=>id===draft.magicElement);
-  const focus=magicSelectedFocus();
-  if(!known)errors.push("Elemento não habilitado para esta conjuração.");
-  if(draft.magicGrade>1&&!draft.magicGradeConfirmed)errors.push("Confirme com Narrador o acesso ao Grau e efeito G"+draft.magicGrade+".");
-  // SRD v0.89: rolar ao declarar; confirmar preparação APÓS o resultado.
-  if(draft.magicFocusId&&!focus)errors.push("Foco deve estar no inventário e corresponder ao elemento.");
-  if(draft.magicGrade===4&&!magicKnownElements().some(([id])=>id===draft.magicSecondElement&&id!==draft.magicElement))
-   errors.push("G4 exige dois elementos G3 diferentes e habilitados, confirmados com Narrador.");
-  const secondFocus=magicSelectedSecondFocus();
-  const chargeLimit=draft.magicGrade===4?3:draft.magicGrade===3?2:draft.magicGrade===2?1:0;
-  if(draft.magicCharges>chargeLimit||draft.magicCharges<0||
-     (draft.magicCharges>0&&(!focus||draft.magicCharges>(focus.focusCharges??0)||
-      (draft.magicGrade===4&&(!secondFocus||draft.magicCharges>(secondFocus.focusCharges??0))))))
-   errors.push("Cargas insuficientes: G2 usa 1 carga; G3 até 2; G4 usa pares de cargas dos dois focos.");
-  if(draft.magicAmplify&&!focus)errors.push("Amplificação com foco exige um foco compatível.");
-  if(draft.equipmentId&&draft.equipmentId!==(focus?.id||""))
-   errors.push("O foco selecionado deve corresponder ao elemento da magia; ele não adiciona dado.");
+ if(draft.mode==="conjuracao"){
+  const known=magicElementChoices().some(([id])=>id===draft.magicElement),focus=magicSelectedFocus();
+  if(!known||!draft.magicElement)errors.push("Conjuração exige Criar Item de Foco e Magia e elemento habilitado ou Extração.");
+  if(!usingDiscipline()||draft.attribute?.key!=="inteligencia")errors.push("Conjuração exige Disciplina + Inteligência.");
+  if(![1,2,3,4].includes(draft.magicGrade)||magicExtracted()&&draft.magicGrade!==1)errors.push("Grau inválido; Extração sem habilitação especial usa G1.");
+  if(!draft.magicGradeConfirmed)errors.push("Confirme fonte, Grau e efeito com Narrador.");
+  if(draft.magicFocusId&&!focus)errors.push("Foco incompatível.");
+  if(draft.magicCharges<0||draft.magicCharges>Math.max(0,draft.magicGrade-2)||draft.magicCharges>0&&(!focus||draft.magicCharges>focus.focusCharges))errors.push("Cargas insuficientes.");
+  if(draft.trevas&&(draft.magicElement!=="trevas"||![2,3].includes(draft.magicGrade)))errors.push("Trevas: técnica somente em G2/G3.");
  }
  const sources=[draft.base,draft.attribute,...(draft.third?[draft.third]:[])];
  const selectedStep=draft.step?draft.stepSourceId:"";
@@ -4473,15 +4433,9 @@ function buildPool(){
  for(const s of sources){
   const grade=state[SOURCE_PROPS[s.group]][s.key]||0;
   const raised=!!draft.step&&key(s)===selectedStep&&grade<6;
-  temporaryGradeDice(s.group,grade,raised).forEach((sides,index)=>pool.push({
+  (draft.mode==="conjuracao"&&s.group==="attr"&&s.key==="inteligencia"?magicIntDice(grade,Math.max(0,draft.magicGrade-2)+Number(raised)):temporaryGradeDice(s.group,grade,raised)).forEach((sides,index)=>pool.push({
    id:key(s)+":"+index,group:s.group,key:s.key,sides,baseSides:sides,temporaryStep:raised
   }));
- }
- if(draft.mode==="conjuracao"&&draft.magicElement){
-  const magicDice={1:[6],2:[10],3:[12],4:[12,12]}[Number(draft.magicGrade)]||[];
-  if(!magicDice.length)errors.push("Grau mágico inválido.");
-  magicDice.forEach((sides,i)=>pool.push({id:"magia:grau:"+draft.magicGrade+":"+i,
-    group:"magic",key:"Magia G"+draft.magicGrade+" · dado "+(i+1),sides,baseSides:sides}));
  }
  if(usingDiscipline()&&draft.equipmentId){
   const item=state.items.find(x=>x.id===draft.equipmentId);
@@ -4600,7 +4554,7 @@ function renderComposer(){
   '<p>Uma rolagem de retirada não é ataque, não causa dano e só remove a condição ao vencer a DE.</p></div>':"";
  const isShared=draft.base.group==="practice"&&draft.base.key==="armas_conjuracao";
  const usage=isShared?(draft.mode==="conjuracao"?"Disciplina · Conjuração":"Disciplina · Armas"):label(draft.base.group,draft.base.key);
- const canTrevas=isShared&&draft.mode==="conjuracao"&&ownsSkill("trevas");
+ const canTrevas=isShared&&draft.mode==="conjuracao"&&draft.magicElement==="trevas"&&[2,3].includes(draft.magicGrade)&&ownsSkill("trevas");
  const select=(field,values,selected)=>'<select data-option="'+field+'">'+values.map(([id,name])=>'<option value="'+id+'"'+(selected===id?" selected":"")+'>'+esc(name)+'</option>').join("")+'</select>';
  const modes=[["armas","Disciplina — Armas"],["conjuracao","Disciplina — Conjuração"]];
  const weight=[["leve","Leve"],["medio","Média"],["pesado","Pesada / Muito Pesada"]];
@@ -4652,7 +4606,7 @@ function renderComposer(){
  const checks=fulminanteControls+companionControl+asuraControls+potionCheckbox+stealthCheckbox+shieldRaiseChoice+'<label class="fp-checkline"><input type="checkbox" data-option="extraKeep"'+(draft.extraKeep?" checked":"")+'> Manter 1 dado adicional (1 Coragem)</label>'+
  '<label class="fp-form-field full">Elevar fonte em 1 Grau nesta rolagem (1 Coragem) '+select("stepSourceId",[["","Não elevar"],...stepOptions],draft.stepSourceId)+'</label>'+
  (throwingShield?"":'<label class="fp-checkline full"><input type="checkbox" data-option="weightEnabled"'+(draft.weightEnabled?" checked":"")+'> Aplicar afinidade de peso do ataque × armadura do alvo / porte natural (se pertinente)</label>')+
- (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (+2P antes da DE; 1 Coragem no acerto)</label>':"")+
+ (canTrevas?'<label class="fp-checkline full"><input type="checkbox" data-option="trevas"'+(draft.trevas?" checked":"")+'> Usar técnica de Trevas (G2 +1T; G3 +2T; dano múltiplo manual)</label>':"")+
  "";
  const throwDetails=throwingShield?'<div class="fp-alert"><strong>ESCUDO BUMERANGUE — '+esc(state.items.find(it=>it.id===draft.shieldThrowId)?.name||"Escudo")+'</strong><p>Lançamento: 1 Coragem; Disciplina + Atributo(s), até 8 m, sem dado adicional de escudo. No acerto, dano físico normal, características da peça conforme custos/gatilhos e retorno no mesmo turno. Na falha, queda conforme Arremesso de Armas.</p><label class="fp-form-field">Distância do alvo (m) <input type="number" data-option="shieldThrowMeters" min="1" max="8" value="'+draft.shieldThrowMeters+'"></label></div>':"";
  const options=throwDetails+(draft.maosLeves?'<div class="fp-alert"><strong>MÃOS LEVES:</strong> exceção exclusiva de Disciplina + Furtividade. DE inimiga + Grau do item + peso somente se equipado. Não é ataque nem causa dano; o Narrador confirma retirada do item.</div>':"")+
@@ -4691,7 +4645,7 @@ function roll(){
  const data=buildPool();
  if(data.errors.length){toast(data.errors[0]);renderComposer();return;}
  // Técnicas Fulminantes e retenção adicional física são pagas antes de gerar as faces.
- const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step)+Number(shot.cost||0):0;
+ const prepaidCourage=draft.mode==="armas"?Number(!!draft.fulminante)+Number(!!draft.extraKeep)+Number(!!draft.step)+Number(shot.cost||0):draft.mode==="conjuracao"?magicCourageCost():0;
  state.items=shot.items;
  state.courage-=prepaidCourage;state.courageRoundSpent=Number(state.courageRoundSpent||0)+prepaidCourage;
  state.pending={prepaidCourage,shot:shot.shot,shotEffect:shot.effect||"",shotCost:shot.cost||0,created:new Date().toISOString(),cravarRemovalShieldId:draft.cravarRemovalShieldId||"",
@@ -4703,7 +4657,7 @@ function roll(){
     shieldRaise:!!draft.shieldRaise,trevas:!!draft.trevas,
     shieldThrowMeters:draft.shieldThrowId?draft.shieldThrowMeters:0,
     magicElement:draft.mode==="conjuracao"?draft.magicElement:"",
-    magicGrade:draft.mode==="conjuracao"&&draft.magicElement?draft.magicGrade:0,
+    magicRules:194,magicExtracted:draft.mode==="conjuracao"&&magicExtracted(),magicGrade:draft.mode==="conjuracao"&&draft.magicElement?draft.magicGrade:0,
     magicFocusId:draft.mode==="conjuracao"?draft.magicFocusId:"",
     magicSecondElement:draft.mode==="conjuracao"&&draft.magicGrade===4?draft.magicSecondElement:"",
     magicSecondFocusId:draft.mode==="conjuracao"&&draft.magicGrade===4?draft.magicSecondFocusId:"",
@@ -4786,7 +4740,7 @@ function score(){
  const pBonus=properties.includes("Barulhenta")?1:0;
  // Perfurante de arma de fogo é passivo se a arma possui a propriedade.
  const passivePiercing=!!(item?.equipped&&item.firearm&&properties.includes("Perfurante"));
- const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?2:0)-criticalConverted+health.p);
+ const pAvailable=Math.max(0,raw[2]+pBonus+(p.opts.trevas?(Number(p.opts.magicGrade)===2?1:Number(p.opts.magicGrade)===3?2:0):0)-criticalConverted+health.p);
  const situation=SITUATIONS[p.opts.situation]||SITUATIONS.normal;
  const rangedFamily=projectileFamily(item);
  const rangedWeights={"arco-curto":{leve:-1,medio:1,pesado:0},"arco-longo":{leve:-1,medio:0,pesado:1},"besta-1m":{leve:0,medio:0,pesado:0},"besta-2m":{leve:-1,medio:0,pesado:1}};
@@ -4821,8 +4775,8 @@ function score(){
   (critTier&&properties.includes("Longa")?1:0)+(critTier&&properties.includes("Silenciosa")?1:0)+health.a);
  const cancel=clamp(Math.floor(p.cancelP),0,999),pairs=clamp(Math.floor(p.pairs),0,999),pass=clamp(Math.floor(p.pass),0,1);
  if(cancel>pAvailable)errs.push("Não há tantos Pavor restantes para anular.");
- const magicMixA=p.opts.magicElement&&Number(p.opts.magicGrade)===4?1:0;
- if(cancel+2*pairs+pass+magicMixA>aPool)errs.push("Antecipar insuficiente: G4 plena exige 1A de mistura além dos demais gastos.");
+ const magicMixA=0;
+ if(cancel+2*pairs+pass+magicMixA>aPool)errs.push("Antecipar insuficiente para os gastos escolhidos.");
  // A penalidade de Saúde incide no total de Êxitos, inclusive após converter Antecipar.
  // v0.79: −1E por arma cravada somente em Levantar Escudo. A ficha isolada registra uma arma por escudo.
  const raisedShield=state.items.find(it=>it.type==="escudo"&&it.equipped);
@@ -4837,29 +4791,16 @@ function score(){
  const shieldThrowOutcome=p.shieldThrowId?shieldBoomerangResult(success,P,raw[0],
   Math.max(0,raw[2]-criticalConverted-cancel),pairs):null;
  let courageCost=Number(p.opts.extraKeep)+Number(p.opts.step)+Number(!!p.opts.fulminante)+Number(!!p.opts.domarActivate)+health.coragem+Number(!!p.shieldThrowId)+Number(!!p.opts.asura);
- if(p.mode==="conjuracao"&&p.opts.magicElement){
+ if(p.mode==="conjuracao"){
   const element=p.opts.magicElement,grade=Number(p.opts.magicGrade)||1;
-  if(!magicKnownElements().some(([id])=>id===element))errs.push("Elemento da conjuração já não está habilitado.");
-  if(grade>1&&!p.opts.magicGradeConfirmed)errs.push("Grau avançado não confirmado pelo Narrador.");
-  if(magicPreparationTurns(grade,p.opts.magicCharges||0,!!p.opts.magicFocusId,!!p.opts.magicSecondFocusId)>1&&!p.opts.magicTimeConfirmed)
-   errs.push("Turnos de conjuração não confirmados.");
-  const focus=state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"&&
-   magicElementId(it.element||"psiquico")===element);
-  if(p.opts.magicFocusId&&!focus)errs.push("Foco não corresponde ao elemento da magia.");
-  const second=p.opts.magicSecondElement,focus2=state.items.find(it=>it.id===p.opts.magicSecondFocusId&&it.type==="foco"&&
-   magicElementId(it.element||"psiquico")===second);
-  if(grade===4){
-   if(!second||second===element||!magicKnownElements().some(([id])=>id===second))
-    errs.push("G4 exige dois elementos G3 diferentes e habilitados.");
-   if(p.opts.magicSecondFocusId&&!focus2)errs.push("Segundo foco não corresponde ao segundo elemento.");
-  }
-  const maxCharges=grade===4?3:grade===3?2:grade===2?1:0;
-  if(p.opts.magicCharges&&(p.opts.magicCharges>maxCharges||!focus||
-     p.opts.magicCharges>(focus.focusCharges??focus.grade)||
-     (grade===4&&(!focus2||p.opts.magicCharges>(focus2.focusCharges??focus2.grade)))))
-   errs.push("Cargas insuficientes: G2 = 1 carga; G3 = até 2; G4 = pares de cargas dos dois focos.");
-  if(p.opts.magicAmplify&&!focus)errs.push("Amplificação exige foco correspondente.");
-  courageCost+=(grade===4?2:grade===3?1:0)+(p.opts.magicAmplify?1:0);
+  if(p.opts.magicRules!==194)errs.push("Rolagem de magia da versão anterior: registre manualmente e descarte a tentativa legada.");
+  if(!magicElementChoices().some(([id])=>id===element)||!p.opts.magicGradeConfirmed)errs.push("Elemento ou fonte não confirmada.");
+  if(![1,2,3,4].includes(grade)||p.opts.magicExtracted&&grade!==1)errs.push("Grau inválido.");
+  if(magicPreparationTurns(grade,p.opts.magicCharges||0,!!p.opts.magicFocusId)>1&&!p.opts.magicTimeConfirmed)errs.push("Turnos de conjuração não confirmados.");
+  const focus=state.items.find(it=>it.id===p.opts.magicFocusId&&it.type==="foco"&&magicElementId(it.element||"psiquico")===element);
+  if(p.opts.magicFocusId&&!focus)errs.push("Foco incompatível.");
+  if(p.opts.magicCharges&&(p.opts.magicCharges>Math.max(0,grade-2)||!focus||p.opts.magicCharges>focus.focusCharges))errs.push("Cargas insuficientes.");
+  courageCost+=(grade>=3?1:0)+Number(!!p.opts.magicExtracted);
  }
  // A Coragem da tentativa é declarada ANTES da rolagem (SRD v0.101).
  // O valor bruto não desaparece no crítico: a recuperação geral do crítico
@@ -4910,7 +4851,7 @@ function score(){
   ownsSkill(cravarSpecialty)&&!skillReq(cravarSpecialty)&&["leve","medio","pesado"].includes(p.cravarTargetShield)&&
   (p.cravarTargetShield!=="pesado"||weaponCategory==="pesado"));
  // Gasto de Trevas preservado no acerto; em falha o custo/ordem permanece pendente no SRD.
- if(p.opts.trevas&&success&&!freeElementEffect){courageCost+=1;}
+ // v0.194: técnica Trevas G2/G3 sem cobrança adicional além do Grau.
  // v0.76: os Graus de Fogo ainda dependem de validação manual pelo Narrador.
  const fireMode=["queimar","derreter"].includes(p.fireMode)?p.fireMode:"";
  const isFireCast=ownsSkill("fogo")&&p.mode==="conjuracao"&&p.base?.group==="practice"&&
@@ -4920,15 +4861,15 @@ function score(){
  if(p.fireMode&&!fireMode)errs.push("Manifestação de Fogo não reconhecida nesta rolagem.");
  if(fireMode&&!isFireCast)errs.push("Queimar/Derreter exigem conjuração de Fogo habilitada, não ataque de outra natureza.");
  if(fireMode&&p.opts.magicElement&&p.opts.magicElement!=="fogo")errs.push("Efeito de Fogo exige elemento Fogo declarado.");
- if(fireMode&&p.opts.magicGrade&&Number(p.opts.magicGrade)!==(fireMode==="derreter"?3:2))
-  errs.push("Grau da magia deve coincidir com Queimar G2 ou Derreter G3.");
+ if(fireMode&&p.opts.magicGrade&&Number(p.opts.magicGrade)!==(fireMode==="derreter"?4:3))
+  errs.push("Grau da magia deve coincidir com Queimar G3 ou Derreter G4.");
  if(fireMode&&!p.fireGradeConfirmed)errs.push("Confirme com o Narrador o acesso a este Grau de Fogo antes de ativar.");
  if(fireMode&&p.hemomancyDirectLife)errs.push("A mesma magia não pode ser registrada simultaneamente como Fogo e como Hemomancia direta.");
  const fireValid=!!(fireMode&&isFireCast&&p.fireGradeConfirmed&&!p.hemomancyDirectLife);
- // A Perícia Fogo habilita G1/G2 sem cobrança. G3 Derreter consome
+ // A Perícia Fogo habilita G1/G2 sem cobrança. G4 Derreter consome
  // 1 Coragem ao ativar com sucesso, independentemente de foco.
  // G4 é conjuração conjunta (dois G3) e não está automatizada neste compositor.
- if(fireValid&&success&&fireMode==="derreter"&&p.opts.magicGrade!==3)courageCost+=1;
+ // custo do Grau já contabilizado na declaração.
  if(courageCost>5)errs.push("Máximo de 5 Coragens por rolagem, incluindo efeitos ativados.");
  const prepaidCourage=Math.min(courageCost,Math.max(0,Number(p.prepaidCourage)||0)),remainingCourageCost=courageCost-prepaidCourage;
  if(remainingCourageCost+Number(state.courageRoundSpent||0)>5)errs.push("Máximo de 5 Coragens por rodada, somando todas as ativações.");
@@ -4979,8 +4920,8 @@ function renderPending(){
   '<div class="fp-alert"><strong>Conjuração: '+esc(magicKnownElements().find(([id])=>id===p.opts.magicElement)?.[1]||p.opts.magicElement)+' G'+p.opts.magicGrade+
   '</strong> '+(p.opts.magicSecondElement?" + "+esc(magicKnownElements().find(([id])=>id===p.opts.magicSecondElement)?.[1]||p.opts.magicSecondElement):"")+
   ' · '+magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId,!!p.opts.magicSecondFocusId)+' turno(s) · '+(p.opts.magicCharges||0)+
-  (Number(p.opts.magicGrade)===4?' par(es) de cargas (2 focos)':' carga(s) do foco')+
-  ' reservadas; custos efetivos ao finalizar. '+(Number(p.opts.magicGrade)===4?'Mistura G4: 1A + 2 Coragens. ':'')+
+  (Number(p.opts.magicGrade)===4?' carga(s) do foco':' carga(s) do foco')+
+  ' reservadas; custo de Grau pago na declaração. '+(Number(p.opts.magicGrade)===4?'G4: 1 Coragem. ':'')+
   'Amplificação: '+(p.opts.magicAmplify?"declarada":"não")+" (sem bônus numérico automático).</div>":"";
 
  const desc=esc(label(p.base.group,p.base.key))+" + "+esc(label(p.attribute.group,p.attribute.key))+
@@ -5009,9 +4950,7 @@ function renderPending(){
   (s.critTier?chooseEffect("secondCharacteristic","Segunda característica (só no crítico)",p.secondCharacteristic||""):"")+
   '<p class="fp-caption">'+esc(effectRule)+'</p></div>'+
   '<p class="fp-caption">Só características existentes na arma. Efeitos G1/G2 habilitados têm ativação-base gratuita; o Narrador aplica danos e condições.</p>'+cravarSelector:"";
- const trevasPayment=p.opts.trevas&&!specials.length?(s.freeElementEffect?
-  '<p class="fp-caption">Trevas: efeito habilitado gratuito.</p>':
-  '<p class="fp-caption">Trevas: ativação paga no acerto custa 1 Coragem.</p>'):'';
+ const trevasPayment=p.opts.trevas?'<p class="fp-caption">Trevas: custo do Grau já declarado. G3: comparar com a DE de cada alvo; dano integral em cada atingido, proteções individuais e transferência de Temor manual.</p>':"";
  const hemoControl=s.mayHemomancyDirectLife?
   '<div class="fp-alert"><strong>Amplificação de Sangue já paga</strong> · disponível para uma rolagem de magia de Sangue neste turno. '+
   '<button type="button" class="fp-secondary" data-action="hemo-link-roll" aria-pressed="'+(!!p.hemomancyDirectLife)+'">'+
@@ -5021,15 +4960,15 @@ function renderPending(){
   '<p class="fp-caption">Escudos físicos e arcanos de outros elementos não anulam o dano direto à Vida. Somente Escudo Arcano de Sangue ativo e aplicável neutraliza essa propriedade. Sem foco, confirme que a magia é de Sangue com o Narrador. Após finalizar, não pode vincular outra rolagem neste turno.</p></div>':"";
  const fireChoices=p.mode==="conjuracao"&&p.base?.group==="practice"&&p.base.key==="armas_conjuracao"&&ownsSkill("fogo");
  const fireControl=fireChoices?
-  '<div class="fp-alert"><strong>Fogo G2/G3 — Queimar ou Derreter (v0.76)</strong>'+
+  '<div class="fp-alert"><strong>Fogo G3/G4 — Queimar ou Derreter (v0.76)</strong>'+
   '<label class="fp-form-field">Efeito declarado<select data-pending="fireMode">'+
    '<option value=""'+(!p.fireMode?' selected':'')+'>Nenhum / Fogo G1 convencional</option>'+
-   '<option value="queimar"'+(p.fireMode==="queimar"?' selected':'')+'>G2 Queimar — E+P à Integridade</option>'+
-   '<option value="derreter"'+(p.fireMode==="derreter"?' selected':'')+'>G3 Derreter — E+P à Integridade e +1 Vida direta</option></select></label>'+
+   '<option value="queimar"'+(p.fireMode==="queimar"?' selected':'')+'>G3 Queimar — E+P à Integridade</option>'+
+   '<option value="derreter"'+(p.fireMode==="derreter"?' selected':'')+'>G4 Derreter — E+P à Integridade e +1 Vida direta</option></select></label>'+
   (p.fireMode?
    '<label class="fp-checkline"><input type="checkbox" data-pending="fireGradeConfirmed"'+(p.fireGradeConfirmed?' checked':'')+
    '> Confirmo com o Narrador que este Grau de Fogo está habilitado (não é compra automática)</label>'+
-   '<p class="fp-caption">Fogo G2 Queimar: 0 Coragem com Perícia e Grau habilitados, inclusive sem foco quando houver fonte elemental disponível. Fogo G3 Derreter: 1 Coragem. G4 plena (dois G3): 1 Coragem por elemento elevado + 1 Antecipar de mistura; a composição G4 ainda é manual.</p>'+
+   '<p class="fp-caption">Fogo G3 Queimar e G4 Derreter: 1 Coragem por conjuração. G5 misto: resolução manual.</p>'+
    '<p class="fp-caption">O dano de Derreter é à armadura + 1 Vida fixa, não o dano completo à Vida. Imunidades, área e excedente ficam sujeitos ao Narrador.</p>'
   :'')+'</div>':"";
  const controls=(p.shot?'<p class="fp-caption">Projétil consumido: '+esc(p.shot.type)+' · restante: '+p.shot.remaining+(p.shotEffect?' · característica declarada: '+esc(p.shotEffect)+(s.success?' (acerto; '+(p.shotEffect==="Envenenar"?"aplique Envenenamento":"efeito específico pendente de resolução pelo Narrador")+')':' (sem efeito na falha)'):"")+'</p>':"")+'<div class="fp-form-grid">'+
@@ -5053,7 +4992,7 @@ function renderPending(){
  (s.poisonOnly?'<p class="fp-caption"><strong>ZARABATANA:</strong> sem dano à Integridade ou à Vida. '+(s.active.includes("Envenenar")?"Envenenamento: 1 acúmulo por 2 rodadas; registre no alvo.":"Sem Envenenar ativado, nenhum acúmulo.")+'</p>':"")+
  (s.directLifeDamage!==null?'<p class="fp-caption"><strong>HEMOMANCIA — TODO O DANO À VIDA:</strong> '+s.directLifeDamage+' ponto(s) (dano calculado, sem passar pela Integridade da armadura nem escudo físico/arcano de outro elemento). Falha na DE = 0. Marcas de Sangue apenas pela Vida efetivamente perdida.</p>':"")+
  (s.bloodArcaneShieldNeutralized?'<p class="fp-caption"><strong>ESCUDO ARCANO DE SANGUE:</strong> propriedade de atingir diretamente a Vida neutralizada. '+s.damage+' de dano convencional potencial para resolver contra o Escudo Arcano de Sangue e demais proteções, incluindo imunidades e desgaste conforme o Narrador. Não aplicar '+s.damage+' automaticamente à Vida; o pagamento da amplificação não é reembolsado.</p>':"")+
- (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G3 — DERRETER':'G2 — QUEIMAR')+':</strong> '+
+ (s.fireArmorDamage!==null?'<p class="fp-caption"><strong>FOGO '+(s.fireMode==="derreter"?'G4 — DERRETER':'G3 — QUEIMAR')+':</strong> '+
   s.fireArmorDamage+' dano potencial à Integridade (E + 1 por P não anulado'+(s.critTier===4?'; crítico dobrando o dano à Integridade':'')+'). '+
   (s.fireMode==="derreter"?'Acrescenta exatamente <strong>'+s.fireDirectLifeDamage+' Vida direta</strong>, mesmo contra armadura, não multiplicada no crítico.':'<strong>0 Vida direta adicional</strong> por Queimar.')+
   ' O Narrador resolve imunidades, outras barreiras e eventual excedente convencional; sem alteração automática de ficha adversária.</p>':"")+
@@ -5111,7 +5050,7 @@ function finalize(){
   courageRecovered:gainedCourage,magicElement:p.opts.magicElement||"",magicGrade:p.opts.magicGrade||0,
   magicFocusName:usedFocus?.name||"",magicChargesSpent:p.opts.magicCharges||0,magicAmplify:!!p.opts.magicAmplify,
   magicSecondElement:p.opts.magicSecondElement||"",magicSecondFocusName:secondUsedFocus?.name||"",
-  magicSecondChargesSpent:Number(p.opts.magicGrade)===4?(p.opts.magicCharges||0):0,magicG4MixASpent:Number(p.opts.magicGrade)===4?1:0,
+  magicSecondChargesSpent:Number(p.opts.magicGrade)===4?(p.opts.magicCharges||0):0,magicG4MixASpent:0,
   magicPreparationTurns:p.opts.magicGrade?magicPreparationTurns(p.opts.magicGrade,p.opts.magicCharges||0,!!p.opts.magicFocusId,!!p.opts.magicSecondFocusId):0,
   cravarApplied:s.cravarApplied,cravarTargetShield:s.cravarTargetShield,shieldCravarPenalty:s.shieldCravarPenalty,damage:s.damage,armorDamage:s.armorDamage,fireMode:s.fireMode,fireArmorDamage:s.fireArmorDamage,fireDirectLifeDamage:s.fireDirectLifeDamage,directLifeDamage:s.directLifeDamage,bloodArcaneShieldNeutralized:s.bloodArcaneShieldNeutralized,health:s.health.id,trevas:!!p.opts.trevas,
    manejoPerfeitoActive:!!s.manejoPerfeitoActive,golpeCertoTriggered:!!s.manejoPerfeitoGolpeCerto,
@@ -5462,8 +5401,8 @@ function renderInventory(){
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
    [["psiquico","Psíquico"],["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]]
    .map(([id,name])=>'<option value="'+id+'"'+(magicElementId(it.element||"psiquico")===id?" selected":"")+'>'+name+'</option>').join("")+
-   '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+it.grade+'" value="'+(it.focusCharges??it.grade)+'"></label>'+
-   ' / '+it.grade+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??it.grade)>=it.grade?" disabled":"")+'>Encerrar rodada: +1 carga</button>'+
+   '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+focusCapacity(it)+'" value="'+(it.focusCharges??0)+'"></label>'+
+   ' / '+focusCapacity(it)+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??0)>=focusCapacity(it)?" disabled":"")+'>Registrar 2 turnos próprios: +1 carga</button>'+
    '<small>Recarga gradual manual no fim de cada rodada; Pedra da Alma não recarrega naturalmente.</small></div>':"")+
   (it.ammoRole?'<div class="fp-item-hint"><b>Projéteis: '+ammoCount(it.ammoMix)+' / 20</b> · consumo por disparo (ajuste manual disponível) '+ammoTypesFor(it.ammoFamily).map(k=>'<label>'+esc(k)+' <input type="number" data-item-field="ammoMix" data-ammo-type="'+esc(k)+'" data-id="'+esc(it.id)+'" min="0" max="'+(it.ammoMix?.[k]||0)+'" value="'+(it.ammoMix?.[k]||0)+'" style="width:60px"></label>').join(" ")+(it.ammoRole==="supply"?' <button type="button" class="fp-secondary" data-action="ammo-refill" data-id="'+esc(it.id)+'">Transferir para recipiente</button>':"")+'</div>':"")+
   (!it.ammoRole&&it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
@@ -5485,7 +5424,7 @@ function renderTrade(){
   $("crystal-summary").innerHTML=state.elementalCrystal.quantity?
    '<label>Cristal Elemental inicial (Criar Magia): <select id="crystal-element">'+
    elements.map(x=>'<option value="'+esc(x)+'"'+(x===state.elementalCrystal.element?" selected":"")+'>'+esc(x||"Escolha o elemento")+'</option>').join("")+
-   '</select></label>':'<span>Sem Cristal Elemental inicial. Adquira Criar Item de Foco e Magia para receber um.</span>';
+   '</select></label>':'<span>Focos devem ser comprados. Criar Item de Foco e Magia não concede cristal físico.</span>';
  }
  const canAllocate=!state.trade.purchases.length&&!state.trade.collected;
  const draftSum=RESOURCES.reduce((n,[k])=>n+Number(tradeDraft[k]||0),0);
@@ -5593,25 +5532,7 @@ function buyCatalogItem(catalogName=$("shop-items")?.value,preferred=$("shop-pre
  const bought=purchaseItems[0],didEquip=equipAfter&&handItem(bought)&&setItemPosition(bought,"hands");
  render();save();toast(item.name+" adquirido por "+price+" VT."+(didEquip?" Equipado nas mãos.":equipAfter?" Guardado; não foi possível empunhar agora.":ammo&&!item.kitContainer?" Transfira a reposição para um recipiente compatível no inventário.":" Equipe no inventário."));
 }
-function addTestFocus(){
- if(!ownsSkill("criar-item-foco-magia")||
-    (state.practices.artesao||0)<1||(state.attributes.inteligencia||0)<1||
-    (state.practices.armas_conjuracao||0)<1){
-  toast("Para testar um foco, adquira Criar Item de Foco e Magia (Disciplina 1, Inteligência 1, Artesão 1).");return;
- }
- if(state.items.length>=150){toast("Inventário cheio.");return;}
- if(!confirm("Adicionar Foco G1 somente para simulação? A fabricação real exige teste com Artesão e recursos ainda não automatizados."))return;
- const model=$("focus-test-model")?.value;
- const row=CATALOG.find(x=>x.kind==="focus"&&x.grade===1&&x.name===model)||CATALOG.find(x=>x.kind==="focus"&&x.grade===1);
- if(!row){toast("Foco de teste não cadastrado.");return;}
- const isElementalModel=row.name!=="Foco de Magia Leve G1";
- if(isElementalModel&&!state.elementalCrystal.element){toast("Escolha o elemento do Cristal Elemental antes de simular varinha ou cetro.");return;}
- const item=normalizedCatalogItem(row);
- item.element=String(state.elementalCrystal.element||"psiquico").toLowerCase();
- item.name=row.name+" de "+(state.elementalCrystal.element||"Psíquico")+" (teste)";
- state.items.push(item);render();save();
- toast("Foco de teste adicionado; fabricação com Artesão continua pendente.");
-}
+function addTestFocus(){toast("Focos físicos devem ser comprados. Preços e fabricação ainda exigem validação da mesa.");}
 function collectResources(){
  const k=$("collect-type")?.value,n=Math.floor(Number($("collect-amount")?.value||0));
  if(!RESOURCES.some(x=>x[0]===k)||!Number.isSafeInteger(n)||n<1||n>999){toast("Informe quantidade válida de 1 a 999.");return;}
@@ -5808,7 +5729,8 @@ function onClick(event){
   if(magicElementId(item.element||"psiquico")==="sangue"&&item.name.toLowerCase().includes("alma")){
    toast("Pedra da Alma não recarrega naturalmente: exige Perícia Fixar Alma.");break;
   }
-  item.focusCharges=Math.min(item.grade,(item.focusCharges??item.grade)+1);
+  if(!confirm("Confirma que decorreram dois turnos próprios do conjurador para recuperar esta carga?"))break;
+  item.focusCharges=Math.min(focusCapacity(item),(item.focusCharges??0)+1);
   renderInventory();renderOwnedPanel();save();
   toast(item.name+": "+item.focusCharges+"/"+item.grade+" cargas disponíveis.");
   break;
@@ -5875,7 +5797,7 @@ function onClick(event){
  }
  case "cancelar-magia-use":{
   if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
-  if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Improviso Elemental e Inteligência, Agilidade, Destreza 4.");break;}
+  if(!ownsSkill("cancelar-magia")||skillReq("cancelar-magia")){toast("Cancelar Magia exige Foco, Extração Elemental e Inteligência, Agilidade, Destreza 4.");break;}
   if(state.pending||editMode){toast("Finalize a rolagem ou edição antes de declarar Cancelar Magia.");break;}
   if(state.courage<1){toast("Coragem insuficiente para tentar Cancelar Magia.");break;}
   const available=[["vento","Ar"],["agua","Água"],["terra","Terra"],["fogo","Fogo"],
@@ -5905,7 +5827,7 @@ function onClick(event){
  }
  case "sentido-elemental-use":{
   if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}
-  if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Improviso Elemental.");break;}
+  if(!ownsSkill("sentido-elemental")||skillReq("sentido-elemental")){toast("Sentido Elemental exige Inteligência 3 e Extração Elemental.");break;}
   if(state.pending){toast("Finalize a rolagem pendente antes de analisar um alvo.");break;}
   if(state.courage<1){toast("Coragem insuficiente para usar Sentido Elemental.");break;}
   const input=prompt("Sentido Elemental: qual alvo deseja analisar? A afinidade será informada pelo Narrador.");
@@ -5991,23 +5913,7 @@ function onClick(event){
   state.hemomancy.selfBleeding=!state.hemomancy.selfBleeding;
   renderHemomancy();save();break;
  }
- case "hemo-amplify":{
-  const h=state.hemomancy,kind=$("hemo-amplify-effect")?.value;
-  const payment=button.dataset.payment;
-  if(!ownsSkill("sangue")||state.pending||h.usedThisTurn||
-   !["magic","direct-life","keep","step"].includes(kind)||!["life","blood"].includes(payment))return;
-  if(payment==="life"){
-   if(state.life<1)return;
-   if(state.life===1&&!confirm("Sacrificar sua última Vida para amplificar? A ficha ficará com Vida 0; condições de morte são resolvidas pelo Narrador."))return;
-   state.life-=1;
-  }else{
-   if(h.spilled<3)return;
-   h.spilled-=3;
-  }
-  h.usedThisTurn=true;h.boostKind=kind;h.boostPayment=payment;h.directLifeResolved=false;
-  renderVitals();renderHemomancy();save();
-  toast("Amplificação paga: "+(payment==="life"?"−1 Vida própria":"−3 marcas inimigas")+". Resolva o efeito sem bônus de dano automático.");break;
- }
+ case "hemo-amplify":{toast("Sangue v0.194: Elevação Sanguínea, Seir e Hemomancia direta são resolvidas manualmente; pagamento antigo desativado.");break;}
  case "hemo-transfusion":{
   const h=state.hemomancy;
   if(!ownsSkill("transfusao-sanguinaria")||h.spilled<3||state.life<=0||state.life>=maxLife()||state.pending)return;
@@ -6086,9 +5992,7 @@ function onClick(event){
    if(!Number.isInteger(price)){toast("Custo pendente.");return;}
    if(!canAfford("skills",price)){toast("XP insuficiente: "+price+" XP necessários.");return;}
    state.skills.push(id);
-   if(id==="criar-item-foco-magia"&&state.elementalCrystal.quantity===0){
-    state.elementalCrystal.quantity=1;state.elementalCrystal.element="";
-   }
+   // v0.194: aprender a Perícia não concede item.
    toast("Perícia adquirida: "+skill[1]+" · "+price+" XP.");
   }else{refundSkillForPlaytest(id);break;}
   if(draft.third&&!mayThird())draft.third=null;
@@ -6163,7 +6067,8 @@ function onChange(event){
   else if(field==="magicSecondElement"){draft.magicSecondElement=String(el.value);draft.magicSecondFocusId="";draft.magicCharges=0;draft.magicTimeConfirmed=false;}
   else if(field==="magicSecondFocusId"){draft.magicSecondFocusId=String(el.value);draft.magicCharges=0;draft.magicTimeConfirmed=false;}
   else if(field==="magicCharges"){draft.magicCharges=Math.floor(Number(el.value));draft.magicTimeConfirmed=false;}
-  else if(field==="magicAmplify")draft.magicAmplify=!!el.checked;
+  else if(field==="magicElement"){draft.magicElement=String(el.value);draft.magicGrade=1;draft.magicGradeConfirmed=false;draft.magicFocusId="";draft.magicCharges=0;draft.trevas=false;}
+  else if(field==="magicAmplify")draft.magicAmplify=false;
   else if(field==="magicGradeConfirmed")draft.magicGradeConfirmed=!!el.checked;
   else if(field==="magicTimeConfirmed")draft.magicTimeConfirmed=!!el.checked;
   else return;
@@ -6273,8 +6178,8 @@ function onChange(event){
   else if(k==="qty"){const n=it.ammoRole||it.packSize>0?1:clamp(Math.floor(el.value),1,99);if(itemPosition(it)==="quick"&&quickSlots()-it.qty+n>3){toast("Acesso rápido: máximo de 3 espaços.");renderInventory();return;}if(handItem(it)&&it.equipped&&n!==1){toast("Arma ou escudo nas mãos deve ter quantidade 1.");renderInventory();return;}it.qty=n;}
   else if(k==="ammoMix"&&it.ammoRole){const type=el.dataset.ammoType;if(ammoTypesFor(it.ammoFamily).includes(type))it.ammoMix[type]=clamp(Math.floor(el.value),0,it.ammoMix[type]||0);}
   else if(k==="ammoRemaining"&&it.packSize>0&&!it.ammoRole){it.ammoRemaining=clamp(Math.floor(el.value),0,it.packSize);}
-  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??it.grade,0,it.grade);}
-  else if(k==="focusCharges"&&it.type==="foco")it.focusCharges=clamp(Math.floor(Number(el.value)),0,it.grade);
+  else if(k==="grade"){it.grade=clamp(Math.floor(el.value),1,4);if(it.type==="foco")it.focusCharges=clamp(it.focusCharges??0,0,focusCapacity(it));}
+  else if(k==="focusCharges"&&it.type==="foco")it.focusCharges=clamp(Math.floor(Number(el.value)),0,focusCapacity(it));
   else if(k==="element"&&it.type==="foco"){
    const n=magicElementId(el.value);
    if(n)it.element=n;

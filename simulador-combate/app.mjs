@@ -682,15 +682,7 @@ function roll(){
  }
  let grade=null;
  if(human&&mode==="conjuracao"){
-  if(key!=="armas_conjuracao")return notice("Conjuração exige Disciplina como fonte base.");
-  if(!hasCombatFocus(a))
-   return notice(a.race==="lucker_puro"?focusCombatStatus(a):
-    "Conjuração exige Criar Item de Foco e Magia adquirido.");
-  grade=Number($("spell-grade").value);
-  const bonus=MAGIC_GRADE_DICE[grade]||[];
-  if(pool.pool.length+bonus.length>9)return notice("Dado do Grau excede os 9 dados rolados.");
-  if(grade>=2&&!confirm("Este Grau exige elementos, habilitação, focos e tempo adequados. O comparador só adiciona os dados do Grau e não resolve a preparação. Confirma a validação manual do Narrador?"))return;
-  bonus.forEach((sides,i)=>pool.pool.push({id:"magic."+grade+"."+i,group:"magic",key:"G"+grade,sides}));
+  return notice("Conjuração v0.194: use a rolagem atualizada na ficha do personagem. O comparador ainda não resolve Graus, focos, custos ou efeitos mágicos; não serão usados dados mágicos antigos.");
  }
  const martial=martialDeclaration();
  if(!martial.ok)return notice(martial.error);

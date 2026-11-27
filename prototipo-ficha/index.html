@@ -13,7 +13,7 @@
   <script src="./gene-graph.js?v=20261123-familia-contundente-v0102" defer></script>
   <link rel="stylesheet" href="../assets/skill-presentation.css?v=20261124-v0115">
   <script src="../assets/skill-presentation.js?v=20261124-v0117" defer></script>
-  <script src="./app.js?v=20261126-v0162-criacao" defer></script>
+  <script src="./app.js?v=20261127-v0194-magia" defer></script>
 </head>
 <body class="fp-body">
 <a class="skip-link" href="#ficha">Pular para a ficha</a>
@@ -31,7 +31,7 @@
   </nav>
   <button class="theme-toggle" type="button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro e escuro">☾ Escuro</button>
   <button class="mobile-toggle" type="button" data-menu aria-label="Abrir menu" aria-expanded="false">☰</button>
- </header><aside role="note" style="max-width:1100px;margin:1rem auto;padding:.75rem;border:1px solid currentColor;border-radius:6px">Atenção: conjuração automatizada ainda usa a versão anterior. Para Extração Elemental, custos G3/G4, focos e invocações, consulte o <a href="../livro.html#conjuracao">Livro do Jogador</a> e resolva manualmente conforme o <a href="../docs/srd-continuidade-v0.194.md">SRD v0.194</a>.</aside>
+ </header><aside role="note" style="max-width:1100px;margin:1rem auto;padding:.75rem;border:1px solid currentColor;border-radius:6px">Catálogo e rolagem G1–G4 atualizados para v0.194. G5, efeitos mentais, Sangue, suporte Sagrado, invocação, posicionamento e recarga exata: confira as regras e resolva os pontos pendentes manualmente conforme o <a href="../docs/srd-continuidade-v0.194.md">SRD v0.194</a>.</aside>
 <div class="fp-shell" id="ficha">
   <div class="fp-npc-embed-toolbar" id="npc-embed-toolbar" hidden>
     <div><strong>Criador de humanoide · Codex Genético</strong><small>Uma ficha independente. Escolha a identidade, distribua XP e, depois, envie ao encontro sem trocar de página.</small></div>
@@ -226,8 +226,8 @@
                     </select>
                   </label>
                   <div class="fp-hemo-payments">
-                    <button type="button" id="hemo-amplify-life" data-action="hemo-amplify" data-payment="life">Usar 1 Vida própria</button>
-                    <button type="button" id="hemo-amplify-blood" data-action="hemo-amplify" data-payment="blood">Usar 3 marcas inimigas</button>
+                    <button type="button" id="hemo-amplify-life" data-action="hemo-amplify" data-payment="life" disabled>Pagamento antigo desativado</button>
+                    <button type="button" id="hemo-amplify-blood" data-action="hemo-amplify" data-payment="blood" disabled>Resolver Sangue manualmente</button>
                   </div>
                   <small id="hemo-boost-status" role="status">Disponível · 1 ativação por turno</small>
                 </div>
@@ -493,7 +493,7 @@
           </div>
             <div class="fp-inventory-store-focus"><div class="fp-trade-shop-grid">
           <label>Modelo de foco G1 (simulação; fabricação com Artesão) <select id="focus-test-model"><option value="Foco de Magia Leve G1">Foco de Magia Leve G1</option></select></label>
-          <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test">+ Simular foco escolhido</button>
+          <button type="button" class="fp-secondary fp-small-btn" data-action="focus-test" disabled>Foco de teste gratuito desativado</button>
         </div></div>
           </div>
         </details>
