@@ -1,6 +1,6 @@
 /* Indicadores editoriais reutilizáveis: texto permanece legível sem ícones. */
-.editorial-label{display:inline-flex;align-items:center;gap:.3em;max-width:100%;vertical-align:middle}
-.editorial-label>span{min-width:0;overflow-wrap:break-word}
-img.editorial-icon{display:inline-block;flex:0 0 auto;width:1.25em;height:1.25em;max-width:1.25em;object-fit:contain;vertical-align:-.2em;margin:0;border:0;box-shadow:none}
+.editorial-label{display:inline;vertical-align:baseline;white-space:nowrap}
+.editorial-label>span{display:inline;line-height:inherit}
+img.editorial-icon{display:inline-block;width:1.1em;height:1.1em;max-width:1.1em;object-fit:contain;vertical-align:-.18em;margin:0 .25em 0 0;border:0;box-shadow:none}
 html[data-theme="light"] img.editorial-icon-neutral{filter:brightness(.63)}
 @media print{img.editorial-icon-neutral{filter:brightness(.63)}}

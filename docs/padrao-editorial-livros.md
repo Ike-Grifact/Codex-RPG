@@ -41,7 +41,7 @@ Modelo flexível: nem toda seção precisa de tabela, exemplo ou ícone. Preserv
 - Êxito: Sowilo (E), verde #267A45; Antecipar: Ansuz (A), azul #2369BB; Temor: Thurisaz (T), roxo #542176. Usar status-exito.svg, status-antecipar.svg e status-pavor.svg; o nome histórico do arquivo não altera a terminologia.
 - Preservar sinais, números e abreviações em texto: −1A junto de Ansuz, por exemplo. Não depender apenas de cor ou imagem. Ícones redundantes com rótulo textual devem ter alt vazio e aria-hidden no HTML.
 - Pictogramas de sono, alimentação e hidratação são indicadores editoriais, não Aptidões, Perícias, elementos ou novas condições. Não reutilizar a gota de Vida para água potável.
-- Reutilizar status-vida, status-coragem, status-integridade e categoria-artesao nos respectivos contextos. Ícones pequenos, alinhados e funcionais.
+- Reutilizar status-vida, status-coragem, status-integridade e categoria-artesao nos respectivos contextos. Ícones pequenos, alinhados e funcionais. Em prosa, manter o rótulo na linha de base tipográfica e o ícone dimensionado em `em` (1,1 em, alinhamento vertical de −0,18 em). Evitar `inline-flex` com alinhamento central para rótulos embutidos em frases; preservar a altura de linha e manter ícone e rótulo juntos.
 - Partes maiores com separadores; capítulos com divisórias e respiro; subseções com hierarquia coerente. Preservar rolagem contínua, índice, âncoras e navegação móvel.
 - Tabelas com cabeçalhos semânticos, texto legível em temas claro/escuro e rolagem horizontal quando necessária.
 
