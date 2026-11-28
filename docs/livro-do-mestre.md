@@ -581,7 +581,7 @@ Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inim
 
 Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
 
-A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
+A mesma sequência vale para Furtividade Elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
 
 O benefício geral de surpresa não substitui nem altera a Perícia Golpe Furtivo (dado adicional da arma mediante requisitos). Não inventar custo ou habilitação de nova ocultação. A referência a perder uma rodada própria foi redigida como dedicar uma ação própria, sem impor perda de uma rodada global nem turno adicional gratuito. Consulte [Ataque surpresa](livro-do-jogador.md#ataque-furtivo) e [v0.199](srd-continuidade-v0.199.md).
 
@@ -603,3 +603,6 @@ Substitui a indisponibilidade da v0.200. Sentido Elemental e Sentido Sísmico is
 
 ## Escudo Arcano — proteção passiva (v0.202)
 Depois de conjurado, o Escudo Arcano protege passivamente enquanto durar e possuir Integridade, respeitando sua cobertura. Ao contrário do escudo físico, não exige a ação Levantar Escudo para cada bloqueio. A conjuração inicial continua exigindo seu teste e custo de ativação. A conjuração comum custa 1 Coragem, duração de 1 rodada, E+T para DE e Integridade. Preservar exceções, equivalências e cobertura. Consulte [Escudos e armaduras](../mecanicas/escudos-e-armaduras.html) e [Escudo Arcano](../pericias/escudo-arcano.html).
+
+## Furtividade Elemental — v0.203
+Exige Furtividade Avançada e Transformação Elemental. Técnica combinada, não compra independente. Aplicam-se as regras de Furtividade, incluindo busca, ataque surpresa e revide. A transformação por si só não concede ocultação. [v0.203](srd-continuidade-v0.203.md).

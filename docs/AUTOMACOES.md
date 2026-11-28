@@ -37,3 +37,6 @@ PARCIALMENTE IMPLEMENTADO na branch de sincronização: aquisição, cinco requi
 
 ## v0.202 — sincronização editorial
 VALIDADO por comparação executada isoladamente: 124 entradas do catálogo da ficha e compartilhado coincidem integralmente (ID, nome, descrição, XP); IDs e XP anteriores preservados. Sem alteração do trecho de cálculo de Manejo Perfeito/Golpe Certo. Escudo Arcano não recebeu automação de proteção; navegador e suíte integral não testados. [v0.202](srd-continuidade-v0.202.md).
+
+## v0.203 — Furtividade Elemental
+NÃO IMPLEMENTADO: verificar ambas as Perícias na resolução da ocultação elemental. Nenhuma compra independente nem custo adicional. [v0.203](srd-continuidade-v0.203.md).

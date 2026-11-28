@@ -47,3 +47,6 @@ Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md
 
 ## Padronização editorial e Escudo Arcano — v0.202
 [v0.202](srd-continuidade-v0.202.md): Disciplina Avançada, Manejo Perfeito conciso, proteção arcana passiva após conjuração. Catálogos de ficha e conflitos sincronizados; sem alterar regras de Golpe Certo.
+
+## Furtividade Elemental — v0.203
+[v0.203](srd-continuidade-v0.203.md): nome e habilitação combinada de Furtividade Avançada + Transformação Elemental. Redação condensada publicada na main; demais mudanças das branches de revisão permanecem separadas.
