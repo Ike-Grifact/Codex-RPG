@@ -40,4 +40,7 @@ Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md
 [v0.199](srd-continuidade-v0.199.md): atacar revela a posição e concede Vantagem Absoluta (+1E); revide no acerto com Temor sem Antecipar, sem penalidade de ocultação; nova tentativa de ocultação em ação própria conforme habilitação. Aplica-se à ocultação elemental. Complementa v0.198.
 
 ## Busca ativa e Detecção Elemental — v0.200
-[v0.200](srd-continuidade-v0.200.md): busca convencional e Sentido Sísmico sem rerrolagem; busca dedicada bem-sucedida permite atacar normalmente na próxima oportunidade se ocultação não for refeita. Detecção Elemental permanece Perícia futura, com requisitos e 1 XP registrados, indisponível para compra.
+[v0.200](srd-continuidade-v0.200.md): busca convencional e Sentido Sísmico sem rerrolagem; busca dedicada bem-sucedida permite atacar normalmente na próxima oportunidade se ocultação não for refeita. Detecção Elemental foi aprovada posteriormente na v0.201.
+
+## Detecção Elemental — v0.201
+[v0.201](srd-continuidade-v0.201.md): compra habilitada por 1 XP, ativação 1 Coragem; cinco requisitos preservados; verbete e livros atualizados. Catálogo de ferramentas em branch separada de sincronização.

@@ -593,3 +593,10 @@ Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo nor
 **Perícia futura — PENDENTE:** Detecção Elemental é uma Perícia futura, ainda indisponível para aquisição. Destina-se à busca de personagens ocultos em elementos, com percepção compatível: reservar faces correspondentes e rerrolar os demais dados uma única vez, sem aumentar o limite de mantidos. Requisitos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Compra: 1 XP. Custo de ativação específico não definido.
 
 A rerrolagem não é benefício da busca convencional nem do Sentido Sísmico. Não acumular dados de duas pilhas completas; preservar apenas as faces reservadas, substituir os dados rerrolados e respeitar os limites vigentes. Não criar alcance, custo, duração ou percepção universal. [v0.200](srd-continuidade-v0.200.md).
+
+## Detecção Elemental — v0.201
+**DEFINIDO — Perícia ativa, aquisição habilitada.** Compra: 1 XP. Requisitos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Ativação: 1 Coragem por busca ativa.
+
+Ao dedicar uma ação à busca de um personagem oculto em elemento compatível com sua percepção, gaste 1 Coragem. Reserve as faces correspondentes e rerrole os demais dados uma única vez. Compare exclusivamente os dados mantidos, respeitando os limites do Marco. Localizar por busca dedicada permite atacar normalmente na próxima oportunidade, se o alvo não voltar a se ocultar; não revela automaticamente aos demais.
+
+Substitui a indisponibilidade da v0.200. Sentido Elemental e Sentido Sísmico isoladamente não concedem rerrolagem. Alcance e percepção específica seguem a situação; não criar alcance fixo ou detecção universal. [v0.201](srd-continuidade-v0.201.md).

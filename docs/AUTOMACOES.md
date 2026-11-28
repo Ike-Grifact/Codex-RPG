@@ -30,4 +30,7 @@ NÃO IMPLEMENTADO nesta revisão: guardar faces originais mantidas, comparar mul
 NÃO IMPLEMENTADO nesta revisão: estado oculto, bônus de surpresa +1E, exposição ao atacar, retirada do −2E e da comparação de faces após revelação; revide imediato quando válido e nova ocultação em ação própria conforme habilitações. Não modificar regras gerais de Temor, Antecipar, alcance, turnos ou transformação. [v0.199](srd-continuidade-v0.199.md).
 
 ## v0.200 — Busca ativa e Detecção Elemental
-NÃO IMPLEMENTADO: busca dedicada com correspondência dos mantidos, localização individual e ataque posterior sem penalidade da ocultação quando válido. Perícia futura Detecção Elemental não comprável, não automatizar rerrolagem. Preservar Sentido Elemental e Sentido Sísmico vigentes, sem mudar custo, IDs ou alcance. [v0.200](srd-continuidade-v0.200.md).
+NÃO IMPLEMENTADO: busca dedicada com correspondência dos mantidos, localização individual e ataque posterior sem penalidade da ocultação quando válido. Detecção Elemental foi habilitada na v0.201; rerrolagem ainda manual. Preservar Sentido Elemental e Sentido Sísmico vigentes, sem mudar custo, IDs ou alcance. [v0.200](srd-continuidade-v0.200.md).
+
+## v0.201 — Detecção Elemental
+PARCIALMENTE IMPLEMENTADO na branch de sincronização: aquisição, cinco requisitos, catálogo humanoide, plano genético e declaração manual com débito de 1 Coragem. NÃO IMPLEMENTADO: rerrolagem seletiva, comparação e persistência de localização. Teste de requisitos adicionado; execução de suíte e navegador não confirmada. [v0.201](srd-continuidade-v0.201.md).

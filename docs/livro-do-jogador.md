@@ -1097,7 +1097,7 @@ A mesma sequência vale para invisibilidade elemental. Revelar a posição ao at
 
 Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
 
-A especialização futura **Detecção Elemental** está em desenvolvimento e não está disponível para aquisição.
+Com a Perícia [Detecção Elemental](../pericias/deteccao-elemental.html), você pode gastar 1 Coragem em uma busca ativa elemental para reservar as faces correspondentes e rerrolar os demais dados uma vez, respeitando os limites de mantidos.
 
 Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
 
