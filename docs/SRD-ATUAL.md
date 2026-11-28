@@ -44,3 +44,6 @@ Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md
 
 ## Detecção Elemental — v0.201
 [v0.201](srd-continuidade-v0.201.md): compra habilitada por 1 XP, ativação 1 Coragem; cinco requisitos preservados; verbete e livros atualizados. Catálogo de ferramentas em branch separada de sincronização.
+
+## Padronização editorial e Escudo Arcano — v0.202
+[v0.202](srd-continuidade-v0.202.md): Disciplina Avançada, Manejo Perfeito conciso, proteção arcana passiva após conjuração. Catálogos de ficha e conflitos sincronizados; sem alterar regras de Golpe Certo.

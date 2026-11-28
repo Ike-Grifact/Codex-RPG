@@ -34,3 +34,6 @@ NÃO IMPLEMENTADO: busca dedicada com correspondência dos mantidos, localizaç�
 
 ## v0.201 — Detecção Elemental
 PARCIALMENTE IMPLEMENTADO na branch de sincronização: aquisição, cinco requisitos, catálogo humanoide, plano genético e declaração manual com débito de 1 Coragem. NÃO IMPLEMENTADO: rerrolagem seletiva, comparação e persistência de localização. Teste de requisitos adicionado; execução de suíte e navegador não confirmada. [v0.201](srd-continuidade-v0.201.md).
+
+## v0.202 — sincronização editorial
+VALIDADO por comparação executada isoladamente: 124 entradas do catálogo da ficha e compartilhado coincidem integralmente (ID, nome, descrição, XP); IDs e XP anteriores preservados. Sem alteração do trecho de cálculo de Manejo Perfeito/Golpe Certo. Escudo Arcano não recebeu automação de proteção; navegador e suíte integral não testados. [v0.202](srd-continuidade-v0.202.md).

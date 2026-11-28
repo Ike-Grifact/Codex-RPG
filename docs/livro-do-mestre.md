@@ -600,3 +600,6 @@ A rerrolagem não é benefício da busca convencional nem do Sentido Sísmico. N
 Ao dedicar uma ação à busca de um personagem oculto em elemento compatível com sua percepção, gaste 1 Coragem. Reserve as faces correspondentes e rerrole os demais dados uma única vez. Compare exclusivamente os dados mantidos, respeitando os limites do Marco. Localizar por busca dedicada permite atacar normalmente na próxima oportunidade, se o alvo não voltar a se ocultar; não revela automaticamente aos demais.
 
 Substitui a indisponibilidade da v0.200. Sentido Elemental e Sentido Sísmico isoladamente não concedem rerrolagem. Alcance e percepção específica seguem a situação; não criar alcance fixo ou detecção universal. [v0.201](srd-continuidade-v0.201.md).
+
+## Escudo Arcano — proteção passiva (v0.202)
+Depois de conjurado, o Escudo Arcano protege passivamente enquanto durar e possuir Integridade, respeitando sua cobertura. Ao contrário do escudo físico, não exige a ação Levantar Escudo para cada bloqueio. A conjuração inicial continua exigindo seu teste e custo de ativação. A conjuração comum custa 1 Coragem, duração de 1 rodada, E+T para DE e Integridade. Preservar exceções, equivalências e cobertura. Consulte [Escudos e armaduras](../mecanicas/escudos-e-armaduras.html) e [Escudo Arcano](../pericias/escudo-arcano.html).
