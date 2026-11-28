@@ -962,13 +962,19 @@ O custo do avanço é o XP que você paga para alcançar o próximo Grau; o XP a
 
 *O domínio da técnica.*
 
-Disciplina representa o treinamento para executar técnicas marciais e mágicas com controle, precisão e consistência. Ela reúne o manejo de armas, o combate desarmado e a conjuração. Você pode desenvolver uma dessas aplicações ou combiná-las na mesma profissão: Disciplina é uma única Prática. Equipamentos, Atributos e Perícias determinam as técnicas que você consegue executar.
+Disciplina é a capacidade de transformar treinamento em técnica. Seja empunhando uma espada, mirando uma arma de fogo ou moldando um elemento, você emprega essa Prática para executar suas ações com controle e precisão.
 
-> **Possibilidades em jogo:** Disciplina + Força para executar um golpe potente; Disciplina + Destreza para mirar; Disciplina + Inteligência para conjurar. Com Especialização em Disciplina (Disciplina Avançada), você pode acrescentar uma terceira Aptidão pertinente quando Disciplina é a principal.
+Suas Perícias determinam as técnicas que você domina, enquanto os Atributos complementam a maneira como você as executa.
 
-##### Aplicações marciais — armas
+> **Possibilidades em jogo:** Disciplina + Força para executar um golpe potente; Disciplina + Destreza para mirar com precisão; Disciplina + Inteligência para moldar e conjurar um elemento.
 
-As armas oferecem diferentes maneiras de enfrentar um adversário. Escolha a arma conforme o alcance, a categoria de ataque e as características que deseja explorar. Uma arma acrescenta seu dado à pilha, além dos dados das Aptidões. A Perícia de manejo correspondente permite utilizar o dado pleno e habilita características conforme suas regras.
+Ao adquirir **Disciplina Avançada (Especialização em Disciplina)**, você poderá acrescentar uma terceira Aptidão pertinente às ações que utilizam Disciplina como fonte principal.
+
+Você pode desenvolver ambas as aplicações em uma mesma profissão.
+
+##### Armas
+
+Além dos dados de suas Aptidões, acrescente à pilha o dado correspondente à categoria de ataque da arma utilizada. A Perícia de manejo permite utilizar o dado pleno e habilita suas características especiais.
 
 | Categoria de ataque | Com Perícia | Sem Perícia |
 |---|---|---|
@@ -976,27 +982,33 @@ As armas oferecem diferentes maneiras de enfrentar um adversário. Escolha a arm
 | Média | 1d10 | 1d6 |
 | Pesada | 1d12 | 1d10 |
 
-Sem a Perícia, o dado da arma diminui um passo, mas sua categoria de ataque, alcance e carga física não mudam. Armas de fogo e outras exceções seguem suas regras específicas. Cortante, Ruptura e Cravar são exemplos de características: possuir uma arma não ativa automaticamente essas propriedades. Combate desarmado e escudos têm habilitações próprias.
+Mesmo sem a Perícia correspondente, você pode utilizar uma arma com o dado reduzido. Sua categoria de ataque, alcance e carga física permanecem inalterados. Cortante, Ruptura e Cravar são exemplos de características que exigem habilitação. Armas de fogo, escudos e combate desarmado seguem regras próprias.
 
 Leia Armas, alcance e efeitos para aprender a resolver ataques e características.
 
 <a id="disciplina-elementos"></a>
 
-##### Aplicações mágicas — conjuração e elementos
+##### Conjuração
 
-A conjuração utiliza Disciplina para executar a técnica e Inteligência para organizar e moldar a magia. Você descreve a manifestação na hora, respeitando as habilitações, a fonte elemental e os limites da magia. Não é preciso memorizar feitiços. Criar Item de Foco e Magia é obrigatória para conjurar qualquer elemento. A Perícia elemental pode ser adquirida independentemente e representa domínio do elemento para aplicações pertinentes, como Artesão e forja, sem habilitar por si a conjuração.
+Conjurar é dar forma à magia por meio de Disciplina e Inteligência. Em vez de memorizar feitiços, você cria manifestações de acordo com os elementos que domina, a fonte elemental disponível e a situação que deseja enfrentar.
 
-| Grau | Possibilidades | Inteligência | Tempo de conjuração sem aceleração |
-|---|---|---|---|
-| G1 | Manifestação elemental e dano convencional | Sem elevação | Instantânea — ação inicial |
-| G2 | Primeiros efeitos | Sem elevação | Instantânea — ação inicial |
-| G3 | Efeitos superiores | +1 passo | 2 turnos — inicial + 1 |
-| G4 | Efeitos avançados | +2 passos | 3 turnos — inicial + 2 |
-| G5 | Mistura de propriedades por Maestria | +3 passos | 4 turnos — inicial + 3 |
+Criar Item de Foco e Magia é obrigatória para conjurar. As Perícias elementais podem ser adquiridas independentemente e aprofundam o domínio dos elementos, inclusive em atividades como a fabricação de equipamentos.
 
-No livro digital, o número de estrelas da constelação identifica o Grau, não a quantidade de turnos. Consulte Conjuração e elementos para os procedimentos de preparação e aceleração por focos.
+###### Graus de magia
 
-O Grau da magia determina suas propriedades, a elevação temporária dos dados de Inteligência e o tempo de conjuração; não é o Grau permanente de Disciplina. Extração Elemental gasta 1 Coragem para extrair um elemento da cena. G1/G2 têm custo-base de 0 Coragem; conjurar G3 ou G4 custa 1 Coragem por conjuração, não por passo. Pagar na declaração; cargas de foco reduzem tempo, não custo. Custos específicos permanecem distintos. G5 ainda está em revisão. Maestria Elemental permite a combinação de propriedades especiais habilitadas em G5. Focos aceleram a preparação com suas cargas, não fornecem dados próprios. Magias mentais de Psique exigem Disciplina Avançada e a combinação Disciplina + Inteligência + Influência.
+Todos os elementos podem causar dano convencional desde G1. Os Graus superiores habilitam propriedades especiais e, a partir de G3, elevam temporariamente a pilha de Inteligência.
+
+| Grau | Possibilidades | Inteligência | Custo-base em Coragem | Tempo de conjuração sem aceleração |
+|---|---|---|---|---|
+| G1 | Manifestação e dano convencional | Sem elevação | 0 | Instantânea — ação inicial |
+| G2 | Primeiros efeitos | Sem elevação | 0 | Instantânea — ação inicial |
+| G3 | Efeitos superiores | +1 passo | 1 | 2 turnos — inicial + 1 |
+| G4 | Efeitos avançados | +2 passos | 1 | 3 turnos — inicial + 2 |
+| G5 | Mistura de propriedades por Maestria | +3 passos | Em revisão | 4 turnos — inicial + 3 |
+
+O Grau da magia é independente do Grau permanente de suas Aptidões. A rolagem ocorre no início da conjuração, quando também são pagos seus custos. As cargas de um foco reduzem a preparação, sem acrescentar dados nem reduzir o custo de Coragem. Custos específicos de técnicas são tratados separadamente.
+
+Leia Conjuração, elementos e possibilidades para conhecer as técnicas avançadas, a Extração Elemental, a magia mental e os focos.
 
 <a id="disciplina-nove-elementos"></a>
 
@@ -1029,26 +1041,45 @@ Atletismo é o treinamento que permite correr, saltar, escalar, nadar e manter o
 
 *A arte de não ser percebido.*
 
-Furtividade permite controlar os ruídos, os movimentos e a exposição do personagem. Você aprende a aproveitar sombras, coberturas e distrações para observar, aproximar-se ou passar despercebido. O ambiente e a atenção dos observadores determinam o que é possível; técnicas especiais dependem das Perícias correspondentes.
+Furtividade é a arte de mover-se sem chamar atenção. Você aproveita sombras, distrações e o próprio ambiente para observar, aproximar-se ou escapar sem revelar sua posição.
 
 > **Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para atravessar um depósito sem derrubar objetos.
 
 
 <a id="furtividade-pratica"></a>
 
-##### Furtividade em jogo — ocultação, fuga e busca ativa
+##### Furtividade em jogo
 
 O personagem furtivo com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
 
-**Ocultação após deslocamento:** se o personagem furtivo **obtiver sucesso no teste de Furtividade contra a DE aplicável e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
+###### Ocultação após deslocamento
 
-**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o personagem furtivo está durante a **própria rolagem do teste de ataque/dano**, precisando obter **faces simbolicamente idênticas às dos dados mantidos na Furtividade: mesmo tipo de dado, mesma quantidade de Êxitos, Antecipares e Temores, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
+Após obter sucesso no teste de Furtividade contra a DE aplicável, desloque-se. Os inimigos deixam de conhecer sua nova posição, mesmo quando sua DE defensiva é superior ao resultado da Furtividade. Enquanto estiver oculto, atacar você equivale a um Golpe de Sorte (−2E), mesmo que o atacante consiga localizar sua posição naquela rolagem.
 
-**Exemplo:** O personagem manteve d12 com 3E e d10 com 1E + 1A. O inimigo precisa reproduzir essas duas faces nos mesmos tipos de dado. Um d20 com 3E não substitui o d12; um d10 com 2E ou 1E + 1A + 1T não corresponde ao d10 com 1E + 1A. A numeração interna da face é irrelevante. Encontrar a posição não dispensa resolver o ataque contra a DE defensiva.
+###### Localizar durante o ataque
 
-**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
+Durante a rolagem ofensiva, compare somente as faces originais dos dados mantidos de ambos os lados. Cada dado mantido na Furtividade precisa de um correspondente distinto entre os mantidos no ataque: mesmo tipo de dado e exatamente os mesmos símbolos (E, A e T). A ordem e a numeração interna não importam. Dados descartados não contam.
 
-**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
+Se faltar uma correspondência, o ataque não localiza o alvo. Se encontrar todas, resolva o ataque contra a DE defensiva com −2E. Localizar não garante o acerto.
+
+| Faces mantidas na Furtividade | Faces mantidas no ataque | Localização |
+|---|---|---|
+| d12 3E + d10 (1E + 1A) | d12 3E + d10 2E | Não corresponde |
+| d12 3E + d10 (1E + 1A) | d12 3E + d10 (1E + 1A) | Corresponde; aplicar −2E |
+
+**Exemplo:** Você manteve d12 com 3E e d10 com 1E + 1A. O atacante mantém essas mesmas faces e localiza você, mas seus 4E tornam-se 2E pelo Golpe de Sorte, antes de outros modificadores; permanece 1A. Ainda precisa alcançar sua DE. Um d20 com 3E ou um d10 com 2E não substitui as faces exigidas.
+
+<a id="ocultacao-elemental"></a>
+
+###### Invisibilidade elemental
+
+A invisibilidade elemental é uma ocultação em que o personagem se mescla a um elemento do ambiente. Aplique a mesma lógica de Furtividade, correspondência de mantidos e Golpe de Sorte (−2E). Transformar-se em um elemento e depois realizar Furtividade também permite ocultar-se, se a situação for compatível. A transformação por si só não garante ocultação.
+
+Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
+
+Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
+
+Preserve as imunidades a Furtividade e as habilitações de fuga e desvencilhamento pertinentes. Duração, quebra da ocultação e procedimentos específicos de percepção não definidos permanecem em revisão.
 
 
 #### ⚔ Artesão
