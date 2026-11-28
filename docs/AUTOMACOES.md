@@ -10,3 +10,9 @@
 | Testes | Relatório: 112 pares ID/custo, 12 descrições, 56 casos de elevação e quatro builds; faltam testes integrados de navegador, persistência, comércio, combate completo. |
 | Foundry | Não alterado por esta sincronização. Instalações externas não verificadas. |
 Esta branch documental não altera código ou validação funcional. Antes de mesclar a branch de sincronização, corrigir a expressão genérica “preços oficiais pendentes” e confrontar DIV-01 a DIV-09 com as decisões recuperadas. Não alterar custos/efeitos por inferência.
+
+## Impacto das decisões de 28/11/2026 — não implementado nesta revisão
+- Recarga: retirar exigência de esgotamento e restaurar 1 carga a cada 2 turnos próprios até o máximo, mantendo exceção Pedra da Alma.
+- Hemomancia: preservar neutralização da propriedade pelo Escudo Arcano de Sangue, sem restaurar custos antigos por inferência.
+- Invocação Pequena: distinguir apoio +1A de ataque independente como ação conjunta com ficha básica e somente 1 dado mantido. Preservar limites de atuação.
+Fonte: [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md). Código, interface, persistência e testes funcionais não foram alterados.

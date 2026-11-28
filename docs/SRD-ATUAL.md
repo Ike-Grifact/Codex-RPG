@@ -23,3 +23,6 @@ Em cada alteração, registrar fonte, data, escopo, estado normativo, texto subs
 
 ## Auditoria de continuidade da conjuração — 28/11/2026
 Consultar os registros FOC-05/06 e MAG-09/10/11 em [DECISOES](DECISOES.md) e evidências históricas em [PENDENCIAS](PENDENCIAS.md). As decisões anteriores comprovadas são distintas de interpretações editoriais; não reintroduzir procedimentos expressamente substituídos. Não houve alteração de norma, livro ou código nesta auditoria.
+
+## Decisões autorais — 28/11/2026
+Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md), adendo aprovado pelo autor nesta conversa, registrado na branch de revisão (ainda não integrado à main). Substitui o gatilho histórico de esgotamento total, confirma a defesa de Sangue e define o ataque independente da Invocação Pequena. Demais regras seguem as versões mais recentes aprovadas.
