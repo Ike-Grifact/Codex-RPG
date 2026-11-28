@@ -1029,26 +1029,69 @@ Atletismo é o treinamento que permite correr, saltar, escalar, nadar e manter o
 
 *A arte de não ser percebido.*
 
-Furtividade permite controlar os ruídos, os movimentos e a exposição do personagem. Você aprende a aproveitar sombras, coberturas e distrações para observar, aproximar-se ou passar despercebido. O ambiente e a atenção dos observadores determinam o que é possível; técnicas especiais dependem das Perícias correspondentes.
+Furtividade é a arte de mover-se sem chamar atenção. Você aproveita sombras, distrações e o próprio ambiente para observar, aproximar-se ou escapar sem revelar sua posição.
 
 > **Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para atravessar um depósito sem derrubar objetos.
 
 
 <a id="furtividade-pratica"></a>
 
-##### Furtividade em jogo — ocultação, fuga e busca ativa
+##### Furtividade em jogo
 
 O personagem furtivo com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
 
-**Ocultação após deslocamento:** se o personagem furtivo **obtiver sucesso no teste de Furtividade contra a DE aplicável e depois se mover**, **todos os inimigos deixam de saber onde ele está**, inclusive os que possuem DE defensiva superior ao resultado da Furtividade. O antigo contraste entre DE do adversário e Furtividade aplica-se, quando pertinente, **antes** desse deslocamento; **não anula a ocultação obtida ao mover-se**.
+###### Ocultação após deslocamento
 
-**Ataque para adivinhar a posição:** o inimigo tenta identificar onde o personagem furtivo está durante a **própria rolagem do teste de ataque/dano**, precisando obter **faces simbolicamente idênticas às dos dados mantidos na Furtividade: mesmo tipo de dado, mesma quantidade de Êxitos, Antecipares e Temores, com repetições**. Não basta ter DE defensiva elevada ou acertar por símbolos sem encontrar a posição.
+Após obter sucesso no teste de Furtividade contra a DE aplicável, desloque-se. Os inimigos deixam de conhecer sua nova posição, mesmo quando sua DE defensiva é superior ao resultado da Furtividade. Enquanto estiver oculto, atacar você equivale a um Golpe de Sorte (−2E), mesmo que o atacante consiga localizar sua posição naquela rolagem.
 
-**Exemplo:** O personagem manteve d12 com 3E e d10 com 1E + 1A. O inimigo precisa reproduzir essas duas faces nos mesmos tipos de dado. Um d20 com 3E não substitui o d12; um d10 com 2E ou 1E + 1A + 1T não corresponde ao d10 com 1E + 1A. A numeração interna da face é irrelevante. Encontrar a posição não dispensa resolver o ataque contra a DE defensiva.
+Antes do deslocamento, a comparação com a DE dos observadores ainda pode ser relevante. Depois dele, uma DE defensiva maior não revela automaticamente a nova posição.
 
-**PENDENTE:** confirmar se o atacante deve igualar as faces em todos os dados rolados ou somente nos mantidos, além da ordem de localização e acerto, duração da ocultação e exceções de rastreio.
+###### Localizar durante o ataque
 
-**PROPOSTO, não adotado:** repetir uma ocultação na mesma sequência; o custo de ativação em Coragem ainda está PENDENTE, sem autorização de uso.
+Durante a rolagem ofensiva, compare somente as faces originais dos dados mantidos de ambos os lados. Cada dado mantido na Furtividade precisa de um correspondente distinto entre os mantidos no ataque: mesmo tipo de dado e exatamente os mesmos símbolos (E, A e T). A ordem e a numeração interna não importam. Dados descartados não contam.
+
+Se faltar uma correspondência, o ataque não localiza o alvo. Se encontrar todas, resolva o ataque contra a DE defensiva com −2E. Localizar não garante o acerto. A distância ainda pode impor Desvantagem, conforme as regras de alcance.
+
+| Faces mantidas na Furtividade | Faces mantidas no ataque | Localização |
+|---|---|---|
+| d12 3E + d10 (1E + 1A) | d12 3E + d10 2E | Não corresponde |
+| d12 3E + d10 (1E + 1A) | d12 3E + d10 (1E + 1A) | Corresponde; aplicar −2E |
+
+**Exemplo:** Você manteve d12 com 3E e d10 com 1E + 1A. O atacante mantém essas mesmas faces e localiza você, mas seus 4E tornam-se 2E pelo Golpe de Sorte, antes de outros modificadores; permanece 1A. Ainda precisa alcançar sua DE. Um d20 com 3E ou um d10 com 2E não substitui as faces exigidas.
+
+<a id="busca-ativa"></a>
+
+###### Busca ativa
+
+Você pode dedicar uma ação a procurar um personagem oculto. Na busca ativa, compare as faces dos dados mantidos com as da Furtividade, sem uma segunda rolagem. O Sentido Sísmico de Terra pode localizar furtivos convencionais por suas vibrações, dentro de seus limites; não detecta ocultação elemental em outro elemento.
+
+Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo normalmente na próxima oportunidade, desde que ele não volte a se ocultar. Isso não revela automaticamente a posição aos demais combatentes. Se tentar localizar e atacar na mesma ação, permanece o Golpe de Sorte (−2E).
+
+<a id="ataque-furtivo"></a>
+
+###### Ataque surpresa e nova ocultação
+
+Enquanto estiver oculto, você não se revela apenas por permanecer nessa condição. Ao atacar, recebe Vantagem Absoluta (+1E) pela surpresa e revela sua posição, acertando ou falhando. A ocultação termina: os inimigos não precisam mais reproduzir suas faces mantidas nem sofrem o −2E da ocultação.
+
+Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inimigo pode revidar imediatamente, sem Desvantagem decorrente da Furtividade. Resolva o revide conforme as regras gerais de alcance, Temor, oportunidades e turnos; a perda da ocultação não elimina outros modificadores legítimos.
+
+Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
+
+<a id="ocultacao-elemental"></a>
+
+###### Invisibilidade elemental
+
+A invisibilidade elemental é uma ocultação em que o personagem se mescla a um elemento do ambiente. Aplique a mesma lógica de Furtividade, correspondência de mantidos e Golpe de Sorte (−2E). Transformar-se em um elemento e depois realizar Furtividade também permite ocultar-se, se a situação for compatível. A transformação por si só não garante ocultação.
+
+A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
+
+Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
+
+Com a Perícia **Detecção Elemental**, você pode gastar 1 Coragem em uma busca ativa elemental para reservar as faces correspondentes e rerrolar os demais dados uma vez, respeitando os limites de mantidos.
+
+Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
+
+Preserve as imunidades a Furtividade e as habilitações de fuga e desvencilhamento pertinentes. Atacar revela a posição; outros gatilhos de quebra, duração fora do ataque e procedimentos específicos de percepção ainda não definidos permanecem em revisão.
 
 
 #### ⚔ Artesão
