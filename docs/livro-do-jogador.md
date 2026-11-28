@@ -1069,6 +1069,14 @@ Se faltar uma correspondência, o ataque não localiza o alvo. Se encontrar toda
 
 **Exemplo:** Você manteve d12 com 3E e d10 com 1E + 1A. O atacante mantém essas mesmas faces e localiza você, mas seus 4E tornam-se 2E pelo Golpe de Sorte, antes de outros modificadores; permanece 1A. Ainda precisa alcançar sua DE. Um d20 com 3E ou um d10 com 2E não substitui as faces exigidas.
 
+<a id="busca-ativa"></a>
+
+###### Busca ativa
+
+Você pode dedicar uma ação a procurar um personagem oculto. Na busca ativa, compare as faces dos dados mantidos com as da Furtividade, sem uma segunda rolagem. O Sentido Sísmico de Terra pode localizar furtivos convencionais por suas vibrações, dentro de seus limites; não detecta ocultação elemental em outro elemento.
+
+Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo normalmente na próxima oportunidade, desde que ele não volte a se ocultar. Isso não revela automaticamente a posição aos demais combatentes. Se tentar localizar e atacar na mesma ação, permanece o Golpe de Sorte (−2E).
+
 <a id="ataque-furtivo"></a>
 
 ###### Ataque surpresa e nova ocultação
@@ -1088,6 +1096,8 @@ A invisibilidade elemental é uma ocultação em que o personagem se mescla a um
 A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
 
 Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
+
+A especialização futura **Detecção Elemental** está em desenvolvimento e não está disponível para aquisição.
 
 Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
 
