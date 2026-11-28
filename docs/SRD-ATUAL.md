@@ -35,3 +35,6 @@ Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md
 
 ## Furtividade e Disciplina — v0.198
 [v0.198](srd-continuidade-v0.198.md): correspondência de mantidos, Golpe de Sorte, invisibilidade elemental, limite sísmico e revisão editorial aprovada de Disciplina. Livro na branch de revisão.
+
+## Furtividade — ataque surpresa e revide v0.199
+[v0.199](srd-continuidade-v0.199.md): atacar revela a posição e concede Vantagem Absoluta (+1E); revide no acerto com Temor sem Antecipar, sem penalidade de ocultação; nova tentativa de ocultação em ação própria conforme habilitação. Aplica-se à ocultação elemental. Complementa v0.198.
