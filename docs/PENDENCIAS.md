@@ -23,3 +23,6 @@ Nenhum dos itens acima foi reclassificado como decisão autoral faltante nesta a
 
 ## Nomenclatura resolvida — 28/11/2026
 Ruptura aprovada pelo autor; a proposta editorial da v0.196 está encerrada. [v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md). A técnica do Sniper não foi renomeada por esta decisão.
+
+## Furtividade — v0.198
+RESOLVIDO: rolados versus mantidos (só mantidos dos dois lados); localização não retira −2E. Duração/quebra e procedimentos específicos de percepção não definidos nesta decisão. Não criar custos, alcance ou Perícia. [v0.198](srd-continuidade-v0.198.md).
