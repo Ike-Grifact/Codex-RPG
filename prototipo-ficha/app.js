@@ -265,7 +265,7 @@ const SKILLS=[
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Especialização em Disciplina); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Perfurante de armas físicas, sem anular acerto ou dano; Perfurar da magia de Água não é anulado. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
+  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Especialização em Disciplina); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Ruptura de armas físicas, sem anular acerto ou dano; Ruptura da magia de Água não é anulada. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
   1
  ],
  [
@@ -319,7 +319,7 @@ const SKILLS=[
  [
   "agua",
   "Perícia em Elemento Água",
-  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Congelar instantâneo sem custo-base e sem dano próprio do congelamento, descongelar, extrair água do ar, mover, molhar e limpar; G3 Empurrar; G4 Perfurar: E+T à Integridade no acerto, sem ignorar armadura. G3/G4: 1 Coragem.",
+  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Congelar instantâneo sem custo-base e sem dano próprio do congelamento, descongelar, extrair água do ar, mover, molhar e limpar; G3 Empurrar; G4 Ruptura: E+T à Integridade no acerto, sem ignorar armadura. G3/G4: 1 Coragem.",
   1
  ],
  [
@@ -331,7 +331,7 @@ const SKILLS=[
  [
   "terra",
   "Perícia em Elemento Terra",
-  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Empurrar e Perfurar (E+T à Integridade no acerto), derrubar, moldar terreno e Sentido Sísmico 18×18 m; G3 enraizar, prender/imobilizar, espinhos e Cravar; G4 controle, empurrão e derrubada em área. Condições temporárias por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
+  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Empurrar e Ruptura (E+T à Integridade no acerto), derrubar, moldar terreno e Sentido Sísmico 18×18 m; G3 enraizar, prender/imobilizar, espinhos e Cravar; G4 controle, empurrão e derrubada em área. Condições temporárias por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
   1
  ],
  [
@@ -481,7 +481,7 @@ const SKILLS=[
  [
   "maestria-manejo-duplo",
   "Perícia em Manejo Duplo",
-  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 Coragem para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 Coragem. Efeitos próprios, como perfurar, sangrar ou envenenar, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
+  "Permite equipar e utilizar duas armas simultaneamente e realizar um único ataque. Rola Armas + Armas + Atributo, respeitando limites da pilha. Dano básico é aplicado UMA vez: empunhar duas armas não soma dano gratuito. Crítico ativa UMA característica escolhida do golpe combinado sem custo e pode pagar 1 Coragem para ativar mais uma; acerto comum ativa UMA característica escolhida por 1 Coragem. Efeitos próprios, como Ruptura, Sangramento ou Envenenamento, continuam condicionados às propriedades e ao alvo. O simulador registra a compra mas não automatiza duas armas na mesma pilha.",
   1
  ],
  [
@@ -535,7 +535,7 @@ const SKILLS=[
  [
   "armas-fogo",
   "Perícia em Armas de Fogo",
-  "Perfurante, quando presente na arma de fogo, ativa passivamente no acerto, sem custo de ativação; Barulhenta concede +1P passivo até mesmo no crítico. Crítico ativa UMA OUTRA característica escolhida gratuitamente; acerto normal custa 1 Coragem para outras características. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
+  "Ruptura, quando presente na arma de fogo, ativa passivamente no acerto, sem custo de ativação; Barulhenta concede +1P passivo até mesmo no crítico. Crítico ativa UMA OUTRA característica escolhida gratuitamente; acerto normal custa 1 Coragem para outras características. Ignora apenas Desvantagens naturais de peso. Tabela natural contra peso leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun (escopeta) +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Descarregar Tambor: modalidade especial de Disparo Múltiplo para armas automáticas/semiautomáticas, alvo ÚNICO, rolagem única, consome TODAS as munições disponíveis, custa 1 Coragem POR TIRO. Primeiro tiro recebe dano integral de Êxitos; cada tiro adicional recebe metade do dano dos Êxitos arredondada para baixo. Pavor NÃO causa dano. Se há 1 ou mais Pavor mantidos e NÃO anulados, a arma sujeita trava; P anulado com A ou descartado não trava por essa condição. O revólver não trava e não é arma automática. Disparo Fulminante NÃO se aplica a armas de fogo. A ligação de aquisição entre esta modalidade e os pré-requisitos de Disparo Múltiplo permanece PENDENTE de exceção, não inventar.",
   3
  ],
  [
@@ -1405,14 +1405,14 @@ const CARD_EFFECTS={
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
- "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Perfurante físico, não dano.",
+ "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Ruptura física, não dano.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
  "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
  "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
  "fogo": "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
- "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
+ "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Congelar instantâneo sem custo-base e sem dano próprio do congelamento, descongelar, extrair água do ar, mover, molhar e limpar; G3 Empurrar; G4 Ruptura: E+T à Integridade no acerto, sem ignorar armadura. G3/G4: 1 Coragem.",
  "vento": "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
- "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
+ "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Empurrar e Ruptura (E+T à Integridade no acerto), derrubar, moldar terreno e Sentido Sísmico 18×18 m; G3 enraizar, prender/imobilizar, espinhos e Cravar; G4 controle, empurrão e derrubada em área. Condições temporárias por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
  "sagrado": "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
  "veneno": "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
  "sangue": "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
@@ -1424,12 +1424,12 @@ const CARD_EFFECTS={
  "armas-longo-alcance": "Ignora Desvantagens naturais de peso passivamente; ativa a característica do projétil declarado por 1 Coragem.",
  "golpe-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "espalhar-golpe": "Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+P válidos devem alcançar a soma das DE do principal e dos adicionais (cada formação coordenada conta uma vez); se não alcançar a soma, apenas o principal pode ser atingido se alcançar a DE que o protege. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Pavor. Raio fixo; teto de 5 Coragens por turno.",
- "maestria-arremesso-armas": "Ativa Sangramento, Perfuração, Veneno etc. da arma arremessada; arremessar é ação básica",
+ "maestria-arremesso-armas": "Ativa Sangramento, Ruptura, Veneno etc. da arma arremessada; arremessar é ação básica",
  "disparo-fulminante": "Por 1 Coragem: eleva um dado de arma d6→d10, d10→d12 ou d12→2d12; no acerto Pavor válido vale 1 dano por P",
  "disparo-multiplo": "Principal recebe dano integral; adicionais no raio de 3 m recebem metade dos Êxitos e 0,5 por P",
  "disparo-violento": "Derruba inimigo atingido e empurra 4 m",
  "disparo-tatico": "Técnica futura, com compatibilidade com Arremesso definida",
- "armas-fogo": "Perfurante é passivo quando presente; Barulhenta +1P fixo. Descarregar Tambor contra um alvo",
+ "armas-fogo": "Ruptura é passiva quando presente; Barulhenta +1P fixo. Descarregar Tambor contra um alvo",
  "golpe-baixo": "Acerto aplica Desvantagem (−1A) durante 1 rodada",
  "maestria-manejo-duplo": "Uma única rolagem Armas + Armas + Atributo, característica escolhida entre as armas, dano básico uma vez",
  "furtividade": "Recebe Vantagem (+1A) em testes com Furtividade, cumulativa com Concentrado",
@@ -1493,7 +1493,7 @@ const CARD_BRIEFS={
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
- "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Perfurante físico sem cancelar dano; Perfurar de Água não é anulado. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
+ "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Ruptura física sem cancelar dano; Ruptura de Água não é anulada. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
  "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
  "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
@@ -1506,9 +1506,9 @@ const CARD_BRIEFS={
  "transfusao": "Perícia separada, utilizável em combate: transfere exatamente 1 Vida do Hemomante ao aliado ou leva Antídoto à distância consumindo doses.",
  "transfusao-sanguinaria": "Exclusiva de Lucker de Sangue. 1 XP; exige Transfusão + Elemento Sangue. Conjuração ativa; 3 marcas inimigas por 1 Vida; compra prévia de Transfusão pendente.",
  "fogo": "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
- "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
+ "agua": "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Congelar instantâneo sem custo-base e sem dano próprio do congelamento, descongelar, extrair água do ar, mover, molhar e limpar; G3 Empurrar; G4 Ruptura: E+T à Integridade no acerto, sem ignorar armadura. G3/G4: 1 Coragem.",
  "vento": "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
- "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
+ "terra": "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Empurrar e Ruptura (E+T à Integridade no acerto), derrubar, moldar terreno e Sentido Sísmico 18×18 m; G3 enraizar, prender/imobilizar, espinhos e Cravar; G4 controle, empurrão e derrubada em área. Condições temporárias por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
  "armas-longo-alcance": "Benefício passivo. Ao atacar com uma arma de longo alcance, ignore sua Desvantagem natural de peso, mantendo as Vantagens. Não há custo de ativação para este benefício. Benefício ativo. Antes de rolar, declare o projétil compatível que será disparado (flecha ou virote) e gaste 1 Coragem para tentar ativar a característica que ele possui. O efeito só acontece se acertar; a falha não devolve a Coragem. Acerto crítico. A recuperação normal do crítico compensa 1 Coragem já paga, sem uma segunda recuperação. Zarabatana. Com dardo envenenado, declare Envenenar por 1 Coragem antes de rolar. No acerto, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento prévio e sem dano à Vida ou à armadura, inclusive no crítico.",
  "golpe-fulminante": "1 Coragem antes de rolar; eleva um dado de arma corpo a corpo e cada Pavor válido causa 1 dano no acerto, sem impedir sua transferência aos inimigos.",
  "espalhar-golpe": "Ativa: por cada Coragem declarada antes de rolar, +1E e até 2 alvos adicionais a 3 m do atacante. Para atingir todos, E+P válidos devem alcançar a soma das DE do principal e dos adicionais (cada formação coordenada conta uma vez); se não alcançar a soma, apenas o principal pode ser atingido se alcançar a DE que o protege. Adicionais atingidos recebem metade do dano de Êxitos arredondada para baixo, sem dano de Pavor. Raio fixo; teto de 5 Coragens por turno.",
@@ -2004,6 +2004,7 @@ const STARTING_VT=20; // EXPERIMENTAL: patrimônio igual para os Aprendizes; VT 
 // SRD v0.43: dois patamares sem preços oficiais. Sangue está vinculado à Pedra da Alma.
 const STONE_CATALOG=[["Fogo","common"],["Água","common"],["Ar","common"],["Terra","common"],["Psíquico","common"],
  ["Veneno","rare"],["Sagrado","rare"],["Trevas","rare"]];
+const ruptureLabel=value=>value==="Perfurante"?"Ruptura":value;
 const ACTIVE_PROPERTIES=new Set(["Envenenar","Contundente","Cortante","Perfurante","Cravar","Enganchar","Elemental","Explosivo","Muito Leve"]);
 const SOUND_KEY="codex-roll-sound-v1";
 let soundEnabled=true,audioContext=null,tradeDraft=null,tradeOwner=null;
@@ -2498,7 +2499,7 @@ function projectileFamily(weapon){
 function shotChoices(items,weapon){
  const family=projectileFamily(weapon);
  if(!family)return [];
- return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+type+" ("+n+")"})));
+ return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+ruptureLabel(type)+" ("+n+")"})));
 }
 function planShot(items,weapon,id,type){
  if(!projectileFamily(weapon))return {ok:true,items,shot:null};
@@ -2521,7 +2522,7 @@ function moveAmmoMix(source,dest,types){
 }
 function chooseAmmoMix(family){
  if(family==="zarabatana")return {Dardo:20};
- const answer=prompt("Lote de 20 projéteis. Quantos Cortantes? O restante será Perfurante (0 a 20).","10");
+ const answer=prompt("Lote de 20 projéteis. Quantos Cortantes? O restante será Ruptura (0 a 20).","10");
  if(answer===null)return null;
  const n=Number(answer);
  if(!answer.trim()||!Number.isInteger(n)||n<0||n>20){toast("Informe um número inteiro de 0 a 20.");return null;}
@@ -4936,7 +4937,7 @@ function renderPending(){
   (x!=="Cravar"||((item?.category==="medio"||item?.weight==="medio")&&ownsSkill("armas-medias")&&!skillReq("armas-medias"))||
    ((item?.category==="pesado"||["alto","extremo"].includes(item?.weight))&&ownsSkill("armas-pesadas")&&!skillReq("armas-pesadas"))));
  const chooseEffect=(field,description,selected)=>'<label class="fp-form-field">'+description+'<select data-pending="'+field+'">'+
-  [['','Nenhuma'],...specials.map(x=>[x,x])].map(([id,label])=>'<option value="'+esc(id)+'"'+(id===selected?" selected":"")+'>'+esc(label)+'</option>').join("")+'</select></label>';
+  [['','Nenhuma'],...specials.map(x=>[x,ruptureLabel(x)])].map(([id,label])=>'<option value="'+esc(id)+'"'+(id===selected?" selected":"")+'>'+esc(label)+'</option>').join("")+'</select></label>';
  const cravarChosen=[p.characteristic,p.secondCharacteristic].includes("Cravar");
  const cravarSelector=cravarChosen?
   '<label class="fp-form-field full">Escudo físico do alvo a ser cravado<select data-pending="cravarTargetShield">'+
@@ -5002,9 +5003,9 @@ function renderPending(){
   ' do alvo. Na ficha do defensor, marque Cravar no escudo: <strong>−1E por arma cravada ao Levantar Escudo</strong> e peso da arma enquanto carregar o conjunto. Não atinge Vida por si só.</p>':"")+
  (p.opts.shieldRaise?'<p class="fp-caption"><strong>LEVANTAR ESCUDO:</strong> Integridade simbólica E + P válidos = '+(s.E+s.P)+
   ' ('+s.E+'E + '+s.P+'P). '+(s.shieldCravarPenalty?'Arma cravada: <strong>−1E aplicado</strong> apenas nesta ação.':'Sem penalidade de Cravar no escudo equipado.')+'</p>':"")+
- (s.armorDamage!==null?'<p class="fp-caption"><strong>Perfurante à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
+ (s.armorDamage!==null?'<p class="fp-caption"><strong>Ruptura à Integridade:</strong> '+s.armorDamage+' dano potencial (E + 1 por P não anulado; crítico quando aplicável). Não ignora a armadura nem concede dano extra direto à Vida. Se bloqueado por escudo pertinente, usar dano básico. '+(s.passivePiercing?'Característica passiva da arma de fogo, sem ativação.':'Característica ativada conforme custo normal.')+'</p>':'')+
  (p.opts.trevas?'<p class="fp-caption"><strong>Trevas:</strong> +2P já incluídos na DE; se houver dois alvos, a mesma rolagem deve ser confrontada com cada DE. Divida o Pavor residual o mais igualmente possível (ponto ímpar a alvo escolhido) ou concentre tudo em um alvo; registre manualmente, sem duplicar pontos.</p>':'')+
- (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(esc).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
+ (s.active.length?'<p class="fp-caption"><strong>Característica(s) ativada(s):</strong> '+s.active.map(x=>esc(ruptureLabel(x))).join(", ")+'. Resolver efeitos com Narrador.</p>':'')+'</div>';
  return '<div class="fp-alert"><strong>Resultado já sorteado.</strong> '+desc+'. A rolagem ficará salva até ser finalizada ou descartada explicitamente.</div>'+magicSummary+magicWait+asuraSummary+manejoPerfeitoSummary+weightSpecialtySummary+
  '<p class="fp-caption" style="margin:11px 0">Mantenha até '+keepLimit(p.opts.extraKeep)+' dados à sua escolha. Atributo é obrigatório na rolagem, não entre os mantidos. '+s.dice.length+' selecionado(s). Saúde: '+esc(s.health.label)+
   ' ('+(s.health.e?s.health.e+'E ':'')+(s.health.a?s.health.a+'A ':'')+(s.health.p?'+'+s.health.p+'P':'')+
@@ -5205,7 +5206,7 @@ function handTooltipMarkup(it,pinned){
  if(handItem(it))info.push("Empunhadura: "+itemHands(it)+" mão(s)");
  if(integrity.max>0)info.push("Integridade: "+integrity.hp+" / "+integrity.max);
  if(it.type==="arma"&&it.range>0&&effectiveWeaponRange(it)!==it.range)info.push("Alcance efetivo: "+effectiveWeaponRange(it)+" m");
- if(it.ammoRole==="container"&&it.ammoMix)info.push(Object.entries(it.ammoMix).map(([k,n])=>k+": "+n).join(" · "));
+ if(it.ammoRole==="container"&&it.ammoMix)info.push(Object.entries(it.ammoMix).map(([k,n])=>ruptureLabel(k)+": "+n).join(" · "));
  if(it.packSize>0)info.push("Munição: "+it.ammoRemaining+" / "+it.packSize);
  if(it.storageCapacity>0)info.push("Capacidade: "+it.storageCapacity+" munições");
  if(it.embeddedWeapon)info.push("Arma cravada: "+it.embeddedWeapon);
@@ -5396,7 +5397,7 @@ function renderInventory(){
   (it.die?'<div class="fp-item-hint"><b>Dado:</b> d'+it.die+' (somente com Perícia pertinente)'+
    ' · <b>Alcance efetivo:</b> '+effectiveWeaponRange(it)+' m'+(effectiveWeaponRange(it)>it.range?' (base '+it.range+' m + Olhos de Águia)':'')+'</div>':'')+
   (weaponMasteryId(it)&&ownsSkill(weaponMasteryId(it))?'<div class="fp-item-hint"><strong>Especialização por família de arma:</strong> '+(weaponMasteryCanActivate(it)?'Arma habilitada: acerto comum = 1 característica grátis; crítico = até 2 diferentes grátis, podendo gastar 1 Coragem para uma terceira. Apenas características existentes na arma.':'Ativação gratuita indisponível: falta Perícia de Armas/manejo apropriada para este equipamento ou peso não definido.')+' Não concede Perícias de Armas, nem ativa efeitos automaticamente.</div>':"")+ 
-  (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(esc).join(", ")+'</div>':'')+
+  (it.properties?.length?'<div class="fp-item-hint"><b>Características:</b> '+it.properties.map(x=>esc(ruptureLabel(x))).join(", ")+'</div>':'')+
   (it.catalogId&&it.type!=="foco"?'<div class="fp-item-hint"><b>Preço de referência:</b> '+it.priceVT+' VT (playtest)</div>':'')+
   (it.type==="foco"?'<div class="fp-item-hint fp-focus-charge-editor"><strong>Foco elemental</strong> · <label>Elemento <select data-item-field="element" data-id="'+esc(it.id)+'">'+
    [["psiquico","Psíquico"],["fogo","Fogo"],["agua","Água"],["vento","Ar"],["terra","Terra"],["sagrado","Sagrado"],["sangue","Sangue"],["trevas","Trevas"],["veneno","Veneno"]]
@@ -5404,7 +5405,7 @@ function renderInventory(){
    '</select></label> · <label>Cargas atuais <input type="number" data-item-field="focusCharges" data-id="'+esc(it.id)+'" min="0" max="'+focusCapacity(it)+'" value="'+(it.focusCharges??0)+'"></label>'+
    ' / '+focusCapacity(it)+' <button type="button" class="fp-secondary" data-action="focus-round" data-id="'+esc(it.id)+'"'+((it.focusCharges??0)>=focusCapacity(it)?" disabled":"")+'>Registrar 2 turnos próprios: +1 carga</button>'+
    '<small>Recarga gradual manual no fim de cada rodada; Pedra da Alma não recarrega naturalmente.</small></div>':"")+
-  (it.ammoRole?'<div class="fp-item-hint"><b>Projéteis: '+ammoCount(it.ammoMix)+' / 20</b> · consumo por disparo (ajuste manual disponível) '+ammoTypesFor(it.ammoFamily).map(k=>'<label>'+esc(k)+' <input type="number" data-item-field="ammoMix" data-ammo-type="'+esc(k)+'" data-id="'+esc(it.id)+'" min="0" max="'+(it.ammoMix?.[k]||0)+'" value="'+(it.ammoMix?.[k]||0)+'" style="width:60px"></label>').join(" ")+(it.ammoRole==="supply"?' <button type="button" class="fp-secondary" data-action="ammo-refill" data-id="'+esc(it.id)+'">Transferir para recipiente</button>':"")+'</div>':"")+
+  (it.ammoRole?'<div class="fp-item-hint"><b>Projéteis: '+ammoCount(it.ammoMix)+' / 20</b> · consumo por disparo (ajuste manual disponível) '+ammoTypesFor(it.ammoFamily).map(k=>'<label>'+esc(ruptureLabel(k))+' <input type="number" data-item-field="ammoMix" data-ammo-type="'+esc(k)+'" data-id="'+esc(it.id)+'" min="0" max="'+(it.ammoMix?.[k]||0)+'" value="'+(it.ammoMix?.[k]||0)+'" style="width:60px"></label>').join(" ")+(it.ammoRole==="supply"?' <button type="button" class="fp-secondary" data-action="ammo-refill" data-id="'+esc(it.id)+'">Transferir para recipiente</button>':"")+'</div>':"")+
   (!it.ammoRole&&it.packSize>0?'<div class="fp-item-hint"><label><b>Munição restante no lote:</b> <input type="number" data-item-field="ammoRemaining" data-id="'+esc(it.id)+'" min="0" max="'+it.packSize+'" value="'+it.ammoRemaining+'" style="width:62px"> / '+it.packSize+' · controle manual</label></div>':'')+
   (!it.ammoRole&&it.storageCapacity>0?'<div class="fp-item-hint"><b>Capacidade:</b> até '+it.storageCapacity+' munições (armazenamento manual)</div>':'')+
   (it.description?'<div class="fp-item-hint">'+esc(it.description)+'</div>':'')+

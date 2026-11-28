@@ -383,14 +383,14 @@ function renderWeaponEffects(){
   weaponActivationSkill(attacker,{...weapon,name:"",properties:[]}).ok;
  $("weapon-effects").innerHTML=props.length?
   props.map(prop=>'<label class="cc-weapon-effect"><input type="checkbox" data-weapon-property="'+esc(prop)+
-   '"'+(chosen.has(prop)?' checked':'')+(!access.ok||(prop==="Cravar"&&!cravarAccess)?' disabled':'')+'><strong>'+esc(prop)+'</strong></label>').join(""):
+   '"'+(chosen.has(prop)?' checked':'')+(!access.ok||(prop==="Cravar"&&!cravarAccess)?' disabled':'')+'><strong>'+esc(prop==="Perfurante"?"Ruptura":prop)+'</strong></label>').join(""):
   '<p class="cc-help">Sem característica especial ativável cadastrada nesta arma.</p>';
  const passive=weapon?.properties?.includes("Barulhenta")?" Barulhenta é passiva: +1P sempre, inclusive no crítico.":"";
  $("weapon-effect-info").textContent=isPoisonOnlyWeapon(weapon)?(access.ok?"Envenenar: marque somente com dardo preparado; declare 1 Coragem. Acerto aplica 1 acúmulo por 2 rodadas sem Sangramento. Sem dano direto.":"Habilitação ausente: "+access.error):weapon?
   (access.ok?"Perícia habilitada: "+access.required+".":"Habilitação ausente: "+access.error)+
   (canUseWeaponMastery(attacker,mastery)?" "+(SKILLS.find(x=>x.id===mastery)?.name||"Especialização em Armas")+": no acerto 1 efeito gratuito; no crítico 2 gratuitos e um terceiro por 1 Coragem.":
    " Sem Especialização: declare e gaste 1 Coragem antes de rolar para tentar ativar um efeito; falhar não devolve a Coragem. No crítico com acerto, a recuperação normal devolve 1 Coragem gasta, zerando o custo líquido da primeira característica; o segundo efeito pago exige declaração antecipada.")+
-  " Cortante aplica Sangramento; Perfurante altera apenas dano à Integridade. Cravar exige Perícia em Armas Médias ou Pesadas correspondente, arma com Cravar e escudo físico; crítico não substitui a Perícia. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
+  " Cortante aplica Sangramento; Ruptura altera apenas dano à Integridade. Cravar exige Perícia em Armas Médias ou Pesadas correspondente, arma com Cravar e escudo físico; crítico não substitui a Perícia. Manobras sem efeito numérico definido são registradas para o Narrador."+passive:
   "Escolha uma arma equipada para visualizar as características.";
 }
 
@@ -604,12 +604,12 @@ function renderDice(){
   pre.result.critical?"CRÍTICO "+pre.result.critical+": "+critInfo.faces.map(x=>"d"+x.sides+" face "+x.face).join(", ")+
    (actor()?.side==="jogadores"?" · recupera "+pre.result.criticalRefundCourage+" Coragem":" · gera "+pre.result.monsterCriticalPavor+" Pavor (teto aplicado ao confirmar)"):null,
   pre.noisy?"Barulhenta (passiva): +1P, inclusive no crítico":null,
-  ...pre.weaponPlan.active.map(x=>"Característica da arma: "+x+" (ativada no acerto)"),
+  ...pre.weaponPlan.active.map(x=>"Característica da arma: "+(x==="Perfurante"?"Ruptura":x)+" (ativada no acerto)"),
   pending.martial?.weapon?"Soco de peso "+({leve:"Leve",medio:"Médio",pesado:"Pesado"}[pending.martial.category])+" · "+pending.martial.cost+" recurso já pago":null,
    ...pre.status.notes,
   pre.weaponPlan.active.length?"Coragem declarada para características: "+pre.weaponPlan.cost+(actor()?.side==="inimigos"?"P local":" Coragem")+
    " · "+pre.weaponPlan.free+" gratuitas":null,
-  pre.perfuranteBlocked?"Perfurante: anulado pela defesa confirmada; dano básico mantido":null,
+  pre.perfuranteBlocked?"Ruptura: anulada pela defesa confirmada; dano básico mantido":null,
   Number($("cancel-p").value)?"Anulação: "+$("cancel-p").value+" P com Antecipar":null,
   Number($("convert-a").value)?"Conversão: "+$("convert-a").value+" Êxito(s) por pares de Antecipar":null,
   ...pre.activations.map(x=>"Perícia ativada: "+x.name+" ("+x.cost+(actor()?.side==="inimigos"?" Pavor":" Coragem")+")")

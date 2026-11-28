@@ -27,7 +27,7 @@ export function projectileFamily(weapon){
 export function shotChoices(items,weapon){
  const family=projectileFamily(weapon);
  if(!family)return [];
- return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+type+" ("+n+")"})));
+ return items.filter(x=>x.ammoRole==="container"&&x.ammoFamily===family&&x.position==="quick").flatMap(x=>Object.entries(x.ammoMix||{}).filter(([type,n])=>(family==="zarabatana"?type==="Dardo":["Cortante","Perfurante"].includes(type))&&Number(n)>0).map(([type,n])=>({id:x.id,type,n:Number(n),label:x.name+" · "+(type==="Perfurante"?"Ruptura":type)+" ("+n+")"})));
 }
 export function planShot(items,weapon,id,type){
  if(!projectileFamily(weapon))return {ok:true,items,shot:null};
@@ -387,7 +387,7 @@ export function weaponEffectOutcome(properties=[],target={},weapon=null){
   applied.envenenado=true;notes.push("Zarabatana: 1 acúmulo de Envenenamento por 2 rodadas, sem Sangramento; controlar dose e duração manualmente.");
  }
  if(effects.includes("Cortante"))applied.sangramento=true;
- if(effects.includes("Perfurante"))notes.push("Perfurante: cada Pavor não anulado vale 1 dano à Integridade, sem somar o piso(P/2). Conferir escudo levantado e proteção psíquica.");
+ if(effects.includes("Perfurante"))notes.push("Ruptura: cada Temor não anulado vale 1 dano à Integridade, sem somar o piso(P/2). Conferir escudo levantado e proteção psíquica.");
  if(effects.includes("Cravar")){
   const shield=(target?.items||[]).find(i=>i.kind==="shield"&&i.equipped);
   if(!shield||!["medio","pesado"].includes(weapon?.category))

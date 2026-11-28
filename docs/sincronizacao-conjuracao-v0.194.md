@@ -8,3 +8,6 @@ Testes: 112 pares ID/custo preservados; 12 descrições espelhadas; 56 casos de 
 
 ## Complemento v0.196 — 28/11/2026
 Redação dos nove elementos atualizada nos três catálogos (app.js, skills-catalog.mjs e codex-rules.mjs). Dano convencional desde G1; Água G2 Congelar, G3 Empurrar, G4 Perfurar; Terra G2 Empurrar/Perfurar, G3 enraizar/prender, demais efeitos preservados conforme [SRD v0.196](https://github.com/Ike-Grifact/Codex-RPG/blob/docs/fontes-e-continuidade-v0194/docs/srd-continuidade-v0.196.md). Nomes e custos preservados; recarga sem esgotamento e defesa de Sangue explicitadas nos textos. Alteração apenas de catálogos: não equivale à implementação automática dos efeitos, comércio fixo, recarga ou teste integrado. Verificar sincronização antes de publicar a main.
+
+## v0.197 — nomenclatura Ruptura
+Atualizados os textos dos catálogos, rótulos de propriedades, seleção de munição e comparador nas interfaces pertinentes. As chaves legadas Perfurante, perfurante-blocked, valores de propriedades/munição e lógica continuam intactas. Corrigidas cópias resumidas de Água e Terra que ainda apresentavam Graus antigos. Sem alteração de XP, VT, cálculo, IDs, ou Foundry. Validação de navegador ainda não realizada. Fonte: [v0.197](https://github.com/Ike-Grifact/Codex-RPG/blob/docs/fontes-e-continuidade-v0194/docs/srd-continuidade-v0.197.md).
