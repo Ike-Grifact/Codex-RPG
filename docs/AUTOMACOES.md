@@ -25,3 +25,6 @@ Renomear rótulos públicos da propriedade e descrições; preservar chaves lega
 
 ## v0.198 — Furtividade
 NÃO IMPLEMENTADO nesta revisão: guardar faces originais mantidas, comparar multiconjuntos de mantidos por tipo e E/A/T, aplicar −2E mesmo localizando; distinguir ocultação elemental e percepção pertinente. Sem automatizar detecção, duração, quebra ou custos não definidos. [v0.198](srd-continuidade-v0.198.md).
+
+## v0.199 — Ataque surpresa
+NÃO IMPLEMENTADO nesta revisão: estado oculto, bônus de surpresa +1E, exposição ao atacar, retirada do −2E e da comparação de faces após revelação; revide imediato quando válido e nova ocultação em ação própria conforme habilitações. Não modificar regras gerais de Temor, Antecipar, alcance, turnos ou transformação. [v0.199](srd-continuidade-v0.199.md).
