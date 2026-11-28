@@ -71,7 +71,7 @@ O Pavor gerado é alocado **primeiro à reserva local até o teto do Grau**; só
 
 ## 6. Equilibrar sem anular especializações
 
-É legítimo que um personagem excelente contra dano físico comum seja menos eficiente contra outras ameaças. Construa desafios com **objetivos, terrenos, condições e alternativas táticas plausíveis**, sem equipar todo inimigo artificialmente para invalidar a construção de um jogador. Perfuração habilitada, efeitos elementais, mudanças de campo, ações conjuntas e custos de XP fazem parte do ecossistema do jogo.
+É legítimo que um personagem excelente contra dano físico comum seja menos eficiente contra outras ameaças. Construa desafios com **objetivos, terrenos, condições e alternativas táticas plausíveis**, sem equipar todo inimigo artificialmente para invalidar a construção de um jogador. Ruptura habilitada, efeitos elementais, mudanças de campo, ações conjuntas e custos de XP fazem parte do ecossistema do jogo.
 
 As manifestações de **Raio são condições/efeitos**, não um elemento separado: Fogo pode produzir impacto queimante, Água pode conduzir eletricidade e Ar/Vento pode conduzir carga; descargas naturais dependem das condições ambientais. **PENDENTE:** alcance, dano, risco e custos dessas técnicas. O peso elemental padrão é **Leve, Grau 1**, não Médio.
 

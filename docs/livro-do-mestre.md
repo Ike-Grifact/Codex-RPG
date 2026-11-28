@@ -35,15 +35,15 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 
 Referência principal: [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). Como histórico: [SRD v0.59](srd-continuidade-v0.59.md) (origem), [v0.58](srd-continuidade-v0.58.md) (hipótese anterior de 18 XP, revogada), [v0.56](srd-continuidade-v0.56.md) (tabelas) e [v0.55](srd-continuidade-v0.55.md) (linhagens).
 
-## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
+## Decisão de 16/11/2026 — Levantar Escudo e Ruptura física [DEFINIDO / PENDENTE, SRD v0.54]
 
 **Levantar Escudo não é reação.** O defensor usa **sua ação**, rola **Disciplina** e escolhe os dados mantidos; **Êxitos + Pavor válidos mantidos** formam a **Integridade simbólica extra de bloqueio**, sujeita às equivalências de desgaste de escudos (**1E anula 1E ou 2P; 1P anula 1P; 2P anulam 1E**). Antecipar não concede Integridade automática. O personagem pode **mover-se normalmente** com o escudo erguido, mas atacar encerra a postura.
 
-**Primeiro ataque frontal:** o escudo físico cobre **somente a frente**, protege o defensor contra o primeiro ataque frontal e é **abaixado após essa resolução**, mesmo se o golpe falhar. Dano excedente vai à **armadura** e então à **Vida**. Escudo físico levantado anula **Perfurante de arma física** quando efetivamente bloqueia a frente; **Cravar** mantém a propriedade de danificar o escudo e atingir sua Durabilidade.
+**Primeiro ataque frontal:** o escudo físico cobre **somente a frente**, protege o defensor contra o primeiro ataque frontal e é **abaixado após essa resolução**, mesmo se o golpe falhar. Dano excedente vai à **armadura** e então à **Vida**. Escudo físico levantado anula **Ruptura de arma física** quando efetivamente bloqueia a frente; **Cravar** mantém a propriedade de danificar o escudo e atingir sua Durabilidade.
 
-**Escudo Arcano Psíquico:** anula **Perfurante de armas físicas**, mas não anula o dano do ataque. Quando conjurado como **círculo** ou **proteção pessoal/corpo a corpo**, cobre todas as direções; **parede linear** mantém cobertura conforme a própria forma. Preserva **duração de uma rodada**, custos, integridade simbólica E+P dos dados mantidos e a regra de ataques corpo a corpo originados por intruso dentro da área. **Perfurar de Água não é anulado** por essas defesas específicas contra Perfurante físico.
+**Escudo Arcano Psíquico:** anula **Ruptura de armas físicas**, mas não anula o dano do ataque. Quando conjurado como **círculo** ou **proteção pessoal/corpo a corpo**, cobre todas as direções; **parede linear** mantém cobertura conforme a própria forma. Preserva **duração de uma rodada**, custos, integridade simbólica E+P dos dados mantidos e a regra de ataques corpo a corpo originados por intruso dentro da área. **Ruptura de Água não é anulada** por essas defesas específicas contra Ruptura física.
 
-**PENDENTE:** relação da Integridade temporária com Integridade/Durabilidade material do escudo; ataques de costas e múltiplos, setor frontal e giro; precedência de escudos físico/arcano simultâneos; execução específica de Perfurar de Água e magias de Fogo contra escudos. Escudos materiais G1 6/9/12 continuam **PROPOSTOS**. Não inventar fórmula nova: a Integridade simbólica **E+P mantidos já é DEFINIDA**. Referência normativa: [SRD v0.54, seção 0-AQ](srd-continuidade-v0.54.md). A v0.53 está em revisão independente no PR #29.
+**PENDENTE:** relação da Integridade temporária com Integridade/Durabilidade material do escudo; ataques de costas e múltiplos, setor frontal e giro; precedência de escudos físico/arcano simultâneos; execução específica de Ruptura de Água e magias de Fogo contra escudos. Escudos materiais G1 6/9/12 continuam **PROPOSTOS**. Não inventar fórmula nova: a Integridade simbólica **E+P mantidos já é DEFINIDA**. Referência normativa: [SRD v0.54, seção 0-AQ](srd-continuidade-v0.54.md). A v0.53 está em revisão independente no PR #29.
 
 ## Decisão de 16/11/2026 — Domar Média e custos de Perícias [DEFINIDO, SRD v0.52]
 
@@ -549,7 +549,7 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 
 **Ar:** além dos efeitos já listados, pode recuperar Fôlego; Grau, custo/gatilho e quantidade PENDENTES.
 
-**Perícia em Elemento Água:** 1 XP, Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Com a Perícia e Grau habilitados, os efeitos **G1/G2** têm ativação-base gratuita. Elevar efeitos a **G3** custa **1 Coragem**; demais gatilhos e DE permanecem. G1: Congelar por uma rodada sem dano em magia Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar por crítico OU ativação paga, com dano à Vida e à armadura. G3: conjurar ao final do turno dos aliados, empurrar, perfurar, congelar, danificar Vida/armadura e preservar efeitos menores pertinentes. A entrada anterior Elemento: Água é a mesma Perícia, não há compra duplicada. Dano, alcance, efeitos adicionais e operação exata estão pendentes.
+**Perícia em Elemento Água:** 1 XP, Disciplina 1 + Inteligência 1; Criar Item de Foco e Magia é exigida para conjurar, não para adquirir. G1: manifestação e dano convencional. G2: Congelar instantaneamente sem custo-base de Coragem, sem dano próprio do congelamento; descongelar e manipular água. G3: Empurrar. G4: Ruptura (E+T à Integridade no acerto, sem ignorar a armadura). G3/G4 custam 1 Coragem, com preparação vigente. Consulte o Livro do Jogador e os SRDs v0.196–0.197 para procedimentos e limites; a regra de defesa contra Ruptura física não anula a de Água. Não criar dano direto à Vida por analogia.
 
 ## Regra mais recente — criação narrativa sem memorização (17/11/2026)
 
@@ -570,3 +570,36 @@ Compra **1 XP**, requer **Disciplina 1 + Criar Item de Foco e Magia + Inteligên
 **Fogo G2 — DEFINIDO (17/11/2026):** o custo de ativação é **0 Coragem** com Perícia e Grau habilitados, inclusive sem foco quando houver fonte elemental válida. A antiga cobrança adicional de Coragem por falta de foco não existe mais.
 
 **Perícia em Elemento Sagrado:** **2 XP** (substitui Magia Sagrada 3 XP), exige Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2. Habilita magia Leve Sagrada e, em ataque acertado com ou sem crítico, pode aplicar o efeito G1/G2 habilitado **gratuitamente quanto ao custo-base**. Elevar efeitos habilitados a G3 exige **1 Coragem**. **G1:** Acalmar/Purificar/Apoiar/Recuperar Coragem; **1 Êxito de Sagrado vira 1 Coragem para um participante, uma vez por conjuração/turno**, e esse Êxito não contribui à DE nem a dano. Não dar +1E grátis. **G2/G3:** somente por combinação elemental. PENDENTE definir se a conversão que deixa o teste abaixo da DE impede a ativação, limites do beneficiário e custo em ações não ofensivas. A ficha mantém a compra existente pelo ID `sagrado`, sem automatizar Êxitos ou efeitos.
+
+## Ocultação física e elemental — v0.198
+Após sucesso no teste de Furtividade e deslocamento, atacar o alvo oculto equivale a Golpe de Sorte (−2E), mesmo quando o atacante localiza sua posição. Para localizar durante o ataque, compare exclusivamente as faces originais mantidas dos dois lados, por tipo e composição E/A/T, incluindo repetições. Resolva então o ataque contra a DE com a penalidade. A invisibilidade por mescla elemental segue a mesma lógica; transformação seguida de Furtividade pode ocultar quando plausível. Capacidade de percepção pertinente pode permitir sentir presença, não localizar automaticamente. Sentido Sísmico não detecta ocultação elemental em elemento distinto de Terra. Preserve as demais regras vigentes. Consulte [Furtividade em jogo](livro-do-jogador.md#furtividade-pratica) e [v0.198](srd-continuidade-v0.198.md).
+
+## Ataque surpresa, exposição e revide — v0.199
+Enquanto estiver oculto, você não se revela apenas por permanecer nessa condição. Ao atacar, recebe Vantagem Absoluta (+1E) pela surpresa e revela sua posição, acertando ou falhando. A ocultação termina: os inimigos não precisam mais reproduzir suas faces mantidas nem sofrem o −2E da ocultação.
+
+Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inimigo pode revidar imediatamente, sem Desvantagem decorrente da Furtividade. Resolva o revide conforme as regras gerais de alcance, Temor, oportunidades e turnos; a perda da ocultação não elimina outros modificadores legítimos.
+
+Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
+
+A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
+
+O benefício geral de surpresa não substitui nem altera a Perícia Golpe Furtivo (dado adicional da arma mediante requisitos). Não inventar custo ou habilitação de nova ocultação. A referência a perder uma rodada própria foi redigida como dedicar uma ação própria, sem impor perda de uma rodada global nem turno adicional gratuito. Consulte [Ataque surpresa](livro-do-jogador.md#ataque-furtivo) e [v0.199](srd-continuidade-v0.199.md).
+
+## Busca ativa e Detecção Elemental — v0.200
+Você pode dedicar uma ação a procurar um personagem oculto. Na busca ativa, compare as faces dos dados mantidos com as da Furtividade, sem uma segunda rolagem. O Sentido Sísmico de Terra pode localizar furtivos convencionais por suas vibrações, dentro de seus limites; não detecta ocultação elemental em outro elemento.
+
+Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo normalmente na próxima oportunidade, desde que ele não volte a se ocultar. Isso não revela automaticamente a posição aos demais combatentes. Se tentar localizar e atacar na mesma ação, permanece o Golpe de Sorte (−2E).
+
+**Perícia futura — PENDENTE:** Detecção Elemental é uma Perícia futura, ainda indisponível para aquisição. Destina-se à busca de personagens ocultos em elementos, com percepção compatível: reservar faces correspondentes e rerrolar os demais dados uma única vez, sem aumentar o limite de mantidos. Requisitos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Compra: 1 XP. Custo de ativação específico não definido.
+
+A rerrolagem não é benefício da busca convencional nem do Sentido Sísmico. Não acumular dados de duas pilhas completas; preservar apenas as faces reservadas, substituir os dados rerrolados e respeitar os limites vigentes. Não criar alcance, custo, duração ou percepção universal. [v0.200](srd-continuidade-v0.200.md).
+
+## Detecção Elemental — v0.201
+**DEFINIDO — Perícia ativa, aquisição habilitada.** Compra: 1 XP. Requisitos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Ativação: 1 Coragem por busca ativa.
+
+Ao dedicar uma ação à busca de um personagem oculto em elemento compatível com sua percepção, gaste 1 Coragem. Reserve as faces correspondentes e rerrole os demais dados uma única vez. Compare exclusivamente os dados mantidos, respeitando os limites do Marco. Localizar por busca dedicada permite atacar normalmente na próxima oportunidade, se o alvo não voltar a se ocultar; não revela automaticamente aos demais.
+
+Substitui a indisponibilidade da v0.200. Sentido Elemental e Sentido Sísmico isoladamente não concedem rerrolagem. Alcance e percepção específica seguem a situação; não criar alcance fixo ou detecção universal. [v0.201](srd-continuidade-v0.201.md).
+
+## Escudo Arcano — proteção passiva (v0.202)
+Depois de conjurado, o Escudo Arcano protege passivamente enquanto durar e possuir Integridade, respeitando sua cobertura. Ao contrário do escudo físico, não exige a ação Levantar Escudo para cada bloqueio. A conjuração inicial continua exigindo seu teste e custo de ativação. A conjuração comum custa 1 Coragem, duração de 1 rodada, E+T para DE e Integridade. Preservar exceções, equivalências e cobertura. Consulte [Escudos e armaduras](../mecanicas/escudos-e-armaduras.html) e [Escudo Arcano](../pericias/escudo-arcano.html).
