@@ -573,3 +573,14 @@ Compra **1 XP**, requer **Disciplina 1 + Criar Item de Foco e Magia + Inteligên
 
 ## Ocultação física e elemental — v0.198
 Após sucesso no teste de Furtividade e deslocamento, atacar o alvo oculto equivale a Golpe de Sorte (−2E), mesmo quando o atacante localiza sua posição. Para localizar durante o ataque, compare exclusivamente as faces originais mantidas dos dois lados, por tipo e composição E/A/T, incluindo repetições. Resolva então o ataque contra a DE com a penalidade. A invisibilidade por mescla elemental segue a mesma lógica; transformação seguida de Furtividade pode ocultar quando plausível. Capacidade de percepção pertinente pode permitir sentir presença, não localizar automaticamente. Sentido Sísmico não detecta ocultação elemental em elemento distinto de Terra. Preserve as demais regras vigentes. Consulte [Furtividade em jogo](livro-do-jogador.md#furtividade-pratica) e [v0.198](srd-continuidade-v0.198.md).
+
+## Ataque surpresa, exposição e revide — v0.199
+Enquanto estiver oculto, você não se revela apenas por permanecer nessa condição. Ao atacar, recebe Vantagem Absoluta (+1E) pela surpresa e revela sua posição, acertando ou falhando. A ocultação termina: os inimigos não precisam mais reproduzir suas faces mantidas nem sofrem o −2E da ocultação.
+
+Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inimigo pode revidar imediatamente, sem Desvantagem decorrente da Furtividade. Resolva o revide conforme as regras gerais de alcance, Temor, oportunidades e turnos; a perda da ocultação não elimina outros modificadores legítimos.
+
+Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
+
+A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
+
+O benefício geral de surpresa não substitui nem altera a Perícia Golpe Furtivo (dado adicional da arma mediante requisitos). Não inventar custo ou habilitação de nova ocultação. A referência a perder uma rodada própria foi redigida como dedicar uma ação própria, sem impor perda de uma rodada global nem turno adicional gratuito. Consulte [Ataque surpresa](livro-do-jogador.md#ataque-furtivo) e [v0.199](srd-continuidade-v0.199.md).
