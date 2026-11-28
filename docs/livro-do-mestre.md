@@ -35,15 +35,15 @@ A progressão experimental agora alcança **260 XP totais no nível 20** (18 ini
 
 Referência principal: [SRD Playtest Nível 1 v1.0](srd-playtest-nivel-1-v1.0.md). Como histórico: [SRD v0.59](srd-continuidade-v0.59.md) (origem), [v0.58](srd-continuidade-v0.58.md) (hipótese anterior de 18 XP, revogada), [v0.56](srd-continuidade-v0.56.md) (tabelas) e [v0.55](srd-continuidade-v0.55.md) (linhagens).
 
-## Decisão de 16/11/2026 — Levantar Escudo e Perfurante físico [DEFINIDO / PENDENTE, SRD v0.54]
+## Decisão de 16/11/2026 — Levantar Escudo e Ruptura física [DEFINIDO / PENDENTE, SRD v0.54]
 
 **Levantar Escudo não é reação.** O defensor usa **sua ação**, rola **Disciplina** e escolhe os dados mantidos; **Êxitos + Pavor válidos mantidos** formam a **Integridade simbólica extra de bloqueio**, sujeita às equivalências de desgaste de escudos (**1E anula 1E ou 2P; 1P anula 1P; 2P anulam 1E**). Antecipar não concede Integridade automática. O personagem pode **mover-se normalmente** com o escudo erguido, mas atacar encerra a postura.
 
-**Primeiro ataque frontal:** o escudo físico cobre **somente a frente**, protege o defensor contra o primeiro ataque frontal e é **abaixado após essa resolução**, mesmo se o golpe falhar. Dano excedente vai à **armadura** e então à **Vida**. Escudo físico levantado anula **Perfurante de arma física** quando efetivamente bloqueia a frente; **Cravar** mantém a propriedade de danificar o escudo e atingir sua Durabilidade.
+**Primeiro ataque frontal:** o escudo físico cobre **somente a frente**, protege o defensor contra o primeiro ataque frontal e é **abaixado após essa resolução**, mesmo se o golpe falhar. Dano excedente vai à **armadura** e então à **Vida**. Escudo físico levantado anula **Ruptura de arma física** quando efetivamente bloqueia a frente; **Cravar** mantém a propriedade de danificar o escudo e atingir sua Durabilidade.
 
-**Escudo Arcano Psíquico:** anula **Perfurante de armas físicas**, mas não anula o dano do ataque. Quando conjurado como **círculo** ou **proteção pessoal/corpo a corpo**, cobre todas as direções; **parede linear** mantém cobertura conforme a própria forma. Preserva **duração de uma rodada**, custos, integridade simbólica E+P dos dados mantidos e a regra de ataques corpo a corpo originados por intruso dentro da área. **Perfurar de Água não é anulado** por essas defesas específicas contra Perfurante físico.
+**Escudo Arcano Psíquico:** anula **Ruptura de armas físicas**, mas não anula o dano do ataque. Quando conjurado como **círculo** ou **proteção pessoal/corpo a corpo**, cobre todas as direções; **parede linear** mantém cobertura conforme a própria forma. Preserva **duração de uma rodada**, custos, integridade simbólica E+P dos dados mantidos e a regra de ataques corpo a corpo originados por intruso dentro da área. **Ruptura de Água não é anulada** por essas defesas específicas contra Ruptura física.
 
-**PENDENTE:** relação da Integridade temporária com Integridade/Durabilidade material do escudo; ataques de costas e múltiplos, setor frontal e giro; precedência de escudos físico/arcano simultâneos; execução específica de Perfurar de Água e magias de Fogo contra escudos. Escudos materiais G1 6/9/12 continuam **PROPOSTOS**. Não inventar fórmula nova: a Integridade simbólica **E+P mantidos já é DEFINIDA**. Referência normativa: [SRD v0.54, seção 0-AQ](srd-continuidade-v0.54.md). A v0.53 está em revisão independente no PR #29.
+**PENDENTE:** relação da Integridade temporária com Integridade/Durabilidade material do escudo; ataques de costas e múltiplos, setor frontal e giro; precedência de escudos físico/arcano simultâneos; execução específica de Ruptura de Água e magias de Fogo contra escudos. Escudos materiais G1 6/9/12 continuam **PROPOSTOS**. Não inventar fórmula nova: a Integridade simbólica **E+P mantidos já é DEFINIDA**. Referência normativa: [SRD v0.54, seção 0-AQ](srd-continuidade-v0.54.md). A v0.53 está em revisão independente no PR #29.
 
 ## Decisão de 16/11/2026 — Domar Média e custos de Perícias [DEFINIDO, SRD v0.52]
 
@@ -549,7 +549,7 @@ As antigas Perícias **Aprendiz de Conjurador** e **Magia Única** foram substit
 
 **Ar:** além dos efeitos já listados, pode recuperar Fôlego; Grau, custo/gatilho e quantidade PENDENTES.
 
-**Perícia em Elemento Água:** 1 XP, Disciplina 1 + Criar Item de Foco e Magia + Inteligência 1. Com a Perícia e Grau habilitados, os efeitos **G1/G2** têm ativação-base gratuita. Elevar efeitos a **G3** custa **1 Coragem**; demais gatilhos e DE permanecem. G1: Congelar por uma rodada sem dano em magia Leve; extrair água do ar, mover, molhar e limpar. G2: Perfurar por crítico OU ativação paga, com dano à Vida e à armadura. G3: conjurar ao final do turno dos aliados, empurrar, perfurar, congelar, danificar Vida/armadura e preservar efeitos menores pertinentes. A entrada anterior Elemento: Água é a mesma Perícia, não há compra duplicada. Dano, alcance, efeitos adicionais e operação exata estão pendentes.
+**Perícia em Elemento Água:** 1 XP, Disciplina 1 + Inteligência 1; Criar Item de Foco e Magia é exigida para conjurar, não para adquirir. G1: manifestação e dano convencional. G2: Congelar instantaneamente sem custo-base de Coragem, sem dano próprio do congelamento; descongelar e manipular água. G3: Empurrar. G4: Ruptura (E+T à Integridade no acerto, sem ignorar a armadura). G3/G4 custam 1 Coragem, com preparação vigente. Consulte o Livro do Jogador e os SRDs v0.196–0.197 para procedimentos e limites; a regra de defesa contra Ruptura física não anula a de Água. Não criar dano direto à Vida por analogia.
 
 ## Regra mais recente — criação narrativa sem memorização (17/11/2026)
 

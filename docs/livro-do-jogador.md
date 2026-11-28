@@ -976,7 +976,7 @@ As armas oferecem diferentes maneiras de enfrentar um adversário. Escolha a arm
 | Média | 1d10 | 1d6 |
 | Pesada | 1d12 | 1d10 |
 
-Sem a Perícia, o dado da arma diminui um passo, mas sua categoria de ataque, alcance e carga física não mudam. Armas de fogo e outras exceções seguem suas regras específicas. Cortante, Perfurante e Cravar são exemplos de características: possuir uma arma não ativa automaticamente essas propriedades. Combate desarmado e escudos têm habilitações próprias.
+Sem a Perícia, o dado da arma diminui um passo, mas sua categoria de ataque, alcance e carga física não mudam. Armas de fogo e outras exceções seguem suas regras específicas. Cortante, Ruptura e Cravar são exemplos de características: possuir uma arma não ativa automaticamente essas propriedades. Combate desarmado e escudos têm habilitações próprias.
 
 Leia Armas, alcance e efeitos para aprender a resolver ataques e características.
 
@@ -1006,7 +1006,7 @@ O Grau da magia determina suas propriedades, a elevação temporária dos dados 
 |---|---|
 | Psique | Manipular objetos e interagir com a mente. |
 | Ar | Deslocar, controlar correntes e amortecer quedas. |
-| Água | Congelar, conter e perfurar. |
+| Água | Congelar, conter e comprometer armaduras. |
 | Terra | Moldar terreno, detectar vibrações e comprometer proteções. |
 | Fogo | Conduzir chamas, queimar armaduras e derreter proteções. |
 | Veneno | Acumular condições e explorar combinações. |
@@ -1355,10 +1355,10 @@ Consulte [Capacidade de carga](#capacidade-de-carga) e [Sobrecarga](#sobrecarga)
 **Características de Armas, Golpes e Magias [DEFINIDO — SRD v0.115]:** Cravar segue as características ativas de armas físicas; nunca se ativa sem a Perícia de peso correspondente. A exceção histórica da v0.77 fica revogada. Características de armas, manobras de golpes e efeitos de magias possuem habilitações próprias; não transferir automaticamente gatilhos entre categorias. Consultar [mecânicas relacionadas](../mecanicas/caracteristicas-de-combate.html) e [SRD v0.115](srd-continuidade-v0.115.md).
 
 
-**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Perfurante) e Naginata (Longa, Cortante) são Médias, com carga convencional de 2 e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Perfurante. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
+**Catálogo de armas e projéteis [DEFINIDO — SRD v0.116, 24/11/2026]:** Katana (Cortante, Ruptura) e Naginata (Longa, Cortante) são Médias, com carga convencional de 2 e preço de 5 VT cada. Espada Longa e Lança são as referências de preço, respectivamente. A Naginata mantém 2 m por Longa. Dado e empunhadura de ambas ainda pendentes; d10 e 2M são propostos, assim como 1 m para Katana. Os tipos de projéteis definidos nesta etapa são Cortante e Ruptura. Efeitos, distribuição por família, preços e procedimento de ativação próprios ainda pendentes. [SRD v0.116](srd-continuidade-v0.116.md).
 
 
-**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Perfurante. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
+**DEFINIDO — Zarabatana:** seus dardos não possuem Cortante nem Ruptura. Não causam dano à Integridade de armaduras nem dano direto à Vida, inclusive no crítico. Com a Perícia em Armas de Longo Alcance (Disciplina 1 + Destreza 2), o personagem pode declarar Envenenar por 1 Coragem antes da rolagem; ao atingir a DE com dardo preparado, aplica 1 acúmulo de Envenenamento por 2 rodadas, sem exigir Sangramento prévio. A falha não devolve o gasto; recuperação crítica normal, sem gratuidade adicional da Especialização para esta ativação de custo fixo. Sem Perícia, dardo preparado ou pagamento, não aplica o efeito. Não concede veneno gratuito; doses, munição e duração individual permanecem sob controle manual.
 
 ## Perícias, ramos e especializações
 
@@ -1367,15 +1367,15 @@ Perícias são compradas com XP e requisitos próprios. Elas habilitam técnicas
 
 ## Kits de armas de longo alcance (24/11/2026)
 
-**DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Perfurante, dardo não inclui veneno.
+**DEFINIDO:** compra inicial de arma de projétil inclui recipiente compatível e lote inicial; cada aljava/estojo comporta no máximo 20 projéteis no total, misturando tipos compatíveis. Recipiente ocupa espaço no acesso rápido e conta na carga; não cria capacidade extra. Reposição compra só munição, sem recipiente obrigatório. Flechas de arco curto e virotes de besta de uma mão são Muito Leves; flechas de arco longo e virotes de besta de duas mãos são Leves. Dardos de Zarabatana tratados como Muito Leves (interpretação de “também”). Zarabatana não usa Cortante/Ruptura, dardo não inclui veneno.
 
-**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Lotes de munição Muito Leves ocupam 0,5 Carga; Leves, 1. Ao usar parte de um lote, a carga acompanha a quantidade restante. Recursos de troca: 10 VT ocupam 1 Carga, proporcionalmente. Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Perfurante nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
+**Implementação / referências de playtest:** os preços existentes de arma, recipiente (5 VT) e lote de 20 (flechas/virotes 5 VT, dardos 2 VT) são mantidos; estojo novo de dardos 5 VT por analogia (PROPOSTO). Besta Pesada usa provisoriamente kit de besta de duas mãos (PROPOSTO). Arco Curto: 14 VT; Arco Longo: 16 VT; Besta 1M: 15 VT; Besta 2M: 16 VT; Besta Pesada: 19 VT; Zarabatana: 10 VT. Lotes de munição Muito Leves ocupam 0,5 Carga; Leves, 1. Ao usar parte de um lote, a carga acompanha a quantidade restante. Recursos de troca: 10 VT ocupam 1 Carga, proporcionalmente. Compra seleciona a composição de 20; reposição em lote de 20 fica na reserva e pode ser transferida a recipiente compatível até 20. Sem arredondar ou criar preços unitários. Efeitos Cortante/Ruptura nos projéteis, consumo automático por ataque, teto numérico de espaços, recuperação, regras de Besta Pesada e integração do fluxo Foundry permanecem pendentes. Munição e recipientes genéricos legados preservados em fichas antigas, não vendidos em novas compras.
 
 ## Carga por compartimento e disparos (24/11/2026)
 
 **DEFINIDO:** 3 espaços de saque rápido no corpo, 2 mãos, mochila. Aljava/estojo ocupa 1 dos 3 espaços. Carga corporal = 5 + Força + piso(Vigor/2). Mãos e acesso rápido compartilham essa tolerância; armadura e demais itens vestidos também contam no corpo. Mochila comporta 3 Cargas adicionais; capacidade total base 8. Uma arma Pesada ocupa 3 Cargas. A mochila não aumenta os espaços de saque rápido nem a capacidade das mãos. Sem perda automática de equipamentos antigos: apontar excesso e exigir reorganização.
 
-**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, o dado da arma é reduzido conforme a categoria (v0.162), mas não habilita ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Perfurante ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
+**DEFINIDO:** arco, besta ou Zarabatana consome um projétil compatível de recipiente em acesso rápido ao disparar, antes das faces, independentemente de acerto, falha, crítico ou Perícia. Sem Perícia, o dado da arma é reduzido conforme a categoria (v0.162), mas não habilita ativação de característica. Selecionar munição e, opcionalmente, declarar sua característica por 1 Coragem antes de rolar; efeito no acerto. Não devolver munição se a tentativa falhar ou for descartada após rolar. Cortante/Ruptura ainda sem efeito numérico aprovado; Envenenar preserva regra da v0.116. Reposição e recuperação seguem controle vigente. Revólver/calibres e quantidades de Disparo Múltiplo pendentes de revisão específica.
 
 **Interpretação de implementação:** mochila base como compartimento de capacidade 0,5, sem alterar peso/preço cadastral do item Mochila; recursos de troca ficam na mochila. Compra pode deixar excesso sinalizado, sem destruir itens. Transferência ao corpo sujeita aos limites. Foundry e criador de conflitos independentes ainda precisam de migração completa; comparador usa cópia local, não debita a ficha original do navegador automaticamente.
 
@@ -1598,7 +1598,7 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 | Tipo | Propriedade possível | Limite |
 |---|---|---|
 | **Cortante** | **Sangramento superficial** habilitado | Aplica o **estado Sangrando mesmo através da armadura**; a condição **não reduz Vida** nem causa dano periódico por si só |
-| **Perfurante** | Em acerto, cada Temor não anulado vale **1 dano à Integridade** da armadura, substituindo `⌊T/2⌋` (não soma os dois) | Não ignora armadura nem acrescenta dano direto à Vida. Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula essa propriedade, não o dano básico |
+| **Ruptura** | Em acerto, cada Temor não anulado vale **1 dano à Integridade** da armadura, substituindo `⌊T/2⌋` (não soma os dois) | Não ignora armadura nem acrescenta dano direto à Vida. Escudo Arcano Psíquico ativo ou bloqueio físico frontal anula essa propriedade, não o dano básico |
 | **Cravar** | Arma Média ou Pesada fica presa ao escudo físico após **acertar a DE** e **ativar a característica com a Perícia de arma correspondente, inclusive no crítico** | Declare **1 Coragem** por tentativa, respeitando Especialização e recuperação normal de crítico. Sem a Perícia, não ativa. Escudo Pesado exige arma Pesada. **Cada arma cravada aplica −1E cumulativo** em Levantar Escudo; o peso de cada arma presa é carregado com o escudo |
 | **Pesada** | Derrubar, com manobra ou crítico apropriado | Não derruba em toda rolagem |
 | **Longa** | Criar espaço, afastar ou desengajar com Antecipar especial | Custo e procedimento da técnica dependem de habilitação |
@@ -1612,7 +1612,7 @@ O tipo de arma, sua categoria de **ataque leve, médio ou pesado**, seu alcance,
 
 O estado Sangrando **permite aplicar veneno fisicamente** (por arma previamente envenenada e habilitada), pode viabilizar a **transmissão de veneno por magia de Sangue** e **habilita as aplicações pertinentes de magia de Sangue**. Nenhuma dessas interações é gratuita: permanecem os requisitos e custos das técnicas e os limites de doses. **PENDENTE:** procedimento e custo da transmissão de veneno com magia de Sangue, além da reconciliação entre a exigência autoral recente de que o próprio conjurador esteja Sangrando e os custos históricos de conjurar sem esse estado.
 
-**Exemplos de equipamentos presentes no projeto:** adagas/facas (perfuração e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
+**Exemplos de equipamentos presentes no projeto:** adagas/facas (Ruptura e pontos vitais quando habilitados), espadas (efeito próprio de crítico pendente), machados cortantes-pesados (combinação em conceito), lanças longas e de duas mãos (manobras ainda propostas), arcos (crítico específico pendente), escudos e Punhos/desarmado (requisitos próprios). Não apresentar exemplos de propriedades como efeitos gratuitos já disponíveis.
 
 ### Proximidade, armas longas e alcance efetivo [DEFINIDO]
 
@@ -1638,7 +1638,7 @@ Armas de fogo dependem de **munição por calibre, carregador, disparos consumid
 | Revólver | **G1** | Não trava; Perícia básica histórica 3 XP |
 | Pistola | **G2** | Carregador e travamento; Perícia básica 5 XP |
 | Metralhadora | G3 | Vários disparos/munição; alcance histórico 16 m; Perícia básica 5 XP |
-| Doze / escopeta | G3 | Cone, derrubada, não perfurante; básica histórica 5 XP |
+| Doze / escopeta | G3 | Cone, derrubada, sem Ruptura; básica histórica 5 XP |
 | Rifle | G4 | Avançada pode derrubar ou atravessar dois alvos alinhados; básica histórica 6 XP |
 | Lança-granadas | **G5** | Área, recuo, risco de ferir aliados; Perícia básica histórica 10 XP |
 
@@ -1657,8 +1657,8 @@ Exemplos documentados de Perícias (não necessariamente disponíveis no nível 
 | **Escudo Arcano** | **1** | Inteligência 2 + Criar Item de Foco e Magia; proteção pessoal ou área circular 3×3 m, duração 1 rodada |
 | **Conjuração Refinada** | **1** | Disciplina 2 + Criar Item de Foco e Magia + Inteligência 2 + Destreza 2; especialização de alcance, metros e custo PENDENTES |
 | **Perícia em Elemento Ar** | **1** | Disciplina 1 + Inteligência 1; G2–G4: deslocamento 4/8/12 m, sufocar, rajadas; amortecimento G2 4 m mesmo em falha. |
-| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; G2 Congelar, G3 Perfurar, G4 controle avançado. |
-| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; G2 controle e Sentido Sísmico 18 × 18 m; G3 Cravar/Perfurar; G4 área. |
+| **Perícia em Elemento Água** | **1** | Disciplina 1 + Inteligência 1; G2 Congelar, G3 Empurrar, G4 Ruptura. |
+| **Perícia em Elemento Terra** | **1** | Disciplina 1 + Inteligência 1; G2 Empurrar, Ruptura e Sentido Sísmico 18 × 18 m; G3 enraizar, imobilizar e Cravar; G4 área. |
 | **Perícia em Elemento Fogo** | **1** | Disciplina 1 + Inteligência 1; G3 Queimar E + T à Integridade; G4 Derreter acrescenta 1 Vida direta fixa. |
 | Perito Conjurador | 2 | Fontes pertinentes adicionais |
 | Extração Elemental | 1 | Elemento disponível no ambiente |
@@ -1778,10 +1778,10 @@ Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso r
 | G1 | Manifestação elemental; dano convencional no acerto. |
 | G2 | Congelar e imobilizar: instantâneo, sem custo-base de Coragem e sem dano próprio do congelamento. Descongelar, extrair água do ar, mover, molhar e limpar. |
 | G3 | Empurrar; aplicar a regra de deslocamento pertinente. |
-| G4 | Perfurar: E+T à Integridade no acerto, sem ignorar a armadura. |
+| G4 | Ruptura: E+T à Integridade no acerto, sem ignorar a armadura. |
 | G5 | Mistura por Maestria. |
 
-Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Perfurar são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
+Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Ruptura são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
 
 ### Terra — terreno e proteção
 
@@ -1790,12 +1790,12 @@ Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. 
 | Grau | Aplicações |
 |---|---|
 | G1 | Manifestação elemental; dano convencional no acerto. |
-| G2 | Empurrar e Perfurar (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
+| G2 | Empurrar e Ruptura (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
 | G3 | Enraizar, emaranhar os pés, prender/imobilizar, espinhos e Cravar. |
 | G4 | Controle em área: empurrar e derrubar em linha, cone ou círculo a partir do alvo. |
 | G5 | Mistura por Maestria. |
 
-Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
+Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Ruptura E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
 
 ### Fogo — desgaste e destruição
 
@@ -2094,7 +2094,7 @@ A Perícia **Provocação Sofisticada** exige **Influência Grau 2** e custa **1
 
 **Barulhenta [DEFINIDO — SRD v0.69]:** característica **passiva** que fornece **+1T**, inclusive em armas de fogo. **Não depende de crítico** nem de ativação paga. Mesmo no crítico, permanece +1T, não +2T. O Temor se sujeita aos mesmos riscos e gastos de Antecipar.
 
-**Perfurante em armas de fogo [DEFINIDO — SRD v0.69]:** armas de fogo que **possuem a propriedade Perfurante** utilizam seu dano adicional à Integridade **automaticamente em acertos**, sem gastar 1 Coragem para habilitar essa característica e sem precisar ativar a Perícia para esse efeito específico. A arma continua exigindo as habilitações normais para suas outras capacidades; não se atribui Perfurante à escopeta ou a outros modelos sem essa propriedade.
+**Ruptura em armas de fogo [DEFINIDO — SRD v0.69]:** armas de fogo que **possuem a propriedade Ruptura** utilizam seu dano adicional à Integridade **automaticamente em acertos**, sem gastar 1 Coragem para habilitar essa característica e sem precisar ativar a Perícia para esse efeito específico. A arma continua exigindo as habilitações normais para suas outras capacidades; não se atribui Ruptura à escopeta ou a outros modelos sem essa propriedade.
 
 ## Perícias de conjuração e elementos
 
@@ -2125,13 +2125,13 @@ Telecinese: Disciplina + Inteligência. Mentalismo: Disciplina + Inteligência +
 
 **Ativação:** **1 Coragem** cria escudo pessoal, parede linear inicial de 3 m ou **área circular de 3×3 metros**, com **duração de 1 rodada**. A conjuração usa **Disciplina + Atributo pertinente** (mais uma fonte pertinente se houver Especialização em Disciplina). O total de **E + T válidos nos dados mantidos** forma a **DE inicial e a Integridade simbólica** da barreira. No desgaste, **1E do ataque anula 1E do escudo ou 2T; 1T anula 1T; 2T anulam 1E**. Não criar Vida extra para a proteção.
 
-**Direção:** o **círculo** e o **escudo pessoal/corpo a corpo** protegem de todas as direções; a **parede linear** protege segundo sua geometria. **Escudo Arcano Psíquico ativo anula a propriedade Perfurante de armas físicas**, não o acerto nem o dano: o excedente segue para outras proteções, armadura e Vida. **Perfurar de Água não perde seu efeito mágico** por esta anulação de Perfurante físico.
+**Direção:** o **círculo** e o **escudo pessoal/corpo a corpo** protegem de todas as direções; a **parede linear** protege segundo sua geometria. **Escudo Arcano Psíquico ativo anula a propriedade Ruptura de armas físicas**, não o acerto nem o dano: o excedente segue para outras proteções, armadura e Vida. **Ruptura de Água não perde seu efeito mágico** por esta anulação de Ruptura física.
 
 **Hemomancia [DEFINIDO — v0.75]:** só o **Escudo Arcano com elemento Sangue** ativo e aplicável anula a propriedade de uma magia de Sangue amplificada de atravessar toda a armadura para atingir diretamente a Vida. **Escudos físicos e Escudos Arcanos de outros elementos, inclusive Psíquico, não anulam essa propriedade.** Neutralizado o efeito especial, resolver o ataque e o eventual excedente pelas regras comuns do Escudo Arcano, sem eliminar o acerto ou o dano convencional automaticamente. A defesa continua usando as mesmas habilitações, custos, rolagens, duração e formatos de Escudo Arcano; não é nova Perícia.
 
 **Elementos e interior:** aplicam-se as imunidades do elemento incorporado, não uma imunidade gratuita a todos os elementos. Se um inimigo entrar na área e atacar ou conjurar corpo a corpo **a partir de dentro**, ignora essa barreira na interação. Cada **1 Coragem adicional** amplia a parede em 3 m ou o círculo em mais 3×3 m, conforme a forma escolhida.
 
-**PENDENTE:** geometria exata da ampliação circular, resistência a efeitos reativos e mistos, convivência com escudo físico e interação detalhada do Perfurar de Água com os símbolos/Integridade. **Formato e duração já são DEFINIDOS.**
+**PENDENTE:** geometria exata da ampliação circular, resistência a efeitos reativos e mistos, convivência com escudo físico e interação detalhada do Ruptura de Água com os símbolos/Integridade. **Formato e duração já são DEFINIDOS.**
 
 ### Conjuração Refinada [DEFINIDO no nome / alcance PENDENTE]
 
@@ -2163,10 +2163,10 @@ Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso r
 | G1 | Manifestação elemental; dano convencional no acerto. |
 | G2 | Congelar e imobilizar: instantâneo, sem custo-base de Coragem e sem dano próprio do congelamento. Descongelar, extrair água do ar, mover, molhar e limpar. |
 | G3 | Empurrar; aplicar a regra de deslocamento pertinente. |
-| G4 | Perfurar: E+T à Integridade no acerto, sem ignorar a armadura. |
+| G4 | Ruptura: E+T à Integridade no acerto, sem ignorar a armadura. |
 | G5 | Mistura por Maestria. |
 
-Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Perfurar são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
+Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Ruptura são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
 
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
@@ -2176,12 +2176,12 @@ Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. 
 | Grau | Aplicações |
 |---|---|
 | G1 | Manifestação elemental; dano convencional no acerto. |
-| G2 | Empurrar e Perfurar (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
+| G2 | Empurrar e Ruptura (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
 | G3 | Enraizar, emaranhar os pés, prender/imobilizar, espinhos e Cravar. |
 | G4 | Controle em área: empurrar e derrubar em linha, cone ou círculo a partir do alvo. |
 | G5 | Mistura por Maestria. |
 
-Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
+Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Ruptura E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
 
 
 ### Perícia em Elemento Fogo [DEFINIDO / detalhamento PENDENTE]
@@ -2301,7 +2301,7 @@ Pode optar por dano normal. Divisão das Sombras usa uma rolagem contra a DE ind
 
 ### Armas de Fogo [DEFINIDO / dependência PENDENTE]
 
-- **Perícia em Armas de Fogo:** concessão inicial gratuita para Humanos; referência nominal de compra: 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente **outras características**, e acerto normal custa 1 Coragem para essas ativações. **Perfurante da própria arma de fogo é passivo e não exige esse gasto.** Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
+- **Perícia em Armas de Fogo:** concessão inicial gratuita para Humanos; referência nominal de compra: 3 XP, Disciplina 2 + Destreza 2; crítico ativa gratuitamente **outras características**, e acerto normal custa 1 Coragem para essas ativações. **Ruptura da própria arma de fogo é passivo e não exige esse gasto.** Remove Desvantagem de peso natural. Valores naturais leve/médio/pesado: Revólver −1A/neutro/neutro; Pistola −1A/neutro/neutro; Metralhadora −1A/neutro/neutro; Shotgun +1A/neutro/neutro; Sniper +1A/+1A/+1A; Lança-granadas −1A/neutro/neutro. Os Graus existentes de arma de fogo permanecem.
 - **Descarregar Tambor:** modalidade de Disparo Múltiplo exclusivamente com arma automática ou semiautomática, alvo ÚNICO, um teste, consome todas as munições disponíveis, custa **1 Coragem por tiro**. Primeiro tiro dano integral de Êxitos; demais metade dos Êxitos cada (arredondar para baixo). Temor NÃO causa dano. Um Temor mantido e não anulado provoca travamento em arma sujeita; T anulado por A ou descartado não trava. O revólver não trava e não é automático. Disparo Fulminante não se aplica a armas de fogo. **PENDENTE:** exceção de acesso a Disparo Múltiplo para especialistas só em armas de fogo, pois seu requisito atual exige Fulminante/Longo Alcance/Arremesso.
 
 ### Veneno e Antídoto [DEFINIDO / evolução PENDENTE]
