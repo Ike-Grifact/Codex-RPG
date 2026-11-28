@@ -28,3 +28,6 @@ NÃO IMPLEMENTADO nesta revisão: guardar faces originais mantidas, comparar mul
 
 ## v0.199 — Ataque surpresa
 NÃO IMPLEMENTADO nesta revisão: estado oculto, bônus de surpresa +1E, exposição ao atacar, retirada do −2E e da comparação de faces após revelação; revide imediato quando válido e nova ocultação em ação própria conforme habilitações. Não modificar regras gerais de Temor, Antecipar, alcance, turnos ou transformação. [v0.199](srd-continuidade-v0.199.md).
+
+## v0.200 — Busca ativa e Detecção Elemental
+NÃO IMPLEMENTADO: busca dedicada com correspondência dos mantidos, localização individual e ataque posterior sem penalidade da ocultação quando válido. Perícia futura Detecção Elemental não comprável, não automatizar rerrolagem. Preservar Sentido Elemental e Sentido Sísmico vigentes, sem mudar custo, IDs ou alcance. [v0.200](srd-continuidade-v0.200.md).
