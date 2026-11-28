@@ -29,3 +29,6 @@ RESOLVIDO: rolados versus mantidos (só mantidos dos dois lados); localização 
 
 ## Furtividade — v0.199
 RESOLVIDO: atacar revela a posição, troca proteção por +1E; revide no acerto com Temor sem Antecipar segue as regras gerais, sem penalidade de ocultação. Nova ocultação exige ação própria e habilitação pertinente. Não atribuir a uma Perícia específica nem criar custo por inferência: nome/gatilhos exatos de maestria ainda não recuperados nesta consulta. Duração e quebra fora do ataque permanecem sem definição adicional. [v0.199](srd-continuidade-v0.199.md).
+
+## Perícia futura — Detecção Elemental (v0.200)
+PENDENTE por decisão explícita do autor; não habilitar compra nem automatizar. Requisitos e custo de aquisição definidos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental; 1 XP. Rerrolagem seletiva única para busca de ocultação elemental compatível; custo de ativação e detalhes de percepção não especificados. [v0.200](srd-continuidade-v0.200.md).
