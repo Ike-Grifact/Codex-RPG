@@ -26,3 +26,6 @@ Ruptura aprovada pelo autor; a proposta editorial da v0.196 está encerrada. [v0
 
 ## Furtividade — v0.198
 RESOLVIDO: rolados versus mantidos (só mantidos dos dois lados); localização não retira −2E. Duração/quebra e procedimentos específicos de percepção não definidos nesta decisão. Não criar custos, alcance ou Perícia. [v0.198](srd-continuidade-v0.198.md).
+
+## Furtividade — v0.199
+RESOLVIDO: atacar revela a posição, troca proteção por +1E; revide no acerto com Temor sem Antecipar segue as regras gerais, sem penalidade de ocultação. Nova ocultação exige ação própria e habilitação pertinente. Não atribuir a uma Perícia específica nem criar custo por inferência: nome/gatilhos exatos de maestria ainda não recuperados nesta consulta. Duração e quebra fora do ataque permanecem sem definição adicional. [v0.199](srd-continuidade-v0.199.md).
