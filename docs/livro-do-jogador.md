@@ -1069,17 +1069,29 @@ Se faltar uma correspondência, o ataque não localiza o alvo. Se encontrar toda
 
 **Exemplo:** Você manteve d12 com 3E e d10 com 1E + 1A. O atacante mantém essas mesmas faces e localiza você, mas seus 4E tornam-se 2E pelo Golpe de Sorte, antes de outros modificadores; permanece 1A. Ainda precisa alcançar sua DE. Um d20 com 3E ou um d10 com 2E não substitui as faces exigidas.
 
+<a id="ataque-furtivo"></a>
+
+###### Ataque surpresa e nova ocultação
+
+Enquanto estiver oculto, você não se revela apenas por permanecer nessa condição. Ao atacar, recebe Vantagem Absoluta (+1E) pela surpresa e revela sua posição, acertando ou falhando. A ocultação termina: os inimigos não precisam mais reproduzir suas faces mantidas nem sofrem o −2E da ocultação.
+
+Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inimigo pode revidar imediatamente, sem Desvantagem decorrente da Furtividade. Resolva o revide conforme as regras gerais de alcance, Temor, oportunidades e turnos; a perda da ocultação não elimina outros modificadores legítimos.
+
+Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
+
 <a id="ocultacao-elemental"></a>
 
 ###### Invisibilidade elemental
 
 A invisibilidade elemental é uma ocultação em que o personagem se mescla a um elemento do ambiente. Aplique a mesma lógica de Furtividade, correspondência de mantidos e Golpe de Sorte (−2E). Transformar-se em um elemento e depois realizar Furtividade também permite ocultar-se, se a situação for compatível. A transformação por si só não garante ocultação.
 
+A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
+
 Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
 
 Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
 
-Preserve as imunidades a Furtividade e as habilitações de fuga e desvencilhamento pertinentes. Duração, quebra da ocultação e procedimentos específicos de percepção não definidos permanecem em revisão.
+Preserve as imunidades a Furtividade e as habilitações de fuga e desvencilhamento pertinentes. Atacar revela a posição; outros gatilhos de quebra, duração fora do ataque e procedimentos específicos de percepção ainda não definidos permanecem em revisão.
 
 
 #### ⚔ Artesão
