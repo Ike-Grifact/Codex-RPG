@@ -20,3 +20,6 @@ Não considerar uma interpretação editorial ou ausência de automação uma de
 | Histórico e padrões | SRDs de continuidade versionados; [padrão editorial](padrao-editorial-livros.md), [padrão de Perícias](padrao-editorial-pericias.md). |
 ## Manutenção
 Em cada alteração, registrar fonte, data, escopo, estado normativo, texto substituído e estado de implementação. Atualizar o índice quando houver nova versão. Não tratar rótulos antigos como atuais. Preservar os arquivos históricos; não inferir aprovação pelo código.
+
+## Auditoria de continuidade da conjuração — 28/11/2026
+Consultar os registros FOC-05/06 e MAG-09/10/11 em [DECISOES](DECISOES.md) e evidências históricas em [PENDENCIAS](PENDENCIAS.md). As decisões anteriores comprovadas são distintas de interpretações editoriais; não reintroduzir procedimentos expressamente substituídos. Não houve alteração de norma, livro ou código nesta auditoria.
