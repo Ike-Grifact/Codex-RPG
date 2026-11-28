@@ -140,7 +140,7 @@ const SKILLS=[
  [
   "criar-item-foco-magia",
   "Criar Item de Foco e Magia",
-  "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
+  "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. Todos os nove elementos podem causar dano convencional no acerto desde G1, sem propriedade especial automática. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios, mesmo com cargas restantes. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
   1
  ],
  [
@@ -194,49 +194,49 @@ const SKILLS=[
  [
   "fogo",
   "Perícia em Elemento Fogo",
-  "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
+  "Domínio de Fogo; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 conduzir chamas; G3 Queimar: E+T à Integridade, área 4×4; G4 Derreter: mesmo dano e +1 Vida direta fixa, área 8×8. G3/G4: 1 Coragem.",
   1
  ],
  [
   "agua",
   "Perícia em Elemento Água",
-  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação; G2 Congelar sem dano na aplicação Leve; G3 Perfurar; G4 controle avançado, empurrar, perfurar e congelar conforme habilitações. G3/G4: 1 Coragem.",
+  "Domínio de Água; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Congelar instantâneo sem custo-base e sem dano próprio do congelamento, descongelar, extrair água do ar, mover, molhar e limpar; G3 Empurrar; G4 Perfurar: E+T à Integridade no acerto, sem ignorar armadura. G3/G4: 1 Coragem.",
   1
  ],
  [
   "vento",
   "Perícia em Elemento Ar",
-  "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
+  "Domínio de Ar; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 desloca até 4 m e reduz queda em 4 m mesmo em falha; G3 até 8 m, sufocar, empurrar e derrubar; G4 até 12 m, área e rajadas. Formas livres dentro do limite. Queda 8 m por turno. G3/G4: 1 Coragem.",
   1
  ],
  [
   "terra",
   "Perícia em Elemento Terra",
-  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G2 controle de terreno e Sentido Sísmico 18×18 m; G3 imobilizar, Cravar e Perfurar; G4 área, dano, empurrão e derrubada. Efeitos temporários por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
+  "Domínio de Terra; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Empurrar e Perfurar (E+T à Integridade no acerto), derrubar, moldar terreno e Sentido Sísmico 18×18 m; G3 enraizar, prender/imobilizar, espinhos e Cravar; G4 controle, empurrão e derrubada em área. Condições temporárias por uma ação do alvo, ressalvadas regras próprias. G3/G4: 1 Coragem.",
   1
  ],
  [
   "sagrado",
   "Perícia em Elemento Sagrado",
-  "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. Dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
+  "Domínio de Sagrado; conjurar exige Criar Item de Foco e Magia. G1 dano neutro sagrado convencional. G2 recuperar Coragem mediante 1 Coragem (retorno pendente); G3 Bênção em aliado E−T positivo eleva Atributo; G4 dano e anulação de Temor (quantidade pendente). Duração uma ação. G3/G4: 1 Coragem.",
   2
  ],
  [
   "veneno",
   "Perícia em Elemento Veneno",
-  "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. Em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Sem dano direto à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
+  "Domínio de Veneno; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional sem efeito especial; para Envenenar, em alvo Sangrando, 1 acúmulo por 2 rodadas, sem renovar anteriores. 2/3 da Vida atual: Ferido; igual à Vida atual: Incapacitado; 12 ativos ou envenenado com exatamente 2 Vida: Inconsciente. Envenenar não causa dano direto automático à Vida. Graus seguem elevação comum; G3/G4: 1 Coragem.",
   2
  ],
  [
   "sangue",
   "Perícia em Elemento Sangue",
-  "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
+  "Domínio de Sangue; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Hemomancia direta em alvo Sangrando ou com Vida já perdida: consome marcas, quantidade pendente; Escudo Arcano de Sangue neutraliza a propriedade. G3 Elevação Sanguínea: 3 marcas para elevar próprio Atributo 1 Grau ou pagar Perícia de 1 Coragem. G4 Seir: 6 marcas ou 2 Vida próprias, +2 Graus em Atributo próprio. Uma ação; G3/G4 custam também 1 Coragem. Sem automatizar custos pendentes.",
   2
  ],
  [
   "trevas",
   "Perícia em Elemento Trevas",
-  "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
+  "Domínio de Trevas; conjurar exige Criar Item de Foco e Magia. G1 manifestação e dano convencional; G2 Amplificação Sinistra +1T; G3 Divisão das Sombras +2T fixos, mesma rolagem contra DE de até dois alvos, dano integral em cada atingido antes de proteções. G4 Aflição reduz Atributo inimigo em E−T positivo durante uma ação. G3/G4: 1 Coragem. Não duplicar Temor automaticamente.",
   2
  ],
  [
