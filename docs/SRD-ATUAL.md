@@ -32,3 +32,6 @@ Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md
 
 ## Nomenclatura — Ruptura
 [v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md): substitui Perfurante/Perfurar nas referências vigentes; conserva a mecânica e identificadores legados. Histórico de versões mantido. Livro, catálogo e verbetes atualizados na branch de revisão.
+
+## Furtividade e Disciplina — v0.198
+[v0.198](srd-continuidade-v0.198.md): correspondência de mantidos, Golpe de Sorte, invisibilidade elemental, limite sísmico e revisão editorial aprovada de Disciplina. Livro na branch de revisão.
