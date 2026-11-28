@@ -584,3 +584,12 @@ Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtivida
 A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
 
 O benefício geral de surpresa não substitui nem altera a Perícia Golpe Furtivo (dado adicional da arma mediante requisitos). Não inventar custo ou habilitação de nova ocultação. A referência a perder uma rodada própria foi redigida como dedicar uma ação própria, sem impor perda de uma rodada global nem turno adicional gratuito. Consulte [Ataque surpresa](livro-do-jogador.md#ataque-furtivo) e [v0.199](srd-continuidade-v0.199.md).
+
+## Busca ativa e Detecção Elemental — v0.200
+Você pode dedicar uma ação a procurar um personagem oculto. Na busca ativa, compare as faces dos dados mantidos com as da Furtividade, sem uma segunda rolagem. O Sentido Sísmico de Terra pode localizar furtivos convencionais por suas vibrações, dentro de seus limites; não detecta ocultação elemental em outro elemento.
+
+Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo normalmente na próxima oportunidade, desde que ele não volte a se ocultar. Isso não revela automaticamente a posição aos demais combatentes. Se tentar localizar e atacar na mesma ação, permanece o Golpe de Sorte (−2E).
+
+**Perícia futura — PENDENTE:** Detecção Elemental é uma Perícia futura, ainda indisponível para aquisição. Destina-se à busca de personagens ocultos em elementos, com percepção compatível: reservar faces correspondentes e rerrolar os demais dados uma única vez, sem aumentar o limite de mantidos. Requisitos: Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Compra: 1 XP. Custo de ativação específico não definido.
+
+A rerrolagem não é benefício da busca convencional nem do Sentido Sísmico. Não acumular dados de duas pilhas completas; preservar apenas as faces reservadas, substituir os dados rerrolados e respeitar os limites vigentes. Não criar alcance, custo, duração ou percepção universal. [v0.200](srd-continuidade-v0.200.md).
