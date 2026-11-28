@@ -19,3 +19,6 @@ Fonte: [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md). 
 
 ## Impacto da v0.196
 Dano convencional G1 para todos os elementos; revisar habilitação de efeitos especiais de Água/Terra e seus gatilhos em ficha, criador de conflitos e simulador. Não aplicar efeitos automaticamente, não alterar requisitos/XP/IDs. Preços fixos dos focos não implementados: criador ainda usa preço de mesa e proporção histórica das pedras, aguardando recuperação da classificação de focos prontos. [v0.196 — decisão autoral de 28/11/2026](srd-continuidade-v0.196.md). A revisão de textos não equivale à automação ou teste de navegador.
+
+## v0.197 — Ruptura
+Renomear rótulos públicos da propriedade e descrições; preservar chaves legadas Perfurante, perfurante, perfurar, campos de munição, IDs e lógica. Não implica automatizar efeitos elementais ou alterar o dano. Validação de navegador e publicação separadas. [v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md).

@@ -28,4 +28,7 @@ Consultar os registros FOC-05/06 e MAG-09/10/11 em [DECISOES](DECISOES.md) e evi
 Consultar [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md), adendo aprovado pelo autor nesta conversa, registrado na branch de revisão (ainda não integrado à main). Substitui o gatilho histórico de esgotamento total, confirma a defesa de Sangue e define o ataque independente da Invocação Pequena. Demais regras seguem as versões mais recentes aprovadas.
 
 ## Decisões autorais — progressão elemental (28/11/2026)
-[v0.196 — decisão autoral de 28/11/2026](srd-continuidade-v0.196.md): dano convencional desde G1 para os nove elementos; Água e Terra reorganizadas. A eventual renomeação de Perfurar/Perfurante é proposta editorial, não regra aprovada. Livro Markdown, HTML e verbetes pertinentes atualizados nesta branch; não publicados na main.
+[v0.196 — decisão autoral de 28/11/2026](srd-continuidade-v0.196.md): dano convencional desde G1 para os nove elementos; Água e Terra reorganizadas. A nomenclatura Ruptura foi aprovada posteriormente na v0.197. Livro Markdown, HTML e verbetes pertinentes atualizados nesta branch; não publicados na main.
+
+## Nomenclatura — Ruptura
+[v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md): substitui Perfurante/Perfurar nas referências vigentes; conserva a mecânica e identificadores legados. Histórico de versões mantido. Livro, catálogo e verbetes atualizados na branch de revisão.

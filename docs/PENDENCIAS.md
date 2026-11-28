@@ -20,3 +20,6 @@ Auditoria parcial de 27/11/2026; não é uma lista de perguntas a repetir ao aut
 
 ## PENDENTE de decisão autoral
 Nenhum dos itens acima foi reclassificado como decisão autoral faltante nesta auditoria. Para usar esse estado, exigir evidência de que a decisão foi explicitamente adiada ou ainda não ocorreu, sem confundir falta de acesso ao chat, divergência de redação ou implementação. Manter histórico e não apagar questões de outras áreas ainda não auditadas.
+
+## Nomenclatura resolvida — 28/11/2026
+Ruptura aprovada pelo autor; a proposta editorial da v0.196 está encerrada. [v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md). A técnica do Sniper não foi renomeada por esta decisão.
