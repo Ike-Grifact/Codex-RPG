@@ -16,3 +16,6 @@ Esta branch documental não altera código ou validação funcional. Antes de me
 - Hemomancia: preservar neutralização da propriedade pelo Escudo Arcano de Sangue, sem restaurar custos antigos por inferência.
 - Invocação Pequena: distinguir apoio +1A de ataque independente como ação conjunta com ficha básica e somente 1 dado mantido. Preservar limites de atuação.
 Fonte: [Decisão autoral de 28/11/2026 — v0.195](srd-continuidade-v0.195.md). Código, interface, persistência e testes funcionais não foram alterados.
+
+## Impacto da v0.196
+Dano convencional G1 para todos os elementos; revisar habilitação de efeitos especiais de Água/Terra e seus gatilhos em ficha, criador de conflitos e simulador. Não aplicar efeitos automaticamente, não alterar requisitos/XP/IDs. Preços fixos dos focos não implementados: criador ainda usa preço de mesa e proporção histórica das pedras, aguardando recuperação da classificação de focos prontos. [v0.196 — decisão autoral de 28/11/2026](srd-continuidade-v0.196.md). A revisão de textos não equivale à automação ou teste de navegador.

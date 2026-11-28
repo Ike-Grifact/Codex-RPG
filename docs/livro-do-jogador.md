@@ -988,7 +988,7 @@ A conjuração utiliza Disciplina para executar a técnica e Inteligência para 
 
 | Grau | Possibilidades | Inteligência | Tempo de conjuração sem aceleração |
 |---|---|---|---|
-| G1 | Manifestação elemental | Sem elevação | Instantânea — ação inicial |
+| G1 | Manifestação elemental e dano convencional | Sem elevação | Instantânea — ação inicial |
 | G2 | Primeiros efeitos | Sem elevação | Instantânea — ação inicial |
 | G3 | Efeitos superiores | +1 passo | 2 turnos — inicial + 1 |
 | G4 | Efeitos avançados | +2 passos | 3 turnos — inicial + 2 |
@@ -1689,7 +1689,7 @@ Regras de referência: SRD v0.185–0.194; prevalecem v0.193–0.194 nos pontos 
 
 | Grau | Efeito geral | Inteligência | Turnos totais sem foco |
 |---|---|---|---:|
-| 1 | Manifestar a natureza do elemento, sem efeito especial; Extração permite obter um elemento da cena por 1 Coragem, e Psique conserva suas aplicações simples | Inalterada | 1 |
+| 1 | Manifestar o elemento e causar dano convencional no acerto, sem propriedade especial; Extração permite obter um elemento da cena por 1 Coragem, e Psique conserva suas aplicações simples | Inalterada | 1 |
 | 2 | Primeiros efeitos especiais do elemento habilitado | Inalterada | 1 |
 | 3 | Efeitos superiores | +1 Grau temporário | 2 |
 | 4 | Efeitos avançados | +2 Graus temporários | 3 |
@@ -1747,7 +1747,7 @@ Habilitação: Criar Item de Foco e Magia.
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Telecinese simples de objetos Muito Leves. |
+| G1 | Telecinese simples de objetos Muito Leves; dano convencional no acerto, respeitando a natureza física ou mental da manifestação. |
 | G2 | Mover objetos Leves, impacto físico Leve, leitura de pensamentos e influência mental. |
 | G3 | Mover objetos Médios e produzir impacto físico Médio. |
 | G4 | Levitar objetos e produzir impacto físico Pesado. |
@@ -1761,7 +1761,7 @@ Telecinese: Disciplina + Inteligência. Mentalismo: Disciplina + Inteligência +
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
 | G2 | Puxar, empurrar, elevar e autoempurrar até 4 m; amortecer 4 m de queda, mesmo em falha. |
 | G3 | Deslocamentos até 8 m; sufocar, empurrar e derrubar com dano pertinente. |
 | G4 | Deslocamentos até 12 m; tornados e rajadas em área, múltiplos alvos. |
@@ -1775,13 +1775,13 @@ Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso r
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Congelar e imobilizar sem dano próprio do congelamento; descongelar, extrair água do ar, mover, molhar e limpar. |
-| G3 | Perfurar conforme gatilho habilitado, com dano pertinente. |
-| G4 | Empurrar, Perfurar, Congelar e causar dano conforme efeitos habilitados. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Congelar e imobilizar: instantâneo, sem custo-base de Coragem e sem dano próprio do congelamento. Descongelar, extrair água do ar, mover, molhar e limpar. |
+| G3 | Empurrar; aplicar a regra de deslocamento pertinente. |
+| G4 | Perfurar: E+T à Integridade no acerto, sem ignorar a armadura. |
 | G5 | Mistura por Maestria. |
 
-Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. Preservar efeitos antigos; duração do congelamento e detalhes de Perfurar/alcance precisam conciliação.
+Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Perfurar são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
 
 ### Terra — terreno e proteção
 
@@ -1789,10 +1789,10 @@ Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. P
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Desvantagem, emaranhar pés, derrubar, pequenas pedras, plataformas, Sentido Sísmico. |
-| G3 | Enredar, imobilizar, espinhos, Cravar e Perfurar. |
-| G4 | Dano, empurrão e derrubada em área, linha, cone ou círculo a partir do alvo. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Empurrar e Perfurar (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
+| G3 | Enraizar, emaranhar os pés, prender/imobilizar, espinhos e Cravar. |
+| G4 | Controle em área: empurrar e derrubar em linha, cone ou círculo a partir do alvo. |
 | G5 | Mistura por Maestria. |
 
 Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
@@ -1803,8 +1803,8 @@ Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporár
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Disparo convencional, conduzir e iluminar chamas. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Conduzir e iluminar chamas; o dano convencional já está disponível em G1. |
 | G3 | Queimar: E+T à Integridade, área 4×4. |
 | G4 | Derreter: E+T à Integridade e +1 Vida direta fixa, área 8×8. |
 | G5 | Mistura por Maestria, como Ácido. |
@@ -1817,11 +1817,11 @@ Fogo exige fonte válida. Queimar substitui a contribuição convencional de Tem
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação sem efeito especial. |
+| G1 | Manifestação e dano convencional no acerto, sem efeito especial de Veneno. |
 | G2–G4 | Mesmo efeito de Envenenar; elevação de Inteligência segue regra geral, sem propriedades novas por Grau. |
 | G5 | Combinações por Maestria, por exemplo Ácido. |
 
-No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Sem dano direto automático; imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
+No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Envenenar não causa dano direto automático; ataques convencionais de Veneno podem causar dano desde G1. Imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
 
 ### Sagrado — fortalecimento e purificação
 
@@ -2110,7 +2110,7 @@ Habilitação: Criar Item de Foco e Magia.
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Telecinese simples de objetos Muito Leves. |
+| G1 | Telecinese simples de objetos Muito Leves; dano convencional no acerto, respeitando a natureza física ou mental da manifestação. |
 | G2 | Mover objetos Leves, impacto físico Leve, leitura de pensamentos e influência mental. |
 | G3 | Mover objetos Médios e produzir impacto físico Médio. |
 | G4 | Levitar objetos e produzir impacto físico Pesado. |
@@ -2145,7 +2145,7 @@ Substitui a antiga **Conjuração Equilibrada** sem perder a compra salva. Seu n
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
 | G2 | Puxar, empurrar, elevar e autoempurrar até 4 m; amortecer 4 m de queda, mesmo em falha. |
 | G3 | Deslocamentos até 8 m; sufocar, empurrar e derrubar com dano pertinente. |
 | G4 | Deslocamentos até 12 m; tornados e rajadas em área, múltiplos alvos. |
@@ -2160,13 +2160,13 @@ Moldar linha, círculo, cone, X, L ou curva dentro dos limites; somar percurso r
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Congelar e imobilizar sem dano próprio do congelamento; descongelar, extrair água do ar, mover, molhar e limpar. |
-| G3 | Perfurar conforme gatilho habilitado, com dano pertinente. |
-| G4 | Empurrar, Perfurar, Congelar e causar dano conforme efeitos habilitados. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Congelar e imobilizar: instantâneo, sem custo-base de Coragem e sem dano próprio do congelamento. Descongelar, extrair água do ar, mover, molhar e limpar. |
+| G3 | Empurrar; aplicar a regra de deslocamento pertinente. |
+| G4 | Perfurar: E+T à Integridade no acerto, sem ignorar a armadura. |
 | G5 | Mistura por Maestria. |
 
-Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. Preservar efeitos antigos; duração do congelamento e detalhes de Perfurar/alcance precisam conciliação.
+Descongelar exige teste contra a DE do alvo e não remove Sangrando por si só. Dano convencional é possível desde G1; Congelar não produz dano por si só. Empurrar e Perfurar são habilitados nos Graus indicados, não efeitos automáticos de todo ataque. A duração do congelamento e detalhes de alcance seguem as regras vigentes; não criar valores por inferência.
 
 
 ### Perícia em Elemento Terra [DEFINIDO / detalhamento PENDENTE]
@@ -2175,10 +2175,10 @@ Descongelar exige teste contra a DE do alvo. Não remove Sangrando por si só. P
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Desvantagem, emaranhar pés, derrubar, pequenas pedras, plataformas, Sentido Sísmico. |
-| G3 | Enredar, imobilizar, espinhos, Cravar e Perfurar. |
-| G4 | Dano, empurrão e derrubada em área, linha, cone ou círculo a partir do alvo. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Empurrar e Perfurar (E+T à Integridade no acerto); Desvantagem, derrubar, pequenas pedras, plataformas e Sentido Sísmico, conforme seus gatilhos. |
+| G3 | Enraizar, emaranhar os pés, prender/imobilizar, espinhos e Cravar. |
+| G4 | Controle em área: empurrar e derrubar em linha, cone ou círculo a partir do alvo. |
 | G5 | Mistura por Maestria. |
 
 Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporárias duram uma ação do alvo. Cravar segue a lógica física de penalidade cumulativa −1E em Levantar Escudo por espinho, retirada em ação própria; categoria de peso do espinho ainda pendente. Perfurar E+T à Integridade no acerto, sem ignorar armadura. Área avançada histórica 5×5, unidades e detecção a detalhar. Sensores Sísmicos futuros, não compráveis.
@@ -2190,8 +2190,8 @@ Sentido Sísmico máximo 18 × 18 m, sem ampliar por Grau. Condições temporár
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação elemental. |
-| G2 | Disparo convencional, conduzir e iluminar chamas. |
+| G1 | Manifestação elemental; dano convencional no acerto. |
+| G2 | Conduzir e iluminar chamas; o dano convencional já está disponível em G1. |
 | G3 | Queimar: E+T à Integridade, área 4×4. |
 | G4 | Derreter: E+T à Integridade e +1 Vida direta fixa, área 8×8. |
 | G5 | Mistura por Maestria, como Ácido. |
@@ -2242,11 +2242,11 @@ Requisitos: Disciplina 3, Inteligência 3, Destreza 3, Criar Item de Foco e Magi
 
 | Grau | Aplicações |
 |---|---|
-| G1 | Manifestação sem efeito especial. |
+| G1 | Manifestação e dano convencional no acerto, sem efeito especial de Veneno. |
 | G2–G4 | Mesmo efeito de Envenenar; elevação de Inteligência segue regra geral, sem propriedades novas por Grau. |
 | G5 | Combinações por Maestria, por exemplo Ácido. |
 
-No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Sem dano direto automático; imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
+No acerto contra alvo Sangrando, aplica um acúmulo por duas rodadas, sem renovar anteriores. Dois terços da Vida atual em acúmulos: Ferido; alcançar Vida atual: Incapacitado; alvo envenenado com exatamente 2 Vida ou 12 acúmulos ativos: Inconsciente. Envenenar não causa dano direto automático; ataques convencionais de Veneno podem causar dano desde G1. Imunidades biológicas pertinentes. Ácido (Fogo+Veneno) permite transmitir um acúmulo pela queimadura de Queimar no acerto habilitado, sem duplicar dano.
 
 **Requisitos vigentes:** Disciplina 2 + Inteligência 2. Custo vigente não alterado.
 
