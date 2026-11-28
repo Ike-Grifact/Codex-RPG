@@ -556,6 +556,12 @@ const SKILLS=[
   1
  ],
  [
+  "deteccao-elemental",
+  "Detecção Elemental",
+  "1 XP. Requer Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Ativação: 1 Coragem por busca ativa de ocultação elemental compatível. Reserve faces correspondentes e rerrole os demais dados uma única vez; compare exclusivamente os dados mantidos, respeitando os limites do Marco. Busca e resultado manuais com o Narrador.",
+  1
+ ],
+ [
   "sentido-elemental",
   "Sentido Elemental",
   "1 XP. Requer Inteligência 3 e Extração Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
@@ -672,6 +678,7 @@ function skillReq(id,s){
   if(id==="espelho-magico"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
+  if(id==="deteccao-elemental"&&(dex<4||protection<3||stealth<2||!has("protecao-avancada")||!has("sentido-elemental")))return"Requer Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental.";
   if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Extração Elemental.";
   if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";

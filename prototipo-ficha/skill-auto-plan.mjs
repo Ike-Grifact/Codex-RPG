@@ -76,6 +76,7 @@ export const GENE_AUTO_REQUIREMENTS={
   "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
  "sacrificio-heroico":[["a:vigor:4"]],
  "escudo-refletor":[["s:maestria-escudos"]],
+ "deteccao-elemental":[["a:destreza:4","k:protecao:3","p:furtividade:2","s:protecao-avancada","s:sentido-elemental"]],
  "sentido-elemental":[["a:inteligencia:3","s:improviso"]],
  "cancelar-magia":[["s:criar-item-foco-magia","s:improviso","a:inteligencia:4","a:agilidade:4","a:destreza:4"]],
  "mudanca-elemental":[["s:transformacao-elemental","a:destreza:4","a:inteligencia:4"]],

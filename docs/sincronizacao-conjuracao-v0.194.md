@@ -11,3 +11,7 @@ Redação dos nove elementos atualizada nos três catálogos (app.js, skills-cat
 
 ## v0.197 — nomenclatura Ruptura
 Atualizados os textos dos catálogos, rótulos de propriedades, seleção de munição e comparador nas interfaces pertinentes. As chaves legadas Perfurante, perfurante-blocked, valores de propriedades/munição e lógica continuam intactas. Corrigidas cópias resumidas de Água e Terra que ainda apresentavam Graus antigos. Sem alteração de XP, VT, cálculo, IDs, ou Foundry. Validação de navegador ainda não realizada. Fonte: [v0.197](https://github.com/Ike-Grifact/Codex-RPG/blob/docs/fontes-e-continuidade-v0194/docs/srd-continuidade-v0.197.md).
+
+
+## v0.201 — Detecção Elemental
+Compra de 1 XP habilitada com os cinco requisitos; planejamento genético, catálogo compartilhado de humanoides e interface de declaração com débito de 1 Coragem e registro. Busca e rerrolagem resolvidas manualmente; sem automatizar localização. Teste de requisitos acrescentado; execução de suíte e navegador não confirmada. [SRD v0.201](https://github.com/Ike-Grifact/Codex-RPG/blob/docs/fontes-e-continuidade-v0194/docs/srd-continuidade-v0.201.md).

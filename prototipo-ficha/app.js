@@ -675,6 +675,12 @@ const SKILLS=[
   1
  ],
  [
+  "deteccao-elemental",
+  "Detecção Elemental",
+  "1 XP. Requer Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Ativação: 1 Coragem por busca ativa de ocultação elemental compatível. Reserve faces correspondentes e rerrole os demais dados uma única vez; compare exclusivamente os dados mantidos, respeitando os limites do Marco. Busca e resultado manuais com o Narrador.",
+  1
+ ],
+ [
   "sentido-elemental",
   "Sentido Elemental",
   "1 XP. Requer Inteligência 3 e Extração Elemental. Gasta 1 Coragem para analisar um alvo e descobrir sua afinidade elemental, informada pelo Narrador. Não cria bônus de combate, dados ou DE novos.",
@@ -880,6 +886,7 @@ const SKILL_AFFINITY={
  ],
  "sacrificio-heroico":["attr:vigor","practice:atletismo","know:protecao"],
  "escudo-refletor":["know:protecao","attr:vigor","attr:destreza"],
+ "deteccao-elemental":["attr:destreza","know:protecao","practice:furtividade"],
  "sentido-elemental":["attr:inteligencia","practice:armas_conjuracao","know:erudicao"],
  "maestria-escudos": ["attr:destreza","attr:vigor","attr:forca","know:protecao"],
  "escudo-bumerangue": ["attr:destreza","attr:forca","practice:armas_conjuracao","know:protecao"],
@@ -1032,7 +1039,7 @@ const SKILL_BRANCHES=[
  ["coleta-avancada"],
  ["artesao-avancado","ferreiro","ferreiro-elemental","resistencia-a-fogo"],
  ["alquimia-avancada","pesquisa-avancada-pocoes","bioetica"],
- ["improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental"],
+ ["improviso","mestre","invocacao-elemental","transformacao-elemental","mudanca-elemental","sentido-elemental","deteccao-elemental"],
  ["furtividade","maos-leves","golpe-furtivo"],
  ["protecao","pericia-armadilha"],
  ["alquimia","pesquisa-avancada-pocoes","bioetica"],
@@ -1210,6 +1217,7 @@ const SKILL_PERMALINKS={
  "artista-marcial": "artista-marcial",
  "sacrificio-heroico":"sacrificio-heroico",
  "escudo-refletor":"escudo-refletor",
+ "deteccao-elemental":"deteccao-elemental",
  "sentido-elemental":"sentido-elemental",
  "maestria-escudos": "maestria-em-escudos",
  "escudo-bumerangue": "escudo-bumerangue",
@@ -1298,6 +1306,7 @@ const CARD_REQUIREMENTS={
  "impacto-psiquico":"Criar Item de Foco e Magia + Artista Marcial",
  "sacrificio-heroico":"Vigor 4",
  "escudo-refletor":"Maestria em Escudos",
+ "deteccao-elemental":"Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental",
  "sentido-elemental":"Inteligência 3 + Extração Elemental",
  "cancelar-magia":"Criar Item de Foco e Magia + Extração Elemental + Inteligência 4 + Agilidade 4 + Destreza 4",
  "mudanca-elemental":"Transformação Elemental + Destreza 4 + Inteligência 4",
@@ -1389,6 +1398,7 @@ const CARD_EFFECTS={
  "impacto-psiquico":"Por 1 Coragem permite golpes psíquicos que aplicam efeitos de armas. Dados, classificação de efeitos elegíveis e interação com proteção física requerem decisão; não supor dano extra.",
  "sacrificio-heroico":"Intervém para proteger alguém até 8 m, mesmo fora da sua vez. Recebe o dano na própria armadura ou Vida, conforme Narrador.",
  "escudo-refletor":"Escudo físico equipado reflete ao inimigo a parcela de dano efetiva causada por Pavor; proteções normais se aplicam.",
+ "deteccao-elemental":"Busca ativa elemental: reserve faces correspondentes e rerrole as demais uma vez.",
  "sentido-elemental":"Analisa alvo por 1 Coragem e conhece sua afinidade elemental; informação do Narrador.",
  "cancelar-magia":"Ao perceber magia a até 8 m com Pavor mantido, gasta 1 Coragem e tenta alcançar DE igual ou maior (≥) que a magia adversária; empate cancela. Requer a Perícia do elemento cancelado.",
  "mudanca-elemental":"Altera o elemento de criatura, armadura ou ambiente até 8 m para um elemento em que possui Perícia; duração E − P (>0); unidade temporal e resistência pendentes.",
@@ -1477,6 +1487,7 @@ const CARD_BRIEFS={
  "impacto-psiquico":"1 XP; golpe psíquico por 1 Coragem com efeitos de armas.",
  "sacrificio-heroico":"1 XP; Vigor 4. Intervém por outro a até 8 m mesmo sem turno antecipado e recebe dano na própria armadura ou Vida.",
  "escudo-refletor":"1 XP; Maestria em Escudos. Escudo equipado reflete parcela de dano de Pavor realmente sofrida, sem anular o golpe.",
+ "deteccao-elemental":"1 XP. Requer Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental. Ativação: 1 Coragem por busca ativa de ocultação elemental compatível. Reserve faces correspondentes e rerrole os demais dados uma única vez; compare exclusivamente os dados mantidos, respeitando os limites do Marco. Busca e resultado manuais com o Narrador.",
  "sentido-elemental":"1 XP; Inteligência 3 e Extração Elemental. 1 Coragem para descobrir a afinidade elemental do alvo com Narrador.",
  "cancelar-magia":"1 XP; Criar Item de Foco e Magia, Extração Elemental, Inteligência/Agilidade/Destreza 4. Reage a magia até 8 m com Pavor mantido; 1 Coragem; resultado ≥ DE adversária, empate cancela; Perícia do mesmo elemento.",
  "mudanca-elemental":"1 XP; Transformação Elemental, Destreza 4, Inteligência 4. Muda elemento de criatura, armadura ou ambiente até 8 m para elemento habilitado; duração E − P, exigindo resultado positivo.",
@@ -1567,6 +1578,7 @@ const CARD_ACTIVATIONS={
  "impacto-psiquico":"1 Coragem; golpe psíquico pode aplicar efeitos de armas.",
  "sacrificio-heroico":"Intervenção protetora até 8 m mesmo fora do turno; ativação sem custo adicional informado",
  "escudo-refletor":"Passiva com escudo físico equipado ao sofrer dano de Pavor",
+ "deteccao-elemental":"1 Coragem por busca",
  "sentido-elemental":"1 Coragem por análise",
  "cancelar-magia":"1 Coragem por tentativa, em até 8 m; exige Pavor mantido na magia",
  "mudanca-elemental":"Mudança de elemento a 8 m; custo de ativação não informado",
@@ -2797,6 +2809,7 @@ function skillReq(id,s=state){
   if(id==="espelho-magico"&&!has("cancelar-magia"))return"Requer Cancelar Magia.";
   if(id==="sacrificio-heroico"&&vig<4)return"Requer Vigor 4.";
   if(id==="escudo-refletor"&&!has("maestria-escudos"))return"Requer Maestria em Escudos.";
+  if(id==="deteccao-elemental"&&(dex<4||protection<3||stealth<2||!has("protecao-avancada")||!has("sentido-elemental")))return"Requer Destreza 4 + Proteção 3 + Furtividade 2 + Proteção Avançada + Sentido Elemental.";
   if(id==="sentido-elemental"&&(intelligence<3||!has("improviso")))return"Requer Inteligência 3 e Extração Elemental.";
   if(id==="maestria-escudos"&&(dex<2||vig<2||strength<1||(s.knowledges?.protecao||0)<1))return"Requer Destreza 2, Vigor 2, Força 1 e Proteção 1.";
  if(id==="escudo-bumerangue"&&(dex<2||strength<3||!has("maestria-arremesso-armas")||!has("maestria-escudos")))return"Requer Destreza 2, Força 3, Perícia em Arremesso de Armas e Maestria em Escudos.";
@@ -3531,6 +3544,7 @@ const GENE_AUTO_REQUIREMENTS={
   "olhos-de-aguia":[["a:destreza:3","p:armas_conjuracao:3","s:armas-longo-alcance"],["a:destreza:3","p:armas_conjuracao:3","s:armas-fogo"]],
  "sacrificio-heroico":[["a:vigor:4"]],
  "escudo-refletor":[["s:maestria-escudos"]],
+ "deteccao-elemental":[["a:destreza:4","k:protecao:3","p:furtividade:2","s:protecao-avancada","s:sentido-elemental"]],
  "sentido-elemental":[["a:inteligencia:3","s:improviso"]],
  "cancelar-magia":[["s:criar-item-foco-magia","s:improviso","a:inteligencia:4","a:agilidade:4","a:destreza:4"]],
  "mudanca-elemental":[["s:transformacao-elemental","a:destreza:4","a:inteligencia:4"]],
@@ -5144,6 +5158,7 @@ function renderSkills(){
  const defensiveNotes=(ownsSkill("sacrificio-heroico")?'<p class="fp-alert"><strong>Sacrifício Heroico:</strong> proteja alguém a até 8 m, mesmo sem antecipação de seu turno. O dano segue para sua armadura ou Vida, conforme o Narrador; não é um ataque adicional.</p>':"")+
   (ownsSkill("escudo-refletor")?'<p class="fp-alert"><strong>Escudo Refletor:</strong> com escudo físico equipado, reflita ao inimigo apenas o dano efetivo da parcela de Pavor do ataque recebido. Não diminui o golpe original; proteções e resultado devem ser resolvidos pelo Narrador.</p>':"")+
   (ownsSkill("transformacao-elemental")&&ownsSkill("sagrado")?'<p class="fp-alert"><strong>Aura Sagrada:</strong> ao assumir efetivamente a forma Sagrada, pessoas a até 3 m recebem +1 Coragem, até o próprio teto. É um efeito da Transformação Elemental; não se repete automaticamente a cada turno. Registre o efeito nas fichas.</p>':"")+
+  (ownsSkill("deteccao-elemental")?'<p class="fp-alert"><strong>Detecção Elemental:</strong> 1 Coragem por busca ativa de ocultação elemental compatível. Reserve as faces correspondentes e rerrole as demais uma vez. Resolução manual com o Narrador. <button type="button" class="fp-secondary" data-action="deteccao-elemental-use"'+(state.pending||state.courage<1||editMode||skillReq("deteccao-elemental")?' disabled':'')+'>Declarar busca (−1 Coragem)</button></p>':"")+
   (ownsSkill("sentido-elemental")?'<p class="fp-alert"><strong>Sentido Elemental:</strong> gaste 1 Coragem para analisar um alvo e conhecer sua afinidade elemental (informada pelo Narrador). <button type="button" class="fp-secondary" data-action="sentido-elemental-use"'+(state.pending||state.courage<1?' disabled':'')+'>Analisar alvo (−1 Coragem)</button></p>':"");
  const antimagicNotes=(ownsSkill("cancelar-magia")?'<p class="fp-alert"><strong>Cancelar Magia:</strong> magia percebida a até 8 m, com pelo menos 1 Pavor mantido. Requer sua Perícia no elemento e 1 Coragem para alcançar resultado <strong>igual ou maior (≥)</strong> que a DE declarada da conjuração (todos os valores mantidos); empate cancela. <button type="button" class="fp-secondary" data-action="cancelar-magia-use"'+(state.pending||state.courage<1||editMode?' disabled':'')+'>Declarar tentativa (−1 Coragem)</button> A ficha registra a tentativa; o teste e a anulação devem ser resolvidos com o Narrador.</p>':"")+
   (ownsSkill("mudanca-elemental")?'<p class="fp-alert"><strong>Mudança Elemental:</strong> altere o elemento de criatura, armadura ou ambiente até 8 m para um elemento cuja Perícia já possui. Duração <strong>E − P, com E − P > 0</strong>. Unidade de duração, resistência e custo de ativação pendentes; efeito manual.</p>':"")+
@@ -5846,6 +5861,13 @@ function onClick(event){
   state.history=state.history.slice(0,20);
   render();save();
   toast("Cancelar Magia: −1 Coragem. Faça o teste pertinente e alcance DE ≥ "+enemyDe+" (empate cancela); o Narrador confirma o resultado.");break;
+ }
+ case "deteccao-elemental-use":{
+  if(editMode||state.pending||!ownsSkill("deteccao-elemental")||skillReq("deteccao-elemental")){toast("Detecção Elemental indisponível: confira requisitos e finalize a rolagem.");break;}
+  if((state.courageRoundSpent||0)>=5||state.courage<1){toast("Coragem insuficiente ou teto de gasto atingido.");break;}
+  if(!confirm("Confirmou com o Narrador a busca ativa e a percepção elemental compatível? Gastar 1 Coragem? A rerrolagem é manual."))break;
+  state.courage-=1;state.courageRoundSpent=clamp((state.courageRoundSpent||0)+1,0,5);
+  logSkillAction("Detecção Elemental","Busca declarada · 1 Coragem · correspondência e rerrolagem manual");render();save();toast("Detecção Elemental: −1 Coragem. Resolva a busca e a rerrolagem com o Narrador.");break;
  }
  case "sentido-elemental-use":{
   if((state.courageRoundSpent||0)>=5){toast("Teto de 5 Coragens gastas nesta rodada.");break;}

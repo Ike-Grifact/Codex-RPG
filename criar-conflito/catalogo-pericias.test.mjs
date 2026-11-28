@@ -13,9 +13,9 @@ function canonicalSource(){
  assert.ok(first>=0&&sk>first&&end>sk,"Não encontrou definições do catálogo da ficha de jogador");
  return new Function(source.slice(first,sk)+"\n"+source.slice(sk,end)+"\nreturn SKILLS;")();
 }
-test("Catálogo do inimigo espelha integralmente os 123 IDs, nomes, textos e custos da ficha",()=>{
+test("Catálogo do inimigo espelha integralmente os 124 IDs, nomes, textos e custos da ficha",()=>{
  const original=canonicalSource();
- assert.equal(original.length,123);
+ assert.equal(original.length,124);
  assert.deepEqual(PLAYER_SKILLS.map(x=>[x.id,x.name,x.detail,x.cost]),original);
  for(const entry of original){
   const match=SKILLS.find(x=>x.id===entry[0]);
@@ -101,3 +101,13 @@ test("Especialização em Armas de Punho: 1 XP, quatro atributos e compra sem Pu
 });
 
  test("Saque Rápido custa 1 XP e exige Agilidade 2, Destreza 1 e Disciplina 2",()=>{const t=blank("humanoide");assert.equal(SKILLS.find(x=>x.id==="saque-rapido").cost,1);assert.match(playerSkillRequirement("saque-rapido",t),/Agilidade 2/);t.attributes.agilidade=2;t.attributes.destreza=1;t.practices.armas_conjuracao=2;assert.equal(playerSkillRequirement("saque-rapido",t),null);});
+
+
+test("Detecção Elemental custa 1 XP e exige as cinco habilitações",()=>{
+ const row=PLAYER_SKILLS.find(x=>x.id==="deteccao-elemental");assert.equal(row.cost,1);
+ const c={race:"humano",attributes:{destreza:4,inteligencia:3},practices:{furtividade:2,armas_conjuracao:1},knowledges:{protecao:3},skills:["improviso","sentido-elemental","protecao-avancada"]};
+ assert.equal(playerSkillRequirement("deteccao-elemental",c),null);
+ for(const [group,key,value] of [["attributes","destreza",3],["practices","furtividade",1],["knowledges","protecao",2]])assert.ok(playerSkillRequirement("deteccao-elemental",{...c,[group]:{...c[group],[key]:value}}));
+ for(const id of ["sentido-elemental","protecao-avancada"])assert.ok(playerSkillRequirement("deteccao-elemental",{...c,skills:c.skills.filter(x=>x!==id)}));
+ assert.ok(GENE_AUTO_REQUIREMENTS["deteccao-elemental"].flat().includes("s:sentido-elemental"));
+});
