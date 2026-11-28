@@ -12,3 +12,5 @@ Publica exclusivamente a seção Furtividade do Livro do Jogador (HTML e Markdow
 Preservadas a comparação de DE anterior ao deslocamento e a Desvantagem por distância, registradas na redação vigente anterior. Substitui as pendências de correspondência rolados/mantidos e quebra por ataque na seção de Furtividade. Mantêm-se as demais regras e limites não alterados. Referência histórica na main: [v0.191](srd-continuidade-v0.191.md), [v0.192](srd-continuidade-v0.192.md).
 
 **Automação:** não alterada nesta publicação. A verificação confirmou a substituição exclusiva da seção, presença dos diagramas e âncoras, remoção da pendência substituída e equivalência das regras nos dois formatos. Renderização e implantação do GitHub Pages não verificadas.
+
+**Atualização v0.203:** [Furtividade Elemental](srd-continuidade-v0.203.md) substitui o nome anterior e exige Furtividade Avançada + Transformação Elemental. Seção condensada na main; referências históricas preservadas.

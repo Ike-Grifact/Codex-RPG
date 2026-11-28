@@ -1029,7 +1029,7 @@ Atletismo é o treinamento que permite correr, saltar, escalar, nadar e manter o
 
 *A arte de não ser percebido.*
 
-Furtividade é a arte de mover-se sem chamar atenção. Você aproveita sombras, distrações e o próprio ambiente para observar, aproximar-se ou escapar sem revelar sua posição.
+Furtividade permite observar, aproximar-se ou escapar sem ser percebido, aproveitando sombras, coberturas e distrações.
 
 > **Possibilidades em jogo:** Furtividade + Agilidade para trocar de cobertura; Furtividade + Destreza para atravessar um depósito sem derrubar objetos.
 
@@ -1038,60 +1038,40 @@ Furtividade é a arte de mover-se sem chamar atenção. Você aproveita sombras,
 
 ##### Furtividade em jogo
 
-O personagem furtivo com Perícia pertinente pode usar **1E para fugir** mesmo quando a ação principal falha; outros Êxitos podem ampliar a distância ou favorecer nova ocultação, de acordo com sua capacidade. **1A** pode auxiliar a desvencilhar e **1E** permitir correr.
+Com a Perícia adequada, 1E permite fugir mesmo após falhar na ação principal; Êxitos adicionais ampliam a distância ou favorecem nova ocultação conforme a DE. 1A pode permitir desvencilhar-se e 1E, correr.
 
-###### Ocultação após deslocamento
+###### Ocultação
 
-Após obter sucesso no teste de Furtividade contra a DE aplicável, desloque-se. Os inimigos deixam de conhecer sua nova posição, mesmo quando sua DE defensiva é superior ao resultado da Furtividade. Enquanto estiver oculto, atacar você equivale a um Golpe de Sorte (−2E), mesmo que o atacante consiga localizar sua posição naquela rolagem.
+Após superar a DE de Furtividade e se deslocar, todos os inimigos perdem sua posição, mesmo os de DE defensiva superior. Antes do deslocamento, essa comparação ainda pode ser relevante.
 
-Antes do deslocamento, a comparação com a DE dos observadores ainda pode ser relevante. Depois dele, uma DE defensiva maior não revela automaticamente a nova posição.
-
-###### Localizar durante o ataque
-
-Durante a rolagem ofensiva, compare somente as faces originais dos dados mantidos de ambos os lados. Cada dado mantido na Furtividade precisa de um correspondente distinto entre os mantidos no ataque: mesmo tipo de dado e exatamente os mesmos símbolos (E, A e T). A ordem e a numeração interna não importam. Dados descartados não contam.
-
-Se faltar uma correspondência, o ataque não localiza o alvo. Se encontrar todas, resolva o ataque contra a DE defensiva com −2E. Localizar não garante o acerto. A distância ainda pode impor Desvantagem, conforme as regras de alcance.
+Para atacar um alvo oculto, reproduza todas as faces originais que ele manteve: mesmo tipo de dado e símbolos E, A e T, inclusive repetições, usando apenas seus próprios mantidos. Se localizar, resolva o ataque contra a DE com Golpe de Sorte (−2E), além dos modificadores de alcance aplicáveis.
 
 | Faces mantidas na Furtividade | Faces mantidas no ataque | Localização |
 |---|---|---|
 | d12 3E + d10 (1E + 1A) | d12 3E + d10 2E | Não corresponde |
-| d12 3E + d10 (1E + 1A) | d12 3E + d10 (1E + 1A) | Corresponde; aplicar −2E |
+| d12 3E + d10 (1E + 1A) | d12 3E + d10 (1E + 1A) | Corresponde |
 
-**Exemplo:** Você manteve d12 com 3E e d10 com 1E + 1A. O atacante mantém essas mesmas faces e localiza você, mas seus 4E tornam-se 2E pelo Golpe de Sorte, antes de outros modificadores; permanece 1A. Ainda precisa alcançar sua DE. Um d20 com 3E ou um d10 com 2E não substitui as faces exigidas.
+**Exemplo:** Com as faces do exemplo, o atacante localiza o alvo, mas seus 4E passam a 2E; permanece 1A. Um d20 com 3E não substitui um d12 com 3E.
 
 <a id="busca-ativa"></a>
 
 ###### Busca ativa
 
-Você pode dedicar uma ação a procurar um personagem oculto. Na busca ativa, compare as faces dos dados mantidos com as da Furtividade, sem uma segunda rolagem. O Sentido Sísmico de Terra pode localizar furtivos convencionais por suas vibrações, dentro de seus limites; não detecta ocultação elemental em outro elemento.
-
-Se localizar o alvo em uma ação dedicada à busca, você poderá atacá-lo normalmente na próxima oportunidade, desde que ele não volte a se ocultar. Isso não revela automaticamente a posição aos demais combatentes. Se tentar localizar e atacar na mesma ação, permanece o Golpe de Sorte (−2E).
+Dedique uma ação à busca e compare os mantidos, sem rerrolagem. Se localizar, você poderá atacar sem a penalidade da ocultação na próxima oportunidade, caso o alvo não se esconda novamente. Isso não revela sua posição aos demais automaticamente.
 
 <a id="ataque-furtivo"></a>
 
-###### Ataque surpresa e nova ocultação
+###### Ataque surpresa
 
-Enquanto estiver oculto, você não se revela apenas por permanecer nessa condição. Ao atacar, recebe Vantagem Absoluta (+1E) pela surpresa e revela sua posição, acertando ou falhando. A ocultação termina: os inimigos não precisam mais reproduzir suas faces mantidas nem sofrem o −2E da ocultação.
-
-Se acertar o ataque e mantiver Temor sem Antecipar para impedir o revide, o inimigo pode revidar imediatamente, sem Desvantagem decorrente da Furtividade. Resolva o revide conforme as regras gerais de alcance, Temor, oportunidades e turnos; a perda da ocultação não elimina outros modificadores legítimos.
-
-Quando mantiver Temor ou falhar no ataque, as Perícias e técnicas de Furtividade pertinentes podem permitir tentar ocultar-se novamente. A nova ocultação exige uma ação própria, com teste e deslocamento quando aplicáveis. Não ocorre gratuitamente após o golpe: você dedica uma oportunidade de agir a recuperar a proteção.
+Ao atacar enquanto oculto, receba Vantagem Absoluta (+1E) e revele sua posição, mesmo na falha. Se acertar mantendo Temor, sem Antecipar para impedir o revide, o inimigo revida imediatamente sem a penalidade da ocultação. Com Temor ou falha, as Perícias pertinentes podem permitir nova ocultação em uma ação própria.
 
 <a id="ocultacao-elemental"></a>
 
-###### Invisibilidade elemental
+###### Furtividade Elemental
 
-A invisibilidade elemental é uma ocultação em que o personagem se mescla a um elemento do ambiente. Aplique a mesma lógica de Furtividade, correspondência de mantidos e Golpe de Sorte (−2E). Transformar-se em um elemento e depois realizar Furtividade também permite ocultar-se, se a situação for compatível. A transformação por si só não garante ocultação.
+Com [Furtividade Avançada](../pericias/furtividade-avancada.html) e [Transformação Elemental](../pericias/transformacao-elemental.html), você pode ocultar-se na forma de um elemento, seguindo as mesmas regras de Furtividade. O ambiente precisa favorecer a dissimulação: uma poça recém-surgida chama atenção, mas esconder-se como Água em um balde pode funcionar. Atacar revela sua posição, não encerra automaticamente a transformação.
 
-A mesma sequência vale para invisibilidade elemental. Revelar a posição ao atacar não encerra automaticamente a Transformação Elemental, que conserva suas próprias regras.
-
-Uma capacidade especial de perceber o elemento da ocultação pode permitir sentir a presença do personagem. O Sentido Sísmico de Terra não detecta, por esse recurso, uma ocultação elemental em outro elemento. Sentir a presença não equivale automaticamente a localizar o alvo.
-
-Com a Perícia **Detecção Elemental**, você pode gastar 1 Coragem em uma busca ativa elemental para reservar as faces correspondentes e rerrolar os demais dados uma vez, respeitando os limites de mantidos.
-
-Uma poça de água onde antes não havia nenhuma pode chamar atenção; assumir a forma de Água e esconder-se dentro de um balde é uma possibilidade, desde que a situação permita.
-
-Preserve as imunidades a Furtividade e as habilitações de fuga e desvencilhamento pertinentes. Atacar revela a posição; outros gatilhos de quebra, duração fora do ataque e procedimentos específicos de percepção ainda não definidos permanecem em revisão.
+O Sentido Sísmico pode localizar furtivos convencionais por vibrações, mas não detecta Furtividade Elemental em outros elementos. Uma percepção compatível pode sentir a presença; com Detecção Elemental, gaste 1 Coragem na busca para reservar faces correspondentes e rerrolar as demais uma vez, respeitando o limite de mantidos.
 
 
 #### ⚔ Artesão
