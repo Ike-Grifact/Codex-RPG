@@ -265,7 +265,7 @@ const SKILLS=[
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Especialização em Disciplina); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Ruptura de armas físicas, sem anular acerto ou dano; Ruptura da magia de Água não é anulada. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
+  "Perícia ativa de conjuração, proteção passiva após conjurada. Requisitos Inteligência 2 + Vigor 1 + Criar Item de Foco e Magia. 1 Coragem; escudo pessoal, parede de 3 m ou círculo de 3×3 m por 1 rodada. Disciplina + Atributo pertinente; E+T mantidos válidos formam DE e Integridade simbólica. Protege sem nova ação de Levantar Escudo, enquanto houver cobertura e Integridade. Expansão: 1 Coragem adicional. Psíquico neutraliza Ruptura física; Sangue neutraliza Hemomancia. Extração Elemental e Perícia do elemento habilitam alteração elemental; demais efeitos, equivalências e exceções no verbete.",
   1
  ],
  [
@@ -378,7 +378,7 @@ const SKILLS=[
  ],
  [
   "disciplina-avancada",
-  "Especialização em Disciplina",
+  "Disciplina Avançada",
   "Perícia passiva — sem custo de ativação. Disciplina 3; ao realizar uma ação com Disciplina como fonte principal, pode acrescentar mais 1 Atributo, Conhecimento ou Prática pertinente. Na rolagem, selecione a fonte e confirme a pertinência; respeite o limite de dados.",
   1
  ],
@@ -391,7 +391,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Especialização em Disciplina (Disciplina 3) + Destreza 2. Perícia passiva — sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E). Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total). Consulte as mecânicas Vantagens e Desvantagens e Golpe Certo.",
+  "Perícia passiva. 1 XP; Disciplina Avançada + Destreza 2. Sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E).",
   1
  ],
  [
@@ -1312,7 +1312,7 @@ const CARD_REQUIREMENTS={
  "mudanca-elemental":"Transformação Elemental + Destreza 4 + Inteligência 4",
  "desencantar":"Cancelar Magia",
  "espelho-magico":"Cancelar Magia",
- "manejo-perfeito": "Especialização em Disciplina + Destreza 2",
+ "manejo-perfeito": "Disciplina Avançada + Destreza 2",
  "maestria-escudos": "Destreza 2 + Vigor 2 + Força 1 + Proteção 1",
  "escudo-bumerangue": "Destreza 2 + Força 3 + Perícia em Arremesso de Armas + Maestria em Escudos",
  "montar": "Influência 2",
@@ -1350,7 +1350,7 @@ const CARD_REQUIREMENTS={
  "disparo-tatico": "PENDENTE (compatível com Perícia em Arremesso de Armas)",
  "armas-fogo": "Disciplina 2 + Destreza 2",
  "golpe-baixo": "Destreza 2 + Força 1 + Agilidade 1",
- "maestria-manejo-duplo": "Especialização em Disciplina + Força 2 + Destreza 2 + Agilidade 1 + uma Perícia em Armas Leves, Médias, Pesadas, Arremesso, Fogo ou Longo Alcance",
+ "maestria-manejo-duplo": "Disciplina Avançada + Força 2 + Destreza 2 + Agilidade 1 + uma Perícia em Armas Leves, Médias, Pesadas, Arremesso, Fogo ou Longo Alcance",
  "criar-veneno": "Artesão 1 + Inteligência 2 + Alquimia 2 + Medicina 2",
  "furtividade": "Furtividade 2 + Destreza 2 + Agilidade 1",
  "furtividade-avancada": "Furtividade 3 + Perícia em Furtividade",
@@ -1415,7 +1415,7 @@ const CARD_EFFECTS={
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
- "escudo-arcano": "Escudo de 1 rodada; E+P mantidos formam DE/Integridade; Psíquico anula Ruptura física, não dano.",
+ "escudo-arcano": "Barreira de 1 rodada; proteção passiva após conjurada, E+T mantidos formam DE/Integridade.",
  "conjuracao-equilibrada": "Especialização de alcance de efeitos mágicos; distância e procedimento pendentes.",
  "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
  "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
@@ -1504,7 +1504,7 @@ const CARD_BRIEFS={
  "pericia-druidica": "Transforma-se nas formas Pequena (0 Coragem, eleva 1 Atributo), Média (1 Coragem, eleva 2) ou Grande (1 Coragem, eleva 3). Não conjura nem usa armadura enquanto transformado; a Vida temporária desaparece ao reverter. Regras e cancelamentos no verbete completo.",
  "transformacao-elemental": "1 XP; requer Criar Item de Foco e Magia e uma Perícia Elemental. Ativação 1 Coragem. Imune ao elemento escolhido e intangível, exceto Terra (tangível, imune a Terra e efeitos aplicáveis das armas). Sem armadura; dano não protegido por imunidade ou Escudo Arcano chega diretamente à Vida. Duração elemental = E - P, exigindo E - P > 0, sem duração-base. Fonte e DE pendentes. Aura Sagrada: quando a Transformação Elemental em Sagrado se concretiza, pessoas num raio de 3 m recebem 1 Coragem até o teto de cada ficha. Sem recuperação periódica definida. Imunidade: zero dano do elemento; resistência: E/2 dano e P=0 dano só no elemento resistido. Foco pode amplificar (procedimento pendente); ambiente favorável exige 3 turnos de preparação. Resistência citada além de imunidade aguarda interpretação; Escudo Arcano é compatível.",
  "criar-item-foco-magia": "Obrigatória para conjurar qualquer elemento; habilita Psique e fabricação de focos por Artesão. G1/G2 imediatos; G3/G4 custam 1 Coragem e levam 2/3 turnos. Focos comprados, capacidade Leve 1, Médio 2, Pesado 3; recuperam 1 carga a cada dois turnos próprios. Pedra da Alma sem recarga natural. Não concede dado extra nem foco gratuito. Magias mentais de Psique exigem Disciplina Avançada + Inteligência + Influência.",
- "escudo-arcano": "Escudo de 1 rodada. E+P válidos mantidos formam DE/Integridade. Escudo Psíquico anula Ruptura física sem cancelar dano; Ruptura de Água não é anulada. Protege em todas as direções na forma pessoal/circular; parede linear tem cobertura própria. Efeitos de proteção não são automatizados.",
+ "escudo-arcano": "Perícia ativa de conjuração, proteção passiva após conjurada. Requisitos Inteligência 2 + Vigor 1 + Criar Item de Foco e Magia. 1 Coragem; escudo pessoal, parede de 3 m ou círculo de 3×3 m por 1 rodada. Disciplina + Atributo pertinente; E+T mantidos válidos formam DE e Integridade simbólica. Protege sem nova ação de Levantar Escudo, enquanto houver cobertura e Integridade. Expansão: 1 Coragem adicional. Psíquico neutraliza Ruptura física; Sangue neutraliza Hemomancia. Extração Elemental e Perícia do elemento habilitam alteração elemental; demais efeitos, equivalências e exceções no verbete.",
  "conjuracao-equilibrada": "Conjuração Refinada substituirá a mudança de peso por alcance ampliado de magias; números e custos ainda não reescritos pelo autor.",
  "improviso": "Ativa: 1 Coragem para extrair um elemento realmente presente na cena, sem propriedade especial ou +1A passivo. Conjurar exige Criar Item de Foco e Magia. Mistura de naturezas em revisão.",
  "mestre": "Maestria: +1A próprio em Disciplina e Conjuração; mistura de propriedades habilitadas em G5 custa 1A. Exige Extração Elemental e ambas as habilitações para aplicar ambas as propriedades. G5 eleva Inteligência 3 passos; 4 turnos sem aceleração; custo final e piso de preparação pendentes.",
@@ -1674,7 +1674,7 @@ const PLAYER_SKILL_COPY={
  "manejo-perfeito":{
   type:"Passiva — sem custo de ativação",
   intro:"Você domina o uso da arma adequada contra as defesas do oponente.",
-  benefits:["Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E).","Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total)."],
+  benefits:["Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E)."],
   note:"",
   mechanics:[["vantagens-e-desvantagens","Vantagens e Desvantagens"],["golpe-certo","Golpe Certo"]]
  },
@@ -2816,8 +2816,8 @@ function skillReq(id,s=state){
  if(id==="maestria-arremesso-armas"&&(!["armas-leves","armas-medias","armas-pesadas"].some(has)||strength<2||dex<2||agi<1))return"Requer Armas Leves OU Médias OU Pesadas, Força 2, Destreza 2 e Agilidade 1.";
  if(["recuperacao-vigorosa","instinto-sobrevivencia"].includes(id)&&vig<3)return"Requer Vigor 3; custo XP pendente.";
  if(id==="recuperacao-movimento"&&(vig<6||!has("recuperacao-vigorosa")))return"Requer Recuperação Vigorosa e Vigor 6; custo XP pendente.";
- if(id==="manejo-perfeito"&&(!has("disciplina-avancada")||disc<3||dex<2))return"Requer Especialização em Disciplina (Disciplina 3) adquirida e Destreza 2.";
- if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||disc<3||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Especialização em Disciplina e especialização de armas.";
+ if(id==="manejo-perfeito"&&(!has("disciplina-avancada")||disc<3||dex<2))return"Requer Disciplina Avançada (Disciplina 3) adquirida e Destreza 2.";
+ if(id==="maestria-manejo-duplo"&&(strength<2||dex<2||agi<1||disc<3||!has("disciplina-avancada")||!["armas-leves","armas-medias","armas-pesadas","maestria-arremesso-armas","armas-fogo","armas-longo-alcance"].some(has)))return"Requer Força 2, Destreza 2, Agilidade 1, Disciplina Avançada e especialização de armas.";
  
  if(id==="montar"&&(s.attributes.influencia||0)<2)return"Requer Influência grau 2.";
  if(id==="pericia-montaria"&&((s.attributes.influencia||0)<1||dex<2))return"Requer Influência 1 e Destreza 2.";

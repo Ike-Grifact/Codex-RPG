@@ -15,3 +15,7 @@ Atualizados os textos dos catálogos, rótulos de propriedades, seleção de mun
 
 ## v0.201 — Detecção Elemental
 Compra de 1 XP habilitada com os cinco requisitos; planejamento genético, catálogo compartilhado de humanoides e interface de declaração com débito de 1 Coragem e registro. Busca e rerrolagem resolvidas manualmente; sem automatizar localização. Teste de requisitos acrescentado; execução de suíte e navegador não confirmada. [SRD v0.201](https://github.com/Ike-Grifact/Codex-RPG/blob/docs/fontes-e-continuidade-v0194/docs/srd-continuidade-v0.201.md).
+
+
+## v0.202 — sincronização editorial
+Padronizados Disciplina Avançada, Manejo Perfeito e Escudo Arcano. Proteção arcana passiva após conjuração paga; regras de combate e IDs preservados. Golpe Certo continua no motor e nas mecânicas. Sem automação adicional de barreira. Catálogo integral comparado por execução isolada.

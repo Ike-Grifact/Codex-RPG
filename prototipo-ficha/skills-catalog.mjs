@@ -146,7 +146,7 @@ const SKILLS=[
  [
   "escudo-arcano",
   "Escudo Arcano",
-  "Requisitos Inteligência 2, Vigor 1, Criar Item de Foco e Magia. Ativação 1 Coragem. Escudo pessoal, parede de 3 m ou círculo 3×3 m, por 1 rodada. Teste Disciplina com Atributo (terceira fonte com Disciplina Avançada); E+P definem DE e Integridade simbólica. E cancela E ou 2P; P cancela P, 2P cancelam E. Mais 1 Coragem amplia 3 m ou a área. Imunidade ao elemento inserido, exceto Sagrado imune a Trevas e Trevas a Sagrado; juntá-los anula vantagens elementais. Com Improviso e Perícia do elemento troca o tipo; com Maestria ativada na conjuração, ataques e atravessamentos disparam efeitos especiais durante a duração. Corpo a corpo de dentro ignora defesa. NOVA regra v0.54: Escudo Arcano Psíquico ATIVO anula Ruptura de armas físicas, sem anular acerto ou dano; Ruptura da magia de Água não é anulada. Escudo pessoal ou circular protege de todas as direções; parede linear apenas segundo sua geometria. Levantar Escudo físico é ação com rolagem de Disciplina, E+P válidos mantidos para Integridade extra; só defende o primeiro ataque frontal e abaixa após resolvê-lo, mesmo que erre; excedente vai para armadura e depois Vida. A aplicação automática do bloqueio físico ainda não foi implementada.",
+  "Perícia ativa de conjuração, proteção passiva após conjurada. Requisitos Inteligência 2 + Vigor 1 + Criar Item de Foco e Magia. 1 Coragem; escudo pessoal, parede de 3 m ou círculo de 3×3 m por 1 rodada. Disciplina + Atributo pertinente; E+T mantidos válidos formam DE e Integridade simbólica. Protege sem nova ação de Levantar Escudo, enquanto houver cobertura e Integridade. Expansão: 1 Coragem adicional. Psíquico neutraliza Ruptura física; Sangue neutraliza Hemomancia. Extração Elemental e Perícia do elemento habilitam alteração elemental; demais efeitos, equivalências e exceções no verbete.",
   1
  ],
  [
@@ -272,7 +272,7 @@ const SKILLS=[
  [
   "manejo-perfeito",
   "Manejo Perfeito — Armas Corpo a Corpo",
-  "1 XP. Requer Disciplina Avançada (Disciplina 3) + Destreza 2. Perícia passiva — sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E). Se a ação já estiver em Vantagem Absoluta, aplica Golpe Certo (+2E no total). Consulte as mecânicas Vantagens e Desvantagens e Golpe Certo.",
+  "Perícia passiva. 1 XP; Disciplina Avançada + Destreza 2. Sem custo de ativação. Ao utilizar a arma correta contra um oponente que possui Desvantagem natural contra ela, você recebe Vantagem Absoluta (+1E).",
   1
  ],
  [
