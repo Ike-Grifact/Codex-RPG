@@ -22,3 +22,6 @@ Dano convencional G1 para todos os elementos; revisar habilitação de efeitos e
 
 ## v0.197 — Ruptura
 Renomear rótulos públicos da propriedade e descrições; preservar chaves legadas Perfurante, perfurante, perfurar, campos de munição, IDs e lógica. Não implica automatizar efeitos elementais ou alterar o dano. Validação de navegador e publicação separadas. [v0.197 — decisão autoral de 28/11/2026](srd-continuidade-v0.197.md).
+
+## v0.198 — Furtividade
+NÃO IMPLEMENTADO nesta revisão: guardar faces originais mantidas, comparar multiconjuntos de mantidos por tipo e E/A/T, aplicar −2E mesmo localizando; distinguir ocultação elemental e percepção pertinente. Sem automatizar detecção, duração, quebra ou custos não definidos. [v0.198](srd-continuidade-v0.198.md).
